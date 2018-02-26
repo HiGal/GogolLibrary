@@ -1,0 +1,78 @@
+body {
+    background: url("../img/bg.jpg") no-repeat fixed center top / cover;
+}
+
+.container {
+    width: 450px;
+    border-radius: 5px;
+    background-color: rgba(10,58,130, 0.9);
+    margin: 250px auto 0 auto;
+    text-align: center;
+    box-shadow: 0 -5px 0 greenyellow;
+}
+
+.container img {
+    width: 140px;
+    height: 140px;
+    margin: -60px 0 30px 0;
+    border: 5px solid greenyellow;
+    border-radius: 90px;
+}
+
+input[type = "text"], input[type = "password"] {
+    width: 300px;
+    height: 50px;
+    font-size: 18px;
+    color: white;
+    margin-bottom: 25px;
+    border-radius: 4px;
+    padding-left: 10px;
+    box-shadow: 4px 5px 5px rgb(0,30,77);
+    border-color: rgb(0,105,178);
+    background-color: rgba(0,105,178,0.7);
+    margin-top: 5px;
+}
+input::-webkit-input-placeholder {
+    color: rgb(255,255,255)  !important;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+    color: rgb(225,255,255) !important;
+}
+
+input::-moz-placeholder {  /* Firefox 19+ */
+    color: rgb(225,255,255) !important;
+}
+
+input:-ms-input-placeholder {
+    color: rgb(225,255,255) !important;
+}
+
+.enter {
+    padding: 13px 40px;
+    margin: 5px 0 20px 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: rgba(0,105,178,0.9);
+    border: none;
+    box-shadow: 3px 2px 3px rgb(0,30,77);
+    border-bottom: 4px solid rgb(1,54,106);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tags{
+    font-size: 22px;
+    text-align: left;
+    margin-left: 55px;
+    font-weight: bold;
+    font-family: "Century Gothic", serif;
+
+}
+
+.enter:hover {
+    transition: all 0.2s;
+    background: blue;
+    color: #ffffff;
+}
