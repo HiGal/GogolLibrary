@@ -8,14 +8,14 @@ body {
     background-color: rgba(10,58,130, 0.9);
     margin: 250px auto 0 auto;
     text-align: center;
-    box-shadow: 0 -5px 0 greenyellow;
+    box-shadow: 0 -5px 0 red;
 }
 
 .container img {
     width: 140px;
     height: 140px;
     margin: -60px 0 30px 0;
-    border: 5px solid greenyellow;
+    border: 5px solid red;
     border-radius: 90px;
 }
 
@@ -23,13 +23,13 @@ input[type = "text"], input[type = "password"] {
     width: 300px;
     height: 50px;
     font-size: 18px;
-    color: white;
+    color: black;
     margin-bottom: 25px;
     border-radius: 4px;
     padding-left: 10px;
-    box-shadow: 4px 5px 5px rgb(0,30,77);
-    border-color: rgb(0,105,178);
-    background-color: rgba(0,105,178,0.7);
+    box-shadow: 4px 5px 5px rgb(99,37,37);
+    border-color: rgb(245,91,89);
+    background-color: rgba(245,91,89,0.9);
     margin-top: 5px;
 }
 input::-webkit-input-placeholder {
@@ -54,11 +54,12 @@ input:-ms-input-placeholder {
     font-size: 20px;
     font-weight: bold;
     color: #ffffff;
-    background-color: rgba(0,105,178,0.9);
+    background-color: blue;
     border: none;
     box-shadow: 3px 2px 3px rgb(0,30,77);
     border-bottom: 4px solid rgb(1,54,106);
     border-radius: 5px;
+    text-shadow: 2px 3px rgb(1,54,106);
     cursor: pointer;
 }
 
@@ -67,12 +68,15 @@ input:-ms-input-placeholder {
     text-align: left;
     margin-left: 55px;
     font-weight: bold;
-    font-family: "Century Gothic", serif;
 
+    font-family: "Century Gothic", serif;
+    color: rgb(135,201,251);
 }
 
 .enter:hover {
     transition: all 0.2s;
-    background: blue;
+    background: rgba(15,3,74,0.9);
+    text-shadow: 2px 3px blue;
     color: #ffffff;
+    border-bottom-color: blue;
 }
