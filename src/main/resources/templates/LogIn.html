@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta  http-equiv="Content-Type" content="text/html" tcharset="UTF-8">
+    <meta  http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.1">
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <bookTitle>LogIn</bookTitle>
@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <img src="img/logo.png">
-    <form>
+    <form action="/login" method="post">
         <div class="tags">Username:</div>
         <div class="dws - input">
             <input id="kek" type="text" name="username" placeholder="Enter your login">
@@ -22,6 +22,7 @@
             <input class="enter" type="submit" name="submit" value="Enter">
         </div>
     </form>
+
 </div>
 </body>
 </html>
