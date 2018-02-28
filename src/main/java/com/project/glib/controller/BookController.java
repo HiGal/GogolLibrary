@@ -39,14 +39,14 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @RequestMapping("/remove/{id}")
+    @RequestMapping("books/remove/{id}")
     public String removeBook(@PathVariable("id") long id) {
         this.bookRepository.delete(id);
 
         return "redirect:/books";
     }
 
-    @RequestMapping("edit/{id}")
+    @RequestMapping("books/edit/{id}")
     public String editBook(@PathVariable("id") long id, Model model) {
         model.addAttribute("book", this.bookRepository.getOne(id));
         model.addAttribute("listBooks", this.bookRepository.findAll());
