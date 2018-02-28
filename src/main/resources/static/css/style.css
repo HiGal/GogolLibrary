@@ -1,82 +1,152 @@
-body {
-    background: url("../img/bg.jpg") no-repeat fixed center top / cover;
+body, html {
+    height: 100%;
+    background: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg') no-repeat;
+    -webkit-background-size: 100%;
+    font-family: 'Oxygen', sans-serif;
+}
+.form{
+    margin-top: 160px;
+}
+h1.title {
+    font-size: 50px;
+    font-family: 'Passion One', cursive;
+    font-weight: 400;
 }
 
-.container {
-    width: 450px;
-    border-radius: 5px;
-    background-color: rgba(10,58,130, 0.9);
-    margin: 250px auto 0 auto;
+hr{
+    width: 10%;
+    color: #fff;
+}
+
+.card-container.card {
+    margin-top: -10px;
+    max-width: 350px;
+    padding: 40px 40px;
+}
+
+
+.btn {
+    font-weight: 700;
+    height: 36px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+/*
+ * Card component
+ */
+.card {
+    background-color: #F7F7F7;
+    /* just in case there no content*/
+    padding: 20px 25px 30px;
+    margin: 50px auto 25px;
+    /* shadows and rounded borders */
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+/*
+ * Form styles
+ */
+.profile-name-card {
+    font-size: 16px;
+    font-weight: bold;
     text-align: center;
-    box-shadow: 0 -5px 0 red;
+    margin: 10px 0 0;
+    min-height: 1em;
 }
 
-.container img {
-    width: 140px;
-    height: 140px;
-    margin: -60px 0 30px 0;
-    border: 5px solid red;
-    border-radius: 90px;
+.reauth-email {
+    display: block;
+    color: #404040;
+    line-height: 2;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-input[type = "text"], input[type = "password"] {
-    width: 300px;
-    height: 50px;
-    font-size: 18px;
-    color: black;
-    margin-bottom: 25px;
-    border-radius: 4px;
-    padding-left: 10px;
-    box-shadow: 4px 5px 5px rgb(99,37,37);
-    border-color: rgb(245,91,89);
-    background-color: rgba(245,91,89,0.9);
-    margin-top: 5px;
-}
-input::-webkit-input-placeholder {
-    color: rgb(255,255,255)  !important;
+.form-signin #inputEmail,
+.form-signin #inputPassword {
+    direction: ltr;
+    height: 44px;
+    font-size: 16px;
 }
 
-input:-moz-placeholder { /* Firefox 18- */
-    color: rgb(225,255,255) !important;
+.form-signin input[type=email],
+.form-signin input[type=password],
+.form-signin input[type=text],
+.form-signin button {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    z-index: 1;
+    position: relative;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-input::-moz-placeholder {  /* Firefox 19+ */
-    color: rgb(225,255,255) !important;
+.form-signin .form-control:focus {
+    border-color: rgb(104, 145, 162);
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
 }
 
-input:-ms-input-placeholder {
-    color: rgb(225,255,255) !important;
-}
-
-.enter {
-    padding: 13px 40px;
-    margin: 5px 0 20px 0;
-    font-size: 20px;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: blue;
+.btn.btn-signin {
+    /*background-color: #4d90fe; */
+    background-color: rgb(139, 152, 205);
+    /* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+    margin-top: 10px;
+    padding: 10px 10px 10px 10px;
+    font-weight: 700;
+    font-size: 14px;
+    height: 36px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
     border: none;
-    box-shadow: 3px 2px 3px rgb(0,30,77);
-    border-bottom: 4px solid rgb(1,54,106);
-    border-radius: 5px;
-    text-shadow: 2px 3px rgb(1,54,106);
-    cursor: pointer;
+    -o-transition: all 0.218s;
+    -moz-transition: all 0.218s;
+    -webkit-transition: all 0.218s;
+    transition: all 0.218s;
 }
 
-.tags{
-    font-size: 22px;
-    text-align: left;
-    margin-left: 55px;
-    font-weight: bold;
-
-    font-family: "Century Gothic", serif;
-    color: rgb(135,201,251);
+.btn.btn-signin:hover,
+.btn.btn-signin:active,
+.btn.btn-signin:focus {
+    background-color: rgb(66, 54, 136);
 }
 
-.enter:hover {
-    transition: all 0.2s;
-    background: rgba(15,3,74,0.9);
-    text-shadow: 2px 3px blue;
-    color: #ffffff;
-    border-bottom-color: blue;
+.register{
+    text-align: center;
+    color: rgb(104, 145, 162);
+}
+
+.register:hover,
+.register:active,
+.register:focus{
+    color: rgb(12, 97, 33);
 }

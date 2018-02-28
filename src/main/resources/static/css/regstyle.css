@@ -1,0 +1,69 @@
+body, html{
+    height: 100%;
+    background-size: 100%;
+    background: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg') no-repeat  ;
+    -webkit-background-size: 100%;
+    font-family: 'Oxygen', sans-serif;
+}
+
+.main{
+    margin-top: 60px;
+}
+
+h1.title {
+    font-size: 50px;
+    font-family: 'Passion One', cursive;
+    font-weight: 400;
+}
+
+hr{
+    width: 20%;
+    color: #fff;
+}
+
+.form-group{
+    margin-bottom: 10px;
+
+}
+
+label{
+    margin-bottom: 15px;
+}
+
+.input-group{
+    height: 30px;
+}
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 16px;
+    padding-top: 3px;
+}
+
+.main-login{
+    background-color: #fff;
+    /* shadows and rounded borders */
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+
+}
+
+.main-center{
+    margin: 0 auto;
+    max-width: 450px;
+    padding: 40px 40px;
+
+}
+
+.login-button{
+    margin-top: 5px;
+}
+
+.login-register{
+    font-size: 13px;
+    text-align: center;
+}
