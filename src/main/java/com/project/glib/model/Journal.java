@@ -54,7 +54,7 @@ public class Journal extends Document {
                 '}';
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

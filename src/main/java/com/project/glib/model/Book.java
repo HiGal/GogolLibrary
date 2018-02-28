@@ -9,7 +9,7 @@ public class Book extends Document {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String bookName;
@@ -32,7 +32,7 @@ public class Book extends Document {
     @Column(name = "isBestSeller")
     private boolean isBestSeller;
 
-    protected Book() {
+    public Book() {
     }
 
     public Book(String bookName, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller) {
@@ -59,11 +59,11 @@ public class Book extends Document {
                 '}';
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
