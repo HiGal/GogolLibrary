@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@RepositoryRestResource(path="test")
+@RepositoryRestResource()
 public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> getBooksByBookAuthor(String author);
+//    List<Book> getBooksByBookAuthor(String author);
 }
