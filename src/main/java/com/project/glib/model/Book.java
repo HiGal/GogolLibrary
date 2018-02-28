@@ -3,49 +3,76 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "BOOKS")
-public class Book {
+//@Table(name = "BOOKS")
+public class Book extends Document {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column(name = "BOOKS_TITLE")
-    private String bookTitle;
+    @Column(name = "name")
+    private String bookName;
 
-    @Column(name = "BOOKS_AUTHOR")
+    @Column(name = "author")
     private String bookAuthor;
 
-    @Column(name = "BOOKS_EDITION")
-    private String bookEdition;
+    @Column(name = "publisher")
+    private String publisher;
 
-    @Column(name = "BOOKS_YEAR")
+    @Column(name = "edition")
+    private String edition;
+
+    @Column(name = "edition_year")
     private int year;
 
-    @Column(name = "BOOKS_PRICE")
+    @Column(name = "price")
     private int price;
 
-    @Column(name = "BOOKS_IS_REFERENCE")
-    private boolean isReference;
+    @Column(name = "isBestSeller")
+    private boolean isBestSeller;
 
-    @Column(name = "BOOKS_COUNT")
-    private int bookCount;
+    public Book() {
+    }
 
-    public int getId() {
+    public Book(String bookName, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller) {
+        this.bookName = bookName;
+        this.bookAuthor = bookAuthor;
+        this.publisher = publisher;
+        this.edition = edition;
+        this.year = year;
+        this.price = price;
+        this.isBestSeller = isBestSeller;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", bookName='" + bookName + '\'' +
+                ", bookAuthor='" + bookAuthor + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", edition='" + edition + '\'' +
+                ", year=" + year +
+                ", price=" + price +
+                ", isBestSeller=" + isBestSeller +
+                '}';
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getBookTitle() {
-        return bookTitle;
+    public String getBookName() {
+        return bookName;
     }
 
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 
     public String getBookAuthor() {
@@ -56,12 +83,20 @@ public class Book {
         this.bookAuthor = bookAuthor;
     }
 
-    public String getBookEdition() {
-        return bookEdition;
+    public String getPublisher() {
+        return publisher;
     }
 
-    public void setBookEdition(String bookEdition) {
-        this.bookEdition = bookEdition;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getEdition() {
+        return edition;
+    }
+
+    public void setEdition(String edition) {
+        this.edition = edition;
     }
 
     public int getYear() {
@@ -80,33 +115,11 @@ public class Book {
         this.price = price;
     }
 
-    public boolean isReference() {
-        return isReference;
+    public boolean isBestSeller() {
+        return isBestSeller;
     }
 
-    public void setReference(boolean reference) {
-        isReference = reference;
-    }
-
-    public int getBookCount() {
-        return bookCount;
-    }
-
-    public void setBookCount(int bookCount) {
-        this.bookCount = bookCount;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", bookTitle='" + bookTitle + '\'' +
-                ", bookAuthor='" + bookAuthor + '\'' +
-                ", bookEdition='" + bookEdition + '\'' +
-                ", year=" + year +
-                ", price=" + price +
-                ", isReference=" + isReference +
-                ", bookCount=" + bookCount +
-                '}';
+    public void setBestSeller(boolean bestSeller) {
+        isBestSeller = bestSeller;
     }
 }

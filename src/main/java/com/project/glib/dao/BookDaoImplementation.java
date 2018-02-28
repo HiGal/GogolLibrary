@@ -1,69 +1,69 @@
 package com.project.glib.dao;
 
+import com.project.glib.dao.BookDao;
+import com.project.glib.dao.BookRepository;
 import com.project.glib.model.Book;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookDaoImplementation implements BookDao {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
+    private final BookRepository bookRepository;
 
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    @Autowired
+    public BookDaoImplementation(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     @Override
     public void addBook(Book book) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.persist(book);
+        bookRepository.save(book);
         logger.info("Book successfully saved. Book details : " + book);
     }
 
     @Override
     public void updateBook(Book book) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.update(book);
+        bookRepository.save(book);
         logger.info("Book successfully update. Book details : " + book);
     }
 
     @Override
-    public void removeBook(int bookId) {
-        Session session = this.sessionFactory.getCurrentSession();
-        Book book = (Book) session.load(Book.class, bookId);
-
-        if (book != null){
-            session.delete(book);
-            logger.info("Book successfully removed. Book details : " + book);
-        } else {
-            logger.info("Try to remove not-existed book");
-        }
+    public void removeBook(long bookId) {
+        bookRepository.delete(bookId);
     }
 
     @Override
-    public Book getBookById(int bookId) {
-        Session session = this.sessionFactory.getCurrentSession();
-        Book book = (Book) session.load(Book.class, bookId);
-        logger.info("Book successfully loaded. Book details : " + book);
-        return book;
+    public Book getBookById(long bookId) {
+      return bookRepository.findOne(bookId);
     }
+
+    /*
+    public List<Book> getBooksByAuthor(String author){
+        return bookRepository.findAll().stream()
+                .filter(book->book.getBookAuthor().equals(author))
+                .collect(Collectors.toCollection(HashSet::new));
+        return bookRepository.findAll().stream()
+                .filter(book->book.getBookAuthor().equals("Kiplings"))
+                .anyMatch(book->book.isBestSeller());
+    }
+               */
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Book> listBooks() {
-        Session session = sessionFactory.getCurrentSession();
-        List<Book> bookList = session.createQuery("from Book").list();
+        List<Book> books = bookRepository.findAll();
 
-        for (Book book : bookList){
+        for (Book book : books){
             logger.info("Book list : " + book);
         }
 
-        return bookList;
+        return books;
     }
 }
