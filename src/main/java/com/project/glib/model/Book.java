@@ -3,7 +3,6 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
-//@Table(name = "BOOKS")
 public class Book extends Document {
 
     @Id
@@ -11,8 +10,8 @@ public class Book extends Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
-    private String bookName;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "author")
     private String bookAuthor;
@@ -23,20 +22,21 @@ public class Book extends Document {
     @Column(name = "edition")
     private String edition;
 
-    @Column(name = "edition_year")
+    @Column(name = "year")
     private int year;
+
+    @Column(name = "is_bestseller")
+    private boolean isBestSeller;
 
     @Column(name = "price")
     private int price;
 
-    @Column(name = "isBestSeller")
-    private boolean isBestSeller;
 
     public Book() {
     }
 
-    public Book(String bookName, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller) {
-        this.bookName = bookName;
+    public Book(String title, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller) {
+        this.title = title;
         this.bookAuthor = bookAuthor;
         this.publisher = publisher;
         this.edition = edition;
@@ -49,7 +49,7 @@ public class Book extends Document {
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", bookName='" + bookName + '\'' +
+                ", bookName='" + title + '\'' +
                 ", bookAuthor='" + bookAuthor + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", edition='" + edition + '\'' +
@@ -68,11 +68,11 @@ public class Book extends Document {
     }
 
     public String getBookName() {
-        return bookName;
+        return title;
     }
 
     public void setBookName(String bookName) {
-        this.bookName = bookName;
+        this.title = bookName;
     }
 
     public String getBookAuthor() {

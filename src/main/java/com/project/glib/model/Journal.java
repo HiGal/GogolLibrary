@@ -11,13 +11,13 @@ public class Journal extends Document {
     private int id;
 
     @Column(name = "title")
-    private String journalTitle;
+    private String title;
 
     @Column(name = "author")
-    private String journalAuthor;
+    private String author;
 
     @Column(name = "journal_name")
-    private String journalName;
+    private String name;
 
     @Column(name = "issue")
     private int issue;
@@ -32,10 +32,10 @@ public class Journal extends Document {
     protected Journal() {
     }
 
-    public Journal(String journalTitle, String journalAuthor, String journalName, int issue, String editor, int price) {
-        this.journalTitle = journalTitle;
-        this.journalAuthor = journalAuthor;
-        this.journalName = journalName;
+    public Journal(String title, String author, String name, int issue, String editor, int price) {
+        this.title = title;
+        this.author = author;
+        this.name = name;
         this.issue = issue;
         this.editor = editor;
         this.price = price;
@@ -43,11 +43,11 @@ public class Journal extends Document {
 
     @Override
     public String toString() {
-        return "Journals{" +
+        return "Journal{" +
                 "id=" + id +
-                ", journalTitle='" + journalTitle + '\'' +
-                ", journalAuthor='" + journalAuthor + '\'' +
-                ", journalName='" + journalName + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", name='" + name + '\'' +
                 ", issue=" + issue +
                 ", editor='" + editor + '\'' +
                 ", price=" + price +
@@ -62,28 +62,28 @@ public class Journal extends Document {
         this.id = id;
     }
 
-    public String getJournalTitle() {
-        return journalTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setJournalTitle(String journalTitle) {
-        this.journalTitle = journalTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getJournalAuthor() {
-        return journalAuthor;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setJournalAuthor(String journalAuthor) {
-        this.journalAuthor = journalAuthor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public String getJournalName() {
-        return journalName;
+    public String getName() {
+        return name;
     }
 
-    public void setJournalName(String journalName) {
-        this.journalName = journalName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getIssue() {

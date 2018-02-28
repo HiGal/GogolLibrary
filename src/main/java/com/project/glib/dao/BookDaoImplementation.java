@@ -1,19 +1,14 @@
 package com.project.glib.dao;
 
-import com.project.glib.dao.BookDao;
-import com.project.glib.dao.BookRepository;
 import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
-public class BookDaoImplementation implements BookDao {
+public class BookDaoImplementation implements DocumentDaoInterface<Book> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final BookRepository bookRepository;
 
@@ -23,24 +18,24 @@ public class BookDaoImplementation implements BookDao {
     }
 
     @Override
-    public void addBook(Book book) {
+    public void add(Book book) {
         bookRepository.save(book);
         logger.info("Book successfully saved. Book details : " + book);
     }
 
     @Override
-    public void updateBook(Book book) {
+    public void update(Book book) {
         bookRepository.save(book);
         logger.info("Book successfully update. Book details : " + book);
     }
 
     @Override
-    public void removeBook(long bookId) {
+    public void remove(long bookId) {
         bookRepository.delete(bookId);
     }
 
     @Override
-    public Book getBookById(long bookId) {
+    public Book getById(long bookId) {
       return bookRepository.findOne(bookId);
     }
 
@@ -53,11 +48,11 @@ public class BookDaoImplementation implements BookDao {
                 .filter(book->book.getBookAuthor().equals("Kiplings"))
                 .anyMatch(book->book.isBestSeller());
     }
-               */
+    */
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Book> listBooks() {
+    public List<Book> getList() {
         List<Book> books = bookRepository.findAll();
 
         for (Book book : books){
