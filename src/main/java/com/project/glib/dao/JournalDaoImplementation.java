@@ -44,7 +44,7 @@ public class JournalDaoImplementation implements DocumentDaoInterface<Journal> {
     public List<Journal> getList() {
         List<Journal> journals = journalRepository.findAll();
 
-        for (Journal journal : journals){
+        for (Journal journal : journals) {
             logger.info("Journal list : " + journal);
         }
 

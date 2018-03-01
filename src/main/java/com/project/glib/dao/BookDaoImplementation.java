@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
@@ -36,7 +37,7 @@ public class BookDaoImplementation implements DocumentDaoInterface<Book> {
 
     @Override
     public Book getById(long bookId) {
-      return bookRepository.findOne(bookId);
+        return bookRepository.findOne(bookId);
     }
 
     /*
@@ -55,7 +56,7 @@ public class BookDaoImplementation implements DocumentDaoInterface<Book> {
     public List<Book> getList() {
         List<Book> books = bookRepository.findAll();
 
-        for (Book book : books){
+        for (Book book : books) {
             logger.info("Book list : " + book);
         }
 

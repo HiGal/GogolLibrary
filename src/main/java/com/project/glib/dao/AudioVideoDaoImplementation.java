@@ -1,7 +1,6 @@
 package com.project.glib.dao;
 
 import com.project.glib.model.AudioVideo;
-import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class AudioVideoDaoImplementation implements DocumentDaoInterface<AudioVideo>{
+public class AudioVideoDaoImplementation implements DocumentDaoInterface<AudioVideo> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final AudioVideoRepository audioVideoRepository;
 
@@ -46,7 +45,7 @@ public class AudioVideoDaoImplementation implements DocumentDaoInterface<AudioVi
     public List<AudioVideo> getList() {
         List<AudioVideo> audioVideos = audioVideoRepository.findAll();
 
-        for (AudioVideo audioVideo : audioVideos){
+        for (AudioVideo audioVideo : audioVideos) {
             logger.info("AudioVideo list : " + audioVideo);
         }
 

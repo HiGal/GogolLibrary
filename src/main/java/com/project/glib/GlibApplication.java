@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class GlibApplication {
 
-	public static void main(String[] args) {
-		 SpringApplication.run(GlibApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GlibApplication.class, args);
+    }
 }
