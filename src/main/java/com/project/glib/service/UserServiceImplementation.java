@@ -1,7 +1,7 @@
 package com.project.glib.service;
 
-import com.project.glib.dao.RoleRepository;
-import com.project.glib.dao.UserRepository;
+import com.project.glib.dao.interfaces.RoleRepository;
+import com.project.glib.dao.interfaces.UserRepository;
 import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +27,6 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByLogin(username);
     }
 }

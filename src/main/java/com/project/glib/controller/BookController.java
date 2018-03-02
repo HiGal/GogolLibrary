@@ -1,6 +1,6 @@
 package com.project.glib.controller;
 
-import com.project.glib.dao.BookRepository;
+import com.project.glib.dao.interfaces.BookRepository;
 import com.project.glib.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.project.glib.dao;
+package com.project.glib.dao.interfaces;
 
 import com.project.glib.model.AudioVideo;
 import org.springframework.data.jpa.repository.JpaRepository;

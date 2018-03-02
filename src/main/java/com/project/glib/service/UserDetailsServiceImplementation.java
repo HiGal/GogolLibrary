@@ -1,6 +1,6 @@
 package com.project.glib.service;
 
-import com.project.glib.dao.UserRepository;
+import com.project.glib.dao.interfaces.UserRepository;
 import com.project.glib.model.Role;
 import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByLogin(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : user.getRoles()) {

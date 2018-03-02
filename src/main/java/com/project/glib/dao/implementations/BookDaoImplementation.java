@@ -1,5 +1,7 @@
-package com.project.glib.dao;
+package com.project.glib.dao.implementations;
 
+import com.project.glib.dao.interfaces.BookRepository;
+import com.project.glib.dao.interfaces.DocumentDaoInterface;
 import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

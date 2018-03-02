@@ -25,9 +25,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         String[] resources = new String[]{
-                "/", "/home","/include/**",
-                "/css/**","/icons/**","/images/**","/js/**","/layer/**",
-                "/resources/**", "/registration"
+                "/login", "/registration", "/css/**"
         };
 
         http
@@ -43,8 +41,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+//    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth
+                .inMemoryAuthentication()
+                .withUser("user").password("password").roles("USER");
     }
 }

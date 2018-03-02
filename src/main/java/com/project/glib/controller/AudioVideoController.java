@@ -1,6 +1,6 @@
 package com.project.glib.controller;
 
-import com.project.glib.dao.AudioVideoRepository;
+import com.project.glib.dao.interfaces.AudioVideoRepository;
 import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;

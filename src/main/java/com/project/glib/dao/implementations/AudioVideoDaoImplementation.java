@@ -1,5 +1,7 @@
-package com.project.glib.dao;
+package com.project.glib.dao.implementations;
 
+import com.project.glib.dao.interfaces.AudioVideoRepository;
+import com.project.glib.dao.interfaces.DocumentDaoInterface;
 import com.project.glib.model.AudioVideo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +12,7 @@ import java.util.List;
 
 @Repository
 public class AudioVideoDaoImplementation implements DocumentDaoInterface<AudioVideo> {
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(AudioVideoDaoImplementation.class);
     private final AudioVideoRepository audioVideoRepository;
 
     @Autowired

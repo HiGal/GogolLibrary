@@ -1,6 +1,6 @@
 package com.project.glib.controller;
 
-import com.project.glib.dao.JournalRepository;
+import com.project.glib.dao.interfaces.JournalRepository;
 import com.project.glib.model.Book;
 import com.project.glib.model.Journal;
 import org.springframework.beans.factory.annotation.Autowired;

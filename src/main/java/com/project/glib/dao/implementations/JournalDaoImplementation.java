@@ -1,5 +1,7 @@
-package com.project.glib.dao;
+package com.project.glib.dao.implementations;
 
+import com.project.glib.dao.interfaces.DocumentDaoInterface;
+import com.project.glib.dao.interfaces.JournalRepository;
 import com.project.glib.model.Journal;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
