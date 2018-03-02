@@ -3,6 +3,7 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "book")
 public class Book extends Document {
 
     @Id
@@ -31,11 +32,14 @@ public class Book extends Document {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "count")
+    private int count;
+
 
     public Book() {
     }
 
-    public Book(String title, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller) {
+    public Book(String title, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller, int count) {
         this.title = title;
         this.bookAuthor = bookAuthor;
         this.publisher = publisher;
@@ -43,19 +47,21 @@ public class Book extends Document {
         this.year = year;
         this.price = price;
         this.isBestSeller = isBestSeller;
+        this.count = count;
     }
 
     @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", bookName='" + title + '\'' +
+                ", title='" + title + '\'' +
                 ", bookAuthor='" + bookAuthor + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", edition='" + edition + '\'' +
                 ", year=" + year +
-                ", price=" + price +
                 ", isBestSeller=" + isBestSeller +
+                ", price=" + price +
+                ", count=" + count +
                 '}';
     }
 
@@ -121,5 +127,21 @@ public class Book extends Document {
 
     public void setBestSeller(boolean bestSeller) {
         isBestSeller = bestSeller;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

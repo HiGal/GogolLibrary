@@ -25,20 +25,23 @@ public class Journal extends Document {
     @Column(name = "editor")
     private String editor;
 
-
     @Column(name = "price")
     private int price;
+
+    @Column(name = "count")
+    private int count;
 
     protected Journal() {
     }
 
-    public Journal(String title, String author, String name, int issue, String editor, int price) {
+    public Journal(String title, String author, String name, int issue, String editor, int price, int count) {
         this.title = title;
         this.author = author;
         this.name = name;
         this.issue = issue;
         this.editor = editor;
         this.price = price;
+        this.count = count;
     }
 
     @Override
@@ -51,6 +54,7 @@ public class Journal extends Document {
                 ", issue=" + issue +
                 ", editor='" + editor + '\'' +
                 ", price=" + price +
+                ", count=" + count +
                 '}';
     }
 
@@ -108,5 +112,13 @@ public class Journal extends Document {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

@@ -3,6 +3,7 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "audio_video")
 public class AudioVideo extends Document {
     @Id
     @Column(name = "id")
@@ -10,30 +11,35 @@ public class AudioVideo extends Document {
     private long id;
 
     @Column(name = "title")
-    private String avTitle;
+    private String title;
 
     @Column(name = "author")
-    private String avAuthor;
+    private String author;
 
     @Column(name = "price")
     private int price;
 
+    @Column(name = "count")
+    private int count;
+
     protected AudioVideo() {
     }
 
-    public AudioVideo(String avTitle, String avAuthor, int price) {
-        this.avTitle = avTitle;
-        this.avAuthor = avAuthor;
+    public AudioVideo(String title, String author, int price, int count) {
+        this.title = title;
+        this.author = author;
         this.price = price;
+        this.count = count;
     }
 
     @Override
     public String toString() {
         return "AudioVideo{" +
                 "id=" + id +
-                ", avTitle='" + avTitle + '\'' +
-                ", avAuthor='" + avAuthor + '\'' +
-                ", price=" + price +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price + '\'' +
+                ", count=" + count +
                 '}';
     }
 
@@ -45,20 +51,20 @@ public class AudioVideo extends Document {
         this.id = id;
     }
 
-    public String getAvTitle() {
-        return avTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setAvTitle(String avTitle) {
-        this.avTitle = avTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getAvAuthor() {
-        return avAuthor;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAvAuthor(String avAuthor) {
-        this.avAuthor = avAuthor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public int getPrice() {
@@ -67,5 +73,13 @@ public class AudioVideo extends Document {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }
