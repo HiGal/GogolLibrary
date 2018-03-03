@@ -3,7 +3,7 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "book")
+@Table(name = "booking")
 public class Booking {
 
     @Id
