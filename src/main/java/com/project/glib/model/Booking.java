@@ -20,26 +20,32 @@ public class Booking {
     @Column(name = "doc_type")
     private String doc_type;
 
+    @Column(name = "shelf")
+    private String shelf;
+
     @Column(name = "booking_date")
     private long booking_date;
 
     public Booking() {
     }
 
-    public Booking(long id_user, long id_doc, String doc_type, long booking_date) {
+    public Booking(long id_user, long id_doc, String doc_type, String shelf, long booking_date) {
         this.id_user = id_user;
         this.id_doc = id_doc;
         this.doc_type = doc_type;
+        this.shelf = shelf;
         this.booking_date = booking_date;
     }
 
+    @Override
     public String toString() {
-        return "Book{" +
+        return "Booking{" +
                 "id=" + id +
-                ", id_user ='" + id_user + '\'' +
-                ", id_doc ='" + id_doc + '\'' +
-                ", doc_type ='" + doc_type + '\'' +
-                ", booking_date ='" + booking_date + '\'' +
+                ", id_user=" + id_user +
+                ", id_doc=" + id_doc +
+                ", doc_type='" + doc_type + '\'' +
+                ", shelf='" + shelf + '\'' +
+                ", booking_date=" + booking_date +
                 '}';
     }
 
@@ -73,6 +79,14 @@ public class Booking {
 
     public void setDoc_type(String doc_type) {
         this.doc_type = doc_type;
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
     }
 
     public long getBooking_date() {
