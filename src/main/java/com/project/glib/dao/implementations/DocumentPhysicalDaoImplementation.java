@@ -62,4 +62,11 @@ public class DocumentPhysicalDaoImplementation {
     public String getShelfById(long documentPhysicalId) {
         return documentPhysicalRepository.findOne(documentPhysicalId).getShelf();
     }
+
+    public long getIdByDocument(long documentId, String documentType) {
+        return documentPhysicalRepository.findAll().stream()
+                .filter(doc -> doc.getDocType().equals(documentType))
+                .filter(doc -> doc.getId() == documentId)
+                .findFirst().get().getIdDoc();
+    }
 }

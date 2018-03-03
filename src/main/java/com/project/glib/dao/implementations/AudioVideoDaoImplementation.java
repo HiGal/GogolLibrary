@@ -53,6 +53,11 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     @Override
+    public int getPriceById(long avId) {
+        return audioVideoRepository.findOne(avId).getPrice();
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<AudioVideo> getList() {
         List<AudioVideo> audioVideos = audioVideoRepository.findAll();

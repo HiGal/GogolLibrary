@@ -52,6 +52,11 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         bookRepository.findOne(bookId).setCount(bookRepository.findOne(bookId).getCount() - 1);
     }
 
+    @Override
+    public int getPriceById(long bookId) {
+        return bookRepository.findOne(bookId).getPrice();
+    }
+
     public boolean getIsBestseller(long bookId) {
         return bookRepository.findOne(bookId).isBestSeller();
     }
