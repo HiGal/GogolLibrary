@@ -4,7 +4,7 @@ import com.project.glib.model.Document;
 
 import java.util.List;
 
-public interface DocumentDaoInterface<T extends Document> {
+public interface DocumentDao<T extends Document> {
     void add(T document);
 
     void update(T document);
@@ -12,6 +12,10 @@ public interface DocumentDaoInterface<T extends Document> {
     void remove(long documentId);
 
     T getById(long documentId);
+
+    int getCountById(long documentId);
+
+    void decrementCountById(long documentId);
 
     List<T> getList();
 }

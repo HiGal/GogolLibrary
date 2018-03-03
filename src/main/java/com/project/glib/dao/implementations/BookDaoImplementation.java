@@ -1,7 +1,7 @@
 package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.BookRepository;
-import com.project.glib.dao.interfaces.DocumentDaoInterface;
+import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class BookDaoImplementation implements DocumentDaoInterface<Book> {
+public class BookDaoImplementation implements DocumentDao<Book> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final BookRepository bookRepository;
 
@@ -40,6 +40,20 @@ public class BookDaoImplementation implements DocumentDaoInterface<Book> {
     @Override
     public Book getById(long bookId) {
         return bookRepository.findOne(bookId);
+    }
+
+    @Override
+    public int getCountById(long bookId) {
+        return bookRepository.findOne(bookId).getCount();
+    }
+
+    @Override
+    public void decrementCountById(long bookId) {
+        bookRepository.findOne(bookId).setCount(bookRepository.findOne(bookId).getCount() - 1);
+    }
+
+    public boolean getIsBestseller(long bookId) {
+        return bookRepository.findOne(bookId).isBestSeller();
     }
 
     /*

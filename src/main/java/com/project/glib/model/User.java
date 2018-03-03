@@ -33,10 +33,41 @@ public class User {
     @Column(name = "phone")
     private int phone;
 
-    @Column(name = "is_auth")
-    private boolean is_auth;
+    @Column(name = "isAuth")
+    private boolean isAuth;
 
     private Set<Role> roles;
+
+    public User() {
+    }
+
+    public User(String login, String password, String passwordConfirm, String name, int surname, String address, int phone, boolean isAuth, Set<Role> roles) {
+        this.login = login;
+        this.password = password;
+        this.passwordConfirm = passwordConfirm;
+        this.name = name;
+        this.surname = surname;
+        this.address = address;
+        this.phone = phone;
+        this.isAuth = isAuth;
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", passwordConfirm='" + passwordConfirm + '\'' +
+                ", name='" + name + '\'' +
+                ", surname=" + surname +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                ", isAuth=" + isAuth +
+                ", roles=" + roles +
+                '}';
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -103,6 +134,14 @@ public class User {
 
     public void setPhone(int phone) {
         this.phone = phone;
+    }
+
+    public boolean getAuth() {
+        return isAuth;
+    }
+
+    public void setAuth(boolean auth) {
+        this.isAuth = auth;
     }
 
     @ManyToMany

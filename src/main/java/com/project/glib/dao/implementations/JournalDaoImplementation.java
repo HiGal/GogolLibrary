@@ -1,6 +1,6 @@
 package com.project.glib.dao.implementations;
 
-import com.project.glib.dao.interfaces.DocumentDaoInterface;
+import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.dao.interfaces.JournalRepository;
 import com.project.glib.model.Journal;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class JournalDaoImplementation implements DocumentDaoInterface<Journal> {
+public class JournalDaoImplementation implements DocumentDao<Journal> {
     private static final org.slf4j.Logger logger = (org.slf4j.Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final JournalRepository journalRepository;
 
@@ -39,6 +39,16 @@ public class JournalDaoImplementation implements DocumentDaoInterface<Journal> {
     @Override
     public Journal getById(long journalId) {
         return journalRepository.findOne(journalId);
+    }
+
+    @Override
+    public int getCountById(long journalId) {
+        return journalRepository.findOne(journalId).getCount();
+    }
+
+    @Override
+    public void decrementCountById(long journalId) {
+        journalRepository.findOne(journalId).setCount(journalRepository.findOne(journalId).getCount() - 1);
     }
 
     @Override
