@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class UserController {
     @Autowired
     private UserService userService;
@@ -31,7 +31,7 @@ public class UserController {
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
-        return "registration";
+        return "register";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -39,7 +39,7 @@ public class UserController {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "register";
         }
 
         userService.save(userForm);
