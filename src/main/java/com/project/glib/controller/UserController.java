@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import java.util.List;
 
@@ -49,14 +47,20 @@ public class UserController {
 
         return "redirect:/login";
     }
-
+    @ResponseBody
     @RequestMapping(value = "/users")
-    public ModelAndView users(){
+    public List<User> users(){
+        return userService.getAllUsers();
+    }
+
+    @RequestMapping(value = "/users/view")
+    public ModelAndView show(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers",userService.getAllUsers());
         modelAndView.setViewName("Patrons");
         return modelAndView;
     }
+
+
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
