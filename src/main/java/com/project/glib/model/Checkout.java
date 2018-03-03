@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "checkout")
-public class CheckOut {
+public class Checkout {
 
     @Id
     @Column(name = "id")
@@ -29,10 +29,10 @@ public class CheckOut {
     @Column(name = "is_renewed")
     private boolean is_renewed;
 
-    public CheckOut() {
+    public Checkout() {
     }
 
-    public CheckOut(long id_user, long id_doc, String doc_type, long checkout_time, long return_time, boolean is_renewed) {
+    public Checkout(long id_user, long id_doc, String doc_type, long checkout_time, long return_time, boolean is_renewed) {
 
         this.id_user = id_user;
         this.id_doc = id_doc;
