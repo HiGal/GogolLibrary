@@ -3,6 +3,7 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
+@Table (name = "journal")
 public class Journal extends Document {
 
     @Id

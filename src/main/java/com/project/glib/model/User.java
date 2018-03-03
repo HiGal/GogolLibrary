@@ -33,6 +33,8 @@ public class User {
     @Column(name = "phone")
     private int phone;
 
+    @Column(name = "is_auth")
+    private boolean is_auth;
 
     private Set<Role> roles;
 

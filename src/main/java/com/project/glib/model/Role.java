@@ -15,7 +15,6 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "users")
     private Set<User> users;
 
     @Id
