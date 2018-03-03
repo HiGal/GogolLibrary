@@ -3,8 +3,8 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "books_physical")
-public class Book_physical {
+@Table (name = "journals_physical")
+public class JournalPhysical {
 
     @Id
     @Column(name = "id")
@@ -20,18 +20,18 @@ public class Book_physical {
     @Column(name = "is_reference")
     private boolean is_reference;
 
-    @Column(name = "id_book")
-    private long id_book;
+    @Column(name = "id_journal")
+    private long id_journal;
 
-    public Book_physical() {
+    public JournalPhysical() {
     }
 
-    public Book_physical(String shelf, boolean can_booked, boolean is_reference, long id_book) {
+    public JournalPhysical(String shelf, boolean can_booked, boolean is_reference, long id_journal) {
 
         this.shelf = shelf;
         this.can_booked = can_booked;
         this.is_reference = is_reference;
-        this.id_book = id_book;
+        this.id_journal = id_journal;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Book_physical {
                 ", shelf ='" + shelf + '\'' +
                 ", can_booked ='" + can_booked + '\'' +
                 ", is_reference ='" + is_reference + '\'' +
-                ", id_book ='" + id_book + '\'' +
+                ", id_book ='" + id_journal + '\'' +
                 '}';
     }
 
@@ -77,11 +77,11 @@ public class Book_physical {
         this.is_reference = is_reference;
     }
 
-    public long getId_book() {
-        return id_book;
+    public long getId_journal() {
+        return id_journal;
     }
 
-    public void setId_book(long id_book) {
-        this.id_book = id_book;
+    public void setId_journal(long id_journal) {
+        this.id_journal = id_journal;
     }
 }

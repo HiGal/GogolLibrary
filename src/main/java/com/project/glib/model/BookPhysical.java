@@ -3,8 +3,8 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "av_physical")
-public class AV_physical {
+@Table(name = "books_physical")
+public class BookPhysical {
 
     @Id
     @Column(name = "id")
@@ -20,18 +20,18 @@ public class AV_physical {
     @Column(name = "is_reference")
     private boolean is_reference;
 
-    @Column(name = "id_av")
-    private long id_av;
+    @Column(name = "id_book")
+    private long id_book;
 
-    public AV_physical() {
+    public BookPhysical() {
     }
 
-    public AV_physical(String shelf, boolean can_booked, boolean is_reference, long id_av) {
+    public BookPhysical(String shelf, boolean can_booked, boolean is_reference, long id_book) {
 
         this.shelf = shelf;
         this.can_booked = can_booked;
         this.is_reference = is_reference;
-        this.id_av = id_av;
+        this.id_book = id_book;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class AV_physical {
                 ", shelf ='" + shelf + '\'' +
                 ", can_booked ='" + can_booked + '\'' +
                 ", is_reference ='" + is_reference + '\'' +
-                ", id_book ='" + id_av + '\'' +
+                ", id_book ='" + id_book + '\'' +
                 '}';
     }
 
@@ -77,11 +77,11 @@ public class AV_physical {
         this.is_reference = is_reference;
     }
 
-    public long getId_av() {
-        return id_av;
+    public long getId_book() {
+        return id_book;
     }
 
-    public void setId_av(long id_av) {
-        this.id_av = id_av;
+    public void setId_book(long id_book) {
+        this.id_book = id_book;
     }
 }
