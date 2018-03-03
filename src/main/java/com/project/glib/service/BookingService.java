@@ -26,7 +26,7 @@ public class BookingService {
     public boolean toBookDocument(long docId, String type, long userId) {
         boolean ans = false;
         if (type.equals(BOOK)) {
-            bookDaoImplementation.
+
         } else if (type.equals(JOURNAL)) {
 
         } else if (type.equals(AV)) {
