@@ -22,7 +22,7 @@ public class JournalController {
     }
 
     @RequestMapping(value = "journals", method = RequestMethod.GET)
-    public String listBooks(Model model) {
+    public String listJournals(Model model) {
         model.addAttribute("journal", new Book());
         model.addAttribute("listJournals", this.journalRepository.findAll());
 
@@ -30,7 +30,7 @@ public class JournalController {
     }
 
     @RequestMapping(value = "/journals/add", method = RequestMethod.POST)
-    public String addBook(@ModelAttribute("journal") Journal journal) {
+    public String addJournal(@ModelAttribute("journal") Journal journal) {
         if (journal.getId() == 0) {
             this.journalRepository.save(journal);
         } else {
@@ -41,14 +41,14 @@ public class JournalController {
     }
 
     @RequestMapping("journals/remove/{id}")
-    public String removeBook(@PathVariable("id") long id) {
+    public String removeJournal(@PathVariable("id") long id) {
         this.journalRepository.delete(id);
 
         return "redirect:/journals";
     }
 
     @RequestMapping("journals/edit/{id}")
-    public String editBook(@PathVariable("id") long id, Model model) {
+    public String editJournal(@PathVariable("id") long id, Model model) {
         model.addAttribute("journal", this.journalRepository.getOne(id));
         model.addAttribute("listJournals", this.journalRepository.findAll());
 
@@ -56,7 +56,7 @@ public class JournalController {
     }
 
     @RequestMapping("journaldata/{id}")
-    public String bookData(@PathVariable("id") long id, Model model) {
+    public String journalData(@PathVariable("id") long id, Model model) {
         model.addAttribute("journal", this.journalRepository.getOne(id));
 
         return "journaldata";

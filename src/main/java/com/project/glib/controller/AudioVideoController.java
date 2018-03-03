@@ -22,7 +22,7 @@ public class AudioVideoController {
     }
 
     @RequestMapping(value = "audiovideos", method = RequestMethod.GET)
-    public String listBooks(Model model) {
+    public String listAV(Model model) {
         model.addAttribute("audiovideo", new Book());
         model.addAttribute("listAudioVideos", this.audioVideoRepository.findAll());
 
@@ -30,7 +30,7 @@ public class AudioVideoController {
     }
 
     @RequestMapping(value = "/audiovideos/add", method = RequestMethod.POST)
-    public String addBook(@ModelAttribute("audiovideo") AudioVideo audioVideo) {
+    public String addAV(@ModelAttribute("audiovideo") AudioVideo audioVideo) {
         if (audioVideo.getId() == 0) {
             this.audioVideoRepository.save(audioVideo);
         } else {
@@ -41,14 +41,14 @@ public class AudioVideoController {
     }
 
     @RequestMapping("audiovideos/remove/{id}")
-    public String removeBook(@PathVariable("id") long id) {
+    public String removeAV(@PathVariable("id") long id) {
         this.audioVideoRepository.delete(id);
 
         return "redirect:/audiovideos";
     }
 
     @RequestMapping("audiovideos/edit/{id}")
-    public String editBook(@PathVariable("id") long id, Model model) {
+    public String editAV(@PathVariable("id") long id, Model model) {
         model.addAttribute("audiovideo", this.audioVideoRepository.getOne(id));
         model.addAttribute("listAudioVideos", this.audioVideoRepository.findAll());
 
@@ -56,7 +56,7 @@ public class AudioVideoController {
     }
 
     @RequestMapping("audiovideodata/{id}")
-    public String bookData(@PathVariable("id") long id, Model model) {
+    public String avData(@PathVariable("id") long id, Model model) {
         model.addAttribute("audiovideo", this.audioVideoRepository.getOne(id));
 
         return "audiovideodata";
