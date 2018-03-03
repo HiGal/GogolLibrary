@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -21,16 +22,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        String[] resources = new String[]{
-                "/login", "/registration", "/css/**"
-        };
-
-        http
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(resources).permitAll()
+                .antMatchers("/login", "/registration", "/css/**", "/js/**").permitAll()
+                .antMatchers("/librarian/**").hasAnyRole("LIBRARIAN")
+                .antMatchers("/user/**").hasAnyRole("FACULTY", "PATRON")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -48,8 +50,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+
         auth
                 .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+                .withUser("patron").password("iampatron").roles("PATRON")
+                .and()
+                .withUser("faculty").password("iamfaculty").roles("FACULTY")
+                .and()
+                .withUser("librarian").password("iamlibrarian").roles("LIBRARIAN");
     }
 }
