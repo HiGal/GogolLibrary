@@ -11,6 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -27,7 +31,7 @@ public class UserController {
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
-        return "registration";
+        return "register";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -35,14 +39,23 @@ public class UserController {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "register";
         }
 
         userService.save(userForm);
 
+
         securityService.autologin(userForm.getLogin(), userForm.getPasswordConfirm());
 
-        return "redirect:/welcome";
+        return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/users")
+    public ModelAndView users(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allUsers",userService.getAllUsers());
+        modelAndView.setViewName("Patrons");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -56,8 +69,4 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
-    public String welcome(Model model) {
-        return "welcome";
-    }
 }

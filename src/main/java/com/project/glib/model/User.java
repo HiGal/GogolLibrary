@@ -6,6 +6,9 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
+    public static final String FACULTY = "FACULTY";
+    public static final String PATRON = "PATRON";
+    public static final String LIBRARIAN = "LIBRARIAN";
 
     @Id
     @Column(name = "id")
@@ -25,7 +28,7 @@ public class User {
     private String name;
 
     @Column(name = "surname")
-    private int surname;
+    private String surname;
 
     @Column(name = "address")
     private String address;
@@ -41,7 +44,7 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, int surname, String address, int phone, boolean isAuth, Set<Role> roles) {
+    public User(String login, String password, String passwordConfirm, String name, String surname, String address, int phone, boolean isAuth, Set<Role> roles) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -112,11 +115,11 @@ public class User {
         this.name = name;
     }
 
-    public int getSurname() {
+    public String getSurname() {
         return surname;
     }
 
-    public void setSurname(int surname) {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 

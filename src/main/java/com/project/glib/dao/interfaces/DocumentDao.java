@@ -17,5 +17,7 @@ public interface DocumentDao<T extends Document> {
 
     void decrementCountById(long documentId);
 
+    int getPriceById(long documentId);
+
     List<T> getList();
 }

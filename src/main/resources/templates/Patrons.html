@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Patrons</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/patrons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gogol Library</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="#">Patrons</a></li>
+                <li><a href="addUser.html">Add User</a></li>
+                <li><a href="LogIn.html">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<section>
+    <div class="container users">
+        <div class="row centered">
+            <div class="card card-container">
+                <p id="patrons"><a id="linker" href="Librarian.html">Dashboard</a> / <u>Patrons</u></p>
+                <p class="header">Users that are already in the Gogol Library</p>
+                <div class="utable">
+                    <table class="table table-hover table-striped" >
+                        <thead>
+                        <tr>
+                            <td>ID</td>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Address</th>
+                            <th>Phone number</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--Need to be generated as function js-->
+                        <!--/*@thymesVar id="allUsers" type="com.project.glib.controller.UserController"*/-->
+                        <tr th:each="user : ${allUsers}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.surname}"></td>
+                            <td th:text="${user.address}"></td>
+                            <td th:text="${user.phone}"></td>
+                            <td th:text="${user.surname}">Student</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm btn-block submit">
+                                    Edit
+                                </button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm btn-block submit">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
