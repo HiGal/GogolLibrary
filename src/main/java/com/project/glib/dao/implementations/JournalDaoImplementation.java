@@ -52,6 +52,11 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     }
 
     @Override
+    public int getPriceById(long journalId) {
+        return journalRepository.findOne(journalId).getPrice();
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<Journal> getList() {
         List<Journal> journals = journalRepository.findAll();

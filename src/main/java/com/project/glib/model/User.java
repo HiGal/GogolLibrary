@@ -6,6 +6,9 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
+    public static final String FACULTY = "FACULTY";
+    public static final String PATRON = "PATRON";
+    public static final String LIBRARIAN = "LIBRARIAN";
 
     @Id
     @Column(name = "id")

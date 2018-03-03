@@ -29,10 +29,13 @@ public class Checkout {
     @Column(name = "is_renewed")
     private boolean is_renewed;
 
+    @Column(name = "shelf")
+    private String shelf;
+
     public Checkout() {
     }
 
-    public Checkout(long id_user, long id_doc, String doc_type, long checkout_time, long return_time, boolean is_renewed) {
+    public Checkout(long id_user, long id_doc, String doc_type, long checkout_time, long return_time, boolean is_renewed, String shelf) {
 
         this.id_user = id_user;
         this.id_doc = id_doc;
@@ -40,6 +43,21 @@ public class Checkout {
         this.checkout_time = checkout_time;
         this.return_time = return_time;
         this.is_renewed = is_renewed;
+        this.shelf = shelf;
+    }
+
+    @Override
+    public String toString() {
+        return "Checkout{" +
+                "id=" + id +
+                ", id_user=" + id_user +
+                ", id_doc=" + id_doc +
+                ", doc_type='" + doc_type + '\'' +
+                ", checkout_time=" + checkout_time +
+                ", return_time=" + return_time +
+                ", is_renewed=" + is_renewed +
+                ", shelf='" + shelf + '\'' +
+                '}';
     }
 
     public long getId() {
@@ -96,5 +114,13 @@ public class Checkout {
 
     public void setIs_renewed(boolean is_renewed) {
         this.is_renewed = is_renewed;
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
     }
 }
