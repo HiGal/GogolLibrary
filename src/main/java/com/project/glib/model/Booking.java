@@ -14,7 +14,7 @@ public class Booking {
     @Column(name = "id_user")
     private long id_user;
 
-    @Column(name = "id_doc")
+    @Column(name = "id_document")
     private long id_doc;
 
     @Column(name = "doc_type")
