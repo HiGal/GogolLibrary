@@ -1,7 +1,7 @@
 package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.AudioVideoRepository;
-import com.project.glib.dao.interfaces.DocumentDaoInterface;
+import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.model.AudioVideo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class AudioVideoDaoImplementation implements DocumentDaoInterface<AudioVideo> {
+public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(AudioVideoDaoImplementation.class);
     private final AudioVideoRepository audioVideoRepository;
 
@@ -40,6 +40,16 @@ public class AudioVideoDaoImplementation implements DocumentDaoInterface<AudioVi
     @Override
     public AudioVideo getById(long audioVideoId) {
         return audioVideoRepository.findOne(audioVideoId);
+    }
+
+    @Override
+    public int getCountById(long audioVideoId) {
+        return audioVideoRepository.findOne(audioVideoId).getCount();
+    }
+
+    @Override
+    public void decrementCountById(long avId) {
+        audioVideoRepository.findOne(avId).setCount(audioVideoRepository.findOne(avId).getCount() - 1);
     }
 
     @Override
