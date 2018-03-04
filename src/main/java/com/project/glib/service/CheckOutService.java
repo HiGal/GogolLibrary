@@ -12,7 +12,6 @@ public class CheckOutService {
     public final long FOUR_WEEKS = 2419200000000000L;
     public final long THREE_WEEKS = 1814400000000000L;
     public final long TWO_WEEKS = 1209600000000000L;
-    public final int PENNY = 100;
 
     private final BookDaoImplementation bookDao;
     private final JournalDaoImplementation journalDao;
@@ -79,61 +78,6 @@ public class CheckOutService {
     }
 
     /**
-     * renew document by check out
-     * @param checkout current check out
-     * @return update check out if it possible
-     */
-    //TODO check rules to renew document
-    public Checkout toRenewDocument(Checkout checkout) throws Exception {
-        if (checkoutDao.getIsRenewedById(checkout.getId())) {
-            throw new Exception("Sorry, but you try to renew already renewed " +
-                    checkout.getDocType().toLowerCase() + ".");
-        }
-
-        checkout.setRenewed(true);
-        checkout.setReturnTime(2 * checkout.getReturnTime() - checkout.getCheckoutTime());
-        return checkout;
-    }
-
-    public Pair<String, Integer> toReturnDocument(Checkout checkout) {
-        String checkoutInfo = checkout.toString();
-        checkoutDao.remove(checkout.getId());
-        return new Pair<>(checkoutInfo, getOverdue(checkout));
-    }
-
-    /**
-     * get overdue for current check out
-     * @param checkout current check out
-     * @return overdue
-     */
-    private int getOverdue(Checkout checkout) {
-        int overdue = 0;
-        long difference = checkout.getCheckoutTime() - System.nanoTime();
-        if (difference < 0) {
-            int days = convertToDays(difference);
-            int price;
-            switch (checkout.getDocType()) {
-                case Document.BOOK:
-                    long bookId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
-                    price = bookDao.getPriceById(bookId);
-                    break;
-                case Document.JOURNAL:
-                    long journalId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
-                    price = journalDao.getPriceById(journalId);
-                    break;
-                case Document.AV:
-                    long avId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
-                    price = avDao.getPriceById(avId);
-                    break;
-                default:
-                    return overdue;
-            }
-            overdue = Math.min(days * PENNY, price);
-        }
-        return overdue;
-    }
-
-    /**
      * get number of check out documents by current user
      * @param userId id of current user
      * @return number of check out
@@ -143,34 +87,11 @@ public class CheckOutService {
     }
 
     /**
-     * get total overdue by current user
-     * @param userId id of current user
-     * @return total overdue
-     */
-    public int getTotalOverdueByUser(long userId) {
-        int totalOverdue = 0;
-        for (Checkout currentCheckout : checkoutDao.getCheckoutsByUser(userId)) {
-            totalOverdue += getOverdue(currentCheckout);
-        }
-
-        return totalOverdue;
-    }
-
-    /**
      * get all check outs by current user
      * @param userId id of current user
      * @return array of check outs
      */
     public Checkout[] getCheckoutsByUser(long userId) {
         return checkoutDao.getCheckoutsByUser(userId);
-    }
-
-    /**
-     * convert nanoseconds to days in integer value
-     * @param nanoseconds nanoseconds
-     * @return integers days in nanoseconds
-     */
-    private int convertToDays(long nanoseconds) {
-        return (int) nanoseconds / 1000 / 1000 / 1000 / 60 / 60 / 24;
     }
 }
