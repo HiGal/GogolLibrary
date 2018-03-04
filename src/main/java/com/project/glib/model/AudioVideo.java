@@ -22,7 +22,7 @@ public class AudioVideo extends Document {
     @Column(name = "count")
     private int count;
 
-    protected AudioVideo() {
+    public AudioVideo() {
     }
 
     public AudioVideo(String title, String author, int price, int count) {

@@ -32,7 +32,7 @@ public class Journal extends Document {
     @Column(name = "count")
     private int count;
 
-    protected Journal() {
+    public Journal() {
     }
 
     public Journal(String title, String author, String name, int issue, String editor, int price, int count) {
