@@ -5,6 +5,7 @@ import com.project.glib.dao.implementations.UsersDaoImplementation;
 import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
+@Controller
+//@RestController
 public class UserController {
     private final UsersDaoImplementation usersDao;
     private final SecurityDaoImplementation securityDao;
@@ -69,5 +71,17 @@ public class UserController {
 
         return "login";
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(Model model, @RequestParam("login") String login,@RequestParam("password") String password , String logout) {
+       User user = usersDao.findLogin(login);
+       if (user.getPassword().equals(password)){
+           return "redirect:/booking/books";
+       }else{
+           model.addAttribute("error","Invalid Password");
+           return "redirect:/booking/books";
+       }
+    }
+
 
 }
