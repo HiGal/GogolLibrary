@@ -39,7 +39,8 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
 
     public void add(User user) {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRole(roleRepository.findOne(user.getId()));
+      //  userRepository.save(user);
+       //user.setRole(roleRepository.findOne(user.getId()));
         userRepository.save(user);
         logger.info("User successfully saved. Document details : " + user);
     }
@@ -59,8 +60,9 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         return userRepository.findOne(userId);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByLogin(username);
+
+    public User findLogin(String login) {
+        return userRepository.findUserByLogin(login);
     }
 
     @SuppressWarnings("unchecked")
@@ -75,7 +77,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     }
 
     public List<User> authUsers(){
-        return userRepository.findAll().stream().filter(User::getLoggedIn).collect(Collectors.toList());
+        return userRepository.findAll().stream().filter(User::getAuth).collect(Collectors.toList());
     }
 
 }

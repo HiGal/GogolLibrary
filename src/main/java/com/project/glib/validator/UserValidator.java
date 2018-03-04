@@ -22,17 +22,20 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         User user = (User) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "NotEmpty");
+
         if (user.getLogin().length() < 6 || user.getLogin().length() > 32) {
             errors.rejectValue("login", "Size.userForm.login");
         }
-        if (usersDao.findByUsername(user.getLogin()) != null) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+
+        if (usersDao.findLogin(user.getLogin()) != null) {
+            errors.rejectValue("login", "Duplicate.userForm.login");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
         }
+
     }
 }

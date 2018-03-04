@@ -36,8 +36,11 @@ public class User {
     @Column(name = "loggedIn")
     private boolean loggedIn;
 
+    @Column(name = "auth")
+    private boolean auth;
 
-//    private Set<Role> roles;
+
+    //    private Set<Role> roles;
     @ManyToOne
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Role role;
@@ -45,7 +48,7 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, String surname, String address, String phone, boolean isAuth, Role role) {
+    public User(String login, String password, String passwordConfirm, String name, String surname, String address, String phone, boolean isAuth, Role role, boolean auth) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -55,7 +58,9 @@ public class User {
         this.phone = phone;
         this.loggedIn = isAuth;
         this.role = role;
+        this.auth = auth;
     }
+
 
     @Override
     public String toString() {
@@ -70,6 +75,7 @@ public class User {
                 ", phone=" + phone +
                 ", isAuth=" + loggedIn +
                 ", role=" + role +
+                ", auth =" + auth +
                 '}';
     }
 
@@ -144,6 +150,14 @@ public class User {
 
     public void setLoggedIn(boolean auth) {
         this.loggedIn = auth;
+    }
+
+    public boolean getAuth() {
+        return auth;
+    }
+
+    public void setAuth(boolean auth) {
+        this.auth = auth;
     }
 
 //    @ManyToMany
