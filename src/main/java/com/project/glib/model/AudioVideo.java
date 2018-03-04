@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class AudioVideo extends Document {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "title")
