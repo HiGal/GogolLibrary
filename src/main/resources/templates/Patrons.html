@@ -10,20 +10,6 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/patrons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script>
-        $(document).ready(function parse() {
-        $.getJSON("/users", function (data) {
-            var items = [];
-            $.each(data[0], function (key, val) {
-                items.push("<tr>" + data[0]["id"] + "</tr>");
-            });
-            $("<td/>", {
-                "class": "my-new-list",
-                html: items.join("")
-            }).appendTo("body");
-        });
-    });
-    </script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -68,14 +54,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr onload="parse()"></tr>
-                        <!--
-                        <tr >
-                            <td >sf</td>
-                            <td >asf</td>
-                            <td>af</td>
-                            <td>fasf</td>
-                            <td >asfs</td>
+                        {{#allUsers}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{name}}</td>
+                            <td>{{surname}}</td>
+                            <td>{{address}}</td>
+                            <td>{{phone}}</td>
                             <td>Student</td>
                             <td>
                                 <button type="submit" class="btn btn-primary btn-sm btn-block submit">
@@ -87,7 +72,8 @@
                                     Delete
                                 </button>
                             </td>
-                        </tr>-->
+                        </tr>
+                        {{/allUsers}}
                         </tbody>
                     </table>
                 </div>

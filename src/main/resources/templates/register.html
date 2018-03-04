@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html >
 <head>
     <meta charset="UTF-8">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -20,6 +20,23 @@
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
     <title>Title</title>
+
+    <script>
+        function make_json(form) {
+            var json = {
+                "name":form.name.value,
+                "surname":form.surname.value,
+                "address":form.address.value,
+                "phone":form.phone.value,
+                "username":form.username.value,
+                "password":form.password.value
+            };
+            var html = JSON.stringify(json,0,4);
+            document.getElementById('output').innerHTML=html;
+            return false;
+        }
+    </script>
+
 </head>
 <body>
 <div class="container">
@@ -30,8 +47,9 @@
                 <hr/>
             </div>
         </div>
+        <pre id="output"></pre>
         <div class="main-login main-center">
-            <form class="form-horizontal"  action="#" th:action="@{/registration}" th:object="${userForm}" method="post">
+            <form class="form-horizontal"  method="post" onsubmit="return make_json(this)">
 
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Your Name</label>
@@ -39,7 +57,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="name" id="name"
-                                   placeholder="Enter your Name" required autofocus th:field="*{name}"/>
+                                   placeholder="Enter your Name" required autofocus />
                         </div>
                     </div>
                 </div>
@@ -50,7 +68,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="surname" id="surname"
-                                   placeholder="Enter your Surname" required th:field="*{surname}"/>
+                                   placeholder="Enter your Surname" required />
                         </div>
                     </div>
                 </div>
@@ -62,7 +80,7 @@
                             <span class="input-group-addon"><i class="fa fa-location-arrow"
                                                                aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="address" id="address"
-                                   placeholder="Enter your Address" required th:field="*{address}"/>
+                                   placeholder="Enter your Address" required />
                         </div>
                     </div>
                 </div>
@@ -73,7 +91,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="phone" id="phone"
-                                   placeholder="Enter your number" required th:field="*{phone}"/>
+                                   placeholder="Enter your number" required/>
                             <script>
                                 $(function () {
                                     $("#phone").mask("+7(999) 999-9999");
@@ -84,13 +102,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="nickname" class="cols-sm-2 control-label">Nickname</label>
+                    <label for="username" class="cols-sm-2 control-label">Username</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-first-order"
                                                                aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="address" id="nickname"
-                                   placeholder="Enter your Nickname" required th:field="*{login}"/>
+                            <input type="text" class="form-control" name="username" id="username"
+                                   placeholder="Enter your Username" required />
                         </div>
                     </div>
                 </div>
@@ -101,7 +119,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="password" id="password"
-                                   placeholder="Enter your Password" required th:field="*{password}"/>
+                                   placeholder="Enter your Password" required />
                         </div>
                     </div>
                 </div>

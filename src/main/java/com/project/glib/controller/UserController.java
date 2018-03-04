@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+    public String registration(User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -47,18 +47,16 @@ public class UserController {
 
         return "redirect:/login";
     }
-    @ResponseBody
-    @RequestMapping(value = "/users")
-    public List<User> users(){
-        return userService.getAllUsers();
-    }
 
-    @RequestMapping(value = "/users/view")
-    public ModelAndView show(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("Patrons");
+    @RequestMapping(value = "/users")
+    public ModelAndView users(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("allUsers",userService.getAllUsers());
+        modelAndView.setViewName("patrons");
         return modelAndView;
     }
+
+
 
 
 
