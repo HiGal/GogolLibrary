@@ -73,4 +73,8 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         return users;
     }
 
+    public List<User> authUsers(){
+        return userRepository.findAllUsersByAuth(true);
+    }
+
 }

@@ -10,6 +10,16 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/patrons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        (function($) {
+            $(document).ready(function() {
+                $('.row-remove').click(function(e) {
+                    e.preventDefault();
+                    $(this).closest('tr').remove(); // или $(this).parent().parent().remove();
+                });
+            });
+        }(jQuery));
+    </script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -68,7 +78,7 @@
                                 </button>
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-primary btn-sm btn-block submit">
+                                <button type="submit" class="btn btn-primary btn-sm btn-block row-remove">
                                     Delete
                                 </button>
                             </td>

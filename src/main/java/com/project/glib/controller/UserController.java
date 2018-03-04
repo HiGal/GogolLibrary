@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     private final UsersDaoImplementation usersDao;
@@ -59,7 +61,7 @@ public class UserController {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.addObject("allUsers", usersDao.getList());
         modelAndView.setViewName("patrons");
-        return userService.getAllUsers();
+        return usersDao.authUsers();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

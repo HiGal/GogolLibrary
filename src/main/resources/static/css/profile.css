@@ -1,0 +1,61 @@
+.navbar {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.container {
+    width: 90%;
+}
+
+body {
+    background: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.navbar-inverse .navbar-nav > .active > a {
+    background-color: #994888;
+}
+
+.navbar-inverse .navbar-brand {
+    color: rgb(204, 85, 178);
+    font-weight: bolder;
+    font-size: 22px;
+}
+
+.ud {
+    margin-top: 150px;
+    background-color: white;
+    max-width: 400px;
+    border-radius: 5px;
+}
+
+.profile-img-card {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 20px auto 10px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+#status {
+    text-align: center;
+    color: darkblue;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.fields {
+    font-weight: bold;
+}
+
+.info {
+    padding: 10px;
+}
+
+
+
