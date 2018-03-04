@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "documents_physical")
@@ -25,15 +26,18 @@ public class DocumentPhysical {
     @Column(name = "doc_type")
     private String docType;
 
+    private Set<Keyword> keywords;
+
     public DocumentPhysical() {
     }
 
-    public DocumentPhysical(String shelf, boolean canBooked, boolean isReference, long idDoc, String docType) {
+    public DocumentPhysical(String shelf, boolean canBooked, boolean isReference, long idDoc, String docType, Set<Keyword> keywords) {
         this.shelf = shelf;
         this.canBooked = canBooked;
         this.isReference = isReference;
         this.idDoc = idDoc;
         this.docType = docType;
+        this.keywords = keywords;
     }
 
     @Override
@@ -45,9 +49,12 @@ public class DocumentPhysical {
                 ", isReference=" + isReference +
                 ", idDoc=" + idDoc +
                 ", docType='" + docType + '\'' +
+                ", keywords=" + keywords +
                 '}';
     }
 
+    @Id
+    @GeneratedValue
     public long getId() {
         return id;
     }
@@ -94,5 +101,15 @@ public class DocumentPhysical {
 
     public void setDocType(String docType) {
         this.docType = docType;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "document_keywords", joinColumns = @JoinColumn(name = "doc_id"), inverseJoinColumns = @JoinColumn(name = "keyword_id"))
+    public Set<Keyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(Set<Keyword> keywords) {
+        this.keywords = keywords;
     }
 }

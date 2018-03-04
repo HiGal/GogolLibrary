@@ -3,16 +3,15 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
-public class Role {
-
+@Table(name = "keywords")
+public class Keyword {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "keyword")
+    private String keyword;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,11 +23,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

@@ -1,6 +1,7 @@
 package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.DocumentPhysicalRepository;
+import com.project.glib.dao.interfaces.ModifyByLibrarian;
 import com.project.glib.model.DocumentPhysical;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class DocumentPhysicalDaoImplementation {
+public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<DocumentPhysical> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(DocumentPhysicalDaoImplementation.class);
     private final DocumentPhysicalRepository documentPhysicalRepository;
 

@@ -1,14 +1,12 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
     public static final String FACULTY = "FACULTY";
-    public static final String PATRON = "PATRON";
-    public static final String LIBRARIAN = "LIBRARIAN";
+    public static final String STUDENT = "STUDENT";
 
     @Id
     @Column(name = "id")
@@ -39,12 +37,14 @@ public class User {
     @Column(name = "isAuth")
     private boolean isAuth;
 
-    private Set<Role> roles;
+//    private Set<Role> roles;
+
+    private Role role;
 
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, String surname, String address, int phone, boolean isAuth, Set<Role> roles) {
+    public User(String login, String password, String passwordConfirm, String name, String surname, String address, int phone, boolean isAuth, Role role) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -53,7 +53,7 @@ public class User {
         this.address = address;
         this.phone = phone;
         this.isAuth = isAuth;
-        this.roles = roles;
+        this.role = role;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class User {
                 ", address='" + address + '\'' +
                 ", phone=" + phone +
                 ", isAuth=" + isAuth +
-                ", roles=" + roles +
+                ", role=" + role +
                 '}';
     }
 
@@ -147,13 +147,23 @@ public class User {
         this.isAuth = auth;
     }
 
-    @ManyToMany
+//    @ManyToMany
+//    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    public Set<Role> getRoles() {
+//        return roles;
+//    }
+
+    @ManyToOne
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+//    public void setRoles(Set<Role> roles) {
+//        this.roles = roles;
+//    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
