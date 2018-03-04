@@ -5,6 +5,7 @@ import com.project.glib.model.Booking;
 import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
 import com.project.glib.model.User;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CheckOutService {
@@ -38,16 +39,16 @@ public class CheckOutService {
         this.usersDao = usersDao;
     }
 
-    public boolean toCheckoutDocument(Booking booking) {
+    public Checkout toCheckoutDocument(Booking booking) {
         long additionalTime;
 
-        if (booking.getDoc_type().equals(Document.BOOK)) {
-            switch (usersDao.getTypeById(booking.getId_user())) {
+        if (booking.getDocType().equals(Document.BOOK)) {
+            switch (usersDao.getTypeById(booking.getIdUser())) {
                 case User.FACULTY:
                     additionalTime = FOUR_WEEKS;
                     break;
-                case User.PATRON:
-                    long bookId = docPhysDao.getIdByDocument(booking.getId_doc(), booking.getDoc_type());
+                case User.STUDENT:
+                    long bookId = docPhysDao.getIdByDocument(booking.getIdDoc(), booking.getDocType());
                     if (bookDao.getIsBestseller(bookId)) {
                         additionalTime = TWO_WEEKS;
                     } else {
@@ -55,49 +56,80 @@ public class CheckOutService {
                     }
                     break;
                 default:
-                    additionalTime = 0;
-                    return false;
+                    return null;
             }
         } else {
             additionalTime = TWO_WEEKS;
         }
 
-        checkoutDao.add(new Checkout(booking.getId_user(), booking.getId_doc(),
-                booking.getDoc_type(), System.nanoTime(), System.nanoTime() + additionalTime,
-                false, booking.getShelf()));
+        Checkout newCheckout = new Checkout(booking.getIdUser(), booking.getIdDoc(),
+                booking.getDocType(), System.nanoTime(), System.nanoTime() + additionalTime,
+                false, booking.getShelf());
         bookingDao.remove(booking.getId());
+        checkoutDao.add(newCheckout);
 
-        return true;
+        return newCheckout;
     }
 
-    public int toReturnDocument(Checkout checkout) {
-        int payoff = 0;
-        long difference = checkout.getCheckout_time() - System.nanoTime();
+    //TODO check rules to renew document
+    public Checkout toRenewDocument(Checkout checkout) {
+        if (checkoutDao.getIsRenewedById(checkout.getId())) {
+            return null;
+        }
+
+        checkout.setRenewed(true);
+        checkout.setReturnTime(2 * checkout.getReturnTime() - checkout.getCheckoutTime());
+        return checkout;
+    }
+
+    public Pair<String, Integer> toReturnDocument(Checkout checkout) {
+        String checkoutInfo = checkout.toString();
+        checkoutDao.remove(checkout.getId());
+        return new Pair<>(checkoutInfo, getOverdue(checkout));
+    }
+
+    private int getOverdue(Checkout checkout) {
+        int overdue = 0;
+        long difference = checkout.getCheckoutTime() - System.nanoTime();
         if (difference < 0) {
             int days = convertToDays(difference);
             int price;
-            switch (checkout.getDoc_type()) {
+            switch (checkout.getDocType()) {
                 case Document.BOOK:
-                    long bookId = docPhysDao.getIdByDocument(checkout.getId_doc(), checkout.getDoc_type());
+                    long bookId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
                     price = bookDao.getPriceById(bookId);
                     break;
                 case Document.JOURNAL:
-                    long journalId = docPhysDao.getIdByDocument(checkout.getId_doc(), checkout.getDoc_type());
+                    long journalId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
                     price = journalDao.getPriceById(journalId);
                     break;
                 case Document.AV:
-                    long avId = docPhysDao.getIdByDocument(checkout.getId_doc(), checkout.getDoc_type());
+                    long avId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
                     price = avDao.getPriceById(avId);
                     break;
                 default:
-                    return payoff;
+                    return overdue;
             }
-            payoff = Math.max(days * PENNY, price);
+            overdue = Math.min(days * PENNY, price);
+        }
+        return overdue;
+    }
+
+    public long numberOfCheckoutDocumentsByUser(long userId) {
+        return checkoutDao.getNumberOfCheckoutDocumentsByUser(userId);
+    }
+
+    public int getTotalOverdueByUser(long userId) {
+        int totalOverdue = 0;
+        for (Checkout currentCheckout : checkoutDao.getCheckoutsByUser(userId)) {
+            totalOverdue += getOverdue(currentCheckout);
         }
 
-        checkoutDao.remove(checkout.getId());
+        return totalOverdue;
+    }
 
-        return payoff;
+    public Checkout[] getCheckoutsByUser(long userId) {
+        return checkoutDao.getCheckoutsByUser(userId);
     }
 
     private int convertToDays(long nanoseconds) {

@@ -11,38 +11,38 @@ public class Checkout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "id_user")
-    private long id_user;
+    @Column(name = "idUser")
+    private long idUser;
 
-    @Column(name = "id_doc")
-    private long id_doc;
+    @Column(name = "idDoc")
+    private long idDoc;
 
-    @Column(name = "doc_type")
-    private String doc_type;
+    @Column(name = "docType")
+    private String docType;
 
-    @Column(name = "checkout_time")
-    private long checkout_time;
+    @Column(name = "checkoutTime")
+    private long checkoutTime;
 
-    @Column(name = "return_time")
-    private long return_time;
+    @Column(name = "returnTime")
+    private long returnTime;
 
-    @Column(name = "is_renewed")
-    private boolean is_renewed;
+    @Column(name = "isRenewed")
+    private boolean isRenewed;
 
     @Column(name = "shelf")
     private String shelf;
 
-    public Checkout() {
+    protected Checkout() {
     }
 
-    public Checkout(long id_user, long id_doc, String doc_type, long checkout_time, long return_time, boolean is_renewed, String shelf) {
+    public Checkout(long idUser, long idDoc, String docType, long checkoutTime, long returnTime, boolean isRenewed, String shelf) {
 
-        this.id_user = id_user;
-        this.id_doc = id_doc;
-        this.doc_type = doc_type;
-        this.checkout_time = checkout_time;
-        this.return_time = return_time;
-        this.is_renewed = is_renewed;
+        this.idUser = idUser;
+        this.idDoc = idDoc;
+        this.docType = docType;
+        this.checkoutTime = checkoutTime;
+        this.returnTime = returnTime;
+        this.isRenewed = isRenewed;
         this.shelf = shelf;
     }
 
@@ -50,12 +50,12 @@ public class Checkout {
     public String toString() {
         return "Checkout{" +
                 "id=" + id +
-                ", id_user=" + id_user +
-                ", id_doc=" + id_doc +
-                ", doc_type='" + doc_type + '\'' +
-                ", checkout_time=" + checkout_time +
-                ", return_time=" + return_time +
-                ", is_renewed=" + is_renewed +
+                ", idUser=" + idUser +
+                ", idDoc=" + idDoc +
+                ", docType='" + docType + '\'' +
+                ", checkoutTime=" + checkoutTime +
+                ", returnTime=" + returnTime +
+                ", isRenewed=" + isRenewed +
                 ", shelf='" + shelf + '\'' +
                 '}';
     }
@@ -68,52 +68,52 @@ public class Checkout {
         this.id = id;
     }
 
-    public long getId_user() {
-        return id_user;
+    public long getIdUser() {
+        return idUser;
     }
 
-    public void setId_user(long id_user) {
-        this.id_user = id_user;
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
     }
 
-    public long getId_doc() {
-        return id_doc;
+    public long getIdDoc() {
+        return idDoc;
     }
 
-    public void setId_doc(long id_doc) {
-        this.id_doc = id_doc;
+    public void setIdDoc(long idDoc) {
+        this.idDoc = idDoc;
     }
 
-    public String getDoc_type() {
-        return doc_type;
+    public String getDocType() {
+        return docType;
     }
 
-    public void setDoc_type(String doc_type) {
-        this.doc_type = doc_type;
+    public void setDocType(String docType) {
+        this.docType = docType;
     }
 
-    public long getCheckout_time() {
-        return checkout_time;
+    public long getCheckoutTime() {
+        return checkoutTime;
     }
 
-    public void setCheckout_time(long checkout_time) {
-        this.checkout_time = checkout_time;
+    public void setCheckoutTime(long checkoutTime) {
+        this.checkoutTime = checkoutTime;
     }
 
-    public long getReturn_time() {
-        return return_time;
+    public long getReturnTime() {
+        return returnTime;
     }
 
-    public void setReturn_time(long return_time) {
-        this.return_time = return_time;
+    public void setReturnTime(long returnTime) {
+        this.returnTime = returnTime;
     }
 
-    public boolean isIs_renewed() {
-        return is_renewed;
+    public boolean isRenewed() {
+        return isRenewed;
     }
 
-    public void setIs_renewed(boolean is_renewed) {
-        this.is_renewed = is_renewed;
+    public void setRenewed(boolean renewed) {
+        this.isRenewed = renewed;
     }
 
     public String getShelf() {

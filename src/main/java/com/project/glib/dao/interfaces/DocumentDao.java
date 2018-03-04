@@ -2,22 +2,10 @@ package com.project.glib.dao.interfaces;
 
 import com.project.glib.model.Document;
 
-import java.util.List;
-
-public interface DocumentDao<T extends Document> {
-    void add(T document);
-
-    void update(T document);
-
-    void remove(long documentId);
-
-    T getById(long documentId);
-
+public interface DocumentDao<T extends Document> extends ModifyByLibrarian<T> {
     int getCountById(long documentId);
 
     void decrementCountById(long documentId);
 
     int getPriceById(long documentId);
-
-    List<T> getList();
 }

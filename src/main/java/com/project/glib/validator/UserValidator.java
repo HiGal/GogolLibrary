@@ -1,7 +1,7 @@
 package com.project.glib.validator;
 
+import com.project.glib.dao.implementations.UsersDaoImplementation;
 import com.project.glib.model.User;
-import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
 @Component
 public class UserValidator implements Validator {
     @Autowired
-    private UserService userService;
+    private UsersDaoImplementation usersDao;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -26,7 +26,7 @@ public class UserValidator implements Validator {
         if (user.getLogin().length() < 6 || user.getLogin().length() > 32) {
             errors.rejectValue("username", "Size.userForm.username");
         }
-        if (userService.findByUsername(user.getLogin()) != null) {
+        if (usersDao.findByUsername(user.getLogin()) != null) {
             errors.rejectValue("username", "Duplicate.userForm.username");
         }
 

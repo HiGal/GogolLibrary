@@ -3,28 +3,28 @@ package com.project.glib.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
-public class Role {
-
+@Table(name = "keywords")
+public class Keyword {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "keyword")
+    private String keyword;
 
-    protected Role(){}
+    protected Keyword(){
+    }
 
-    public Role(String name) {
-        this.name = name;
+    public Keyword(String keyword) {
+        this.keyword = keyword;
     }
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Keyword{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", keyword='" + keyword + '\'' +
                 '}';
     }
 
@@ -38,11 +38,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

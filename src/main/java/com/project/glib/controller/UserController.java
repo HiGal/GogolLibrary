@@ -1,31 +1,32 @@
 package com.project.glib.controller;
 
+import com.project.glib.dao.implementations.SecurityDaoImplementation;
+import com.project.glib.dao.implementations.UsersDaoImplementation;
+import com.project.glib.dao.interfaces.RoleRepository;
+import com.project.glib.model.Role;
 import com.project.glib.model.User;
-import com.project.glib.service.SecurityService;
-import com.project.glib.service.UserService;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UsersDaoImplementation usersDao;
+    private final SecurityDaoImplementation securityDao;
+    private final UserValidator userValidator;
 
     @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    private UserValidator userValidator;
+    public UserController(UsersDaoImplementation usersDao,
+                          SecurityDaoImplementation securityDao,
+                          UserValidator userValidator) {
+        this.usersDao = usersDao;
+        this.securityDao = securityDao;
+        this.userValidator = userValidator;
+    }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -35,26 +36,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+    public String registration(User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "register";
         }
 
-        userService.save(userForm);
+        usersDao.add(userForm);
 
 
-        securityService.autologin(userForm.getLogin(), userForm.getPasswordConfirm());
+        securityDao.autoLogin(userForm.getLogin(), userForm.getPasswordConfirm());
 
         return "redirect:/login";
     }
 
     @RequestMapping(value = "/users")
     public ModelAndView users(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers",userService.getAllUsers());
-        modelAndView.setViewName("Patrons");
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("allUsers", usersDao.getList());
+        modelAndView.setViewName("patrons");
         return modelAndView;
     }
 

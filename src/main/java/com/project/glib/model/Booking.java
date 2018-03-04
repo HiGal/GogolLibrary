@@ -11,41 +11,41 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "id_user")
-    private long id_user;
+    @Column(name = "idUser")
+    private long idUser;
 
     @Column(name = "id_document")
-    private long id_doc;
+    private long idDoc;
 
-    @Column(name = "doc_type")
-    private String doc_type;
+    @Column(name = "docType")
+    private String docType;
 
     @Column(name = "shelf")
     private String shelf;
 
-    @Column(name = "booking_date")
-    private long booking_date;
+    @Column(name = "bookingDate")
+    private long bookingDate;
 
-    public Booking() {
+    protected Booking() {
     }
 
-    public Booking(long id_user, long id_doc, String doc_type, String shelf, long booking_date) {
-        this.id_user = id_user;
-        this.id_doc = id_doc;
-        this.doc_type = doc_type;
+    public Booking(long idUser, long idDoc, String docType, String shelf, long bookingDate) {
+        this.idUser = idUser;
+        this.idDoc = idDoc;
+        this.docType = docType;
         this.shelf = shelf;
-        this.booking_date = booking_date;
+        this.bookingDate = bookingDate;
     }
 
     @Override
     public String toString() {
         return "Booking{" +
                 "id=" + id +
-                ", id_user=" + id_user +
-                ", id_doc=" + id_doc +
-                ", doc_type='" + doc_type + '\'' +
+                ", idUser=" + idUser +
+                ", idDoc=" + idDoc +
+                ", docType='" + docType + '\'' +
                 ", shelf='" + shelf + '\'' +
-                ", booking_date=" + booking_date +
+                ", bookingDate=" + bookingDate +
                 '}';
     }
 
@@ -57,28 +57,28 @@ public class Booking {
         this.id = id;
     }
 
-    public long getId_user() {
-        return id_user;
+    public long getIdUser() {
+        return idUser;
     }
 
-    public void setId_user(long id_user) {
-        this.id_user = id_user;
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
     }
 
-    public long getId_doc() {
-        return id_doc;
+    public long getIdDoc() {
+        return idDoc;
     }
 
-    public void setId_doc(long id_doc) {
-        this.id_doc = id_doc;
+    public void setIdDoc(long idDoc) {
+        this.idDoc = idDoc;
     }
 
-    public String getDoc_type() {
-        return doc_type;
+    public String getDocType() {
+        return docType;
     }
 
-    public void setDoc_type(String doc_type) {
-        this.doc_type = doc_type;
+    public void setDocType(String docType) {
+        this.docType = docType;
     }
 
     public String getShelf() {
@@ -89,11 +89,11 @@ public class Booking {
         this.shelf = shelf;
     }
 
-    public long getBooking_date() {
-        return booking_date;
+    public long getBookingDate() {
+        return bookingDate;
     }
 
-    public void setBooking_date(long booking_date) {
-        this.booking_date = booking_date;
+    public void setBookingDate(long bookingDate) {
+        this.bookingDate = bookingDate;
     }
 }

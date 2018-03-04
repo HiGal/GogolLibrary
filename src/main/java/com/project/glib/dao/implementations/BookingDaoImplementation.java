@@ -1,6 +1,7 @@
 package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.BookingRepository;
+import com.project.glib.dao.interfaces.ModifyByLibrarian;
 import com.project.glib.model.Booking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class BookingDaoImplementation {
+public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final BookingRepository bookingRepository;
 
@@ -44,5 +45,22 @@ public class BookingDaoImplementation {
         }
 
         return bookings;
+    }
+
+    public long getNumberOfBookingsDocumentsByUser(long userId) {
+        return getBookingsByUser(userId).length;
+    }
+
+    public Booking[] getBookingsByUser(long userId) {
+        return bookingRepository.findAll().stream()
+                .filter(booking -> booking.getIdUser() == userId)
+                .toArray(Booking[]::new);
+    }
+
+    public boolean alreadyHasThisBooking(long docId, String docType, long userId) {
+        return bookingRepository.findAll().stream()
+                .filter(booking -> booking.getIdUser() == userId)
+                .filter(booking -> booking.getIdDoc() == docId)
+                .anyMatch(booking -> booking.getDocType().equals(docType));
     }
 }
