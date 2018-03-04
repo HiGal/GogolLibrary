@@ -12,6 +12,7 @@ public class BookingService {
     private final BookingDaoImplementation bookingDao;
     private final UsersDaoImplementation usersDao;
     private final DocumentPhysicalDaoImplementation documentPhysDao;
+    private final CheckoutDaoImplementation checkoutDao;
 
     @Autowired
     public BookingService(BookDaoImplementation bookDao,
@@ -19,35 +20,60 @@ public class BookingService {
                           AudioVideoDaoImplementation avDao,
                           BookingDaoImplementation bookingDao,
                           UsersDaoImplementation usersDao,
-                          DocumentPhysicalDaoImplementation documentPhysDao) {
+                          DocumentPhysicalDaoImplementation documentPhysDao,
+                          CheckoutDaoImplementation checkoutDao) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
         this.bookingDao = bookingDao;
         this.usersDao = usersDao;
         this.documentPhysDao = documentPhysDao;
+        this.checkoutDao = checkoutDao;
     }
 
-    public Booking toBookDocument(long docId, String docType, long userId) {
-        if (!usersDao.getIsAuthById(userId) || bookingDao.alreadyHasThisBooking(docId, docType, userId)) {
-            return null;
+    /**
+     * Booking document by user if it possibility
+     * @param docId id of this document
+     * @param docType type of this document (valid types wrote in constants in superclass Document.java)
+     * @param userId id of user whom try to book document
+     * @return Booking if all validate
+     * @throws Exception if has an exception in run-time
+     */
+    public Booking toBookDocument(long docId, String docType, long userId) throws Exception {
+        if (!usersDao.getIsAuthById(userId)){
+            throw new Exception("Sorry, but your registration is not approved yet.");
         }
 
+        if (bookingDao.alreadyHasThisBooking(docId, docType, userId)){
+            throw new Exception("Sorry, but your already have this booking. " +
+                    "Go to the library and check out " + docType.toLowerCase() + ".");
+        }
+
+        if (checkoutDao.alreadyHasThisCheckout(docId, docType, userId)) {
+            throw new Exception("Sorry, but your already have this check out. " +
+                    "You could renew this " + docType.toLowerCase() +
+                    "OR return and check out again.");
+        }
+
+        String zeroCount = "Sorry, we have a mistake in our library, " +
+                "all copies this " + docType.toLowerCase() + " already on hand.";
         switch (docType) {
             case Document.BOOK:
-                if (bookDao.getCountById(docId) <= 0) return null;
+                if (bookDao.getCountById(docId) <= 0) throw new Exception(zeroCount);
                 bookDao.decrementCountById(docId);
                 break;
             case Document.JOURNAL:
-                if (journalDao.getCountById(docId) <= 0) return null;
+                if (journalDao.getCountById(docId) <= 0) throw new Exception(zeroCount);
                 journalDao.decrementCountById(docId);
                 break;
             case Document.AV:
-                if (avDao.getCountById(docId) <= 0) return null;
+                if (avDao.getCountById(docId) <= 0) throw new Exception(zeroCount);
                 avDao.decrementCountById(docId);
                 break;
             default:
-                return null;
+                throw new Exception("Sorry, but you try to book invalid type of " +
+                        "document (" + docType.toLowerCase() + ")" +
+                        "maybe it program mistake.");
         }
 
         long physId = documentPhysDao.getValidPhysicalId(docId, docType);
@@ -60,11 +86,21 @@ public class BookingService {
         return newBooking;
     }
 
-    public long numberOfCheckoutDocumentsByUser(long userId) {
+    /**
+     * get number of booked documents by current user
+     * @param userId id of current user
+     * @return number of booked
+     */
+    public long numberOfBookedDocumentsByUser(long userId) {
         return bookingDao.getNumberOfBookingsDocumentsByUser(userId);
     }
 
-    public Booking[] getCheckoutsByUser(long userId) {
+    /**
+     * get all bookings by current user
+     * @param userId id of current user
+     * @return array of bookings
+     */
+    public Booking[] getBookingsByUser(long userId) {
         return bookingDao.getBookingsByUser(userId);
     }
 }
