@@ -1,21 +1,31 @@
 package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.ModifyByLibrarian;
+import com.project.glib.dao.interfaces.RoleRepository;
 import com.project.glib.dao.interfaces.UserRepository;
 import com.project.glib.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UsersDaoImplementation(UserRepository userRepository) {
+    public UsersDaoImplementation(UserRepository userRepository,
+                                     RoleRepository roleRepository,
+                                     BCryptPasswordEncoder bCryptPasswordEncoder){
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public boolean getIsAuthById(long userId) {
@@ -27,11 +37,15 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     }
 
     public void add(User user) {
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRole(roleRepository.findOne(user.getId()));
         userRepository.save(user);
         logger.info("User successfully saved. Document details : " + user);
     }
 
     public void update(User user) {
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRole(roleRepository.findOne(user.getId()));
         userRepository.save(user);
         logger.info("User successfully update. User details : " + user);
     }
@@ -42,6 +56,10 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
 
     public User getById(long userId) {
         return userRepository.findOne(userId);
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByLogin(username);
     }
 
     @SuppressWarnings("unchecked")

@@ -32,7 +32,7 @@ public class Checkout {
     @Column(name = "shelf")
     private String shelf;
 
-    public Checkout() {
+    protected Checkout() {
     }
 
     public Checkout(long idUser, long idDoc, String docType, long checkoutTime, long returnTime, boolean isRenewed, String shelf) {
