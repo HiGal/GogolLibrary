@@ -2,6 +2,8 @@ package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.SecurityDaoImplementation;
 import com.project.glib.dao.implementations.UsersDaoImplementation;
+import com.project.glib.dao.interfaces.RoleRepository;
+import com.project.glib.model.Role;
 import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,9 @@ public class UserController {
     private final UserValidator userValidator;
 
     @Autowired
-    public UserController(UsersDaoImplementation usersDao, SecurityDaoImplementation securityDao, UserValidator userValidator) {
+    public UserController(UsersDaoImplementation usersDao,
+                          SecurityDaoImplementation securityDao,
+                          UserValidator userValidator) {
         this.usersDao = usersDao;
         this.securityDao = securityDao;
         this.userValidator = userValidator;
