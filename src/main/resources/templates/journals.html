@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Books</title>
+    <title>Journals</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -50,10 +50,10 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="#">Books</a></li>
-                <li><a href="journals.html">Journals</a></li>
+                <li><a href="documents.html">Books</a></li>
+                <li class="active"><a href="journals.html">Journals</a></li>
                 <li><a href="av.html">Auidio/Video</a></li>
-                <li><a href="../librarian/LogIn.html">Log Out</a></li>
+                <li><a href="LogIn.html">Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -65,27 +65,26 @@
         <div class="output"></div>
         <div class="row centered">
             <div class="card card-container">
-                <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>Books</u></p>
-                <p class="header">Books</p>
+                <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>Journals</u></p>
+                <p class="header">Journals</p>
                 <div class="utable">
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
                             <td>ID</td>
-                            <th>Book Title</th>
+                            <th>Journal Article</th>
+                            <th>Title</th>
                             <th>Author</th>
-                            <th>Edition</th>
-                            <th>Publisher</th>
-                            <th>Year</th>
+                            <th>Issue</th>
+                            <th>Editor</th>
                             <th>Price(for overdue)</th>
-                            <th>Bestseller</th>
                             <th></th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {{#booksInLibrary}}
-                        <form action="editB.html">
+                        {{#journalsInLibrary}}
+                        <form action="editJ.html">
                             <tr>
                                 <td>{{id}}</td>
                                 <td>{{book_title}}</td>
@@ -94,7 +93,6 @@
                                 <td>{{publisher}}</td>
                                 <td>{{year}}</td>
                                 <td>{{price}}</td>
-                                <td>{{bestseller}}</td>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-sm btn-block submit">
                                         Edit
@@ -107,7 +105,7 @@
                                 </td>
                             </tr>
                         </form>
-                        {{/booksInLibrary}}
+                        {{/journalsInLibrary}}
                         </tbody>
                     </table>
                 </div>

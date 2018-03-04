@@ -20,7 +20,24 @@
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
 
-    <title>Title</title>
+    <script>
+        function make_json(form) {
+            var json = {
+                "name":form.name.value,
+                "surname":form.surname.value,
+                "address":form.address.value,
+                "phone":form.phone.value,
+                "login":form.username.value,
+                "password":form.password.value,
+                "role":form.opt.value;
+            };
+            var html = JSON.stringify(json,0,4);
+            document.getElementById('output').innerHTML=html;
+            return false;
+        }
+    </script>
+
+    <title>Registration</title>
 </head>
 <body>
 <div class="container">
@@ -31,14 +48,15 @@
                 <hr/>
             </div>
         </div>
+        <pre id="output"></pre>
         <div class="main-login main-center">
-            <form class="form-horizontal" method="post" action="login.html">
+            <form class="form-horizontal" method="post" action="#">
 
                 <div class="form-group">
                     <label for="sel1">Select role</label>
                     <select class="form-control" id="sel1">
-                        <option>Faculty</option>
-                        <option>Student</option>
+                        <option name="opt">Faculty</option>
+                        <option name="opt">Student</option>
                     </select>
                 </div>
 

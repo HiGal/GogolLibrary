@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Journals</title>
+    <title>Audio/Video</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -50,10 +50,10 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="documents.html">Books</a></li>
-                <li class="active"><a href="journals.html">Journals</a></li>
-                <li><a href="av.html">Auidio/Video</a></li>
-                <li><a href="../librarian/LogIn.html">Log Out</a></li>
+                <li><a href="#">Books</a></li>
+                <li><a href="journals.html">Journals</a></li>
+                <li class="active"><a href="av.html">Auidio/Video</a></li>
+                <li><a href="LogIn.html">Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -65,33 +65,27 @@
         <div class="output"></div>
         <div class="row centered">
             <div class="card card-container">
-                <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>Journals</u></p>
-                <p class="header">Journals</p>
+                <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>A/V</u></p>
+                <p class="header">Audio/Video</p>
                 <div class="utable">
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
                             <td>ID</td>
-                            <th>Journal Article</th>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Issue</th>
-                            <th>Editor</th>
                             <th>Price(for overdue)</th>
                             <th></th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {{#journalsInLibrary}}
-                        <form action="editJ.html">
+                        {{#avInLibrary}}
+                        <form action="editAV.html">
                             <tr>
                                 <td>{{id}}</td>
-                                <td>{{book_title}}</td>
+                                <td>{{title}}</td>
                                 <td>{{author}}</td>
-                                <td>{{edition}}</td>
-                                <td>{{publisher}}</td>
-                                <td>{{year}}</td>
                                 <td>{{price}}</td>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-sm btn-block submit">
@@ -99,13 +93,13 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove" onsubmit="return make_json(this)">
                                         Delete
                                     </button>
                                 </td>
                             </tr>
                         </form>
-                        {{/journalsInLibrary}}
+                        {{/avInLibrary}}
                         </tbody>
                     </table>
                 </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Audio/Video</title>
+    <title>Books</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -50,10 +50,10 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Books</a></li>
+                <li class="active"><a href="#">Books</a></li>
                 <li><a href="journals.html">Journals</a></li>
-                <li class="active"><a href="av.html">Auidio/Video</a></li>
-                <li><a href="../librarian/LogIn.html">Log Out</a></li>
+                <li><a href="av.html">Auidio/Video</a></li>
+                <li><a href="LogIn.html">Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -65,41 +65,49 @@
         <div class="output"></div>
         <div class="row centered">
             <div class="card card-container">
-                <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>A/V</u></p>
-                <p class="header">Audio/Video</p>
+                <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>Books</u></p>
+                <p class="header">Books</p>
                 <div class="utable">
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
                             <td>ID</td>
-                            <th>Title</th>
+                            <th>Book Title</th>
                             <th>Author</th>
+                            <th>Edition</th>
+                            <th>Publisher</th>
+                            <th>Year</th>
                             <th>Price(for overdue)</th>
+                            <th>Bestseller</th>
                             <th></th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {{#avInLibrary}}
-                        <form action="editAV.html">
+                        {{#booksInLibrary}}
+                        <form action="editB.html">
                             <tr>
                                 <td>{{id}}</td>
-                                <td>{{title}}</td>
+                                <td>{{book_title}}</td>
                                 <td>{{author}}</td>
+                                <td>{{edition}}</td>
+                                <td>{{publisher}}</td>
+                                <td>{{year}}</td>
                                 <td>{{price}}</td>
+                                <td>{{bestseller}}</td>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-sm btn-block submit">
                                         Edit
                                     </button>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove" onsubmit="return make_json(this)">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove">
                                         Delete
                                     </button>
                                 </td>
                             </tr>
                         </form>
-                        {{/avInLibrary}}
+                        {{/booksInLibrary}}
                         </tbody>
                     </table>
                 </div>
