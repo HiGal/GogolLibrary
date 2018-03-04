@@ -32,7 +32,7 @@ public class User {
     private String address;
 
     @Column(name = "phone")
-    private int phone;
+    private long phone;
 
     @Column(name = "isAuth")
     private boolean isAuth;
@@ -44,7 +44,7 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, String surname, String address, int phone, boolean isAuth, Role role) {
+    public User(String login, String password, String passwordConfirm, String name, String surname, String address, long phone, boolean isAuth, Role role) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -131,7 +131,7 @@ public class User {
         this.address = address;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 

@@ -13,6 +13,21 @@ public class Keyword {
     @Column(name = "keyword")
     private String keyword;
 
+    protected Keyword(){
+    }
+
+    public Keyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    @Override
+    public String toString() {
+        return "Keyword{" +
+                "id=" + id +
+                ", keyword='" + keyword + '\'' +
+                '}';
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {

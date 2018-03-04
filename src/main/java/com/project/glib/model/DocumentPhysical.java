@@ -28,7 +28,7 @@ public class DocumentPhysical {
 
     private Set<Keyword> keywords;
 
-    public DocumentPhysical() {
+    protected DocumentPhysical() {
     }
 
     public DocumentPhysical(String shelf, boolean canBooked, boolean isReference, long idDoc, String docType, Set<Keyword> keywords) {
