@@ -14,7 +14,7 @@ import org.springframework.web.servlet.View;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class UserController {
     @Autowired
     private UserService userService;
@@ -25,6 +25,8 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
+
+
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
@@ -33,7 +35,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(User userForm, BindingResult bindingResult, Model model) {
+    public String registration(@RequestBody User userForm, BindingResult bindingResult, Model model) {
+
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -49,11 +52,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users")
-    public ModelAndView users(){
+    public List<User> users(){
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.addObject("allUsers",userService.getAllUsers());
         modelAndView.setViewName("patrons");
-        return modelAndView;
+        return userService.getAllUsers();
     }
 
 
