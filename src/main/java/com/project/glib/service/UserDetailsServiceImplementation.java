@@ -1,7 +1,6 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.interfaces.UserRepository;
-import com.project.glib.model.Role;
 import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,9 +25,7 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
         User user = userRepository.findByLogin(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
 
         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), grantedAuthorities);
     }
