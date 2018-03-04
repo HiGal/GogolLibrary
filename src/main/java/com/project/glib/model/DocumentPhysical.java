@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,7 +29,6 @@ public class DocumentPhysical {
 
     @Column(name = "checkout_user")
     private String checkoutUser;
-
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "keyword_id")
@@ -59,8 +59,6 @@ public class DocumentPhysical {
                 '}';
     }
 
-    @Id
-    @GeneratedValue
     public long getId() {
         return id;
     }

@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "audio_video")
 public class AudioVideo extends Document {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 

@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "keywords")
 public class Keyword {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -28,8 +27,6 @@ public class Keyword {
                 '}';
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }

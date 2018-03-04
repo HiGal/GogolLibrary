@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersDaoImplementation implements ModifyByLibrarian<User> {
@@ -29,7 +30,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     }
 
     public boolean getIsAuthById(long userId) {
-        return userRepository.findOne(userId).getAuth();
+        return userRepository.findOne(userId).getLoggedIn();
     }
 
     public String getTypeById(long userId) {
@@ -74,7 +75,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     }
 
     public List<User> authUsers(){
-        return userRepository.findAllUsersByAuth(true);
+        return userRepository.findAll().stream().filter(User::getLoggedIn).collect(Collectors.toList());
     }
 
 }

@@ -9,7 +9,6 @@ public class User {
     public static final String STUDENT = "STUDENT";
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -34,11 +33,13 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "isAuth")
-    private boolean isAuth;
+    @Column(name = "loggedIn")
+    private boolean loggedIn;
+
 
 //    private Set<Role> roles;
-
+    @ManyToOne
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Role role;
 
     public User() {
@@ -52,7 +53,7 @@ public class User {
         this.surname = surname;
         this.address = address;
         this.phone = phone;
-        this.isAuth = isAuth;
+        this.loggedIn = isAuth;
         this.role = role;
     }
 
@@ -67,13 +68,11 @@ public class User {
                 ", surname=" + surname +
                 ", address='" + address + '\'' +
                 ", phone=" + phone +
-                ", isAuth=" + isAuth +
+                ", isAuth=" + loggedIn +
                 ", role=" + role +
                 '}';
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -131,20 +130,20 @@ public class User {
         this.address = address;
     }
 
-    public long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public boolean getAuth() {
-        return isAuth;
+    public boolean getLoggedIn() {
+        return loggedIn;
     }
 
-    public void setAuth(boolean auth) {
-        this.isAuth = auth;
+    public void setLoggedIn(boolean auth) {
+        this.loggedIn = auth;
     }
 
 //    @ManyToMany
@@ -153,8 +152,6 @@ public class User {
 //        return roles;
 //    }
 
-    @ManyToOne
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Role getRole() {
         return role;
     }

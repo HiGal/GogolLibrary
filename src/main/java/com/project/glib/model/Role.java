@@ -28,8 +28,7 @@ public class Role {
                 '}';
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     public Long getId() {
         return id;
     }

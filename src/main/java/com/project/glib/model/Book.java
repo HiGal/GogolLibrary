@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class Book extends Document {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
