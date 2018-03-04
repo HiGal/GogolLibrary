@@ -29,7 +29,9 @@
                 "phone":form.phone.value,
                 "login":form.username.value,
                 "password":form.password.value,
-                "role":form.opt.value;
+                "role":if(form.opt.value == Student){
+
+            }
             };
             var html = JSON.stringify(json,0,4);
             document.getElementById('output').innerHTML=html;
