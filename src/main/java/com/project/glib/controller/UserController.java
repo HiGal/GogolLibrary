@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class UserController {
     private final UsersDaoImplementation usersDao;
     private final SecurityDaoImplementation securityDao;

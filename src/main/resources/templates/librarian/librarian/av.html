@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Audio/Video</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/patrons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        function make_json(form) {
+            var json = {
+                "name": form.name.value,
+                "surname": form.surname.value,
+                "address": form.address.value,
+                "phone": form.phone.value,
+                "login": form.username.value,
+                "password": form.password.value
+            };
+            alert(json);
+            var html = JSON.stringify(json, 0, 4);
+            document.getElementById('output').innerHTML = html;
+            return false;
+        }
+    </script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('.row-remove').click(function (e) {
+                    e.preventDefault();
+                    $(this).closest('tr').remove(); // или $(this).parent().parent().remove();
+                });
+            });
+        }(jQuery));
+    </script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gogol Library</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Books</a></li>
+                <li><a href="journals.html">Journals</a></li>
+                <li class="active"><a href="av.html">Auidio/Video</a></li>
+                <li><a href="../librarian/LogIn.html">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<section>
+
+    <div class="container users">
+        <div class="output"></div>
+        <div class="row centered">
+            <div class="card card-container">
+                <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>A/V</u></p>
+                <p class="header">Audio/Video</p>
+                <div class="utable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <td>ID</td>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Price(for overdue)</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#avInLibrary}}
+                        <form action="editAV.html">
+                            <tr>
+                                <td>{{id}}</td>
+                                <td>{{title}}</td>
+                                <td>{{author}}</td>
+                                <td>{{price}}</td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block submit">
+                                        Edit
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove" onsubmit="return make_json(this)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </form>
+                        {{/avInLibrary}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

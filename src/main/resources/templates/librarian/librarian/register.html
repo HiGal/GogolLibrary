@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="js/jquery.maskedinput.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script src="../js/jquery.maskedinput.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Website CSS style -->
-    <link rel="stylesheet" type="text/css" href="css/regstyle.css">
+    <link rel="stylesheet" type="text/css" href="../css/regstyle.css">
 
     <!-- Website Font style -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,24 +19,8 @@
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
     <title>Title</title>
-
-    <script>
-        function make_json(form) {
-            var json = {
-                "name":form.name.value,
-                "surname":form.surname.value,
-                "address":form.address.value,
-                "phone":form.phone.value,
-                "login":form.username.value,
-                "password":form.password.value
-            };
-            var html = JSON.stringify(json,0,4);
-            document.getElementById('output').innerHTML=html;
-            return false;
-        }
-    </script>
-
 </head>
 <body>
 <div class="container">
@@ -47,9 +31,16 @@
                 <hr/>
             </div>
         </div>
-        <pre id="output"></pre>
         <div class="main-login main-center">
-            <form class="form-horizontal"  method="post" onsubmit="return make_json(this)">
+            <form class="form-horizontal" method="post" action="login.html">
+
+                <div class="form-group">
+                    <label for="sel1">Select role</label>
+                    <select class="form-control" id="sel1">
+                        <option>Faculty</option>
+                        <option>Student</option>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <label for="name" class="cols-sm-2 control-label">Your Name</label>
@@ -57,7 +48,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="name" id="name"
-                                   placeholder="Enter your Name" required autofocus />
+                                   placeholder="Enter your Name" required autofocus/>
                         </div>
                     </div>
                 </div>
@@ -68,7 +59,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="surname" id="surname"
-                                   placeholder="Enter your Surname" required />
+                                   placeholder="Enter your Surname" required/>
                         </div>
                     </div>
                 </div>
@@ -80,7 +71,7 @@
                             <span class="input-group-addon"><i class="fa fa-location-arrow"
                                                                aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="address" id="address"
-                                   placeholder="Enter your Address" required />
+                                   placeholder="Enter your Address" required/>
                         </div>
                     </div>
                 </div>
@@ -102,13 +93,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="username" class="cols-sm-2 control-label">Username</label>
+                    <label for="nickname" class="cols-sm-2 control-label">Nickname</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-first-order"
                                                                aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="username" id="username"
-                                   placeholder="Enter your Username" required />
+                            <input type="text" class="form-control" name="address" id="nickname"
+                                   placeholder="Enter your Nickname" required/>
                         </div>
                     </div>
                 </div>
@@ -119,19 +110,19 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="password" id="password"
-                                   placeholder="Enter your Password" required />
+                                   placeholder="Enter your Password" required/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group ">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button" formmethod="post">
                         Register
                     </button>
                     <span class="clearfix"></span>
                 </div>
                 <div class="login-register">
-                    <a href="login.html">Already have an account? Please Login</a>
+                    <a href="LogIn.html">Already have an account? Please Login</a>
                 </div>
 
             </form>

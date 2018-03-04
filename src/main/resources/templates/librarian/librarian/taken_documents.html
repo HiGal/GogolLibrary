@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Documents</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/patrons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gogol Library</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="documents.html">Documents</a></li>
+                <li class="active"><a href="#">Taken Documents</a></li>
+                <li><a href="addUser.html">Add Document</a></li>
+                <li><a href="login.html">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<section>
+
+    <div class="container users">
+        <div class="output"></div>
+        <div class="row centered">
+            <div class="card card-container">
+                <p id="patrons"><a id="linker" href="Librarian.html">Dashboard</a> / <u>Taken Documents</u></p>
+                <p class="header">Documents on user's hands</p>
+                <div class="utable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <td>ID</td>
+                            <th>Book Title</th>
+                            <th>Author</th>
+                            <th>Owner</th>
+                            <th>Phone number</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#allTakenBooks}}
+                        <form action="editU.html">
+                            <tr>
+                                <td>{{id}}</td>
+                                <td>{{book_title}}</td>
+                                <td>{{author}}</td>
+                                <td>{{owner}}</td>
+                                <td>{{phone}}</td>
+                                <td>{{role}}</td>
+                            </tr>
+                        </form>
+                        {{/allTakenBooks}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
