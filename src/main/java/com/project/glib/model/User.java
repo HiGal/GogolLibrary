@@ -44,7 +44,7 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, String surname, String address, String   phone, boolean isAuth, Role role) {
+    public User(String login, String password, String passwordConfirm, String name, String surname, String address, String phone, boolean isAuth, Role role) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -131,11 +131,11 @@ public class User {
         this.address = address;
     }
 
-    public String getPhone() {
+    public long getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(int phone) {
         this.phone = phone;
     }
 
