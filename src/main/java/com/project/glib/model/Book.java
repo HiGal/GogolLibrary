@@ -35,7 +35,7 @@ public class Book extends Document {
     @Column(name = "count")
     private int count;
 
-    protected Book() {
+    public Book() {
     }
 
     public Book(String title, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller, int count) {
