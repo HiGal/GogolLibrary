@@ -26,6 +26,12 @@ public class DocumentPhysical {
     @Column(name = "doc_type")
     private String docType;
 
+    @Column(name = "checkout_user")
+    private String checkoutUser;
+
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "keyword_id")
     private Set<Keyword> keywords;
 
     public DocumentPhysical() {
@@ -103,8 +109,14 @@ public class DocumentPhysical {
         this.docType = docType;
     }
 
-    @ManyToMany
-    @JoinTable(name = "document_keywords", joinColumns = @JoinColumn(name = "doc_id"), inverseJoinColumns = @JoinColumn(name = "keyword_id"))
+    public String getCheckoutUser() {
+        return checkoutUser;
+    }
+
+    public void setCheckoutUser(String checkoutUser) {
+        this.checkoutUser = checkoutUser;
+    }
+
     public Set<Keyword> getKeywords() {
         return keywords;
     }
