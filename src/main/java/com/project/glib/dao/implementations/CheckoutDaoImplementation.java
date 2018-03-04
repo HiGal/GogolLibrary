@@ -62,4 +62,11 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
                 .filter(checkout -> checkout.getIdUser() == userId)
                 .toArray(Checkout[]::new);
     }
+
+    public boolean alreadyHasThisCheckout(long docId, String docType, long userId) {
+        return checkoutRepository.findAll().stream()
+                .filter(checkout -> checkout.getIdUser() == userId)
+                .filter(checkout -> checkout.getIdDoc() == docId)
+                .anyMatch(checkout -> checkout.getDocType().equals(docType));
+    }
 }

@@ -39,7 +39,12 @@ public class CheckOutService {
         this.usersDao = usersDao;
     }
 
-    public Checkout toCheckoutDocument(Booking booking) {
+    /**
+     * check out current booking
+     * @param booking current booking
+     * @return checkout if it  possible
+     */
+    public Checkout toCheckoutDocument(Booking booking) throws Exception {
         long additionalTime;
 
         if (booking.getDocType().equals(Document.BOOK)) {
@@ -56,7 +61,9 @@ public class CheckOutService {
                     }
                     break;
                 default:
-                    return null;
+                    throw new Exception("Sorry, but you try to check out invalid type of " +
+                            "document (" + booking.getDocType().toLowerCase() + ")" +
+                            "maybe it program mistake.");
             }
         } else {
             additionalTime = TWO_WEEKS;
@@ -71,10 +78,16 @@ public class CheckOutService {
         return newCheckout;
     }
 
+    /**
+     * renew document by check out
+     * @param checkout current check out
+     * @return update check out if it possible
+     */
     //TODO check rules to renew document
-    public Checkout toRenewDocument(Checkout checkout) {
+    public Checkout toRenewDocument(Checkout checkout) throws Exception {
         if (checkoutDao.getIsRenewedById(checkout.getId())) {
-            return null;
+            throw new Exception("Sorry, but you try to renew already renewed " +
+                    checkout.getDocType().toLowerCase() + ".");
         }
 
         checkout.setRenewed(true);
@@ -88,6 +101,11 @@ public class CheckOutService {
         return new Pair<>(checkoutInfo, getOverdue(checkout));
     }
 
+    /**
+     * get overdue for current check out
+     * @param checkout current check out
+     * @return overdue
+     */
     private int getOverdue(Checkout checkout) {
         int overdue = 0;
         long difference = checkout.getCheckoutTime() - System.nanoTime();
@@ -115,10 +133,20 @@ public class CheckOutService {
         return overdue;
     }
 
+    /**
+     * get number of check out documents by current user
+     * @param userId id of current user
+     * @return number of check out
+     */
     public long numberOfCheckoutDocumentsByUser(long userId) {
         return checkoutDao.getNumberOfCheckoutDocumentsByUser(userId);
     }
 
+    /**
+     * get total overdue by current user
+     * @param userId id of current user
+     * @return total overdue
+     */
     public int getTotalOverdueByUser(long userId) {
         int totalOverdue = 0;
         for (Checkout currentCheckout : checkoutDao.getCheckoutsByUser(userId)) {
@@ -128,10 +156,20 @@ public class CheckOutService {
         return totalOverdue;
     }
 
+    /**
+     * get all check outs by current user
+     * @param userId id of current user
+     * @return array of check outs
+     */
     public Checkout[] getCheckoutsByUser(long userId) {
         return checkoutDao.getCheckoutsByUser(userId);
     }
 
+    /**
+     * convert nanoseconds to days in integer value
+     * @param nanoseconds nanoseconds
+     * @return integers days in nanoseconds
+     */
     private int convertToDays(long nanoseconds) {
         return (int) nanoseconds / 1000 / 1000 / 1000 / 60 / 60 / 24;
     }
