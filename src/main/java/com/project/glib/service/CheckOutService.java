@@ -7,7 +7,9 @@ import com.project.glib.model.Document;
 import com.project.glib.model.User;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CheckOutService {
     public final long FOUR_WEEKS = 2419200000000000L;
     public final long THREE_WEEKS = 1814400000000000L;

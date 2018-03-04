@@ -6,9 +6,11 @@ import com.project.glib.model.Checkout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(CheckoutDaoImplementation.class);
     private final CheckoutRepository checkoutRepository;

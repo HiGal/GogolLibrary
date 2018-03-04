@@ -5,7 +5,9 @@ import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReturnService {
     public static final int PENNY = 100;
 

@@ -4,7 +4,9 @@ import com.project.glib.dao.implementations.*;
 import com.project.glib.model.Booking;
 import com.project.glib.model.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BookingService {
     private final BookDaoImplementation bookDao;
     private final JournalDaoImplementation journalDao;

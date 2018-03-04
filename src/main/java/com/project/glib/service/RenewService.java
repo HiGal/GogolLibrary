@@ -3,7 +3,9 @@ package com.project.glib.service;
 import com.project.glib.dao.implementations.*;
 import com.project.glib.model.Checkout;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RenewService {
     private final CheckoutDaoImplementation checkoutDao;
 
