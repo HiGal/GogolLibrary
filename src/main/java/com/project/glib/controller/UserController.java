@@ -81,7 +81,8 @@ public class UserController {
                 switch (role) {
                     case User.LIBRARIAN:
                         System.out.println(" LIIIIIIIIIIIIIIIIIIIIIIIB ");
-                        modelAndView.addObject(login);
+                        System.out.println(user);
+                        modelAndView.addObject("user",user);
                         modelAndView.setViewName("librarian");
                         break;
                     case User.FACULTY:
