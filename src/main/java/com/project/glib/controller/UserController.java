@@ -78,39 +78,63 @@ public class UserController {
         if (user != null) {
             if (user.getPassword().equals(password)) {
                 String role = user.getRole().getName();
-                if (role.equals(User.LIBRARIAN)) {
-                    System.out.println(" LIIIIIIIIIIIIIIIIIIIIIIIB ");
-                    modelAndView.setViewName("librarian");
-                    return modelAndView;
-                } else if (role.equals(User.FACULTY)) {
-                    System.out.println("FAAAAAAAAAAAAAAAC");
-                    modelAndView.setViewName("faculty");
-                    return modelAndView;
-                } else if (role.equals(User.STUDENT)) {
-                    System.out.println("STUUUUUUUUUUUUUU");
-                    modelAndView.setViewName("student");
-                    return modelAndView;
-                } else {
-                    modelAndView.addObject("error", "Invalid Programmer");
-                    modelAndView.setViewName("login");
-                    return modelAndView;
+                switch (role) {
+                    case User.LIBRARIAN:
+                        System.out.println(" LIIIIIIIIIIIIIIIIIIIIIIIB ");
+                        modelAndView.addObject(login);
+                        modelAndView.setViewName("librarian");
+                        break;
+                    case User.FACULTY:
+                        System.out.println("FAAAAAAAAAAAAAAAC");
+                        modelAndView.setViewName("faculty");
+                        break;
+                    case User.STUDENT:
+                        System.out.println("STUUUUUUUUUUUUUU");
+                        modelAndView.setViewName("student");
+                        break;
+                    default:
+                        modelAndView.addObject("error", "Invalid Programmer");
+                        modelAndView.setViewName("login");
+                        break;
                 }
             } else {
                 modelAndView.addObject("error", "Invalid Password");
                 modelAndView.setViewName("login");
-                return modelAndView;
             }
         } else {
             modelAndView.addObject("error", "Invalid Login");
             modelAndView.setViewName("login");
-            return modelAndView;
         }
+        return modelAndView;
     }
 
     @RequestMapping(value = "/librarian", method = RequestMethod.GET)
-    public ModelAndView librarianDashboard(Model model, String logout) {
+    public ModelAndView librarianDashboard(Model model, String login, String logout) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", usersDao.findLogin(login));
         modelAndView.setViewName("librarian");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/librarian", method = RequestMethod.POST)
+    public ModelAndView librarianDashboard(User user, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error", " ");
+        modelAndView.setViewName("librarian");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/faculty", method = RequestMethod.GET)
+    public ModelAndView facultyDashboard(Model model, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("faculty");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/student", method = RequestMethod.GET)
+    public ModelAndView studentDashboard(Model model, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("student");
         return modelAndView;
     }
 
