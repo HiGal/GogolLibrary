@@ -2,7 +2,6 @@ package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.BookRepository;
 import com.project.glib.dao.interfaces.DocumentDao;
-import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,44 +22,95 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     }
 
     @Override
-    public void add(Book book) {
-        bookRepository.save(book);
-        logger.info("Book successfully saved. Book details : " + book);
+    public void add(Book book) throws Exception {
+        try {
+            bookRepository.save(book);
+            logger.info("Book successfully saved. Book details : " + book);
+        } catch (Exception e) {
+            logger.info("Try to add book with wrong parameters. New book information : " + book);
+            throw new Exception("Can't add this book, some parameters are wrong");
+        }
     }
 
     @Override
-    public void update(Book book) {
-        bookRepository.save(book);
-        logger.info("Book successfully update. Book details : " + book);
+    public void update(Book book) throws Exception {
+        try {
+            bookRepository.save(book);
+            logger.info("Book successfully update. Book details : " + book);
+        } catch (Exception e) {
+            logger.info("Try to update this book, book don't exist or some new book parameters are wrong. " +
+                    "Update book information : " + book);
+            throw new Exception("Can't update this book, book don't exist or some new book parameters are wrong");
+        }
     }
 
     @Override
-    public void remove(long bookId) {
-        bookRepository.delete(bookId);
+    public void remove(long bookId) throws Exception {
+        try {
+            logger.info("Try to delete book with book id = " + bookId);
+            bookRepository.delete(bookId);
+        } catch (Exception e) {
+            logger.info("Try to delete book with wrong book id = " + bookId);
+            throw new Exception("Delete this book not available, book don't exist");
+        }
     }
 
     @Override
-    public Book getById(long bookId) {
-        return bookRepository.findOne(bookId);
+    public Book getById(long bookId) throws Exception {
+        try {
+            logger.info("Try to get book with book id = " + bookId);
+            return bookRepository.findOne(bookId);
+        } catch (Exception e) {
+            logger.info("Try to get book with wrong book id = " + bookId);
+            throw new Exception("Information not available, book don't exist");
+        }
     }
 
     @Override
-    public int getCountById(long bookId) {
-        return bookRepository.findOne(bookId).getCount();
+    public int getCountById(long bookId) throws Exception {
+        try {
+            logger.info("Try to get count of book with book id = " + bookId);
+            return bookRepository.findOne(bookId).getCount();
+        } catch (Exception e) {
+            logger.info("Try to get count of book with wrong book id = " + bookId);
+            throw new Exception("Information not available, book don't exist");
+        }
     }
 
     @Override
-    public void decrementCountById(long bookId) {
-        bookRepository.findOne(bookId).setCount(bookRepository.findOne(bookId).getCount() - 1);
+    public void decrementCountById(long bookId) throws Exception {
+        try {
+            logger.info("Try to decrement count of book with book id = " + bookId);
+            bookRepository.findOne(bookId).setCount(bookRepository.findOne(bookId).getCount() - 1);
+        } catch (Exception e) {
+            logger.info("Try to decrement count of book with wrong book id = " + bookId);
+            throw new Exception("Information not available, book don't exist");
+        }
     }
 
     @Override
-    public int getPriceById(long bookId) {
-        return bookRepository.findOne(bookId).getPrice();
+    public int getPriceById(long bookId) throws Exception {
+        try {
+            logger.info("Try to get price of book with book id = " + bookId);
+            return bookRepository.findOne(bookId).getPrice();
+        } catch (Exception e) {
+            logger.info("Try to get price of book with wrong book id = " + bookId);
+            throw new Exception("Information not available, book don't exist");
+        }
+    }
+
+    public boolean getIsBestseller(long bookId) throws Exception {
+        try {
+            logger.info("Try to get is bestseller book with book id = " + bookId);
+            return bookRepository.findOne(bookId).isBestSeller();
+        } catch (Exception e) {
+            logger.info("Try to get is bestseller book with wrong book id = " + bookId);
+            throw new Exception("Information not available, book don't exist");
+        }
     }
 
     @Override
-    public List<Book> getListCountNotZero() {
+    public List<Book> getListCountNotZeroOrRenewed() {
         List<Book> books = bookRepository.findAll().stream().filter(book -> book.getCount() > 0).collect(Collectors.toList());
 
         for (Book book : books) {
@@ -69,21 +119,6 @@ public class BookDaoImplementation implements DocumentDao<Book> {
 
         return books;
     }
-
-    public boolean getIsBestseller(long bookId) {
-        return bookRepository.findOne(bookId).isBestSeller();
-    }
-
-    /*
-    public List<Book> getBooksByAuthor(String author){
-        return bookRepository.findAll().stream()
-                .filter(book->book.getBookAuthor().equals(author))
-                .collect(Collectors.toCollection(HashSet::new));
-        return bookRepository.findAll().stream()
-                .filter(book->book.getBookAuthor().equals("Kiplings"))
-                .anyMatch(book->book.isBestSeller());
-    }
-    */
 
     @Override
     @SuppressWarnings("unchecked")

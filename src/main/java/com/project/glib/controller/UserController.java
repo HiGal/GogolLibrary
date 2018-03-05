@@ -1,6 +1,7 @@
 package com.project.glib.controller;
 
 //import com.project.glib.dao.implementations.SecurityDaoImplementation;
+
 import com.project.glib.dao.implementations.UsersDaoImplementation;
 import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
@@ -8,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 //@RestController
@@ -37,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@RequestBody User userForm, BindingResult bindingResult) {
+    public String registration(@RequestBody User userForm, BindingResult bindingResult) throws Exception {
 
         userValidator.validate(userForm, bindingResult);
 

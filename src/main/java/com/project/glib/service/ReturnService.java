@@ -3,9 +3,13 @@ package com.project.glib.service;
 import com.project.glib.dao.implementations.*;
 import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
+import com.project.glib.model.User;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReturnService {
@@ -16,24 +20,28 @@ public class ReturnService {
     private final AudioVideoDaoImplementation avDao;
     private final DocumentPhysicalDaoImplementation docPhysDao;
     private final CheckoutDaoImplementation checkoutDao;
+    private final UsersDaoImplementation usersDao;
 
     @Autowired
     public ReturnService(BookDaoImplementation bookDao,
-                           JournalDaoImplementation journalDao,
-                           AudioVideoDaoImplementation avDao,
-                           DocumentPhysicalDaoImplementation docPhysDao,
-                           CheckoutDaoImplementation checkoutDao) {
+                         JournalDaoImplementation journalDao,
+                         AudioVideoDaoImplementation avDao,
+                         DocumentPhysicalDaoImplementation docPhysDao,
+                         CheckoutDaoImplementation checkoutDao,
+                         UsersDaoImplementation usersDao) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
         this.docPhysDao = docPhysDao;
         this.checkoutDao = checkoutDao;
+        this.usersDao = usersDao;
     }
 
-    public Pair<String, Integer> toReturnDocument(Checkout checkout) {
+    public Pair<String, Integer> toReturnDocument(Checkout checkout) throws Exception {
         String checkoutInfo = checkout.toString();
+        int overdue = getOverdue(checkout);
         checkoutDao.remove(checkout.getId());
-        return new Pair<>(checkoutInfo, getOverdue(checkout));
+        return new Pair<>(checkoutInfo, overdue);
     }
 
     /**
@@ -41,7 +49,7 @@ public class ReturnService {
      * @param checkout current check out
      * @return overdue
      */
-    private int getOverdue(Checkout checkout) {
+    public int getOverdue(Checkout checkout) throws Exception {
         int overdue = 0;
         long difference = checkout.getCheckoutTime() - System.nanoTime();
         if (difference < 0) {
@@ -73,13 +81,37 @@ public class ReturnService {
      * @param userId id of current user
      * @return total overdue
      */
-    public int getTotalOverdueByUser(long userId) {
+    public int getTotalOverdueByUser(long userId) throws Exception {
         int totalOverdue = 0;
         for (Checkout currentCheckout : checkoutDao.getCheckoutsByUser(userId)) {
             totalOverdue += getOverdue(currentCheckout);
         }
 
         return totalOverdue;
+    }
+
+    /**
+     * get list of pairs<User, Integer> with positive total overdue
+     *
+     * @return list of pairs<User, Integer>
+     * @throws Exception
+     */
+    public List<Pair<User, Integer>> getListOfTotalOverdue() throws Exception {
+        List<Pair<User, Integer>> listOverdue = new ArrayList<>();
+        List<Checkout> checkouts = checkoutDao.getList();
+
+        for (Checkout checkout : checkouts) {
+            long userId = checkout.getIdUser();
+            if (getTotalOverdueByUser(userId) > 0) {
+                listOverdue.add(new Pair<>(usersDao.getById(userId), getTotalOverdueByUser(userId)));
+            }
+        }
+
+        for (Pair<User, Integer> pair : listOverdue) {
+            System.out.println("User : " + pair.getKey() + " has overdue : " + pair.getValue());
+        }
+
+        return listOverdue;
     }
 
     /**

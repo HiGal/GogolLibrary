@@ -21,44 +21,85 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     }
 
     @Override
-    public void add(Journal journal) {
-        journalRepository.save(journal);
-        logger.info("Journal successfully saved. Journal details : " + journal);
+    public void add(Journal journal) throws Exception {
+        try {
+            journalRepository.save(journal);
+            logger.info("Journal successfully saved. Journal details : " + journal);
+        } catch (Exception e) {
+            logger.info("Try to add journal with wrong parameters. New journal information : " + journal);
+            throw new Exception("Can't add this journal, some parameters are wrong");
+        }
     }
 
     @Override
-    public void update(Journal journal) {
-        journalRepository.save(journal);
-        logger.info("Journal successfully update. Journal details : " + journal);
+    public void update(Journal journal) throws Exception {
+        try {
+            journalRepository.save(journal);
+            logger.info("Journal successfully update. Journal details : " + journal);
+        } catch (Exception e) {
+            logger.info("Try to update this journal, journal don't exist or some new journal parameters are wrong. " +
+                    "Update journal information : " + journal);
+            throw new Exception("Can't update this journal, journal don't exist or some new journal parameters are wrong");
+        }
     }
 
     @Override
-    public void remove(long journalId) {
-        journalRepository.delete(journalId);
+    public void remove(long journalId) throws Exception {
+        try {
+            logger.info("Try to delete journal with journal id = " + journalId);
+            journalRepository.delete(journalId);
+        } catch (Exception e) {
+            logger.info("Try to delete journal with wrong journal id = " + journalId);
+            throw new Exception("Delete this journal not available, journal don't exist");
+        }
     }
 
     @Override
-    public Journal getById(long journalId) {
-        return journalRepository.findOne(journalId);
+    public Journal getById(long journalId) throws Exception {
+        try {
+            logger.info("Try to get count of journal with journal id = " + journalId);
+            return journalRepository.findOne(journalId);
+        } catch (Exception e) {
+            logger.info("Try to get count of journal with wrong journal id = " + journalId);
+            throw new Exception("Information not available, journal don't exist");
+        }
     }
 
     @Override
-    public int getCountById(long journalId) {
-        return journalRepository.findOne(journalId).getCount();
+    public int getCountById(long journalId) throws Exception {
+        try {
+            logger.info("Try to get count of journal with journal id = " + journalId);
+            return journalRepository.findOne(journalId).getCount();
+        } catch (Exception e) {
+            logger.info("Try to get count of journal with wrong journal id = " + journalId);
+            throw new Exception("Information not available, journal don't exist");
+        }
     }
 
     @Override
-    public void decrementCountById(long journalId) {
-        journalRepository.findOne(journalId).setCount(journalRepository.findOne(journalId).getCount() - 1);
+    public void decrementCountById(long journalId) throws Exception {
+        try {
+            logger.info("Try to decrement count of journal with journal id = " + journalId);
+            journalRepository.findOne(journalId).setCount(journalRepository.findOne(journalId).getCount() - 1);
+        } catch (Exception e) {
+            logger.info("Try to decrement count of journal with wrong journal id = " + journalId);
+            throw new Exception("Information not available, journal don't exist");
+        }
     }
 
     @Override
-    public int getPriceById(long journalId) {
-        return journalRepository.findOne(journalId).getPrice();
+    public int getPriceById(long journalId) throws Exception {
+        try {
+            logger.info("Try to get price of journal with journal id = " + journalId);
+            return journalRepository.findOne(journalId).getPrice();
+        } catch (Exception e) {
+            logger.info("Try to get price of journal with wrong journal id = " + journalId);
+            throw new Exception("Information not available, journal don't exist");
+        }
     }
 
     @Override
-    public List<Journal> getListCountNotZero() {
+    public List<Journal> getListCountNotZeroOrRenewed() {
         List<Journal> journals = journalRepository.findAll().stream().filter(journal -> journal.getCount() > 0).collect(Collectors.toList());
 
         for (Journal journal : journals) {

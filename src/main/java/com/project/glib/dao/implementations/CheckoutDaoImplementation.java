@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
@@ -20,26 +21,55 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
         this.checkoutRepository = checkoutRepository;
     }
 
-    public void add(Checkout checkout) {
-        checkoutRepository.save(checkout);
-        logger.info("Checkout successfully saved. Checkout details : " + checkout);
+    public void add(Checkout checkout) throws Exception {
+        try {
+            checkoutRepository.save(checkout);
+            logger.info("Checkout successfully saved. Checkout details : " + checkout);
+        } catch (Exception e) {
+            logger.info("Try to add check out with wrong parameters. New check out information : " + checkout);
+            throw new Exception("Can't add this check out, some parameters are wrong");
+        }
     }
 
-    public void update(Checkout checkout) {
-        checkoutRepository.save(checkout);
-        logger.info("Checkout successfully update. Checkout details : " + checkout);
+    public void update(Checkout checkout) throws Exception {
+        try {
+            checkoutRepository.save(checkout);
+            logger.info("Checkout successfully update. Checkout details : " + checkout);
+        } catch (Exception e) {
+            logger.info("Try to update this check out, check out don't exist or some new check out parameters are wrong. " +
+                    "Update check out information : " + checkout);
+            throw new Exception("Can't update this check out, check out don't exist or some new check out parameters are wrong");
+        }
     }
 
-    public void remove(long checkoutId) {
-        checkoutRepository.delete(checkoutId);
+    public void remove(long checkoutId) throws Exception {
+        try {
+            logger.info("Try to delete check out with check out id = " + checkoutId);
+            checkoutRepository.delete(checkoutId);
+        } catch (Exception e) {
+            logger.info("Try to delete check out with wrong check out id = " + checkoutId);
+            throw new Exception("Delete this check out not available, check out don't exist");
+        }
     }
 
-    public Checkout getById(long checkoutId) {
-        return checkoutRepository.findOne(checkoutId);
+    public Checkout getById(long checkoutId) throws Exception {
+        try {
+            logger.info("Try to get check out with check out id = " + checkoutId);
+            return checkoutRepository.findOne(checkoutId);
+        } catch (Exception e) {
+            logger.info("Try to get check out with wrong check out id = " + checkoutId);
+            throw new Exception("Information not available, check out don't exist");
+        }
     }
 
-    public boolean getIsRenewedById(long checkoutId) {
-        return checkoutRepository.findOne(checkoutId).isRenewed();
+    public boolean getIsRenewedById(long checkoutId) throws Exception {
+        try {
+            logger.info("Try to get is renewed check out by check out id = " + checkoutId);
+            return checkoutRepository.findOne(checkoutId).isRenewed();
+        } catch (Exception e) {
+            logger.info("Try to get is renewed check out by wrong check out id = " + checkoutId);
+            throw new Exception("Information not available, check out don't exist");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -50,22 +80,37 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
             logger.info("Checkout list : " + checkout);
         }
 
+        logger.info("Check out list successfully printed");
         return checkouts;
     }
 
-    public long getNumberOfCheckoutDocumentsByUser(long userId) {
-        return checkoutRepository.findAll().stream()
-                .filter(checkout -> checkout.getIdUser() == userId)
-                .count();
+    public long getNumberOfCheckoutDocumentsByUser(long userId) throws Exception {
+        try {
+            logger.info("Try to get numbers of check outs documents by user with user id = " + userId);
+            return checkoutRepository.findAll().stream()
+                    .filter(checkout -> checkout.getIdUser() == userId)
+                    .count();
+        } catch (Exception e) {
+            logger.info("Try to get numbers of check outs documents by user with wrong user id = " + userId);
+            throw new Exception("Information not available, user don't exist");
+        }
     }
 
-    public Checkout[] getCheckoutsByUser(long userId) {
-        return checkoutRepository.findAll().stream()
-                .filter(checkout -> checkout.getIdUser() == userId)
-                .toArray(Checkout[]::new);
+    public List<Checkout> getCheckoutsByUser(long userId) throws Exception {
+        try {
+            logger.info("Try to get list of check out by user with user id = " + userId);
+            return checkoutRepository.findAll().stream()
+                    .filter(checkout -> checkout.getIdUser() == userId)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.info("Try to get list of check out by user with wrong user id = " + userId);
+            throw new Exception("Information not available, user don't exist");
+        }
     }
 
     public boolean alreadyHasThisCheckout(long docId, String docType, long userId) {
+        logger.info("Get check has user with id = " + userId +
+                " already check out " + docType.toLowerCase() + " with virtual id = " + docId);
         return checkoutRepository.findAll().stream()
                 .filter(checkout -> checkout.getIdUser() == userId)
                 .filter(checkout -> checkout.getIdDoc() == docId)

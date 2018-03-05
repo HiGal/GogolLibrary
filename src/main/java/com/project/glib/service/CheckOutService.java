@@ -5,9 +5,10 @@ import com.project.glib.model.Booking;
 import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
 import com.project.glib.model.User;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CheckOutService {
@@ -84,7 +85,7 @@ public class CheckOutService {
      * @param userId id of current user
      * @return number of check out
      */
-    public long numberOfCheckoutDocumentsByUser(long userId) {
+    public long numberOfCheckoutDocumentsByUser(long userId) throws Exception {
         return checkoutDao.getNumberOfCheckoutDocumentsByUser(userId);
     }
 
@@ -93,7 +94,7 @@ public class CheckOutService {
      * @param userId id of current user
      * @return array of check outs
      */
-    public Checkout[] getCheckoutsByUser(long userId) {
+    public List<Checkout> getCheckoutsByUser(long userId) throws Exception {
         return checkoutDao.getCheckoutsByUser(userId);
     }
 }

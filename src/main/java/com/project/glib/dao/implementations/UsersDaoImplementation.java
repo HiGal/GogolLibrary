@@ -20,45 +20,45 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
 
     @Autowired
     public UsersDaoImplementation(UserRepository userRepository,
-                                     RoleRepository roleRepository){
+                                  RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
-    public boolean getIsAuthById(long userId) {
-        return userRepository.findOne(userId).getLoggedIn();
+    public void add(User user) throws Exception {
+        //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        //userRepository.save(user);
+        //user.setRole(roleRepository.findOne(user.getId()));
+        try {
+            userRepository.save(user);
+            logger.info("User successfully saved. Document details : " + user);
+        } catch (Exception e) {
+            logger.info("Try to add user with wrong parameters. New user information : " + user);
+            throw new Exception("Can't add this user, some parameters are wrong");
+        }
     }
 
-    public String getTypeById(long userId) {
-        return userRepository.findOne(userId).getRole().toString();
-    }
-
-    public void add(User user) {
+    public void update(User user) throws Exception {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-      //  userRepository.save(user);
-       //user.setRole(roleRepository.findOne(user.getId()));
-        userRepository.save(user);
-        logger.info("User successfully saved. Document details : " + user);
+        try {
+            user.setRole(roleRepository.findOne(user.getId()));
+            userRepository.save(user);
+            logger.info("User successfully update. User details : " + user);
+        } catch (Exception e) {
+            logger.info("Try to update this user, user don't exist or some new user parameters are wrong. " +
+                    "Update user information : " + user);
+            throw new Exception("Can't update this user, user don't exist or some new user parameters are wrong");
+        }
     }
 
-    public void update(User user) {
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRole(roleRepository.findOne(user.getId()));
-        userRepository.save(user);
-        logger.info("User successfully update. User details : " + user);
-    }
-
-    public void remove(long userId) {
-        userRepository.delete(userId);
-    }
-
-    public User getById(long userId) {
-        return userRepository.findOne(userId);
-    }
-
-
-    public User findLogin(String login) {
-        return userRepository.findUserByLogin(login);
+    public void remove(long userId) throws Exception {
+        try {
+            logger.info("Try to delete user with user id = " + userId);
+            userRepository.delete(userId);
+        } catch (Exception e) {
+            logger.info("Try to delete user with wrong user id = " + userId);
+            throw new Exception("Delete this patron not available, patron don't exist");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -69,11 +69,47 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
             logger.info("User list : " + user);
         }
 
+        logger.info("User list successfully printed");
         return users;
     }
 
-    public List<User> authUsers(){
+    public User getById(long userId) throws Exception {
+        try {
+            logger.info("Try to get user with user id = " + userId);
+            return userRepository.findOne(userId);
+        } catch (Exception e) {
+            logger.info("Try to get user with wrong user id = " + userId);
+            throw new Exception("Information not available, patron don't exist");
+        }
+    }
+
+    public User findLogin(String login) {
+        logger.info("Try to get user with user login = \"" + login + "\"");
+        return userRepository.findUserByLogin(login);
+    }
+
+    public List<User> authUsers() {
+        logger.info("Authorized user list successfully printed");
         return userRepository.findAll().stream().filter(User::getAuth).collect(Collectors.toList());
     }
 
+    public boolean getIsAuthById(long userId) throws Exception {
+        try {
+            logger.info("Try to get authorize user with user id = " + userId);
+            return userRepository.findOne(userId).getLoggedIn();
+        } catch (Exception e) {
+            logger.info("Try to get authorize user with wrong user id = " + userId);
+            throw new Exception("Information not available, user don't exist");
+        }
+    }
+
+    public String getTypeById(long userId) throws Exception {
+        try {
+            logger.info("Try to get user type with user id = " + userId);
+            return userRepository.findOne(userId).getRole().toString();
+        } catch (Exception e) {
+            logger.info("Try to get user type with wrong user id = " + userId);
+            throw new Exception("Information not available, user don't exist");
+        }
+    }
 }

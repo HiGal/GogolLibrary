@@ -6,6 +6,8 @@ import com.project.glib.model.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookingService {
     private final BookDaoImplementation bookDao;
@@ -93,7 +95,7 @@ public class BookingService {
      * @param userId id of current user
      * @return number of booked
      */
-    public long numberOfBookedDocumentsByUser(long userId) {
+    public long numberOfBookedDocumentsByUser(long userId) throws Exception {
         return bookingDao.getNumberOfBookingsDocumentsByUser(userId);
     }
 
@@ -102,7 +104,7 @@ public class BookingService {
      * @param userId id of current user
      * @return array of bookings
      */
-    public Booking[] getBookingsByUser(long userId) {
+    public List<Booking> getBookingsByUser(long userId) throws Exception {
         return bookingDao.getBookingsByUser(userId);
     }
 }

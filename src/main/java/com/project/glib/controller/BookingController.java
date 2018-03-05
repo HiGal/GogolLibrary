@@ -12,8 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+//import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 //@RestController
@@ -36,7 +37,7 @@ public class BookingController {
     @RequestMapping(value = "/booking/book", method = RequestMethod.GET)
     public ModelAndView bookingBook() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allBooks", bookDao.getListCountNotZero());
+        modelAndView.addObject("allBooks", bookDao.getListCountNotZeroOrRenewed());
         modelAndView.setViewName("order");
         return modelAndView;
     }
@@ -44,7 +45,7 @@ public class BookingController {
     @RequestMapping(value = "/booking/jounal", method = RequestMethod.GET)
     public ModelAndView bookingJournal() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allJournals", journalDao.getListCountNotZero());
+        modelAndView.addObject("allJournals", journalDao.getListCountNotZeroOrRenewed());
         modelAndView.setViewName("orderJ");
         return modelAndView;
     }
@@ -52,7 +53,7 @@ public class BookingController {
     @RequestMapping(value = "/booking/av", method = RequestMethod.GET)
     public ModelAndView bookingAV() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allAv", audioVideoDao.getListCountNotZero());
+        modelAndView.addObject("allAv", audioVideoDao.getListCountNotZeroOrRenewed());
         modelAndView.setViewName("orderAV");
         return modelAndView;
     }
