@@ -1,13 +1,12 @@
 package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.BookDaoImplementation;
-import com.project.glib.model.Book;
 import com.project.glib.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -25,12 +24,12 @@ public class BookingController {
         this.bookDao = bookDao;
     }
 
-    @RequestMapping(value = "/booking/books", method = RequestMethod.GET)
-    public List<Book> registration() {
+    @RequestMapping(value = "/booking", method = RequestMethod.GET)
+    public String booking() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allBooks", bookDao.getList());
         modelAndView.setViewName("order");
-        return bookDao.getList();
+        return "order";
     }
 
 //    @RequestMapping(value = "/registration", method = RequestMethod.POST)

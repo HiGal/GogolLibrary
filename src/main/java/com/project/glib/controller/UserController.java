@@ -75,14 +75,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(Model model, @RequestParam(value = "login") String login,@RequestParam(value = "password") String password , String logout) {
-        System.out.println("looooogin  " + login);
+    public String login(Model model, @RequestParam(value = "login",required =  true) String login,
+                        @RequestParam(value = "password", required = true) String password , String logout) {
        User user = usersDao.findLogin(login);
        if (user.getPassword().equals(password)){
-           return "redirect:/booking/books";
+           return "redirect:/booking";
        }else{
            model.addAttribute("error","Invalid Password");
-           return "redirect:/booking/books";
+           return "redirect:/booking";
        }
     }
 
