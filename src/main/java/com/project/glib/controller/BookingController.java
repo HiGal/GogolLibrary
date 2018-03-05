@@ -8,7 +8,6 @@ import com.project.glib.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +41,17 @@ public class BookingController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/booking/book", method = RequestMethod.POST)
+    public String b(@RequestBody Booking bookingForm, Model model)  {
+        try {
+            System.out.println(bookingForm.getIdUser());
+            bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
+        }catch (Exception e){
+            model.addAttribute("error", e.getMessage());
+        }
+        return "order";
+    }
+
     @RequestMapping(value = "/booking/jounal", method = RequestMethod.GET)
     public ModelAndView bookingJournal() {
         ModelAndView modelAndView = new ModelAndView();
@@ -58,14 +68,6 @@ public class BookingController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/booking", method = RequestMethod.POST)
-    public String b(@RequestBody Booking bookingForm, BindingResult bindingResult,Model model)  {
-        try {
-            bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
-        }catch (Exception e){
-            model.addAttribute("error", e.getMessage());
-        }
-        return "order";
-    }
+
 }
 

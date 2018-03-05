@@ -28,6 +28,7 @@
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
             <p id="profile-name" class="profile-name-card"></p>
             <form class="form-signin" action="/login" method="post">
+                <pre>{{error}}</pre>
                 <input type="text" name="login" class="form-control"  placeholder="Login" required autofocus>
                 <input type="password" name="password"  class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" formmethod="post">Sign in</button>
