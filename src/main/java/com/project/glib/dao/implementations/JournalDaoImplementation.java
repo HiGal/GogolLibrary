@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class JournalDaoImplementation implements DocumentDao<Journal> {
@@ -54,6 +55,17 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     @Override
     public int getPriceById(long journalId) {
         return journalRepository.findOne(journalId).getPrice();
+    }
+
+    @Override
+    public List<Journal> getListCountNotZero() {
+        List<Journal> journals = journalRepository.findAll().stream().filter(journal -> journal.getCount() > 0).collect(Collectors.toList());
+
+        for (Journal journal : journals) {
+            logger.info("Journal list : " + journal);
+        }
+
+        return journals;
     }
 
     @Override

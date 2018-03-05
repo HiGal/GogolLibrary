@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
@@ -61,6 +62,17 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     @SuppressWarnings("unchecked")
     public List<AudioVideo> getList() {
         List<AudioVideo> audioVideos = audioVideoRepository.findAll();
+
+        for (AudioVideo audioVideo : audioVideos) {
+            logger.info("AudioVideo list : " + audioVideo);
+        }
+
+        return audioVideos;
+    }
+
+    @Override
+    public List<AudioVideo> getListCountNotZero() {
+        List<AudioVideo> audioVideos = audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
 
         for (AudioVideo audioVideo : audioVideos) {
             logger.info("AudioVideo list : " + audioVideo);
