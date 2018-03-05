@@ -8,7 +8,6 @@ import com.project.glib.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +57,7 @@ public class BookingController {
     }
 
     @RequestMapping(value = "/booking", method = RequestMethod.POST)
-    public String b(@RequestBody Booking bookingForm, BindingResult bindingResult,Model model)  {
+    public String b(@RequestBody Booking bookingForm,Model model)  {
         try {
             bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
         }catch (Exception e){

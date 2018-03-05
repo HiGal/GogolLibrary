@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class User {
     public static final String FACULTY = "FACULTY";
     public static final String STUDENT = "STUDENT";
+    public static final String LIBRARIAN = "LIBRARIAN";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
