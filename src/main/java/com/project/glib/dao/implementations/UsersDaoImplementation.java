@@ -7,7 +7,6 @@ import com.project.glib.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,15 +17,12 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UsersDaoImplementation(UserRepository userRepository,
-                                     RoleRepository roleRepository,
-                                     BCryptPasswordEncoder bCryptPasswordEncoder){
+                                     RoleRepository roleRepository){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public boolean getIsAuthById(long userId) {
