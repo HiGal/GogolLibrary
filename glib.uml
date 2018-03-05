@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.project.glib</OriginalElement>
+  <nodes>
+    <node x="135.0" y="134.86783854166666">com.project.glib.validator</node>
+    <node x="419.0" y="415.86783854166663">com.project.glib.dao</node>
+    <node x="119.81249999999999" y="15.867838541666657">com.project.glib.model</node>
+    <node x="218.0" y="415.86783854166663">com.project.glib.configurations</node>
+    <node x="0.0" y="415.86783854166663">com.project.glib.GlibApplicationTests</node>
+    <node x="132.5" y="223.86783854166666">com.project.glib.controller</node>
+    <node x="0.0" y="134.86783854166666">com.project.glib.service</node>
+    <node x="0.0" y="297.86783854166663">com.project.glib.GlibApplication</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.project.glib.controller" target="com.project.glib.model">
+      <point x="32.5" y="-14.5" />
+      <point x="230.0" y="193.86783854166666" />
+      <point x="270.5" y="193.86783854166666" />
+      <point x="270.5" y="114.86783854166666" />
+      <point x="211.625" y="114.86783854166666" />
+      <point x="35.3125" y="14.5" />
+    </edge>
+    <edge source="com.project.glib.controller" target="com.project.glib.service">
+      <point x="-32.5" y="-14.5" />
+      <point x="165.0" y="193.86783854166666" />
+      <point x="86.25" y="193.86783854166666" />
+      <point x="28.75" y="14.5" />
+    </edge>
+    <edge source="com.project.glib.service" target="com.project.glib.model">
+      <point x="28.75" y="-14.5" />
+      <point x="86.25" y="114.86783854166666" />
+      <point x="183.375" y="114.86783854166666" />
+      <point x="7.0625" y="14.5" />
+    </edge>
+    <edge source="com.project.glib.model" target="com.project.glib.model">
+      <point x="-21.1875" y="14.5" />
+      <point x="155.125" y="84.86783854166666" />
+      <point x="79.81249999999999" y="84.86783854166666" />
+      <point x="79.81249999999999" y="20.701171875" />
+      <point x="-56.5" y="-9.666666666666657" />
+    </edge>
+    <edge source="com.project.glib.validator" target="com.project.glib.model">
+      <point x="0.0" y="-14.5" />
+      <point x="21.1875" y="14.5" />
+    </edge>
+    <edge source="com.project.glib.controller" target="com.project.glib.validator">
+      <point x="10.833333333333314" y="-14.5" />
+      <point x="208.33333333333331" y="183.86783854166666" />
+      <point x="228.75" y="183.86783854166666" />
+      <point x="31.25" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="165.5" y="162.5" />
+  <SelectedNodes>
+    <node>com.project.glib.GlibApplicationTests</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

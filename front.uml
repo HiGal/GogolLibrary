@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JavaScript-modules-diagram</ID>
+  <OriginalElement>C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src</OriginalElement>
+  <nodes>
+    <node x="208.0" y="638.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/FMyDocuments.html</node>
+    <node x="865.0" y="253.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Forder.html</node>
+    <node x="709.0" y="166.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderAV.html</node>
+    <node x="464.0" y="108.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderJ.html</node>
+    <node x="149.0" y="320.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html</node>
+    <node x="985.0" y="328.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html</node>
+    <node x="944.0" y="446.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/MyDocuments.html</node>
+    <node x="283.0" y="390.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Patrons.html</node>
+    <node x="1243.0" y="101.0">C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__code.jquery.com_jquery-1.11.1.js</node>
+    <node x="553.0" y="323.0">C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js</node>
+    <node x="486.0" y="818.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addAV.html</node>
+    <node x="650.0" y="1062.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addBook.html</node>
+    <node x="939.0" y="796.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addJournal.html</node>
+    <node x="534.0" y="958.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addUser.html</node>
+    <node x="399.0" y="530.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/av.html</node>
+    <node x="0.0" y="1383.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/bootstrap.js#jquery#352;C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/bootstrap.js#popper.js#371;</node>
+    <node x="528.0" y="30.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/documents.html</node>
+    <node x="956.0" y="919.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html</node>
+    <node x="931.0" y="726.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html</node>
+    <node x="997.0" y="640.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html</node>
+    <node x="808.0" y="989.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html</node>
+    <node x="168.0" y="722.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html</node>
+    <node x="1549.0" y="452.0">C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_2.2.0_jquery.js</node>
+    <node x="512.0" y="683.0">C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js</node>
+    <node x="582.0" y="888.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/journals.html</node>
+    <node x="85.0" y="1136.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/jquery.maskedinput.js#jquery#349;</node>
+    <node x="139.0" y="541.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order.html</node>
+    <node x="321.0" y="250.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderAV.html</node>
+    <node x="463.0" y="178.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderJ.html</node>
+    <node x="696.0" y="794.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order_requests.html</node>
+    <node x="285.0" y="863.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/overdue.html</node>
+    <node x="1186.0" y="527.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html</node>
+    <node x="273.0" y="793.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html</node>
+    <node x="362.0" y="1035.0">C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/taken_documents.html</node>
+    <node x="854.0" y="899.0">../css/editU.css</node>
+    <node x="553.0" y="393.0">../css/patrons.css</node>
+    <node x="0.0" y="663.0">../css/profile.css</node>
+    <node x="1550.0" y="614.0">../css/regstyle.css</node>
+    <node x="1108.0" y="0.0">../css/style.css</node>
+    <node x="1499.0" y="762.0">../js/bootstrap.js</node>
+    <node x="1175.0" y="890.0">../js/jquery.maskedinput.js</node>
+    <node x="607.0" y="473.0">//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css</node>
+    <node x="288.0" y="460.0">//ssl.gstatic.com/accounts/ui/avatar_2x.png</node>
+    <node x="716.0" y="543.0">https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css</node>
+    <node x="620.0" y="613.0">https://fonts.googleapis.com/css?family=Oswald</node>
+    <node x="1359.0" y="339.0">https://fonts.googleapis.com/css?family=Oxygen</node>
+    <node x="1284.0" y="709.0">https://fonts.googleapis.com/css?family=Passion+One</node>
+    <node x="100.0" y="1313.0">jquery</node>
+    <node x="41.0" y="1555.0">popper.js</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="../css/regstyle.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addUser.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderJ.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderJ.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Forder.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addBook.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html" target="//ssl.gstatic.com/accounts/ui/avatar_2x.png">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Patrons.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html" target="../js/jquery.maskedinput.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/FMyDocuments.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addAV.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addJournal.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/documents.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/journals.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/bootstrap.js#jquery#352;C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/bootstrap.js#popper.js#371;" target="jquery">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/MyDocuments.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addAV.html" target="../css/editU.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html" target="//ssl.gstatic.com/accounts/ui/avatar_2x.png">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Forder.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html" target="../js/jquery.maskedinput.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Forder.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/MyDocuments.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/documents.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html" target="../js/jquery.maskedinput.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/overdue.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/av.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderJ.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addJournal.html" target="../css/editU.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/overdue.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/documents.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderAV.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Patrons.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/overdue.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/FMyDocuments.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/documents.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/taken_documents.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderJ.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/FMyDocuments.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Forder.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addUser.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addBook.html" target="../css/editU.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/journals.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="https://fonts.googleapis.com/css?family=Oxygen">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderAV.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/MyDocuments.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderJ.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addUser.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderJ.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/jquery.maskedinput.js#jquery#349;" target="jquery">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="//ssl.gstatic.com/accounts/ui/avatar_2x.png">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/journals.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addBook.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Patrons.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html" target="../js/jquery.maskedinput.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order_requests.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__code.jquery.com_jquery-1.11.1.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/overdue.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/taken_documents.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html" target="../css/profile.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html" target="../css/profile.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/taken_documents.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html" target="../css/editU.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addBook.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addAV.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/journals.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderJ.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="../js/jquery.maskedinput.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/overdue.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderAV.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderAV.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Forder.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/documents.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/FMyDocuments.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addJournal.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="../css/style.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__code.jquery.com_jquery-1.11.1.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_2.2.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderJ.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addBook.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Patrons.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/overdue.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Patrons.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html" target="../css/editU.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html" target="../css/editU.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/faculty.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order_requests.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html" target="../css/profile.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="https://fonts.googleapis.com/css?family=Passion+One">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addJournal.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/taken_documents.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order_requests.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderAV.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addBook.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order_requests.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderAV.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/av.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/bootstrap.js#jquery#352;C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/static/js/bootstrap.js#popper.js#371;" target="popper.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html" target="//ssl.gstatic.com/accounts/ui/avatar_2x.png">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderJ.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/MyDocuments.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/av.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="https://fonts.googleapis.com/css?family=Passion+One">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderJ.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="../js/bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Forder.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/MyDocuments.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderJ.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/av.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addUser.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/student.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderAV.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/documents.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Patrons.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addJournal.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addUser.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/av.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addAV.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/FMyDocuments.html" target="../css/patrons.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editJ.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/ForderJ.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editB.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/journals.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addJournal.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/Librarian.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/journals.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/MyDocuments.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/LogIn.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/addAV.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/FMyDocuments.html" target="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/taken_documents.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/orderAV.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/order_requests.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/av.html" target="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editAV.html" target="../css/editU.css">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/taken_documents.html" target="https://fonts.googleapis.com/css?family=Oswald">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/editU.html" target="C:/Users/Farit Galeev/.IntelliJIdea2017.3/config/javascript/extLibs/__maxcdn.bootstrapcdn.com_bootstrap_3.3.0_js_bootstrap.js">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="C:/Users/Farit Galeev/IdeaProjects/GogolLibrary/src/main/resources/templates/register.html" target="https://fonts.googleapis.com/css?family=Oxygen">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6999999999999997" x="744.2297946108597" y="733.355920336018" />
+  <SelectedNodes>
+    <node>https://fonts.googleapis.com/css?family=Passion+One</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>All</Category>
+  </Categories>
+  <VISIBILITY>Details</VISIBILITY>
+</Diagram>
+
