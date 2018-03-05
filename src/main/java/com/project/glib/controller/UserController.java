@@ -31,7 +31,6 @@ public class UserController {
         this.userValidator = userValidator;
     }
 
-
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
@@ -132,9 +131,25 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/faculty", method = RequestMethod.POST)
+    public ModelAndView facultyDashboard(User user, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error", " ");
+        modelAndView.setViewName("faculty");
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/student", method = RequestMethod.GET)
     public ModelAndView studentDashboard(Model model, String logout) {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("student");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/student", method = RequestMethod.POST)
+    public ModelAndView studentDashboard(User user, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error", " ");
         modelAndView.setViewName("student");
         return modelAndView;
     }

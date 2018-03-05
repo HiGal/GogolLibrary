@@ -40,6 +40,17 @@ public class BookingController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/booking/book", method = RequestMethod.POST)
+    public String b(@RequestBody Booking bookingForm, Model model)  {
+        try {
+            System.out.println(bookingForm.getIdUser());
+            bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
+        }catch (Exception e){
+            model.addAttribute("error", e.getMessage());
+        }
+        return "order";
+    }
+
     @RequestMapping(value = "/booking/jounal", method = RequestMethod.GET)
     public ModelAndView bookingJournal() {
         ModelAndView modelAndView = new ModelAndView();
@@ -56,14 +67,6 @@ public class BookingController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/booking", method = RequestMethod.POST)
-    public String b(@RequestBody Booking bookingForm,Model model)  {
-        try {
-            bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
-        }catch (Exception e){
-            model.addAttribute("error", e.getMessage());
-        }
-        return "order";
-    }
+
 }
 
