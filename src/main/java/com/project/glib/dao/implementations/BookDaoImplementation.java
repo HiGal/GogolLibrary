@@ -2,6 +2,7 @@ package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.BookRepository;
 import com.project.glib.dao.interfaces.DocumentDao;
+import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookDaoImplementation implements DocumentDao<Book> {
@@ -55,6 +57,17 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     @Override
     public int getPriceById(long bookId) {
         return bookRepository.findOne(bookId).getPrice();
+    }
+
+    @Override
+    public List<Book> getListCountNotZero() {
+        List<Book> books = bookRepository.findAll().stream().filter(book -> book.getCount() > 0).collect(Collectors.toList());
+
+        for (Book book : books) {
+            logger.info("Book list : " + book);
+        }
+
+        return books;
     }
 
     public boolean getIsBestseller(long bookId) {

@@ -1,7 +1,9 @@
 package com.project.glib.controller;
 
 //import com.project.glib.dao.implementations.SecurityDaoImplementation;
+
 import com.project.glib.dao.implementations.UsersDaoImplementation;
+import com.project.glib.model.Document;
 import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import java.util.List;
 //@RestController
 public class UserController {
     private final UsersDaoImplementation usersDao;
-//    private final SecurityDaoImplementation securityDao;
+    //    private final SecurityDaoImplementation securityDao;
     private final UserValidator userValidator;
 
     @Autowired
@@ -61,29 +63,79 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
-        System.out.println(" There ");
-        System.out.println(logout);
-        System.out.println(error);
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
-
-        return "login";
+    public ModelAndView login(Model model, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error", "");
+        modelAndView.setViewName("login");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(Model model, @RequestParam(value = "login",required =  true) String login,
-                        @RequestParam(value = "password", required = true) String password , String logout) {
-       User user = usersDao.findLogin(login);
-       if (user.getPassword().equals(password)){
-           return "redirect:/booking";
-       }else{
-           model.addAttribute("error","Invalid Password");
-           return "redirect:/booking";
-       }
+    public ModelAndView login(Model model, @RequestParam(value = "login") String login,
+                              @RequestParam(value = "password") String password, String logout) {
+        User user = usersDao.findLogin(login);
+        ModelAndView modelAndView = new ModelAndView();
+        if (user != null) {
+            if (user.getPassword().equals(password)) {
+                String role = user.getRole().getName();
+                switch (role) {
+                    case User.LIBRARIAN:
+                        System.out.println(" LIIIIIIIIIIIIIIIIIIIIIIIB ");
+                        modelAndView.addObject(login);
+                        modelAndView.setViewName("librarian");
+                        break;
+                    case User.FACULTY:
+                        System.out.println("FAAAAAAAAAAAAAAAC");
+                        modelAndView.setViewName("faculty");
+                        break;
+                    case User.STUDENT:
+                        System.out.println("STUUUUUUUUUUUUUU");
+                        modelAndView.setViewName("student");
+                        break;
+                    default:
+                        modelAndView.addObject("error", "Invalid Programmer");
+                        modelAndView.setViewName("login");
+                        break;
+                }
+            } else {
+                modelAndView.addObject("error", "Invalid Password");
+                modelAndView.setViewName("login");
+            }
+        } else {
+            modelAndView.addObject("error", "Invalid Login");
+            modelAndView.setViewName("login");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/librarian", method = RequestMethod.GET)
+    public ModelAndView librarianDashboard(Model model, String login, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", usersDao.findLogin(login));
+        modelAndView.setViewName("librarian");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/librarian", method = RequestMethod.POST)
+    public ModelAndView librarianDashboard(User user, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error", " ");
+        modelAndView.setViewName("librarian");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/faculty", method = RequestMethod.GET)
+    public ModelAndView facultyDashboard(Model model, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("faculty");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/student", method = RequestMethod.GET)
+    public ModelAndView studentDashboard(Model model, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("student");
+        return modelAndView;
     }
 
 
