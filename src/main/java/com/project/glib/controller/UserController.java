@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(Model model, @RequestParam(value = "login") String login,
+    public ModelAndView login(Model model, @RequestParam(value = "login") String login,
                               @RequestParam(value = "password") String password, String logout) {
         User user = usersDao.findLogin(login);
         ModelAndView modelAndView = new ModelAndView();
@@ -81,29 +81,29 @@ public class UserController {
                 if (role.equals(User.LIBRARIAN)) {
                     System.out.println(" LIIIIIIIIIIIIIIIIIIIIIIIB ");
                     modelAndView.setViewName("librarian");
-                    return "redirect:/librarian";
+                    return modelAndView;
                 } else if (role.equals(User.FACULTY)) {
                     System.out.println("FAAAAAAAAAAAAAAAC");
                     modelAndView.setViewName("faculty");
-                    return "librarian";
+                    return modelAndView;
                 } else if (role.equals(User.STUDENT)) {
                     System.out.println("STUUUUUUUUUUUUUU");
                     modelAndView.setViewName("student");
-                    return "librarian";
+                    return modelAndView;
                 } else {
                     modelAndView.addObject("error", "Invalid Programmer");
                     modelAndView.setViewName("login");
-                    return "librarian";
+                    return modelAndView;
                 }
             } else {
                 modelAndView.addObject("error", "Invalid Password");
                 modelAndView.setViewName("login");
-                return "librarian";
+                return modelAndView;
             }
         } else {
             modelAndView.addObject("error", "Invalid Login");
             modelAndView.setViewName("login");
-            return "librarian";
+            return modelAndView;
         }
     }
 
