@@ -86,10 +86,12 @@ public class UserController {
                         break;
                     case User.FACULTY:
                         System.out.println("FAAAAAAAAAAAAAAAC");
+                        modelAndView.addObject("user",user);
                         modelAndView.setViewName("faculty");
                         break;
                     case User.STUDENT:
                         System.out.println("STUUUUUUUUUUUUUU");
+                        modelAndView.addObject("user",user);
                         modelAndView.setViewName("student");
                         break;
                     default:
