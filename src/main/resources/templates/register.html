@@ -22,6 +22,21 @@
 
     <script>
         function make_json(form) {
+            var ans = [];
+            if(form.opt.value === "Student"){
+                ans = {"id":1,
+                        "name":"STUDENT"};
+            }else if(form.opt.value === "Faculty"){
+                ans = {
+                    "id": 2,
+                    "name": "FACULTY"
+                };
+            }else {
+                ans = {
+                    "id":3,
+                    "name": "LIBRARRIAN"
+                };
+            }
             var json = {
                 "name":form.name.value,
                 "surname":form.surname.value,
@@ -29,10 +44,9 @@
                 "phone":form.phone.value,
                 "login":form.username.value,
                 "password":form.password.value,
-                "role":if(form.opt.value == Student){
-
-            }
+                "role": ans
             };
+
             var html = JSON.stringify(json,0,4);
             document.getElementById('output').innerHTML=html;
             return false;
@@ -52,7 +66,7 @@
         </div>
         <pre id="output"></pre>
         <div class="main-login main-center">
-            <form class="form-horizontal" method="post" action="#">
+            <form class="form-horizontal" onsubmit="return make_json(this)">
 
                 <div class="form-group">
                     <label for="sel1">Select role</label>
@@ -136,7 +150,7 @@
                 </div>
 
                 <div class="form-group ">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button" formmethod="post">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button" formmethod="post" onsubmit="return make_json(this)">
                         Register
                     </button>
                     <span class="clearfix"></span>

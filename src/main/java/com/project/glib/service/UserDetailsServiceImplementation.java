@@ -16,13 +16,25 @@ import java.util.Set;
 
 @Service
 public class UserDetailsServiceImplementation implements UserDetailsService {
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserDetailsServiceImplementation(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByLogin(username);
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(user);
+        System.out.println();
+        System.out.println();
+        System.out.println();
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
