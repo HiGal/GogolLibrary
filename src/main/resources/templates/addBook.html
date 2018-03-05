@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/editU.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>Add Book</title>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gogol Library</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="#">Add Book</a></li>
+                <li><a href="addJournal.html">Add Journal</a></li>
+                <li><a href="addAV.html">Add AV</a></li>
+                <li><a href="login.html">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<section>
+    <div class="container users">
+        <div class="row main">
+
+            <div class="main-login main-center">
+                <form class="form-horizontal" method="post" action="/edit/book">
+
+
+                    <div class="form-group">
+                        <label for="booktitle" class="cols-sm-2 control-label">book title</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="booktitle" id="booktitle" placeholder="Enter book title"
+                                       required autofocus/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author" class="cols-sm-2 control-label">author</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="author" id="author"
+                                       placeholder="Enter author" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edition" class="cols-sm-2 control-label">edition</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-location-arrow"
+                                                               aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="edition" id="edition"
+                                       placeholder="Enter edition" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publisher" class="cols-sm-2 control-label">publisher</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="publisher" id="publisher"
+                                       placeholder="Enter publisher" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year" class="cols-sm-2 control-label">year</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="year" id="year"
+                                       placeholder="Enter year" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">price</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="price" id="price"
+                                       placeholder="Enter price" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+
+                                <label class="checkbox-inline"><input type="checkbox" placeholder=""><b>bestseller</b></label>                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group ">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button" formmethod="post" onsubmit="return make_json(this)">
+                            confirm
+                        </button>
+                        <span class="clearfix"></span>
+                    </div>
+                    <div class="login-register">
+                        <a href="documents.html">cancel</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
