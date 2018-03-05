@@ -86,15 +86,14 @@
                         </thead>
                         <tbody>
                         {{#allBooks}}
-                        <form action="#" method="post">
                             <tr>
                                 <td>{{id}}</td>
                                 <td>{{title}}</td>
-                                <td>{{author}}</td>
+                                <td>{{bookAuthor}}</td>
                                 <td>{{edition}}</td>
                                 <td>{{publisher}}</td>
                                 <td>{{year}}</td>
-                                <td>{{bestseller}}</td>
+                                <td>{{isBestSeller}}</td>
                                 <td>{{price}}</td>
                                 <td>
                                     <button type="submit" class="btn btn-primary btn-sm btn-block row-remove" onsubmit="return make_json(this)">
@@ -102,7 +101,6 @@
                                     </button>
                                 </td>
                             </tr>
-                        </form>
                         {{/allBooks}}
                         </tbody>
                     </table>

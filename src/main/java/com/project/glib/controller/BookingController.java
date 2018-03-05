@@ -25,11 +25,11 @@ public class BookingController {
     }
 
     @RequestMapping(value = "/booking", method = RequestMethod.GET)
-    public String booking() {
+    public ModelAndView booking() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allBooks", bookDao.getList());
         modelAndView.setViewName("order");
-        return "order";
+        return modelAndView;
     }
 
 //    @RequestMapping(value = "/registration", method = RequestMethod.POST)

@@ -53,11 +53,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users")
-    public List<User> users() {
+    public ModelAndView users() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allUsers", usersDao.getList());
         modelAndView.setViewName("patrons");
-        return usersDao.authUsers();
+        return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
