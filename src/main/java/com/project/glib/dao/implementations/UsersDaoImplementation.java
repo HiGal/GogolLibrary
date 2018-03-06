@@ -30,8 +30,14 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         //userRepository.save(user);
         //user.setRole(roleRepository.findOne(user.getId()));
         try {
-            userRepository.save(user);
-            logger.info("User successfully saved. Document details : " + user);
+            User us = userRepository.findUserByLogin(user.getLogin());
+            if (us == null) {
+                us.setAuth(false);
+                userRepository.save(us);
+                logger.info("User successfully saved. Document details : " + us);
+            }else{
+                throw new Exception("Can't add this user, some parameters are wrong");
+            }
         } catch (Exception e) {
             logger.info("Try to add user with wrong parameters. New user information : " + user);
             throw new Exception("Can't add this user, some parameters are wrong");
@@ -41,7 +47,6 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     public void update(User user) throws Exception {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         try {
-            user.setRole(roleRepository.findOne(user.getId()));
             userRepository.save(user);
             logger.info("User successfully update. User details : " + user);
         } catch (Exception e) {
@@ -88,9 +93,9 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         return userRepository.findUserByLogin(login);
     }
 
-    public List<User> authUsers() {
+    public List<User> getListAuthUsers() {
         logger.info("Authorized user list successfully printed");
-        return userRepository.findAll().stream().filter(User::getAuth).collect(Collectors.toList());
+        return userRepository.findAll().stream().filter(User -> !User.getAuth()).collect(Collectors.toList());
     }
 
     public boolean getIsAuthById(long userId) throws Exception {
