@@ -15,10 +15,12 @@ import java.util.stream.Collectors;
 public class BookDaoImplementation implements DocumentDao<Book> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final BookRepository bookRepository;
+    private final DocumentPhysicalDaoImplementation documentPhysicalDaoImplementation;
 
     @Autowired
-    public BookDaoImplementation(BookRepository bookRepository) {
+    public BookDaoImplementation(BookRepository bookRepository, DocumentPhysicalDaoImplementation documentPhysicalDaoImplementation) {
         this.bookRepository = bookRepository;
+        this.documentPhysicalDaoImplementation = documentPhysicalDaoImplementation;
     }
 
     /**
@@ -69,6 +71,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     public void remove(long bookId) throws Exception {
         try {
             logger.info("Try to delete book with book id = " + bookId);
+            documentPhysicalDaoImplementation.removeAllByDocId(bookId);
             bookRepository.delete(bookId);
         } catch (Exception e) {
             logger.info("Try to delete book with wrong book id = " + bookId);
