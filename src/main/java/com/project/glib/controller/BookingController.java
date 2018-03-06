@@ -3,6 +3,7 @@ package com.project.glib.controller;
 import com.project.glib.dao.implementations.AudioVideoDaoImplementation;
 import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.dao.implementations.JournalDaoImplementation;
+import com.project.glib.model.Book;
 import com.project.glib.model.Booking;
 import com.project.glib.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 //import org.springframework.web.bind.annotation.RestController;
 
@@ -33,12 +37,14 @@ public class BookingController {
         this.audioVideoDao = audioVideoDao;
     }
 
+    //return list of books
+    @ResponseBody
     @RequestMapping(value = "/booking/book", method = RequestMethod.GET)
-    public ModelAndView bookingBook() {
+    public List<Book> bookingBook() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allBooks", bookDao.getListCountNotZeroOrRenewed());
         modelAndView.setViewName("order");
-        return modelAndView;
+        return bookDao.getListCountNotZeroOrRenewed();
     }
 
     @RequestMapping(value = "/booking/book", method = RequestMethod.POST)

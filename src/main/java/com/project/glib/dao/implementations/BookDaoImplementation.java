@@ -131,4 +131,8 @@ public class BookDaoImplementation implements DocumentDao<Book> {
 
         return books;
     }
+
+    public boolean isAlreadyExist(Book book){
+        return bookRepository.existsBookByTitle(book.getTitle());
+    }
 }
