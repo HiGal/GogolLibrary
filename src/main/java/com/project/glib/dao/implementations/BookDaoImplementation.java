@@ -15,23 +15,41 @@ import java.util.stream.Collectors;
 public class BookDaoImplementation implements DocumentDao<Book> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final BookRepository bookRepository;
+    private final DocumentPhysicalDaoImplementation documentPhysicalDaoImplementation;
 
     @Autowired
-    public BookDaoImplementation(BookRepository bookRepository) {
+    public BookDaoImplementation(BookRepository bookRepository, DocumentPhysicalDaoImplementation documentPhysicalDaoImplementation) {
         this.bookRepository = bookRepository;
+        this.documentPhysicalDaoImplementation = documentPhysicalDaoImplementation;
     }
 
+    /**
+     * Add new item of Book in library
+     *
+     * @param book new Book
+     * @throws Exception
+     */
     @Override
     public void add(Book book) throws Exception {
         try {
-            bookRepository.save(book);
-            logger.info("Book successfully saved. Book details : " + book);
+            if (!bookRepository.existsBook(book)){
+                bookRepository.save(book);
+                logger.info("Book successfully saved. Book details : " + book);
+            }else {
+                throw new Exception("Can't add this book, some parameters are wrong");
+            }
         } catch (Exception e) {
             logger.info("Try to add book with wrong parameters. New book information : " + book);
             throw new Exception("Can't add this book, some parameters are wrong");
         }
     }
 
+    /**
+     * Update existed Book or create if it not exist
+     *
+     * @param book - updated Book
+     * @throws Exception
+     */
     @Override
     public void update(Book book) throws Exception {
         try {
@@ -44,10 +62,16 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         }
     }
 
+    /**
+     * Remove Book from library
+     * @param bookId id of Book
+     * @throws Exception
+     */
     @Override
     public void remove(long bookId) throws Exception {
         try {
             logger.info("Try to delete book with book id = " + bookId);
+            documentPhysicalDaoImplementation.removeAllByDocId(bookId);
             bookRepository.delete(bookId);
         } catch (Exception e) {
             logger.info("Try to delete book with wrong book id = " + bookId);
@@ -55,6 +79,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         }
     }
 
+    /**
+     *
+     * @param bookId
+     * @return
+     * @throws Exception
+     */
     @Override
     public Book getById(long bookId) throws Exception {
         try {

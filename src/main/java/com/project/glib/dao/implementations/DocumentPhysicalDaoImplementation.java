@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<DocumentPhysical> {
@@ -71,5 +72,14 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
                 .filter(doc -> doc.getDocType().equals(documentType))
                 .filter(doc -> doc.getId() == documentId)
                 .findFirst().get().getIdDoc();
+    }
+
+    public void removeAllByDocId(long docId) {
+        List<DocumentPhysical> documentPhysicals = documentPhysicalRepository.findAll().stream()
+                .filter(doc -> doc.getIdDoc() == docId).collect(Collectors.toList());
+
+        for (DocumentPhysical doc : documentPhysicals) {
+            remove(doc.getId());
+        }
     }
 }
