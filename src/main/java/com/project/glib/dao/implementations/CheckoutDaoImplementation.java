@@ -33,7 +33,7 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
 
     public void update(Checkout checkout) throws Exception {
         try {
-            checkoutRepository.save(checkout);
+            checkoutRepository.saveAndFlush(checkout);
             logger.info("Checkout successfully update. Checkout details : " + checkout);
         } catch (Exception e) {
             logger.info("Try to update this check out, check out don't exist or some new check out parameters are wrong. " +

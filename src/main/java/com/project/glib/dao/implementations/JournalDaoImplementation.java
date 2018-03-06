@@ -34,7 +34,7 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     @Override
     public void update(Journal journal) throws Exception {
         try {
-            journalRepository.save(journal);
+            journalRepository.saveAndFlush(journal);
             logger.info("Journal successfully update. Journal details : " + journal);
         } catch (Exception e) {
             logger.info("Try to update this journal, journal don't exist or some new journal parameters are wrong. " +

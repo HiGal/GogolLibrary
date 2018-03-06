@@ -27,7 +27,7 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
     }
 
     public void update(DocumentPhysical documentPhysical) {
-        documentPhysicalRepository.save(documentPhysical);
+        documentPhysicalRepository.saveAndFlush(documentPhysical);
         logger.info("Document successfully update. Document details : " + documentPhysical);
     }
 

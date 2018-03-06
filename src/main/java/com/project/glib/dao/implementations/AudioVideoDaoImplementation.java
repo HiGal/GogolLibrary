@@ -47,7 +47,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     @Override
     public void update(AudioVideo audioVideo) throws Exception {
         try {
-            audioVideoRepository.save(audioVideo);
+            audioVideoRepository.saveAndFlush(audioVideo);
             logger.info("AudioVideo successfully update. AudioVideo details : " + audioVideo);
         } catch (Exception e) {
             logger.info("Try to update this AV, AV don't exist or some new AV parameters are wrong. " +

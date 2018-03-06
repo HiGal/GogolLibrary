@@ -53,7 +53,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     @Override
     public void update(Book book) throws Exception {
         try {
-            bookRepository.save(book);
+            bookRepository.saveAndFlush(book);
             logger.info("Book successfully update. Book details : " + book);
         } catch (Exception e) {
             logger.info("Try to update this book, book don't exist or some new book parameters are wrong. " +
@@ -164,5 +164,9 @@ public class BookDaoImplementation implements DocumentDao<Book> {
 
     public boolean isAlreadyExist(Book book){
         return bookRepository.existsBookByTitle(book.getTitle());
+    }
+
+    public List<Book> getListofAccessibleBooks(){
+        return bookRepository.findAll().stream().filter(book -> book.getCount() > 0).collect(Collectors.toList());
     }
 }

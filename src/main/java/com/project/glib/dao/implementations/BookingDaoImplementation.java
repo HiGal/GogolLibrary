@@ -33,7 +33,7 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
 
     public void update(Booking booking) throws Exception {
         try {
-            bookingRepository.save(booking);
+            bookingRepository.saveAndFlush(booking);
             logger.info("Booking successfully update. Booking details : " + booking);
         } catch (Exception e) {
             logger.info("Try to update this booking, booking don't exist or some new booking parameters are wrong. " +
@@ -102,4 +102,5 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
                 .filter(booking -> booking.getIdDoc() == docId)
                 .anyMatch(booking -> booking.getDocType().equals(docType));
     }
+
 }

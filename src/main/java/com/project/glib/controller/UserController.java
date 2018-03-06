@@ -2,33 +2,38 @@ package com.project.glib.controller;
 
 //import com.project.glib.dao.implementations.SecurityDaoImplementation;
 
+import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.dao.implementations.UsersDaoImplementation;
+import com.project.glib.dao.interfaces.BookRepository;
+import com.project.glib.model.Book;
 import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-//@RestController
+import java.util.List;
+import java.util.stream.Collectors;
+
+//@Controller
+@RestController
 public class UserController {
     //    private final SecurityDaoImplementation securityDao;
     private final UsersDaoImplementation usersDao;
     private final UserValidator userValidator;
+    private final BookDaoImplementation bookDao;
 
     @Autowired
     public UserController(UsersDaoImplementation usersDao,
 //                          SecurityDaoImplementation securityDao,
-                          UserValidator userValidator) {
+                          UserValidator userValidator, BookRepository bookRepository, BookDaoImplementation bookDao) {
         this.usersDao = usersDao;
 //        this.securityDao = securityDao;
         this.userValidator = userValidator;
+        this.bookDao = bookDao;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -39,6 +44,9 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@RequestBody User userForm, BindingResult bindingResult) throws Exception {
+
+        userValidator.validate(userForm, bindingResult);
+
         //TODO check this validation
 //        if (bindingResult.hasErrors()) {
 //            return "register";
@@ -82,15 +90,15 @@ public class UserController {
                 String role = user.getRole();
                 switch (role) {
                     case User.LIBRARIAN:
-                        modelAndView.addObject("user", user);
+                        modelAndView.addObject("user",user);
                         modelAndView.setViewName("librarian");
                         break;
                     case User.FACULTY:
-                        modelAndView.addObject("user", user);
+                        modelAndView.addObject("user",user);
                         modelAndView.setViewName("faculty");
                         break;
                     case User.STUDENT:
-                        modelAndView.addObject("user", user);
+                        modelAndView.addObject("user",user);
                         modelAndView.setViewName("student");
                         break;
                     default:
@@ -108,6 +116,7 @@ public class UserController {
         }
         return modelAndView;
     }
+
 
 
     @RequestMapping(value = "/faculty", method = RequestMethod.GET)
@@ -139,6 +148,12 @@ public class UserController {
         modelAndView.setViewName("student");
         return modelAndView;
     }
+
+    @RequestMapping(value = "accessiblebooks", method = RequestMethod.GET)
+    public List<Book> getAllCheckoutBook(Model book){
+        return bookDao.getListofAccessibleBooks();
+    }
+
 
 
 }
