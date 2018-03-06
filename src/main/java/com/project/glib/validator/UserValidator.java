@@ -13,11 +13,23 @@ public class UserValidator implements Validator {
     @Autowired
     private UsersDaoImplementation usersDao;
 
+    /**
+     * Check is it user
+     *
+     * @param aClass class of object
+     * @return true if class equals User, false otherwise
+     */
     @Override
     public boolean supports(Class<?> aClass) {
         return User.class.equals(aClass);
     }
 
+    /**
+     * Check errors in input data for user
+     *
+     * @param o      user model
+     * @param errors model of errors
+     */
     @Override
     public void validate(Object o, Errors errors) {
         User user = (User) o;

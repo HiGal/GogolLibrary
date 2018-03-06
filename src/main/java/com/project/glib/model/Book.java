@@ -71,14 +71,6 @@ public class Book extends Document {
         this.id = id;
     }
 
-    public String getBookName() {
-        return title;
-    }
-
-    public void setBookName(String bookName) {
-        this.title = bookName;
-    }
-
     public String getBookAuthor() {
         return bookAuthor;
     }
