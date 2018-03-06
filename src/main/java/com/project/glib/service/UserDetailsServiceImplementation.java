@@ -23,6 +23,12 @@
 //        this.usersDao = usersDao;
 //    }
 //
+//    /**
+//     *  Return user login, password and grantedAuthorities by username
+//     * @param username  username of user
+//     * @return  user login, password and grantedAuthorities
+//     * @throws UsernameNotFoundException
+//     */
 //    @Override
 //    @Transactional(readOnly = true)
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

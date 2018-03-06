@@ -21,6 +21,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         this.audioVideoRepository = audioVideoRepository;
     }
 
+    /**
+     * Add new item of AudioVideo in library
+     *
+     * @param audioVideo new AudioVideo
+     * @throws Exception
+     */
     @Override
     public void add(AudioVideo audioVideo) throws Exception {
         try {
@@ -32,6 +38,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * Update existed AudioVideo or create if it not exist
+     *
+     * @param audioVideo - updated AudioVideo
+     * @throws Exception
+     */
     @Override
     public void update(AudioVideo audioVideo) throws Exception {
         try {
@@ -44,6 +56,11 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * Remove AudioVideo from library
+     * @param audioVideoId id of AudioVideo
+     * @throws Exception
+     */
     @Override
     public void remove(long audioVideoId) throws Exception {
         try {
@@ -55,6 +72,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * get AudioVideo by it id
+     * @param audioVideoId id of AudioVideo
+     * @return AudioVideo object
+     * @throws Exception
+     */
     @Override
     public AudioVideo getById(long audioVideoId) throws Exception {
         try {
@@ -66,6 +89,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * get how many copies of AudioVideo we already have in library
+     * @param audioVideoId id of AudioVideo
+     * @return count of copies
+     * @throws Exception
+     */
     @Override
     public int getCountById(long audioVideoId) throws Exception {
         try {
@@ -77,6 +106,11 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * set count to count-1 for AudioVideo
+     * @param avId id of AudioVideo
+     * @throws Exception
+     */
     @Override
     public void decrementCountById(long avId) throws Exception {
         try {
@@ -88,6 +122,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * get price of AudioVideo by id
+     * @param avId id of AudioVideo
+     * @return price of book
+     * @throws Exception
+     */
     @Override
     public int getPriceById(long avId) throws Exception {
         try {
@@ -99,6 +139,10 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * get list of all AudioVideo
+     * @return
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<AudioVideo> getList() {
@@ -111,6 +155,10 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         return audioVideos;
     }
 
+    /**
+     * get list of all AudioVideo with count bigger than zero or renewed
+     * @return list of AudioVideo with count bigger than zero or renewed
+     */
     @Override
     public List<AudioVideo> getListCountNotZeroOrRenewed() {
         List<AudioVideo> audioVideos = audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());

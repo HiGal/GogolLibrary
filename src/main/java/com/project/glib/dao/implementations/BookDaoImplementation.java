@@ -21,6 +21,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         this.bookRepository = bookRepository;
     }
 
+    /**
+     * Add new item of Book in library
+     *
+     * @param book new Book
+     * @throws Exception
+     */
     @Override
     public void add(Book book) throws Exception {
         try {
@@ -32,6 +38,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         }
     }
 
+    /**
+     * Update existed Book or create if it not exist
+     *
+     * @param book - updated Book
+     * @throws Exception
+     */
     @Override
     public void update(Book book) throws Exception {
         try {
@@ -44,6 +56,11 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         }
     }
 
+    /**
+     * Remove Book from library
+     * @param bookId id of Book
+     * @throws Exception
+     */
     @Override
     public void remove(long bookId) throws Exception {
         try {
@@ -55,6 +72,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         }
     }
 
+    /**
+     *
+     * @param bookId
+     * @return
+     * @throws Exception
+     */
     @Override
     public Book getById(long bookId) throws Exception {
         try {
