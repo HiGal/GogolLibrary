@@ -30,8 +30,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     @Override
     public void add(Book book) throws Exception {
         try {
-            bookRepository.save(book);
-            logger.info("Book successfully saved. Book details : " + book);
+            if (!bookRepository.existsBook(book)){
+                bookRepository.save(book);
+                logger.info("Book successfully saved. Book details : " + book);
+            }else {
+                throw new Exception("Can't add this book, some parameters are wrong");
+            }
         } catch (Exception e) {
             logger.info("Try to add book with wrong parameters. New book information : " + book);
             throw new Exception("Can't add this book, some parameters are wrong");
