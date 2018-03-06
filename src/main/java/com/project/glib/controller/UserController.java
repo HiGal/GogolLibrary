@@ -53,13 +53,13 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @RequestMapping(value = "/users")
-    public ModelAndView users() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers", usersDao.getList());
-        modelAndView.setViewName("patrons");
-        return modelAndView;
-    }
+//    @RequestMapping(value = "/users")
+//    public ModelAndView users() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("allUsers", usersDao.getList());
+//        modelAndView.setViewName("patrons");
+//        return modelAndView;
+//    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(Model model, String logout) {

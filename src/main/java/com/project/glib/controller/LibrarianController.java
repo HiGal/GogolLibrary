@@ -30,4 +30,13 @@ public class LibrarianController{
         modelAndView.setViewName("librarian");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/librarian/confirm", method = RequestMethod.GET)
+    public ModelAndView librarianConfirm(Model model, String login, String logout) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allUsers", usersDao.getList());
+        modelAndView.setViewName("confirm");
+        return modelAndView;
+    }
+
 }
