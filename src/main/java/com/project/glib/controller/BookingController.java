@@ -44,7 +44,6 @@ public class BookingController {
     @RequestMapping(value = "/booking/book", method = RequestMethod.POST)
     public String b(@RequestBody Booking bookingForm, Model model)  {
         try {
-            System.out.println(bookingForm.getIdUser());
             bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
@@ -52,7 +51,7 @@ public class BookingController {
         return "order";
     }
 
-    @RequestMapping(value = "/booking/jounal", method = RequestMethod.GET)
+    @RequestMapping(value = "/booking/journal", method = RequestMethod.GET)
     public ModelAndView bookingJournal() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allJournals", journalDao.getListCountNotZeroOrRenewed());

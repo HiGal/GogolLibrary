@@ -3,7 +3,6 @@ package com.project.glib.controller;
 //import com.project.glib.dao.implementations.SecurityDaoImplementation;
 
 import com.project.glib.dao.implementations.UsersDaoImplementation;
-import com.project.glib.model.Document;
 import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 //@RestController
 public class UserController {
-    private final UsersDaoImplementation usersDao;
     //    private final SecurityDaoImplementation securityDao;
+    private final UsersDaoImplementation usersDao;
     private final UserValidator userValidator;
 
     @Autowired
@@ -80,18 +79,14 @@ public class UserController {
                 String role = user.getRole().getName();
                 switch (role) {
                     case User.LIBRARIAN:
-                        System.out.println(" LIIIIIIIIIIIIIIIIIIIIIIIB ");
-                        System.out.println(user);
                         modelAndView.addObject("user",user);
                         modelAndView.setViewName("librarian");
                         break;
                     case User.FACULTY:
-                        System.out.println("FAAAAAAAAAAAAAAAC");
                         modelAndView.addObject("user",user);
                         modelAndView.setViewName("faculty");
                         break;
                     case User.STUDENT:
-                        System.out.println("STUUUUUUUUUUUUUU");
                         modelAndView.addObject("user",user);
                         modelAndView.setViewName("student");
                         break;
@@ -111,21 +106,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/librarian", method = RequestMethod.GET)
-    public ModelAndView librarianDashboard(Model model, String login, String logout) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("user", usersDao.findLogin(login));
-        modelAndView.setViewName("librarian");
-        return modelAndView;
-    }
 
-    @RequestMapping(value = "/librarian", method = RequestMethod.POST)
-    public ModelAndView librarianDashboard(User user, String logout) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("error", " ");
-        modelAndView.setViewName("librarian");
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/faculty", method = RequestMethod.GET)
     public ModelAndView facultyDashboard(Model model, String logout) {
@@ -156,6 +137,7 @@ public class UserController {
         modelAndView.setViewName("student");
         return modelAndView;
     }
+
 
 
 }
