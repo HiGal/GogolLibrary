@@ -75,7 +75,7 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(Model model, @RequestParam(value = "login") String login,
                               @RequestParam(value = "password") String password, String logout) {
-        User user = usersDao.findLogin(login);
+        User user = usersDao.findByLogin(login);
         ModelAndView modelAndView = new ModelAndView();
         if (user != null) {
             if (user.getPassword().equals(password)) {

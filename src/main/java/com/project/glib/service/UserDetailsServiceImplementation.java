@@ -33,7 +33,7 @@
 //    @Transactional(readOnly = true)
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        System.out.println(" This is username " + username);
-//        User user = usersDao.findLogin(username);
+//        User user = usersDao.findByLogin(username);
 //        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 //        grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
 //

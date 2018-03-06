@@ -37,18 +37,19 @@ public class BookingService {
 
     /**
      * Booking document by user if it possibility
-     * @param docId id of this document
+     *
+     * @param docId   id of this document
      * @param docType type of this document (valid types wrote in constants in superclass Document.java)
-     * @param userId id of user whom try to book document
+     * @param userId  id of user whom try to book document
      * @return Booking if all validate
      * @throws Exception if has an exception in run-time
      */
     public Booking toBookDocument(long docId, String docType, long userId) throws Exception {
-        if (!usersDao.getIsAuthById(userId)){
+        if (!usersDao.getIsAuthById(userId)) {
             throw new Exception("Sorry, but your registration is not approved yet.");
         }
 
-        if (bookingDao.alreadyHasThisBooking(docId, docType, userId)){
+        if (bookingDao.alreadyHasThisBooking(docId, docType, userId)) {
             throw new Exception("Sorry, but your already have this booking. " +
                     "Go to the library and check out " + docType.toLowerCase() + ".");
         }
@@ -58,6 +59,7 @@ public class BookingService {
                     "You could renew this " + docType.toLowerCase() +
                     "OR return and check out again.");
         }
+
 
         String zeroCount = "Sorry, we have a mistake in our library, " +
                 "all copies this " + docType.toLowerCase() + " already on hand.";
@@ -92,6 +94,7 @@ public class BookingService {
 
     /**
      * get number of booked documents by current user
+     *
      * @param userId id of current user
      * @return number of booked
      */
@@ -101,6 +104,7 @@ public class BookingService {
 
     /**
      * get all bookings by current user
+     *
      * @param userId id of current user
      * @return array of bookings
      */
