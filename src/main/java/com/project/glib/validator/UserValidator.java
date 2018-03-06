@@ -40,7 +40,7 @@ public class UserValidator implements Validator {
             errors.rejectValue("login", "Size.userForm.login");
         }
 
-        if (usersDao.findLogin(user.getLogin()) != null) {
+        if (usersDao.findByLogin(user.getLogin()) != null) {
             errors.rejectValue("login", "Duplicate.userForm.login");
         }
 

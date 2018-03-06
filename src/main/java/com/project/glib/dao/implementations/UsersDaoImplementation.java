@@ -85,12 +85,17 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         }
     }
 
-    public User findLogin(String login) {
+    public User findByLogin(String login) {
         logger.info("Try to get user with user login = \"" + login + "\"");
         return userRepository.findUserByLogin(login);
     }
 
     public List<User> getListAuthUsers() {
+        logger.info("Authorized user list successfully printed");
+        return userRepository.findAll().stream().filter(User -> User.getAuth()).collect(Collectors.toList());
+    }
+
+    public List<User> getListNotAuthUsers() {
         logger.info("Authorized user list successfully printed");
         return userRepository.findAll().stream().filter(User -> !User.getAuth()).collect(Collectors.toList());
     }
@@ -98,7 +103,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     public boolean getIsAuthById(long userId) throws Exception {
         try {
             logger.info("Try to get authorize user with user id = " + userId);
-            return userRepository.findOne(userId).getLoggedIn();
+            return userRepository.findOne(userId).getAuth();
         } catch (Exception e) {
             logger.info("Try to get authorize user with wrong user id = " + userId);
             throw new Exception("Information not available, user don't exist");

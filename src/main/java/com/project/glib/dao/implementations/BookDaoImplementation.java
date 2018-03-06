@@ -92,7 +92,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
             return bookRepository.findOne(bookId);
         } catch (Exception e) {
             logger.info("Try to get book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book don't exist");
+            throw new Exception("Information not available, book doesn't exist. Get by ID failed");
         }
     }
 
@@ -111,7 +111,8 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     public void decrementCountById(long bookId) throws Exception {
         try {
             logger.info("Try to decrement count of book with book id = " + bookId);
-            bookRepository.findOne(bookId).setCount(bookRepository.findOne(bookId).getCount() - 1);
+            int i = bookRepository.findOne(bookId).getCount();
+            bookRepository.findOne(bookId).setCount(i - 1);
         } catch (Exception e) {
             logger.info("Try to decrement count of book with wrong book id = " + bookId);
             throw new Exception("Information not available, book don't exist");

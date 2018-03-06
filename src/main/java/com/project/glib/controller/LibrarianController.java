@@ -3,17 +3,15 @@ package com.project.glib.controller;
 import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
 import com.project.glib.dao.implementations.UsersDaoImplementation;
-import com.project.glib.model.Book;
-import com.project.glib.model.DocumentPhysical;
 import com.project.glib.model.User;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
 
-
+//@Controller
 @RestController
 public class LibrarianController{
     private final UsersDaoImplementation usersDao;
@@ -44,12 +42,13 @@ public class LibrarianController{
         return modelAndView;
     }
 
-    @RequestMapping(value = "/librarian/confirm", method = RequestMethod.GET)
-    public ModelAndView librarianConfirm(String login) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers", usersDao.getList());
-        modelAndView.setViewName("confirm");
-        return modelAndView;
+    @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.GET)
+    //   public ModelAndView librarianConfirm(Model model, String login) {
+    public List<User> librarianConfirm(Model model, String login) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("allUsers", usersDao.getList());
+//        modelAndView.setViewName("confirm");
+        return usersDao.getListNotAuthUsers();
     }
 
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
@@ -59,14 +58,14 @@ public class LibrarianController{
         try {
             usersDao.update(user);
             return "- successfully updated -";
-        } catch (Exception e) {
+        }catch (Exception e){
             return "- failed! -";
         }
     }
+
     @RequestMapping(value = "librarian/add/book", method = RequestMethod.POST)
-    public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
-                        @RequestParam(value = "canBooked") boolean flag,
-                        @RequestParam(value = "is_reference") boolean ref) {
+    public void addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
+                        @RequestParam(value = "isReference") boolean flag) {
         if (!bookDao.isAlreadyExist(book)) {
             try {
                 bookDao.add(book);
@@ -76,10 +75,9 @@ public class LibrarianController{
                     document.setIdDoc(book.getId());
                     document.setShelf(shelf);
                     document.setDocType("BOOK");
-                    document.setCanBooked(flag);
-                    document.setReference(ref);
+                    document.setCanBooked(true);
+                    document.setReference(flag);
                     physicalDaoImplementation.add(document);
-
                 }
                 return "Book successfully added";
             } catch (Exception e) {
@@ -126,19 +124,16 @@ public class LibrarianController{
     }
 
 
-
-
-
-//    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.POST)
-////    public ModelAndView librarianConfirm(User user, String login) {
-//    public Pair<List<User>,List<Booking>> librarianGetInfo(@RequestParam User user) throws Exception {
-//        user.setAuth(true);
-//        try {
-//            usersDao.update(user);
-//            return "- successfully updated -";
-//        }catch (Exception e){
-//            return "- failed! -";
-//        }
-//    }
+    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.GET)
+//    public ModelAndView librarianConfirm(User user, String login) {
+    public Pair<User,List<Checkout>> librarianGetInfo(@RequestParam String login) throws Exception {
+        User user = usersDao.findByLogin(login);
+        if (user != null){
+       List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
+        Pair pair = new Pair(user,checkout);
+       return pair;}else{
+            throw new Exception("User is not exist");
+        }
+    }
 
 }

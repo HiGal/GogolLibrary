@@ -27,12 +27,10 @@ public class DocumentPhysical {
     @Column(name = "doc_type")
     private String docType;
 
-    @Column(name = "checkout_user")
-    private String checkoutUser;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "keyword_id")
-    private Set<Keyword> keywords;
+//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "keyword_id")
+//    private Set<Keyword> keywords;
 
     public DocumentPhysical() {
     }
@@ -43,7 +41,7 @@ public class DocumentPhysical {
         this.isReference = isReference;
         this.idDoc = idDoc;
         this.docType = docType;
-        this.keywords = keywords;
+//        this.keywords = keywords;
     }
 
     @Override
@@ -55,7 +53,7 @@ public class DocumentPhysical {
                 ", isReference=" + isReference +
                 ", idDoc=" + idDoc +
                 ", docType='" + docType + '\'' +
-                ", keywords=" + keywords +
+//                ", keywords=" + keywords +
                 '}';
     }
 
@@ -107,19 +105,12 @@ public class DocumentPhysical {
         this.docType = docType;
     }
 
-    public String getCheckoutUser() {
-        return checkoutUser;
-    }
 
-    public void setCheckoutUser(String checkoutUser) {
-        this.checkoutUser = checkoutUser;
-    }
-
-    public Set<Keyword> getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(Set<Keyword> keywords) {
-        this.keywords = keywords;
-    }
+//    public Set<Keyword> getKeywords() {
+//        return keywords;
+//    }
+//
+//    public void setKeywords(Set<Keyword> keywords) {
+//        this.keywords = keywords;
+//    }
 }

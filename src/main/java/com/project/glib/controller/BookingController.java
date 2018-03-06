@@ -2,6 +2,7 @@ package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.AudioVideoDaoImplementation;
 import com.project.glib.dao.implementations.BookDaoImplementation;
+import com.project.glib.dao.implementations.CheckoutDaoImplementation;
 import com.project.glib.dao.implementations.JournalDaoImplementation;
 import com.project.glib.model.Book;
 import com.project.glib.model.Booking;
@@ -49,12 +50,16 @@ public class BookingController {
 
     @RequestMapping(value = "/booking/book", method = RequestMethod.POST)
     public String b(@RequestBody Booking bookingForm, Model model)  {
+        System.out.println(bookingForm.getIdDoc());
         try {
             bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
+            return "successfully ordered";
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
+            return e.getMessage();
         }
-        return "order";
+  //      return "order";
+
     }
 
     @RequestMapping(value = "/booking/journal", method = RequestMethod.GET)
