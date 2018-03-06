@@ -24,7 +24,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     @Override
     public void add(Book book) throws Exception {
         try {
-            if (!bookRepository.existsBook(book)){
+            if (true){
                 bookRepository.save(book);
                 logger.info("Book successfully saved. Book details : " + book);
             }else {

@@ -30,18 +30,15 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         //userRepository.save(user);
         //user.setRole(roleRepository.findOne(user.getId()));
         try {
-            User us = userRepository.findUserByLogin(user.getLogin());
-            if (us == null) {
-                us.setAuth(false);
-                userRepository.save(us);
-                logger.info("User successfully saved. Document details : " + us);
-            }else{
-                throw new Exception("Can't add this user, some parameters are wrong");
-            }
+            user.setAuth(false);
+            userRepository.save(user);
+            logger.info("User successfully saved. Document details : " + user);
         } catch (Exception e) {
             logger.info("Try to add user with wrong parameters. New user information : " + user);
+            System.out.println(e.getMessage());
             throw new Exception("Can't add this user, some parameters are wrong");
         }
+
     }
 
     public void update(User user) throws Exception {
@@ -116,5 +113,10 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
             logger.info("Try to get user type with wrong user id = " + userId);
             throw new Exception("Information not available, user don't exist");
         }
+    }
+
+    public long getIdByLogin(String login){
+        User user = userRepository.findUserByLogin(login);
+        return  user.getId();
     }
 }

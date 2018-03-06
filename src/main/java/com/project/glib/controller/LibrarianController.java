@@ -1,13 +1,12 @@
 package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.UsersDaoImplementation;
+import com.project.glib.model.Booking;
 import com.project.glib.model.User;
+import javafx.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class LibrarianController{
 //        return modelAndView;
 //    }
 
-    @RequestMapping(value = "/librarian/confirm", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.GET)
  //   public ModelAndView librarianConfirm(Model model, String login) {
     public List<User> librarianConfirm(Model model, String login) {
 //        ModelAndView modelAndView = new ModelAndView();
@@ -45,7 +44,7 @@ public class LibrarianController{
         return usersDao.getListAuthUsers();
     }
 
-    @RequestMapping(value = "/librarian/confirm", method = RequestMethod.POST)
+    @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
     public String librarianConfirm(@RequestBody User user) throws Exception {
         user.setAuth(true);
@@ -56,5 +55,39 @@ public class LibrarianController{
             return "- failed! -";
         }
     }
+
+    @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.GET)
+    //   public ModelAndView librarianConfirm(Model model, String login) {
+    public List<User> librarianDeleteUser(Model model, String login) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("allUsers", usersDao.getList());
+//        modelAndView.setViewName("confirm");
+        return usersDao.getListAuthUsers();
+    }
+
+    @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.POST)
+//    public ModelAndView librarianConfirm(User user, String login) {
+    public String librarianDeleteUser(@RequestParam String login) throws Exception {
+        try {
+            usersDao.remove(usersDao.getIdByLogin(login));
+            return "- successfully deleted -";
+        }catch (Exception e){
+            return "- failed! -";
+        }
+    }
+
+
+
+//    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.POST)
+////    public ModelAndView librarianConfirm(User user, String login) {
+//    public Pair<List<User>,List<Booking>> librarianGetInfo(@RequestParam User user) throws Exception {
+//        user.setAuth(true);
+//        try {
+//            usersDao.update(user);
+//            return "- successfully updated -";
+//        }catch (Exception e){
+//            return "- failed! -";
+//        }
+//    }
 
 }

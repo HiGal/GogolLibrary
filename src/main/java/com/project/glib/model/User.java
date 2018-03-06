@@ -11,7 +11,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column(name = "login")
     private String login;
@@ -40,16 +40,13 @@ public class User {
     @Column(name = "auth")
     private boolean auth;
 
-
-    //    private Set<Role> roles;
-    @ManyToOne
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Role role;
+    @Column(name = "role" )
+    private String role;
 
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, String surname, String address, String phone, boolean isAuth, Role role, boolean auth) {
+    public User(String login, String password, String passwordConfirm, String name, String surname, String address, String phone, boolean isAuth, String role, boolean auth) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -167,7 +164,7 @@ public class User {
 //        return roles;
 //    }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
@@ -175,7 +172,7 @@ public class User {
 //        this.roles = roles;
 //    }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 }

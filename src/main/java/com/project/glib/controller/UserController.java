@@ -39,15 +39,18 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@RequestBody User userForm, BindingResult bindingResult) throws Exception {
-
-        userValidator.validate(userForm, bindingResult);
-
         //TODO check this validation
 //        if (bindingResult.hasErrors()) {
 //            return "register";
 //        }
+        try {
+            userValidator.validate(userForm, bindingResult);
+            usersDao.add(userForm);
+        }catch (Exception e){
+            return e.getMessage();
+        }
 
-        usersDao.add(userForm);
+
 //        securityDao.autoLogin(userForm.getLogin(), userForm.getPasswordConfirm());
 
         return "redirect:/login";
@@ -76,18 +79,18 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         if (user != null) {
             if (user.getPassword().equals(password)) {
-                String role = user.getRole().getName();
+                String role = user.getRole();
                 switch (role) {
                     case User.LIBRARIAN:
-                        modelAndView.addObject("user",user);
+                        modelAndView.addObject("user", user);
                         modelAndView.setViewName("librarian");
                         break;
                     case User.FACULTY:
-                        modelAndView.addObject("user",user);
+                        modelAndView.addObject("user", user);
                         modelAndView.setViewName("faculty");
                         break;
                     case User.STUDENT:
-                        modelAndView.addObject("user",user);
+                        modelAndView.addObject("user", user);
                         modelAndView.setViewName("student");
                         break;
                     default:
@@ -105,7 +108,6 @@ public class UserController {
         }
         return modelAndView;
     }
-
 
 
     @RequestMapping(value = "/faculty", method = RequestMethod.GET)
@@ -137,7 +139,6 @@ public class UserController {
         modelAndView.setViewName("student");
         return modelAndView;
     }
-
 
 
 }
