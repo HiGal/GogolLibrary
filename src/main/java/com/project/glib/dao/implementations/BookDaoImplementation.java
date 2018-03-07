@@ -111,8 +111,10 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     public void decrementCountById(long bookId) throws Exception {
         try {
             logger.info("Try to decrement count of book with book id = " + bookId);
-            int i = bookRepository.findOne(bookId).getCount();
-            bookRepository.findOne(bookId).setCount(i - 1);
+            int i = bookRepository.findOne(bookId).getCount() - 1;
+            System.out.println(i);
+            bookRepository.findOne(bookId).setCount(i);
+            bookRepository.saveAndFlush(bookRepository.findOne(bookId));
         } catch (Exception e) {
             logger.info("Try to decrement count of book with wrong book id = " + bookId);
             throw new Exception("Information not available, book don't exist");
@@ -170,4 +172,5 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     public List<Book> getListofAccessibleBooks(){
         return bookRepository.findAll().stream().filter(book -> book.getCount() > 0).collect(Collectors.toList());
     }
+
 }

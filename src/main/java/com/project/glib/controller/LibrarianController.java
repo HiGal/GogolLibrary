@@ -117,9 +117,9 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianDeleteUser(@RequestParam String login) throws Exception {
+    public String librarianDeleteUser(@RequestBody User user) throws Exception {
         try {
-            usersDao.remove(usersDao.getIdByLogin(login));
+            usersDao.remove(usersDao.getIdByLogin(user.getLogin()));
             return "- successfully deleted -";
         } catch (Exception e) {
             return "- failed! -";
@@ -127,15 +127,16 @@ public class LibrarianController {
     }
 
 
-    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public Pair<User, List<Checkout>> librarianGetInfo(@RequestParam String login) throws Exception {
-        User user = usersDao.findByLogin(login);
-        if (user != null) {
-            List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
+    public Pair<User, List<Checkout>> librarianGetInfo(@RequestBody User user) throws Exception {
+        String login = user.getLogin();
+        User RealUser = usersDao.findByLogin(login);
+        if (RealUser != null) {
+            List<Checkout> checkout = checkoutDao.getCheckoutsByUser(RealUser.getId());
             return new Pair(user, checkout);
         } else {
-            throw new Exception("User is not exist");
+            throw new Exception("User doesn't exist");
         }
     }
 
@@ -175,6 +176,24 @@ public class LibrarianController {
             return "Add a copy";
         }
         return "";
-
     }
+
+    @RequestMapping(value = "/librarian/remove/book/{num_copies}",method = RequestMethod.POST)
+    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") long num){
+        try {
+            for (int i = 0; i < num; i++) {
+                System.out.println(book.getCount());
+                bookDao.decrementCountById(book.getId());
+                System.out.println(book.getCount());
+                physicalDaoImplementation.remove(book.getId());
+            }
+            return "Book/books is/are successfully removed";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+
 }

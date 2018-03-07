@@ -10,4 +10,5 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
 //    List<Book> getBooksByBookAuthor(String author);
     boolean existsBookByTitle(String title);
+    int countBookByTitle(String title);
 }

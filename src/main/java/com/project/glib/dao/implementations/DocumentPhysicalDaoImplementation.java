@@ -31,9 +31,11 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
         logger.info("Document successfully update. Document details : " + documentPhysical);
     }
 
-    public void remove(long documentPhysicalId) {
-        documentPhysicalRepository.delete(documentPhysicalId);
+    public void remove(long id_doc) {
+        long physID= (documentPhysicalRepository.getFirstByIdDoc(id_doc)).getId();
+        documentPhysicalRepository.delete(physID);
     }
+
 
     public DocumentPhysical getById(long documentPhysicalId) {
         return documentPhysicalRepository.findOne(documentPhysicalId);
