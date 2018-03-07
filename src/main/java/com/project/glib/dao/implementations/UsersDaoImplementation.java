@@ -17,12 +17,14 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CheckoutDaoImplementation checkoutDao;
 
     @Autowired
     public UsersDaoImplementation(UserRepository userRepository,
-                                  RoleRepository roleRepository) {
+                                  RoleRepository roleRepository, CheckoutDaoImplementation checkoutDao) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.checkoutDao = checkoutDao;
     }
 
     public void add(User user) throws Exception {
@@ -56,7 +58,11 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     public void remove(long userId) throws Exception {
         try {
             logger.info("Try to delete user with user id = " + userId);
-            userRepository.delete(userId);
+            if (checkoutDao.getCheckoutsByUser(userId) == null) {
+                userRepository.delete(userId);
+            } else {
+                throw new Exception("User should return all documents before deleting");
+            }
         } catch (Exception e) {
             logger.info("Try to delete user with wrong user id = " + userId);
             throw new Exception("Delete this patron not available, patron don't exist");
@@ -120,9 +126,9 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         }
     }
 
-    public long getIdByLogin(String login){
+    public long getIdByLogin(String login) {
         User user = userRepository.findUserByLogin(login);
-        return  user.getId();
+        return user.getId();
     }
 
 }

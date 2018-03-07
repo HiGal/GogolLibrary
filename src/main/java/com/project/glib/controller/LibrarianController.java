@@ -16,14 +16,19 @@ public class LibrarianController {
     private final UsersDaoImplementation usersDao;
     private final BookDaoImplementation bookDao;
     private final DocumentPhysicalDaoImplementation physicalDaoImplementation;
+    private final BookingDaoImplementation bookingDao;
     private final CheckoutDaoImplementation checkoutDao;
     private final AudioVideoDaoImplementation avDao;
 
     @Autowired
-    public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao, DocumentPhysicalDaoImplementation physicalDaoImplementation, CheckoutDaoImplementation checkoutDao, AudioVideoDaoImplementation avDao) {
+    public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao,
+                               DocumentPhysicalDaoImplementation physicalDaoImplementation,
+                               BookingDaoImplementation bookingDao, CheckoutDaoImplementation checkoutDao,
+                               AudioVideoDaoImplementation avDao) {
         this.usersDao = usersDao;
         this.bookDao = bookDao;
         this.physicalDaoImplementation = physicalDaoImplementation;
+        this.bookingDao = bookingDao;
         this.checkoutDao = checkoutDao;
         this.avDao = avDao;
     }
@@ -119,26 +124,69 @@ public class LibrarianController {
 //    public ModelAndView librarianConfirm(User user, String login) {
     public String librarianDeleteUser(@RequestBody User user) throws Exception {
         try {
-            usersDao.remove(usersDao.getIdByLogin(user.getLogin()));
+           User RealUser = usersDao.findByLogin(user.getLogin())
             return "- successfully deleted -";
+            if (RealUser != null) {
+                usersDao.remove(usersDao.getIdByLogin(RealUser.getLogin()));
+                return "- successfully deleted -";
+            } else {
+                throw new Exception("User is not exist");
+            }
+        } catch (Exception e) {
+            return "- failed! -";
+        }
+    }
+
+    @RequestMapping(value = "/librarian/user/modify", method = RequestMethod.GET)
+    //   public ModelAndView librarianConfirm(Model model, String login) {
+    public List<User> librarianModifyUser(Model model, String login) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("allUsers", usersDao.getList());
+//        modelAndView.setViewName("confirm");
+        return usersDao.getListAuthUsers();
+    }
+
+    @RequestMapping(value = "/librarian/user/modify", method = RequestMethod.POST)
+//    public ModelAndView librarianConfirm(User user, String login) {
+    public String librarianModifyUser(@RequestParam String login) throws Exception {
+        try {
+            User user = usersDao.findByLogin(login);
+            if (user != null) {
+                usersDao.update(user);
+                return "- successfully modified -";
+            } else {
+                throw new Exception("User is not exist");
+            }
         } catch (Exception e) {
             return "- failed! -";
         }
     }
 
 
-    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.POST)
+    @RequestMapping(value = "/librarian/user/info/checkout", method = RequestMethod.GET)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public Pair<User, List<Checkout>> librarianGetInfo(@RequestBody User user) throws Exception {
-        String login = user.getLogin();
-        User RealUser = usersDao.findByLogin(login);
-        if (RealUser != null) {
-            List<Checkout> checkout = checkoutDao.getCheckoutsByUser(RealUser.getId());
+    public Pair librarianGetCheckout(@RequestParam String login) throws Exception {
+        User user = usersDao.findByLogin(login);
+        if (user != null) {
+            List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
             return new Pair(user, checkout);
         } else {
             throw new Exception("User doesn't exist");
         }
     }
+
+    @RequestMapping(value = "/librarian/user/info/booking", method = RequestMethod.GET)
+//    public ModelAndView librarianConfirm(User user, String login) {
+    public Pair<User, List<Booking>> librarianGetBooking(@RequestParam String login) throws Exception {
+        User user = usersDao.findByLogin(login);
+        if (user != null) {
+            List<Booking> booking = bookingDao.getBookingsByUser(user.getId());
+            return new Pair(user, booking);
+        } else {
+            throw new Exception("User is not exist");
+        }
+    }
+
 
     @RequestMapping(value = "/librarian/add/AV")
     public String addAV(@RequestBody AudioVideo audioVideo,
@@ -159,7 +207,7 @@ public class LibrarianController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             audioVideo.setCount(audioVideo.getCount() + 1);
             try {
                 avDao.update(audioVideo);
@@ -193,7 +241,17 @@ public class LibrarianController {
         }
         return "";
     }
-
+//    @RequestMapping(value = "/librarian/user/info/overdue", method = RequestMethod.GET)
+////    public ModelAndView librarianConfirm(User user, String login) {
+//    public Pair<User, List<Checkout>> librarianGetOverdue(@RequestParam String login) throws Exception {
+//        User user = usersDao.findByLogin(login);
+//        if (user != null) {
+//            Pair pair = new Pair(user, checkout);
+//            return pair;
+//        } else {
+//            throw new Exception("User is not exist");
+//        }
+//    }
 
 
 }

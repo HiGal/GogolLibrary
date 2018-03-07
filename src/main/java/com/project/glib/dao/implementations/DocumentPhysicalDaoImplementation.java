@@ -70,10 +70,12 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
     }
 
     public long getIdByDocument(long documentId, String documentType) {
-        return documentPhysicalRepository.findAll().stream()
-                .filter(doc -> doc.getDocType().equals(documentType))
-                .filter(doc -> doc.getId() == documentId)
+        long i =  documentPhysicalRepository.findAll().stream()
+                .filter(documentPhysical -> documentPhysical.getDocType().equals(documentType))
+                .filter(documentPhysical -> documentPhysical.getId() == documentId)
                 .findFirst().get().getIdDoc();
+        System.out.println(i + " iiiiiii");
+        return i;
     }
 
     public void removeAllByDocId(long docId) {

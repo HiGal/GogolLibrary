@@ -34,8 +34,8 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "loggedIn")
-    private boolean loggedIn;
+//    @Column(name = "loggedIn")
+//    private boolean loggedIn;
 
     @Column(name = "auth")
     private boolean auth;
@@ -54,7 +54,7 @@ public class User {
         this.surname = surname;
         this.address = address;
         this.phone = phone;
-        this.loggedIn = isAuth;
+//        this.loggedIn = isAuth;
         this.role = role;
         this.auth = auth;
     }
@@ -71,7 +71,7 @@ public class User {
                 ", surname=" + surname +
                 ", address='" + address + '\'' +
                 ", phone=" + phone +
-                ", isAuth=" + loggedIn +
+//                ", isAuth=" + loggedIn +
                 ", role=" + role +
                 ", auth =" + auth +
                 '}';
@@ -142,13 +142,13 @@ public class User {
         this.phone = phone;
     }
 
-    public boolean getLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean auth) {
-        this.loggedIn = auth;
-    }
+//    public boolean getLoggedIn() {
+//        return loggedIn;
+//    }
+//
+//    public void setLoggedIn(boolean auth) {
+//        this.loggedIn = auth;
+//    }
 
     public boolean getAuth() {
         return auth;

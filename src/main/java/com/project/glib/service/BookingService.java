@@ -82,8 +82,11 @@ public class BookingService {
                         "maybe it program mistake.");
         }
 
+        System.out.println(docId + "      " + docType);
         long physId = documentPhysDao.getValidPhysicalId(docId, docType);
+        System.out.println("22222222222222");
         String shelf = documentPhysDao.getShelfById(physId);
+        System.out.println("sdfgvdcxddcfvgfcdcvf");
         documentPhysDao.inverseCanBooked(physId);
 
         Booking newBooking = new Booking(userId, physId, docType, shelf, System.nanoTime());
