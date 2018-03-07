@@ -171,7 +171,7 @@ public class LibrarianController {
             List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
             return new Pair(user, checkout);
         } else {
-            throw new Exception("User is not exist");
+            throw new Exception("User doesn't exist");
         }
     }
 
@@ -224,7 +224,22 @@ public class LibrarianController {
             return "Add a copy";
         }
         return "";
+    }
 
+    @RequestMapping(value = "/librarian/remove/book/{num_copies}",method = RequestMethod.POST)
+    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") long num){
+        try {
+            for (int i = 0; i < num; i++) {
+                System.out.println(book.getCount());
+                bookDao.decrementCountById(book.getId());
+                System.out.println(book.getCount());
+                physicalDaoImplementation.remove(book.getId());
+            }
+            return "Book/books is/are successfully removed";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 //    @RequestMapping(value = "/librarian/user/info/overdue", method = RequestMethod.GET)
 ////    public ModelAndView librarianConfirm(User user, String login) {
