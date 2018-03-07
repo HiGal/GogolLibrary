@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,14 +59,16 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     public void remove(long userId) throws Exception {
         try {
             logger.info("Try to delete user with user id = " + userId);
-            if (checkoutDao.getCheckoutsByUser(userId) == null) {
+            System.out.println(checkoutDao.getCheckoutsByUser(userId));
+            if (checkoutDao.getCheckoutsByUser(userId).size() == 0) {
                 userRepository.delete(userId);
             } else {
                 throw new Exception("User should return all documents before deleting");
             }
         } catch (Exception e) {
             logger.info("Try to delete user with wrong user id = " + userId);
-            throw new Exception("Delete this patron not available, patron don't exist");
+            e.printStackTrace();
+            throw new Exception("Delete this patron not available, patron doesn't exist");
         }
     }
 

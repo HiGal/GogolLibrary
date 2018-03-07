@@ -62,10 +62,10 @@ public class LibrarianController {
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
     public String librarianConfirm(@RequestBody User user) throws Exception {
-        usersDao.remove(usersDao.getIdByLogin(user.getLogin()));
-        user.setAuth(true);
+        User RealUser = usersDao.findByLogin(user.getLogin());
+        RealUser.setAuth(true);
         try {
-            usersDao.update(user);
+            usersDao.update(RealUser);
             return "- successfully updated -";
         } catch (Exception e) {
             return "- failed! -";
@@ -165,7 +165,7 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/info/checkout", method = RequestMethod.GET)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public Pair librarianGetCheckout(@RequestParam String login) throws Exception {
+    public Pair librarianGetCheckout(@RequestParam(value = "login") String login) throws Exception {
         User user = usersDao.findByLogin(login);
         if (user != null) {
             List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
@@ -183,7 +183,7 @@ public class LibrarianController {
             List<Booking> booking = bookingDao.getBookingsByUser(user.getId());
             return new Pair(user, booking);
         } else {
-            throw new Exception("User is not exist");
+            throw new Exception("User does not exist");
         }
     }
 
@@ -199,7 +199,7 @@ public class LibrarianController {
                     DocumentPhysical document = new DocumentPhysical();
                     document.setIdDoc(audioVideo.getId());
                     document.setShelf(shelf);
-                    document.setDocType("audioVideo");
+                    document.setDocType("AUDIO_VIDEO");
                     document.setCanBooked(true);
                     document.setReference(flag);
                     physicalDaoImplementation.add(document);
