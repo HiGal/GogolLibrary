@@ -46,6 +46,7 @@ public class ReturnService {
 
     /**
      * get overdue for current check out
+     *
      * @param checkout current check out
      * @return overdue
      */
@@ -76,8 +77,18 @@ public class ReturnService {
         return overdue;
     }
 
+    public int getOverdueDays(Checkout checkout) throws Exception {
+        int days = 0;
+        long difference = checkout.getCheckoutTime() - System.nanoTime();
+        if (difference < 0) {
+            days = convertToDays(difference);
+        }
+        return days;
+    }
+
     /**
      * get total overdue by current user
+     *
      * @param userId id of current user
      * @return total overdue
      */
@@ -116,6 +127,7 @@ public class ReturnService {
 
     /**
      * convert nanoseconds to days in integer value
+     *
      * @param nanoseconds nanoseconds
      * @return integers days in nanoseconds
      */

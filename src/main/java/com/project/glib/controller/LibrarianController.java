@@ -22,7 +22,10 @@ public class LibrarianController {
     private final AudioVideoDaoImplementation avDao;
 
     @Autowired
-    public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao, DocumentPhysicalDaoImplementation physicalDaoImplementation, BookingDaoImplementation bookingDao, CheckoutDaoImplementation checkoutDao, UserValidator userValidator) {
+    public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao,
+                               DocumentPhysicalDaoImplementation physicalDaoImplementation,
+                               BookingDaoImplementation bookingDao, CheckoutDaoImplementation checkoutDao,
+                               AudioVideoDaoImplementation avDao) {
         this.usersDao = usersDao;
         this.bookDao = bookDao;
         this.physicalDaoImplementation = physicalDaoImplementation;
@@ -122,15 +125,45 @@ public class LibrarianController {
 //    public ModelAndView librarianConfirm(User user, String login) {
     public String librarianDeleteUser(@RequestParam String login) throws Exception {
         try {
-            usersDao.remove(usersDao.getIdByLogin(login));
-            return "- successfully deleted -";
+            User user = usersDao.findByLogin(login);
+            if (user != null) {
+                usersDao.remove(usersDao.getIdByLogin(login));
+                return "- successfully deleted -";
+            } else {
+                throw new Exception("User is not exist");
+            }
+        } catch (Exception e) {
+            return "- failed! -";
+        }
+    }
+
+    @RequestMapping(value = "/librarian/user/modify", method = RequestMethod.GET)
+    //   public ModelAndView librarianConfirm(Model model, String login) {
+    public List<User> librarianModifyUser(Model model, String login) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("allUsers", usersDao.getList());
+//        modelAndView.setViewName("confirm");
+        return usersDao.getListAuthUsers();
+    }
+
+    @RequestMapping(value = "/librarian/user/modify", method = RequestMethod.POST)
+//    public ModelAndView librarianConfirm(User user, String login) {
+    public String librarianModifyUser(@RequestParam String login) throws Exception {
+        try {
+            User user = usersDao.findByLogin(login);
+            if (user != null) {
+                usersDao.update(user);
+                return "- successfully modified -";
+            } else {
+                throw new Exception("User is not exist");
+            }
         } catch (Exception e) {
             return "- failed! -";
         }
     }
 
 
-    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/user/info/checkout", method = RequestMethod.GET)
 //    public ModelAndView librarianConfirm(User user, String login) {
     public Pair librarianGetCheckout(@RequestParam String login) throws Exception {
         User user = usersDao.findByLogin(login);
@@ -154,6 +187,7 @@ public class LibrarianController {
         }
     }
 
+
     @RequestMapping(value = "/librarian/add/AV")
     public String addAV(@RequestBody AudioVideo audioVideo,
                         @RequestParam(value = "shelf") String shelf,
@@ -173,7 +207,7 @@ public class LibrarianController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             audioVideo.setCount(audioVideo.getCount() + 1);
             try {
                 avDao.update(audioVideo);
