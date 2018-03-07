@@ -2,7 +2,6 @@ package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.*;
 import com.project.glib.model.*;
-import com.project.glib.validator.UserValidator;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -123,10 +122,11 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianDeleteUser(@RequestParam String login) throws Exception {
+    public String librarianDeleteUser(@RequestParam String login) {
         try {
             User user = usersDao.findByLogin(login);
             if (user != null) {
+                bookingDao.remove(usersDao.getIdByLogin(login));
                 usersDao.remove(usersDao.getIdByLogin(login));
                 return "- successfully deleted -";
             } else {
@@ -148,7 +148,7 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/modify", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianModifyUser(@RequestParam String login) throws Exception {
+    public String librarianModifyUser(@RequestParam String login) {
         try {
             User user = usersDao.findByLogin(login);
             if (user != null) {

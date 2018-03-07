@@ -88,6 +88,20 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     }
 
     @Override
+    public void incrementCountById(long journalId) throws Exception {
+        try {
+            logger.info("Try to increment count of journal with journal id = " + journalId);
+            int i = journalRepository.findOne(journalId).getCount();
+            Journal journal = journalRepository.findOne(journalId);
+            journal.setCount(i + 1);
+            journalRepository.save(journal);
+        } catch (Exception e) {
+            logger.info("Try to increment count of journal with wrong journal id = " + journalId);
+            throw new Exception("Information not available, journal don't exist");
+        }
+    }
+
+    @Override
     public int getPriceById(long journalId) throws Exception {
         try {
             logger.info("Try to get price of journal with journal id = " + journalId);

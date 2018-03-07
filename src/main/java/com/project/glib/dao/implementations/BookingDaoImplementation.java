@@ -15,10 +15,12 @@ import java.util.stream.Collectors;
 public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final BookingRepository bookingRepository;
+    private final DocumentPhysicalDaoImplementation documentPhysicalDao;
 
     @Autowired
-    public BookingDaoImplementation(BookingRepository bookingRepository) {
+    public BookingDaoImplementation(BookingRepository bookingRepository, DocumentPhysicalDaoImplementation documentPhysicalDao) {
         this.bookingRepository = bookingRepository;
+        this.documentPhysicalDao = documentPhysicalDao;
     }
 
     public void add(Booking booking) throws Exception {
@@ -97,10 +99,19 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
     }
 
     public boolean alreadyHasThisBooking(long docId, String docType, long userId) {
-        return bookingRepository.findAll().stream()
+        boolean a = bookingRepository.findAll().stream()
                 .filter(booking -> booking.getIdUser() == userId)
                 .filter(booking -> booking.getIdDoc() == docId)
                 .anyMatch(booking -> booking.getDocType().equals(docType));
+        boolean b = false;
+        List<Booking> list = bookingRepository.findAll().stream()
+                .filter(booking -> booking.getIdUser() == userId).collect(Collectors.toList());
+        for (int i = 0; i < list.size(); i++) {
+            if (documentPhysicalDao.getDocIdByID(list.get(i).getIdDoc()) == docId) {
+                b = true;
+            }
+        }
+        return a || b;
     }
 
 }
