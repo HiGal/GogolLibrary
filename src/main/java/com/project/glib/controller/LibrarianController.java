@@ -122,12 +122,12 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianDeleteUser(@RequestBody User user) throws Exception {
+    public String librarianDeleteUser(@RequestBody User user) {
+
         try {
-           User RealUser = usersDao.findByLogin(user.getLogin())
-            return "- successfully deleted -";
-            if (RealUser != null) {
-                usersDao.remove(usersDao.getIdByLogin(RealUser.getLogin()));
+            User user1 = usersDao.findByLogin(user.getLogin());
+            if (user1 != null) {
+                usersDao.remove(usersDao.getIdByLogin(user1.getLogin()));
                 return "- successfully deleted -";
             } else {
                 throw new Exception("User is not exist");
