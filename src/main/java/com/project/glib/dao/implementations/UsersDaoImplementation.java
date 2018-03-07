@@ -44,7 +44,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     public void update(User user) throws Exception {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         try {
-            userRepository.save(user);
+            userRepository.saveAndFlush(user);
             logger.info("User successfully update. User details : " + user);
         } catch (Exception e) {
             logger.info("Try to update this user, user don't exist or some new user parameters are wrong. " +
@@ -124,4 +124,5 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         User user = userRepository.findUserByLogin(login);
         return  user.getId();
     }
+
 }

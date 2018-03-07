@@ -19,7 +19,7 @@ public class LibrarianController {
     private final DocumentPhysicalDaoImplementation physicalDaoImplementation;
     private final BookingDaoImplementation bookingDao;
     private final CheckoutDaoImplementation checkoutDao;
-    private final UserValidator userValidator;
+    private final AudioVideoDaoImplementation avDao;
 
     @Autowired
     public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao, DocumentPhysicalDaoImplementation physicalDaoImplementation, BookingDaoImplementation bookingDao, CheckoutDaoImplementation checkoutDao, UserValidator userValidator) {
@@ -28,7 +28,7 @@ public class LibrarianController {
         this.physicalDaoImplementation = physicalDaoImplementation;
         this.bookingDao = bookingDao;
         this.checkoutDao = checkoutDao;
-        this.userValidator = userValidator;
+        this.avDao = avDao;
     }
 
 
@@ -60,6 +60,7 @@ public class LibrarianController {
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
     public String librarianConfirm(@RequestBody User user) throws Exception {
+        usersDao.remove(usersDao.getIdByLogin(user.getLogin()));
         user.setAuth(true);
         try {
             usersDao.update(user);
@@ -70,8 +71,8 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "librarian/add/book", method = RequestMethod.POST)
-    public void addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
-                        @RequestParam(value = "isReference") boolean flag) {
+    public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
+                          @RequestParam(value = "isReference") boolean flag) {
         if (!bookDao.isAlreadyExist(book)) {
             try {
                 bookDao.add(book);
@@ -85,10 +86,27 @@ public class LibrarianController {
                     document.setReference(flag);
                     physicalDaoImplementation.add(document);
                 }
+                return "Book successfully added";
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            book.setCount(book.getCount() + 1);
+            try {
+                bookDao.update(book);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            DocumentPhysical document = new DocumentPhysical();
+            document.setIdDoc(book.getId());
+            document.setShelf(shelf);
+            document.setDocType("BOOK");
+            document.setCanBooked(flag);
+            document.setReference(flag);
+            physicalDaoImplementation.add(document);
+            return "Add a copy";
         }
+        return "";
     }
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.GET)
@@ -112,7 +130,7 @@ public class LibrarianController {
     }
 
 
-    @RequestMapping(value = "/librarian/user/info/checkout", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.GET)
 //    public ModelAndView librarianConfirm(User user, String login) {
     public Pair librarianGetCheckout(@RequestParam String login) throws Exception {
         User user = usersDao.findByLogin(login);
@@ -136,6 +154,44 @@ public class LibrarianController {
         }
     }
 
+    @RequestMapping(value = "/librarian/add/AV")
+    public String addAV(@RequestBody AudioVideo audioVideo,
+                        @RequestParam(value = "shelf") String shelf,
+                        @RequestParam(value = "isReference") boolean flag) {
+        if (!avDao.isAlreadyExist(audioVideo)) {
+            try {
+                avDao.add(audioVideo);
+                for (int i = 0; i < audioVideo.getCount(); i++) {
+                    DocumentPhysical document = new DocumentPhysical();
+                    document.setIdDoc(audioVideo.getId());
+                    document.setShelf(shelf);
+                    document.setDocType("audioVideo");
+                    document.setCanBooked(true);
+                    document.setReference(flag);
+                    physicalDaoImplementation.add(document);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            audioVideo.setCount(audioVideo.getCount() + 1);
+            try {
+                avDao.update(audioVideo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            DocumentPhysical document = new DocumentPhysical();
+            document.setIdDoc(audioVideo.getId());
+            document.setShelf(shelf);
+            document.setDocType("AUDIO_VIDEO");
+            document.setCanBooked(flag);
+            document.setReference(flag);
+            physicalDaoImplementation.add(document);
+            return "Add a copy";
+        }
+        return "";
+
+    }
 //    @RequestMapping(value = "/librarian/user/info/overdue", method = RequestMethod.GET)
 ////    public ModelAndView librarianConfirm(User user, String login) {
 //    public Pair<User, List<Checkout>> librarianGetOverdue(@RequestParam String login) throws Exception {
