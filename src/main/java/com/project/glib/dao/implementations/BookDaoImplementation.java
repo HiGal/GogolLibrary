@@ -32,10 +32,10 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     @Override
     public void add(Book book) throws Exception {
         try {
-            if (true){
+            if (true) {
                 bookRepository.save(book);
                 logger.info("Book successfully saved. Book details : " + book);
-            }else {
+            } else {
                 throw new Exception("Can't add this book, some parameters are wrong");
             }
         } catch (Exception e) {
@@ -64,6 +64,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
 
     /**
      * Remove Book from library
+     *
      * @param bookId id of Book
      * @throws Exception
      */
@@ -80,7 +81,6 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     }
 
     /**
-     *
      * @param bookId
      * @return
      * @throws Exception
@@ -112,11 +112,23 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         try {
             logger.info("Try to decrement count of book with book id = " + bookId);
             int i = bookRepository.findOne(bookId).getCount() - 1;
-            System.out.println(i);
             bookRepository.findOne(bookId).setCount(i);
             bookRepository.saveAndFlush(bookRepository.findOne(bookId));
         } catch (Exception e) {
             logger.info("Try to decrement count of book with wrong book id = " + bookId);
+            throw new Exception("Information not available, book don't exist");
+        }
+    }
+
+    @Override
+    public void incrementCountById(long bookId) throws Exception {
+        try {
+            logger.info("Try to increment count of book with book id = " + bookId);
+            int i = bookRepository.findOne(bookId).getCount() + 1;
+            bookRepository.findOne(bookId).setCount(i);
+            bookRepository.saveAndFlush(bookRepository.findOne(bookId));
+        } catch (Exception e) {
+            logger.info("Try to increment count of book with wrong book id = " + bookId);
             throw new Exception("Information not available, book don't exist");
         }
     }
@@ -165,11 +177,11 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         return books;
     }
 
-    public boolean isAlreadyExist(Book book){
+    public boolean isAlreadyExist(Book book) {
         return bookRepository.existsBookByTitle(book.getTitle());
     }
 
-    public List<Book> getListofAccessibleBooks(){
+    public List<Book> getListofAccessibleBooks() {
         return bookRepository.findAll().stream().filter(book -> book.getCount() > 0).collect(Collectors.toList());
     }
 

@@ -41,6 +41,22 @@ public class ReturnService {
         String checkoutInfo = checkout.toString();
         int overdue = getOverdue(checkout);
         checkoutDao.remove(checkout.getId());
+        long id = docPhysDao.getDocIdByID(checkout.getIdDoc());
+        docPhysDao.inverseCanBooked(checkout.getIdDoc());
+        switch (checkout.getDocType()) {
+            case Document.BOOK:
+                System.out.println("");
+                bookDao.incrementCountById(id);
+                break;
+            case Document.JOURNAL:
+                journalDao.incrementCountById(id);
+                break;
+            case Document.AV:
+                avDao.incrementCountById(id);
+                break;
+            default:
+                return null;
+        }
         return new Pair<>(checkoutInfo, overdue);
     }
 
@@ -58,6 +74,7 @@ public class ReturnService {
             int price;
             switch (checkout.getDocType()) {
                 case Document.BOOK:
+                    System.out.println(checkout.getIdDoc() + " DOOOOOOOOOOOOOOOOOOCCCCCCCC ID");
                     long bookId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
                     price = bookDao.getPriceById(bookId);
                     break;
@@ -77,7 +94,7 @@ public class ReturnService {
         return overdue;
     }
 
-    public int getOverdueDays(Checkout checkout) throws Exception {
+    public int getOverdueDays(Checkout checkout) {
         int days = 0;
         long difference = checkout.getCheckoutTime() - System.nanoTime();
         if (difference < 0) {

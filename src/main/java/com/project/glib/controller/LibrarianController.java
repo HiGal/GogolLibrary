@@ -122,12 +122,12 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianDeleteUser(@RequestBody User user) {
-
+    public String librarianDeleteUser(@RequestParam String login) {
         try {
-            User user1 = usersDao.findByLogin(user.getLogin());
-            if (user1 != null) {
-                usersDao.remove(usersDao.getIdByLogin(user1.getLogin()));
+            User user = usersDao.findByLogin(login);
+            if (user != null) {
+                bookingDao.remove(usersDao.getIdByLogin(login));
+                usersDao.remove(usersDao.getIdByLogin(login));
                 return "- successfully deleted -";
             } else {
                 throw new Exception("User is not exist");
@@ -148,7 +148,7 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/modify", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianModifyUser(@RequestParam String login) throws Exception {
+    public String librarianModifyUser(@RequestParam String login) {
         try {
             User user = usersDao.findByLogin(login);
             if (user != null) {

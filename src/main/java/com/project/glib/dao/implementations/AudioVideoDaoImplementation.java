@@ -58,6 +58,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
     /**
      * Remove AudioVideo from library
+     *
      * @param audioVideoId id of AudioVideo
      * @throws Exception
      */
@@ -74,6 +75,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
     /**
      * get AudioVideo by it id
+     *
      * @param audioVideoId id of AudioVideo
      * @return AudioVideo object
      * @throws Exception
@@ -91,6 +93,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
     /**
      * get how many copies of AudioVideo we already have in library
+     *
      * @param audioVideoId id of AudioVideo
      * @return count of copies
      * @throws Exception
@@ -108,6 +111,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
     /**
      * set count to count-1 for AudioVideo
+     *
      * @param avId id of AudioVideo
      * @throws Exception
      */
@@ -122,8 +126,23 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    @Override
+    public void incrementCountById(long avId) throws Exception {
+        try {
+            logger.info("Try to increment count of AV with AV id = " + avId);
+            int i = audioVideoRepository.findOne(avId).getCount();
+            AudioVideo audioVideo = audioVideoRepository.findOne(avId);
+            audioVideo.setCount(i + 1);
+            audioVideoRepository.save(audioVideo);
+        } catch (Exception e) {
+            logger.info("Try to increment count of AV with wrong AV id = " + avId);
+            throw new Exception("Information not available, AV don't exist");
+        }
+    }
+
     /**
      * get price of AudioVideo by id
+     *
      * @param avId id of AudioVideo
      * @return price of book
      * @throws Exception
@@ -141,6 +160,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
     /**
      * get list of all AudioVideo
+     *
      * @return
      */
     @Override
@@ -157,6 +177,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
     /**
      * get list of all AudioVideo with count bigger than zero or renewed
+     *
      * @return list of AudioVideo with count bigger than zero or renewed
      */
     @Override
@@ -170,11 +191,11 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         return audioVideos;
     }
 
-    public boolean isAlreadyExist(AudioVideo audioVideo){
+    public boolean isAlreadyExist(AudioVideo audioVideo) {
         return audioVideoRepository.existsAllByTitle(audioVideo.getTitle());
     }
 
-    public List<AudioVideo> getAllaccessibleAV(){
-       return audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
+    public List<AudioVideo> getAllaccessibleAV() {
+        return audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
     }
 }

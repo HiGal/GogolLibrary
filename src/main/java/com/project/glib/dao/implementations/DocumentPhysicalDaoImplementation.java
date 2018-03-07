@@ -61,8 +61,10 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
     }
 
     public void inverseCanBooked(long documentId) {
-        documentPhysicalRepository.findOne(documentId).setCanBooked(
-                !documentPhysicalRepository.findOne(documentId).isCanBooked());
+        boolean b = !documentPhysicalRepository.findOne(documentId).isCanBooked();
+        DocumentPhysical documentPhysical = documentPhysicalRepository.findOne(documentId);
+        documentPhysical.setCanBooked(b);
+        documentPhysicalRepository.save(documentPhysical);
     }
 
     public String getShelfById(long documentPhysicalId) {
@@ -70,13 +72,12 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
     }
 
     public long getIdByDocument(long documentId, String documentType) {
-        long i =  documentPhysicalRepository.findAll().stream()
+        return documentPhysicalRepository.findAll().stream()
                 .filter(documentPhysical -> documentPhysical.getDocType().equals(documentType))
-                .filter(documentPhysical -> documentPhysical.getId() == documentId)
+                .filter(Document -> Document.getId() == documentId)
                 .findFirst().get().getIdDoc();
-        System.out.println(i + " iiiiiii");
-        return i;
     }
+
 
     public void removeAllByDocId(long docId) {
         List<DocumentPhysical> documentPhysicals = documentPhysicalRepository.findAll().stream()
@@ -85,5 +86,9 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
         for (DocumentPhysical doc : documentPhysicals) {
             remove(doc.getId());
         }
+    }
+
+    public long getDocIdByID(long id) {
+        return documentPhysicalRepository.findOne(id).getIdDoc();
     }
 }

@@ -9,6 +9,8 @@ public interface DocumentDao<T extends Document> extends ModifyByLibrarian<T> {
 
     void decrementCountById(long documentId) throws Exception;
 
+    void incrementCountById(long docId) throws Exception;
+
     int getPriceById(long documentId) throws Exception;
 
     List<T> getListCountNotZeroOrRenewed();
