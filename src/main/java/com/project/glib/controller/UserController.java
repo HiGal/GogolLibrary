@@ -2,21 +2,21 @@ package com.project.glib.controller;
 
 //import com.project.glib.dao.implementations.SecurityDaoImplementation;
 
+import com.project.glib.dao.implementations.AudioVideoDaoImplementation;
 import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.dao.implementations.UsersDaoImplementation;
 import com.project.glib.dao.interfaces.BookRepository;
+import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
 import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 //@Controller
 @RestController
@@ -25,15 +25,17 @@ public class UserController {
     private final UsersDaoImplementation usersDao;
     private final UserValidator userValidator;
     private final BookDaoImplementation bookDao;
+    private final AudioVideoDaoImplementation avDao;
 
     @Autowired
     public UserController(UsersDaoImplementation usersDao,
 //                          SecurityDaoImplementation securityDao,
-                          UserValidator userValidator, BookRepository bookRepository, BookDaoImplementation bookDao) {
+                          UserValidator userValidator, BookRepository bookRepository, BookDaoImplementation bookDao, AudioVideoDaoImplementation avDao) {
         this.usersDao = usersDao;
 //        this.securityDao = securityDao;
         this.userValidator = userValidator;
         this.bookDao = bookDao;
+        this.avDao = avDao;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -150,10 +152,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "accessiblebooks", method = RequestMethod.GET)
-    public List<Book> getAllCheckoutBook(Model book){
+    public List<Book> getAllforCheckoutBook(){
         return bookDao.getListofAccessibleBooks();
     }
 
-
+    @RequestMapping(value = "accessibleAV", method = RequestMethod.GET)
+    public List<AudioVideo> getAllforCheckoutAV(){
+        return avDao.getAllaccessibleAV();
+    }
 
 }

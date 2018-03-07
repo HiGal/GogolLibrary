@@ -169,4 +169,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
         return audioVideos;
     }
+
+    public boolean isAlreadyExist(AudioVideo audioVideo){
+        return audioVideoRepository.existsAllByTitle(audioVideo.getTitle());
+    }
+
+    public List<AudioVideo> getAllaccessibleAV(){
+       return audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
+    }
 }

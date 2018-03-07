@@ -124,4 +124,5 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         User user = userRepository.findUserByLogin(login);
         return  user.getId();
     }
+
 }

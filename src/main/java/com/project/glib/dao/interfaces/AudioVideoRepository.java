@@ -8,5 +8,5 @@ import java.util.List;
 
 @RepositoryRestResource()
 public interface AudioVideoRepository extends JpaRepository<AudioVideo, Long> {
-
+    boolean existsAllByTitle(String title);
 }
