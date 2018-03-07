@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource()
 public interface JournalRepository extends JpaRepository<Journal, Long> {
+    boolean existsAllByTitle(String title);
 }

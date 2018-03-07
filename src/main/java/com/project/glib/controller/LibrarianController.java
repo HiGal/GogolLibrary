@@ -19,18 +19,20 @@ public class LibrarianController {
     private final BookingDaoImplementation bookingDao;
     private final CheckoutDaoImplementation checkoutDao;
     private final AudioVideoDaoImplementation avDao;
+    private final JournalDaoImplementation jourDao;
 
     @Autowired
     public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao,
                                DocumentPhysicalDaoImplementation physicalDaoImplementation,
                                BookingDaoImplementation bookingDao, CheckoutDaoImplementation checkoutDao,
-                               AudioVideoDaoImplementation avDao) {
+                               AudioVideoDaoImplementation avDao, JournalDaoImplementation jourDao) {
         this.usersDao = usersDao;
         this.bookDao = bookDao;
         this.physicalDaoImplementation = physicalDaoImplementation;
         this.bookingDao = bookingDao;
         this.checkoutDao = checkoutDao;
         this.avDao = avDao;
+        this.jourDao = jourDao;
     }
 
 
@@ -148,14 +150,14 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/modify", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianModifyUser(@RequestParam String login) {
+    public String librarianModifyUser(@RequestBody User user) {
         try {
-            User user = usersDao.findByLogin(login);
-            if (user != null) {
+            User RealUser = usersDao.findByLogin(user.getLogin());
+            if (RealUser != null) {
                 usersDao.update(user);
                 return "- successfully modified -";
             } else {
-                throw new Exception("User is not exist");
+                throw new Exception("User does not exist");
             }
         } catch (Exception e) {
             return "- failed! -";
@@ -221,13 +223,53 @@ public class LibrarianController {
             document.setCanBooked(flag);
             document.setReference(flag);
             physicalDaoImplementation.add(document);
-            return "Add a copy";
+            return "Copy added";
         }
         return "";
     }
 
-    @RequestMapping(value = "/librarian/remove/book/{num_copies}",method = RequestMethod.POST)
-    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") long num){
+
+    @RequestMapping(value = "/librarian/add/Journal")
+    public String addJournal(@RequestBody Journal journal,
+                             @RequestParam(value = "shelf") String shelf,
+                             @RequestParam(value = "isReference") boolean flag) {
+        if (!jourDao.isAlreadyExist(journal)) {
+            try {
+                jourDao.add(journal);
+                for (int i = 0; i < journal.getCount(); i++) {
+                    DocumentPhysical document = new DocumentPhysical();
+                    document.setIdDoc(journal.getId());
+                    document.setShelf(shelf);
+                    document.setDocType("JOURNAL");
+                    document.setCanBooked(true);
+                    document.setReference(flag);
+                    physicalDaoImplementation.add(document);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            journal.setCount(journal.getCount() + 1);
+            try {
+                jourDao.update(journal);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            DocumentPhysical document = new DocumentPhysical();
+            document.setIdDoc(journal.getId());
+            document.setShelf(shelf);
+            document.setDocType("JOURNAL");
+            document.setCanBooked(flag);
+            document.setReference(flag);
+            physicalDaoImplementation.add(document);
+            return "Copy added";
+        }
+        return "";
+    }
+
+
+    @RequestMapping(value = "/librarian/remove/book/{num_copies}", method = RequestMethod.POST)
+    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") long num) {
         try {
             for (int i = 0; i < num; i++) {
                 System.out.println(book.getCount());

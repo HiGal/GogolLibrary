@@ -134,4 +134,8 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
 
         return journals;
     }
+
+    public boolean isAlreadyExist(Journal journal){
+        return journalRepository.existsAllByTitle(journal.getTitle());
+    }
 }
