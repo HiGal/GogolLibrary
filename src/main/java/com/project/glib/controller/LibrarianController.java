@@ -112,16 +112,41 @@ public class LibrarianController {
     }
 
 
-    @RequestMapping(value = "/librarian/user/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/user/info/checkout", method = RequestMethod.GET)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public Pair<User,List<Checkout>> librarianGetInfo(@RequestParam String login) throws Exception {
+    public Pair librarianGetCheckout(@RequestParam String login) throws Exception {
         User user = usersDao.findByLogin(login);
-        if (user != null){
-       List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
-        Pair pair = new Pair(user,checkout);
-       return pair;}else{
+        if (user != null) {
+            List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
+            return new Pair(user, checkout);
+        } else {
             throw new Exception("User is not exist");
         }
     }
+
+    @RequestMapping(value = "/librarian/user/info/booking", method = RequestMethod.GET)
+//    public ModelAndView librarianConfirm(User user, String login) {
+    public Pair<User, List<Booking>> librarianGetBooking(@RequestParam String login) throws Exception {
+        User user = usersDao.findByLogin(login);
+        if (user != null) {
+            List<Booking> booking = bookingDao.getBookingsByUser(user.getId());
+            return new Pair(user, booking);
+        } else {
+            throw new Exception("User is not exist");
+        }
+    }
+
+//    @RequestMapping(value = "/librarian/user/info/overdue", method = RequestMethod.GET)
+////    public ModelAndView librarianConfirm(User user, String login) {
+//    public Pair<User, List<Checkout>> librarianGetOverdue(@RequestParam String login) throws Exception {
+//        User user = usersDao.findByLogin(login);
+//        if (user != null) {
+//            Pair pair = new Pair(user, checkout);
+//            return pair;
+//        } else {
+//            throw new Exception("User is not exist");
+//        }
+//    }
+
 
 }

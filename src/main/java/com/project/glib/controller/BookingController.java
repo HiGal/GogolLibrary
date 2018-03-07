@@ -50,7 +50,6 @@ public class BookingController {
 
     @RequestMapping(value = "/booking/book", method = RequestMethod.POST)
     public String b(@RequestBody Booking bookingForm, Model model)  {
-        System.out.println(bookingForm.getIdDoc());
         try {
             bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
             return "successfully ordered";
