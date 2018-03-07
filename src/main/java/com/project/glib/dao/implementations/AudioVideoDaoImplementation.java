@@ -119,7 +119,10 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     public void decrementCountById(long avId) throws Exception {
         try {
             logger.info("Try to decrement count of AV with AV id = " + avId);
-            audioVideoRepository.findOne(avId).setCount(audioVideoRepository.findOne(avId).getCount() - 1);
+            int i = audioVideoRepository.findOne(avId).getCount();
+            AudioVideo audioVideo = audioVideoRepository.findOne(avId);
+            audioVideo.setCount(i - 1);
+            audioVideoRepository.saveAndFlush(audioVideo);
         } catch (Exception e) {
             logger.info("Try to decrement count of AV with wrong AV id = " + avId);
             throw new Exception("Information not available, AV don't exist");
@@ -133,7 +136,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
             int i = audioVideoRepository.findOne(avId).getCount();
             AudioVideo audioVideo = audioVideoRepository.findOne(avId);
             audioVideo.setCount(i + 1);
-            audioVideoRepository.save(audioVideo);
+            audioVideoRepository.saveAndFlush(audioVideo);
         } catch (Exception e) {
             logger.info("Try to increment count of AV with wrong AV id = " + avId);
             throw new Exception("Information not available, AV don't exist");

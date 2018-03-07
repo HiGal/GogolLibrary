@@ -80,7 +80,10 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     public void decrementCountById(long journalId) throws Exception {
         try {
             logger.info("Try to decrement count of journal with journal id = " + journalId);
-            journalRepository.findOne(journalId).setCount(journalRepository.findOne(journalId).getCount() - 1);
+            int i = journalRepository.findOne(journalId).getCount();
+            Journal journal = journalRepository.findOne(journalId);
+            journal.setCount(i - 1);
+            journalRepository.saveAndFlush(journal);
         } catch (Exception e) {
             logger.info("Try to decrement count of journal with wrong journal id = " + journalId);
             throw new Exception("Information not available, journal don't exist");
@@ -94,7 +97,7 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
             int i = journalRepository.findOne(journalId).getCount();
             Journal journal = journalRepository.findOne(journalId);
             journal.setCount(i + 1);
-            journalRepository.save(journal);
+            journalRepository.saveAndFlush(journal);
         } catch (Exception e) {
             logger.info("Try to increment count of journal with wrong journal id = " + journalId);
             throw new Exception("Information not available, journal don't exist");

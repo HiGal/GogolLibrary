@@ -64,7 +64,7 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
         boolean b = !documentPhysicalRepository.findOne(documentId).isCanBooked();
         DocumentPhysical documentPhysical = documentPhysicalRepository.findOne(documentId);
         documentPhysical.setCanBooked(b);
-        documentPhysicalRepository.save(documentPhysical);
+        documentPhysicalRepository.saveAndFlush(documentPhysical);
     }
 
     public String getShelfById(long documentPhysicalId) {

@@ -63,7 +63,7 @@ public class LibrarianController {
 
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianConfirm(@RequestBody User user) throws Exception {
+    public String librarianConfirm(@RequestBody User user) {
         User RealUser = usersDao.findByLogin(user.getLogin());
         RealUser.setAuth(true);
         try {
@@ -77,40 +77,44 @@ public class LibrarianController {
     @RequestMapping(value = "librarian/add/book", method = RequestMethod.POST)
     public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
                           @RequestParam(value = "isReference") boolean flag) {
-        if (!bookDao.isAlreadyExist(book)) {
-            try {
-                bookDao.add(book);
-                for (int i = 0; i < book.getCount(); i++) {
-                    DocumentPhysical document = new DocumentPhysical();
-                    document.setShelf(shelf);
-                    document.setIdDoc(book.getId());
-                    document.setShelf(shelf);
-                    document.setDocType("BOOK");
-                    document.setCanBooked(true);
-                    document.setReference(flag);
-                    physicalDaoImplementation.add(document);
+        if (book.getPrice() > 0) {
+            if (!bookDao.isAlreadyExist(book)) {
+                try {
+                    bookDao.add(book);
+                    for (int i = 0; i < book.getCount(); i++) {
+                        DocumentPhysical document = new DocumentPhysical();
+                        document.setShelf(shelf);
+                        document.setIdDoc(book.getId());
+                        document.setShelf(shelf);
+                        document.setDocType("BOOK");
+                        document.setCanBooked(true);
+                        document.setReference(flag);
+                        physicalDaoImplementation.add(document);
+                    }
+                    return "Book successfully added";
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                return "Book successfully added";
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                book.setCount(book.getCount() + 1);
+                try {
+                    bookDao.update(book);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                DocumentPhysical document = new DocumentPhysical();
+                document.setIdDoc(book.getId());
+                document.setShelf(shelf);
+                document.setDocType("BOOK");
+                document.setCanBooked(flag);
+                document.setReference(flag);
+                physicalDaoImplementation.add(document);
+                return "Added a copy of book";
             }
+            return "";
         } else {
-            book.setCount(book.getCount() + 1);
-            try {
-                bookDao.update(book);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            DocumentPhysical document = new DocumentPhysical();
-            document.setIdDoc(book.getId());
-            document.setShelf(shelf);
-            document.setDocType("BOOK");
-            document.setCanBooked(flag);
-            document.setReference(flag);
-            physicalDaoImplementation.add(document);
-            return "Add a copy";
+            return " Price cannot be negative ";
         }
-        return "";
     }
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.GET)

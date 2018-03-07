@@ -68,13 +68,12 @@ public class ReturnService {
      */
     public int getOverdue(Checkout checkout) throws Exception {
         int overdue = 0;
-        long difference = checkout.getCheckoutTime() - System.nanoTime();
+        long difference = checkout.getReturnTime() - System.nanoTime();
         if (difference < 0) {
             int days = convertToDays(difference);
             int price;
             switch (checkout.getDocType()) {
                 case Document.BOOK:
-                    System.out.println(checkout.getIdDoc() + " DOOOOOOOOOOOOOOOOOOCCCCCCCC ID");
                     long bookId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
                     price = bookDao.getPriceById(bookId);
                     break;
