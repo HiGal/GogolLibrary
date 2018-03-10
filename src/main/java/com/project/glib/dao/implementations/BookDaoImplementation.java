@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,12 +16,12 @@ import java.util.stream.Collectors;
 public class BookDaoImplementation implements DocumentDao<Book> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final BookRepository bookRepository;
-    private final DocumentPhysicalDaoImplementation documentPhysicalDaoImplementation;
+    private final DocumentPhysicalDaoImplementation documentPhysDao;
 
     @Autowired
-    public BookDaoImplementation(BookRepository bookRepository, DocumentPhysicalDaoImplementation documentPhysicalDaoImplementation) {
+    public BookDaoImplementation(BookRepository bookRepository, DocumentPhysicalDaoImplementation documentPhysDao) {
         this.bookRepository = bookRepository;
-        this.documentPhysicalDaoImplementation = documentPhysicalDaoImplementation;
+        this.documentPhysDao = documentPhysDao;
     }
 
     /**
@@ -31,16 +32,23 @@ public class BookDaoImplementation implements DocumentDao<Book> {
      */
     @Override
     public void add(Book book) throws Exception {
+        checkValidParameters(book);
         try {
-            if (true) {
-                bookRepository.save(book);
+            if (!isAlreadyExist(book)) {
+                bookRepository.saveAndFlush(book);
                 logger.info("Book successfully saved. Book details : " + book);
             } else {
-                throw new Exception("Can't add this book, some parameters are wrong");
+                // TODO change method for finding existedBook
+                Book existedBook = bookRepository.findAll().stream()
+                        .filter(b -> b.getTitle().equals(book.getTitle())).collect(Collectors.toList()).get(0);
+
+                logger.info("Try to add " + book.getCount() + " copies of book : " + existedBook);
+                existedBook.setCount(existedBook.getCount() + book.getCount());
+                update(existedBook);
             }
         } catch (Exception e) {
-            logger.info("Try to add book with wrong parameters. New book information : " + book);
-            throw new Exception("Can't add this book, some parameters are wrong");
+            logger.info("Error in method add() in class BookDaoImplementation");
+            throw new Exception("Can't add this book, something wrong");
         }
     }
 
@@ -52,13 +60,15 @@ public class BookDaoImplementation implements DocumentDao<Book> {
      */
     @Override
     public void update(Book book) throws Exception {
+        checkValidParameters(book);
+        // TODO solve case then librarian change count of books
         try {
             bookRepository.saveAndFlush(book);
             logger.info("Book successfully update. Book details : " + book);
         } catch (Exception e) {
-            logger.info("Try to update this book, book don't exist or some new book parameters are wrong. " +
+            logger.info("Try to update this book, book don't exist or something wrong. " +
                     "Update book information : " + book);
-            throw new Exception("Can't update this book, book don't exist or some new book parameters are wrong");
+            throw new Exception("Can't update this book, book don't exist or something wrong");
         }
     }
 
@@ -72,12 +82,50 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     public void remove(long bookId) throws Exception {
         try {
             logger.info("Try to delete book with book id = " + bookId);
-            documentPhysicalDaoImplementation.removeAllByDocId(bookId);
+            documentPhysDao.removeAllByDocId(bookId);
             bookRepository.delete(bookId);
         } catch (Exception e) {
             logger.info("Try to delete book with wrong book id = " + bookId);
             throw new Exception("Delete this book not available, book don't exist");
         }
+    }
+
+    @Override
+    public void checkValidParameters(Book book) throws Exception {
+        if (book.getPrice() < 0) {
+            throw new Exception("Price must be positive");
+        }
+
+        if (book.getCount() < 0) {
+            throw new Exception("Count must be positive");
+        }
+
+        if (book.getTitle().equals("")) {
+            throw new Exception("Title must exist");
+        }
+
+        if (book.getBookAuthor().equals("")) {
+            throw new Exception("Author must exist");
+        }
+
+        if (book.getEdition().equals("")) {
+            throw new Exception("Edition must exist");
+        }
+
+        if (book.getPublisher().equals("")) {
+            throw new Exception("Publisher must exist");
+        }
+
+        // TODO reduce method getYear()
+        if (book.getYear() > new Date().getYear()) {
+            throw new Exception("Year must be less or equal than current");
+        }
+    }
+
+    // TODO make more general
+    @Override
+    public boolean isAlreadyExist(Book book) {
+        return bookRepository.existsBookByTitle(book.getTitle());
     }
 
     /**
@@ -176,13 +224,4 @@ public class BookDaoImplementation implements DocumentDao<Book> {
 
         return books;
     }
-
-    public boolean isAlreadyExist(Book book) {
-        return bookRepository.existsBookByTitle(book.getTitle());
-    }
-
-    public List<Book> getListofAccessibleBooks() {
-        return bookRepository.findAll().stream().filter(book -> book.getCount() > 0).collect(Collectors.toList());
-    }
-
 }

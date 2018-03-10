@@ -21,6 +21,7 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
         this.checkoutRepository = checkoutRepository;
     }
 
+    @Override
     public void add(Checkout checkout) throws Exception {
         try {
             checkoutRepository.save(checkout);
@@ -31,6 +32,7 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
         }
     }
 
+    @Override
     public void update(Checkout checkout) throws Exception {
         try {
             checkoutRepository.saveAndFlush(checkout);
@@ -42,6 +44,7 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
         }
     }
 
+    @Override
     public void remove(long checkoutId) throws Exception {
         try {
             logger.info("Try to delete check out with check out id = " + checkoutId);
@@ -52,6 +55,7 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
         }
     }
 
+    @Override
     public Checkout getById(long checkoutId) throws Exception {
         try {
             logger.info("Try to get check out with check out id = " + checkoutId);
@@ -72,6 +76,7 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<Checkout> getList() {
         List<Checkout> checkouts = checkoutRepository.findAll();

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +27,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         this.checkoutDao = checkoutDao;
     }
 
+    @Override
     public void add(User user) throws Exception {
         //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         //userRepository.save(user);
@@ -44,6 +44,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
 
     }
 
+    @Override
     public void update(User user) throws Exception {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         try {
@@ -56,6 +57,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         }
     }
 
+    @Override
     public void remove(long userId) throws Exception {
         try {
             logger.info("Try to delete user with user id = " + userId);
@@ -72,6 +74,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<User> getList() {
         List<User> users = userRepository.findAll();
@@ -84,6 +87,7 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
         return users;
     }
 
+    @Override
     public User getById(long userId) throws Exception {
         try {
             logger.info("Try to get user with user id = " + userId);

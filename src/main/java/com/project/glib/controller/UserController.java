@@ -12,8 +12,9 @@ import com.project.glib.model.User;
 import com.project.glib.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -69,13 +70,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "accessiblebooks", method = RequestMethod.GET)
-    public List<Book> getAllforCheckoutBook(){
-        return bookDao.getListofAccessibleBooks();
+    public List<Book> getAllForCheckoutBook() {
+        return bookDao.getListCountNotZeroOrRenewed();
     }
 
     @RequestMapping(value = "accessibleAV", method = RequestMethod.GET)
-    public List<AudioVideo> getAllforCheckoutAV(){
-        return avDao.getAllaccessibleAV();
+    public List<AudioVideo> getAllForCheckoutAV() {
+        return avDao.getListCountNotZeroOrRenewed();
     }
 
 }

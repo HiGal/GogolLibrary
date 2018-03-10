@@ -30,8 +30,18 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     @Override
     public void add(AudioVideo audioVideo) throws Exception {
         try {
-            audioVideoRepository.save(audioVideo);
-            logger.info("AudioVideo successfully saved. AudioVideo details : " + audioVideo);
+            if (!isAlreadyExist(audioVideo)) {
+                audioVideoRepository.saveAndFlush(audioVideo);
+                logger.info("AudioVideo successfully saved. AudioVideo details : " + audioVideo);
+            } else {
+                // TODO change method for finding existedAV
+                AudioVideo existedAV = audioVideoRepository.findAll().stream()
+                        .filter(av -> av.getTitle().equals(audioVideo.getTitle())).collect(Collectors.toList()).get(0);
+
+                logger.info("Try to add " + audioVideo.getCount() + " copies of AV : " + existedAV);
+                existedAV.setCount(existedAV.getCount() + audioVideo.getCount());
+                update(existedAV);
+            }
         } catch (Exception e) {
             logger.info("Try to add AV with wrong parameters. New AV information : " + audioVideo);
             throw new Exception("Can't add this AudioVideo, some parameters are wrong");
@@ -46,6 +56,8 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
      */
     @Override
     public void update(AudioVideo audioVideo) throws Exception {
+        checkValidParameters(audioVideo);
+        // TODO solve case then librarian change count of AVs
         try {
             audioVideoRepository.saveAndFlush(audioVideo);
             logger.info("AudioVideo successfully update. AudioVideo details : " + audioVideo);
@@ -89,6 +101,30 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
             logger.info("Try to get count of AV with wrong AV id = " + audioVideoId);
             throw new Exception("Information not available, AV don't exist");
         }
+    }
+
+    @Override
+    public void checkValidParameters(AudioVideo audioVideo) throws Exception {
+        if (audioVideo.getPrice() < 0) {
+            throw new Exception("Price must be positive");
+        }
+
+        if (audioVideo.getCount() < 0) {
+            throw new Exception("Count must be positive");
+        }
+
+        if (audioVideo.getTitle().equals("")) {
+            throw new Exception("Title must exist");
+        }
+
+        if (audioVideo.getAuthor().equals("")) {
+            throw new Exception("Author must exist");
+        }
+    }
+
+    @Override
+    public boolean isAlreadyExist(AudioVideo audioVideo) {
+        return audioVideoRepository.existsAllByTitle(audioVideo.getTitle());
     }
 
     /**
@@ -192,13 +228,5 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
 
         return audioVideos;
-    }
-
-    public boolean isAlreadyExist(AudioVideo audioVideo) {
-        return audioVideoRepository.existsAllByTitle(audioVideo.getTitle());
-    }
-
-    public List<AudioVideo> getAllaccessibleAV() {
-        return audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
     }
 }

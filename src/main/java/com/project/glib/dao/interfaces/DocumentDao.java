@@ -13,5 +13,9 @@ public interface DocumentDao<T extends Document> extends ModifyByLibrarian<T> {
 
     int getPriceById(long documentId) throws Exception;
 
+    void checkValidParameters(T t) throws Exception;
+
+    boolean isAlreadyExist(T t);
+
     List<T> getListCountNotZeroOrRenewed();
 }

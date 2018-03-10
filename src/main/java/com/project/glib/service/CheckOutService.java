@@ -12,9 +12,7 @@ import java.util.List;
 
 @Service
 public class CheckOutService {
-    public final long FOUR_WEEKS = 2419200000000000L;
-    public final long THREE_WEEKS = 1814400000000000L;
-    public final long TWO_WEEKS = 1209600000000000L;
+    public final long WEEK_IN_MILLISECONDS = 604800000000000L;
 
     private final BookDaoImplementation bookDao;
     private final JournalDaoImplementation journalDao;
@@ -52,14 +50,14 @@ public class CheckOutService {
         if (booking.getDocType().equals(Document.BOOK)) {
             switch (usersDao.getTypeById(booking.getIdUser())) {
                 case User.FACULTY:
-                    additionalTime = FOUR_WEEKS;
+                    additionalTime = 4 * WEEK_IN_MILLISECONDS;
                     break;
                 case User.STUDENT:
                     long bookId = docPhysDao.getIdByDocument(booking.getIdDoc(), booking.getDocType());
                     if (bookDao.getIsBestseller(bookId)) {
-                        additionalTime = TWO_WEEKS;
+                        additionalTime = 2 * WEEK_IN_MILLISECONDS;
                     } else {
-                        additionalTime = THREE_WEEKS;
+                        additionalTime = 3 * WEEK_IN_MILLISECONDS;
                     }
                     break;
                 default:
@@ -68,7 +66,7 @@ public class CheckOutService {
                             "maybe it program mistake.");
             }
         } else {
-            additionalTime = TWO_WEEKS;
+            additionalTime = 2 * WEEK_IN_MILLISECONDS;
         }
 
         Checkout newCheckout = new Checkout(booking.getIdUser(), booking.getIdDoc(),

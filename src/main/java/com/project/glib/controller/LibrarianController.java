@@ -15,24 +15,24 @@ import java.util.List;
 public class LibrarianController {
     private final UsersDaoImplementation usersDao;
     private final BookDaoImplementation bookDao;
-    private final DocumentPhysicalDaoImplementation physicalDaoImplementation;
+    private final DocumentPhysicalDaoImplementation docPhysDao;
     private final BookingDaoImplementation bookingDao;
     private final CheckoutDaoImplementation checkoutDao;
     private final AudioVideoDaoImplementation avDao;
-    private final JournalDaoImplementation jourDao;
+    private final JournalDaoImplementation journalDao;
 
     @Autowired
     public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao,
-                               DocumentPhysicalDaoImplementation physicalDaoImplementation,
+                               DocumentPhysicalDaoImplementation docPhysDao,
                                BookingDaoImplementation bookingDao, CheckoutDaoImplementation checkoutDao,
-                               AudioVideoDaoImplementation avDao, JournalDaoImplementation jourDao) {
+                               AudioVideoDaoImplementation avDao, JournalDaoImplementation journalDao) {
         this.usersDao = usersDao;
         this.bookDao = bookDao;
-        this.physicalDaoImplementation = physicalDaoImplementation;
+        this.docPhysDao = docPhysDao;
         this.bookingDao = bookingDao;
         this.checkoutDao = checkoutDao;
         this.avDao = avDao;
-        this.jourDao = jourDao;
+        this.journalDao = journalDao;
     }
 
 
@@ -64,10 +64,10 @@ public class LibrarianController {
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
 //    public ModelAndView librarianConfirm(User user, String login) {
     public String librarianConfirm(@RequestBody User user) {
-        User RealUser = usersDao.findByLogin(user.getLogin());
-        RealUser.setAuth(true);
+        User realUser = usersDao.findByLogin(user.getLogin());
+        realUser.setAuth(true);
         try {
-            usersDao.update(RealUser);
+            usersDao.update(realUser);
             return "- successfully updated -";
         } catch (Exception e) {
             return "- failed! -";
@@ -77,44 +77,17 @@ public class LibrarianController {
     @RequestMapping(value = "librarian/add/book", method = RequestMethod.POST)
     public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
                           @RequestParam(value = "isReference") boolean flag) {
-        if (book.getPrice() > 0) {
-            if (!bookDao.isAlreadyExist(book)) {
-                try {
-                    bookDao.add(book);
-                    for (int i = 0; i < book.getCount(); i++) {
-                        DocumentPhysical document = new DocumentPhysical();
-                        document.setShelf(shelf);
-                        document.setIdDoc(book.getId());
-                        document.setShelf(shelf);
-                        document.setDocType("BOOK");
-                        document.setCanBooked(true);
-                        document.setReference(flag);
-                        physicalDaoImplementation.add(document);
-                    }
-                    return "Book successfully added";
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                book.setCount(book.getCount() + 1);
-                try {
-                    bookDao.update(book);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                DocumentPhysical document = new DocumentPhysical();
-                document.setIdDoc(book.getId());
-                document.setShelf(shelf);
-                document.setDocType("BOOK");
-                document.setCanBooked(flag);
-                document.setReference(flag);
-                physicalDaoImplementation.add(document);
-                return "Added a copy of book";
+        try {
+            bookDao.add(book);
+            for (int i = 0; i < book.getCount(); i++) {
+                // TODO add keywords options
+                docPhysDao.add(
+                        new DocumentPhysical(shelf, true, flag, book.getId(), Document.BOOK, null));
             }
-            return "";
-        } else {
-            return " Price cannot be negative ";
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return "";
     }
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.GET)
@@ -175,7 +148,7 @@ public class LibrarianController {
         User user = usersDao.findByLogin(login);
         if (user != null) {
             List<Checkout> checkout = checkoutDao.getCheckoutsByUser(user.getId());
-            return new Pair(user, checkout);
+            return new Pair<>(user, checkout);
         } else {
             throw new Exception("User doesn't exist");
         }
@@ -186,8 +159,8 @@ public class LibrarianController {
     public Pair<User, List<Booking>> librarianGetBooking(@RequestParam String login) throws Exception {
         User user = usersDao.findByLogin(login);
         if (user != null) {
-            List<Booking> booking = bookingDao.getBookingsByUser(user.getId());
-            return new Pair(user, booking);
+            List<Booking> bookings = bookingDao.getBookingsByUser(user.getId());
+            return new Pair<>(user, bookings);
         } else {
             throw new Exception("User does not exist");
         }
@@ -198,37 +171,17 @@ public class LibrarianController {
     public String addAV(@RequestBody AudioVideo audioVideo,
                         @RequestParam(value = "shelf") String shelf,
                         @RequestParam(value = "isReference") boolean flag) {
-        if (!avDao.isAlreadyExist(audioVideo)) {
-            try {
-                avDao.add(audioVideo);
-                for (int i = 0; i < audioVideo.getCount(); i++) {
-                    DocumentPhysical document = new DocumentPhysical();
-                    document.setIdDoc(audioVideo.getId());
-                    document.setShelf(shelf);
-                    document.setDocType("AUDIO_VIDEO");
-                    document.setCanBooked(true);
-                    document.setReference(flag);
-                    physicalDaoImplementation.add(document);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            avDao.add(audioVideo);
+            for (int i = 0; i < audioVideo.getCount(); i++) {
+                // TODO add keywords options
+                docPhysDao.add(
+                        new DocumentPhysical(shelf, true, flag, audioVideo.getId(), Document.AV, null));
             }
-        } else {
-            audioVideo.setCount(audioVideo.getCount() + 1);
-            try {
-                avDao.update(audioVideo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            DocumentPhysical document = new DocumentPhysical();
-            document.setIdDoc(audioVideo.getId());
-            document.setShelf(shelf);
-            document.setDocType("AUDIO_VIDEO");
-            document.setCanBooked(flag);
-            document.setReference(flag);
-            physicalDaoImplementation.add(document);
-            return "Copy added";
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return "";
     }
 
@@ -237,40 +190,19 @@ public class LibrarianController {
     public String addJournal(@RequestBody Journal journal,
                              @RequestParam(value = "shelf") String shelf,
                              @RequestParam(value = "isReference") boolean flag) {
-        if (!jourDao.isAlreadyExist(journal)) {
-            try {
-                jourDao.add(journal);
-                for (int i = 0; i < journal.getCount(); i++) {
-                    DocumentPhysical document = new DocumentPhysical();
-                    document.setIdDoc(journal.getId());
-                    document.setShelf(shelf);
-                    document.setDocType("JOURNAL");
-                    document.setCanBooked(true);
-                    document.setReference(flag);
-                    physicalDaoImplementation.add(document);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            journalDao.add(journal);
+            for (int i = 0; i < journal.getCount(); i++) {
+                // TODO add keywords options
+                docPhysDao.add(
+                        new DocumentPhysical(shelf, true, flag, journal.getId(), Document.JOURNAL, null));
             }
-        } else {
-            journal.setCount(journal.getCount() + 1);
-            try {
-                jourDao.update(journal);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            DocumentPhysical document = new DocumentPhysical();
-            document.setIdDoc(journal.getId());
-            document.setShelf(shelf);
-            document.setDocType("JOURNAL");
-            document.setCanBooked(flag);
-            document.setReference(flag);
-            physicalDaoImplementation.add(document);
-            return "Copy added";
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return "";
     }
-
 
     @RequestMapping(value = "/librarian/remove/book/{num_copies}", method = RequestMethod.POST)
     public String removeBook(@RequestBody Book book, @PathVariable("num_copies") long num) {
@@ -279,7 +211,7 @@ public class LibrarianController {
                 System.out.println(book.getCount());
                 bookDao.decrementCountById(book.getId());
                 System.out.println(book.getCount());
-                physicalDaoImplementation.remove(book.getId());
+                docPhysDao.remove(book.getId());
             }
             return "Book/books is/are successfully removed";
         } catch (Exception e) {

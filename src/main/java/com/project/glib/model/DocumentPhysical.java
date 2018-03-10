@@ -1,7 +1,6 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,7 +31,7 @@ public class DocumentPhysical {
 //    @JoinColumn(name = "keyword_id")
 //    private Set<Keyword> keywords;
 
-    public DocumentPhysical() {
+    protected DocumentPhysical() {
     }
 
     public DocumentPhysical(String shelf, boolean canBooked, boolean isReference, long idDoc, String docType, Set<Keyword> keywords) {

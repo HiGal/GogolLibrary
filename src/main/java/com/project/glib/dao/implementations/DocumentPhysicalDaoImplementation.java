@@ -21,26 +21,31 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
         this.documentPhysicalRepository = documentPhysicalRepository;
     }
 
+    @Override
     public void add(DocumentPhysical documentPhysical) {
         documentPhysicalRepository.save(documentPhysical);
         logger.info("Document successfully saved. Document details : " + documentPhysical);
     }
 
+    @Override
     public void update(DocumentPhysical documentPhysical) {
         documentPhysicalRepository.saveAndFlush(documentPhysical);
         logger.info("Document successfully update. Document details : " + documentPhysical);
     }
 
+    @Override
     public void remove(long id_doc) {
         long physID= (documentPhysicalRepository.getFirstByIdDoc(id_doc)).getId();
         documentPhysicalRepository.delete(physID);
     }
 
 
+    @Override
     public DocumentPhysical getById(long documentPhysicalId) {
         return documentPhysicalRepository.findOne(documentPhysicalId);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<DocumentPhysical> getList() {
         List<DocumentPhysical> documentPhysicals = documentPhysicalRepository.findAll();

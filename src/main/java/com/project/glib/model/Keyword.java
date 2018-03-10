@@ -12,7 +12,7 @@ public class Keyword {
     @Column(name = "keyword")
     private String keyword;
 
-    public Keyword(){
+    protected Keyword() {
     }
 
     public Keyword(String keyword) {

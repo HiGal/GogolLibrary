@@ -26,7 +26,7 @@ public class Booking {
     @Column(name = "bookingDate")
     private long bookingDate;
 
-    public Booking() {
+    protected Booking() {
     }
 
     public Booking(long idUser, long idDoc, String docType, String shelf, long bookingDate) {

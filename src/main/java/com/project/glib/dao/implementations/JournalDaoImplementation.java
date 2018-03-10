@@ -22,17 +22,30 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
 
     @Override
     public void add(Journal journal) throws Exception {
+        checkValidParameters(journal);
         try {
-            journalRepository.save(journal);
-            logger.info("Journal successfully saved. Journal details : " + journal);
+            if (!isAlreadyExist(journal)) {
+                journalRepository.saveAndFlush(journal);
+                logger.info("Journal successfully saved. Journal details : " + journal);
+            } else {
+                // TODO change method for finding existedJournal
+                Journal existedJournal = journalRepository.findAll().stream()
+                        .filter(j -> j.getTitle().equals(journal.getTitle())).collect(Collectors.toList()).get(0);
+
+                logger.info("Try to add " + journal.getCount() + " copies of journal : " + existedJournal);
+                existedJournal.setCount(existedJournal.getCount() + journal.getCount());
+                update(existedJournal);
+            }
         } catch (Exception e) {
-            logger.info("Try to add journal with wrong parameters. New journal information : " + journal);
-            throw new Exception("Can't add this journal, some parameters are wrong");
+            logger.info("Error in method add() in class JournalDaoImplementation");
+            throw new Exception("Can't add this journal, something wrong");
         }
     }
 
     @Override
     public void update(Journal journal) throws Exception {
+        checkValidParameters(journal);
+        // TODO solve case then librarian change count of journals
         try {
             journalRepository.saveAndFlush(journal);
             logger.info("Journal successfully update. Journal details : " + journal);
@@ -63,6 +76,42 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
             logger.info("Try to get count of journal with wrong journal id = " + journalId);
             throw new Exception("Information not available, journal don't exist");
         }
+    }
+
+    @Override
+    public void checkValidParameters(Journal journal) throws Exception {
+        if (journal.getPrice() < 0) {
+            throw new Exception("Price must be positive");
+        }
+
+        if (journal.getCount() < 0) {
+            throw new Exception("Count must be positive");
+        }
+
+        if (journal.getIssue() < 0) {
+            throw new Exception("Issue must be positive");
+        }
+
+        if (journal.getTitle().equals("")) {
+            throw new Exception("Title must exist");
+        }
+
+        if (journal.getAuthor().equals("")) {
+            throw new Exception("Author must exist");
+        }
+
+        if (journal.getEditor().equals("")) {
+            throw new Exception("Editor must exist");
+        }
+
+        if (journal.getName().equals("")) {
+            throw new Exception("Name must exist");
+        }
+    }
+
+    @Override
+    public boolean isAlreadyExist(Journal journal) {
+        return journalRepository.existsAllByTitle(journal.getTitle());
     }
 
     @Override
@@ -136,9 +185,5 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
         }
 
         return journals;
-    }
-
-    public boolean isAlreadyExist(Journal journal){
-        return journalRepository.existsAllByTitle(journal.getTitle());
     }
 }

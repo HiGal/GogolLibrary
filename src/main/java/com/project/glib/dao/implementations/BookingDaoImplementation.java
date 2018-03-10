@@ -23,6 +23,7 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         this.documentPhysicalDao = documentPhysicalDao;
     }
 
+    @Override
     public void add(Booking booking) throws Exception {
         try {
             bookingRepository.save(booking);
@@ -33,6 +34,7 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         }
     }
 
+    @Override
     public void update(Booking booking) throws Exception {
         try {
             bookingRepository.saveAndFlush(booking);
@@ -44,6 +46,7 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         }
     }
 
+    @Override
     public void remove(long bookingId) throws Exception {
         try {
             logger.info("Try to delete booking with booking id = " + bookingId);
@@ -54,6 +57,7 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         }
     }
 
+    @Override
     public Booking getById(long bookingId) throws Exception {
         try {
             logger.info("Try to get booking by booking id = " + bookingId);
@@ -64,6 +68,7 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<Booking> getList() {
         List<Booking> bookings = bookingRepository.findAll();
@@ -103,6 +108,7 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
                 .filter(booking -> booking.getIdUser() == userId)
                 .filter(booking -> booking.getIdDoc() == docId)
                 .anyMatch(booking -> booking.getDocType().equals(docType));
+        // TODO what the hell is going on?
         boolean b = false;
         List<Booking> list = bookingRepository.findAll().stream()
                 .filter(booking -> booking.getIdUser() == userId).collect(Collectors.toList());
@@ -113,5 +119,4 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         }
         return a || b;
     }
-
 }
