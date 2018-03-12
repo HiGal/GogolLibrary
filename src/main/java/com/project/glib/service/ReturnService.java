@@ -37,27 +37,24 @@ public class ReturnService {
         this.usersDao = usersDao;
     }
 
-    public Pair<String, Integer> toReturnDocument(Checkout checkout) throws Exception {
-        String checkoutInfo = checkout.toString();
-        int overdue = getOverdue(checkout);
+    public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
         checkoutDao.remove(checkout.getId());
-        long id = docPhysDao.getDocIdByID(checkout.getIdDoc());
+        long docId = docPhysDao.getDocIdByID(checkout.getIdDoc());
         docPhysDao.inverseCanBooked(checkout.getIdDoc());
         switch (checkout.getDocType()) {
             case Document.BOOK:
-                System.out.println("");
-                bookDao.incrementCountById(id);
+                bookDao.incrementCountById(docId);
                 break;
             case Document.JOURNAL:
-                journalDao.incrementCountById(id);
+                journalDao.incrementCountById(docId);
                 break;
             case Document.AV:
-                avDao.incrementCountById(id);
+                avDao.incrementCountById(docId);
                 break;
             default:
                 return null;
         }
-        return new Pair<>(checkoutInfo, overdue);
+        return new Pair<>(checkout, getOverdue(checkout));
     }
 
     /**
@@ -95,7 +92,7 @@ public class ReturnService {
 
     public int getOverdueDays(Checkout checkout) {
         int days = 0;
-        long difference = checkout.getCheckoutTime() - System.nanoTime();
+        long difference = checkout.getReturnTime() - System.nanoTime();
         if (difference < 0) {
             days = convertToDays(difference);
         }
