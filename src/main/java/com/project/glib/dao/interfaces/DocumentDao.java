@@ -1,5 +1,6 @@
 package com.project.glib.dao.interfaces;
 
+import com.project.glib.model.Book;
 import com.project.glib.model.Document;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface DocumentDao<T extends Document> extends ModifyByLibrarian<T> {
 
     void checkValidParameters(T t) throws Exception;
 
-    boolean isAlreadyExist(T t);
+    T isAlreadyExist(T t);
 
     List<T> getListCountNotZeroOrRenewed();
 }

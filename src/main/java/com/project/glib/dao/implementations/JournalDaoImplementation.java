@@ -2,6 +2,7 @@ package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.dao.interfaces.JournalRepository;
+import com.project.glib.model.Book;
 import com.project.glib.model.Journal;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,11 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     public void add(Journal journal) throws Exception {
         checkValidParameters(journal);
         try {
-            if (!isAlreadyExist(journal)) {
+            Journal existedJournal = isAlreadyExist(journal);
+            if (existedJournal == null) {
                 journalRepository.saveAndFlush(journal);
                 logger.info("Journal successfully saved. Journal details : " + journal);
             } else {
-                // TODO change method for finding existedJournal
-                Journal existedJournal = journalRepository.findAll().stream()
-                        .filter(j -> j.getTitle().equals(journal.getTitle())).collect(Collectors.toList()).get(0);
-
                 logger.info("Try to add " + journal.getCount() + " copies of journal : " + existedJournal);
                 existedJournal.setCount(existedJournal.getCount() + journal.getCount());
                 update(existedJournal);
@@ -110,8 +108,14 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     }
 
     @Override
-    public boolean isAlreadyExist(Journal journal) {
-        return journalRepository.existsAllByTitle(journal.getTitle());
+    public Journal isAlreadyExist(Journal journal) {
+        return journalRepository.findAll().stream()
+                .filter(j -> j.getName().equals(journal.getName()) &&
+                j.getAuthor().equals(j.getAuthor()) &&
+                j.getEditor().equals(journal.getEditor()) &&
+                j.getTitle().equals(journal.getTitle()) &&
+                j.getIssue() == journal.getIssue())
+                .findFirst().get();
     }
 
     @Override

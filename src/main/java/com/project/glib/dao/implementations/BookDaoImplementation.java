@@ -34,16 +34,14 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     public void add(Book book) throws Exception {
         checkValidParameters(book);
         try {
-            if (!isAlreadyExist(book)) {
+            Book existedBook = isAlreadyExist(book);
+            if (existedBook == null) {
                 bookRepository.saveAndFlush(book);
                 logger.info("Book successfully saved. Book details : " + book);
             } else {
-                // TODO change method for finding existedBook
-                Book existedBook = bookRepository.findAll().stream()
-                        .filter(b -> b.getTitle().equals(book.getTitle())).collect(Collectors.toList()).get(0);
-
                 logger.info("Try to add " + book.getCount() + " copies of book : " + existedBook);
                 existedBook.setCount(existedBook.getCount() + book.getCount());
+                existedBook.setPrice(book.getPrice() );
                 update(existedBook);
             }
         } catch (Exception e) {
@@ -122,10 +120,15 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         }
     }
 
-    // TODO make more general
     @Override
-    public boolean isAlreadyExist(Book book) {
-        return bookRepository.existsBookByTitle(book.getTitle());
+    public Book isAlreadyExist(Book book) {
+        return bookRepository.findAll().stream()
+                .filter(b -> b.getTitle().equals(book.getTitle()) &&
+                        b.getBookAuthor().equals(book.getBookAuthor()) &&
+                        b.getPublisher().equals(book.getPublisher()) &&
+                        b.getEdition().equals(book.getEdition()) &&
+                        b.getYear() == book.getYear()
+                ).findFirst().get();
     }
 
     /**
