@@ -23,7 +23,7 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
 
     @Override
     public void add(DocumentPhysical documentPhysical) {
-        documentPhysicalRepository.save(documentPhysical);
+        documentPhysicalRepository.saveAndFlush(documentPhysical);
         logger.info("Document successfully saved. Document details : " + documentPhysical);
     }
 
@@ -34,9 +34,9 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
     }
 
     @Override
-    public void remove(long id_doc) {
-        long physID= (documentPhysicalRepository.getFirstByIdDoc(id_doc)).getId();
-        documentPhysicalRepository.delete(physID);
+    public void remove(long id) {
+        documentPhysicalRepository.delete(id);
+        logger.info("Delete physical document with id = " + id);
     }
 
 
@@ -55,6 +55,11 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
         }
 
         return documentPhysicals;
+    }
+
+    public void removeByDocId(long id_doc) {
+        long physID= documentPhysicalRepository.getFirstByIdDoc(id_doc).getId();
+        documentPhysicalRepository.delete(physID);
     }
 
     public long getValidPhysicalId(long documentId, String documentType) {

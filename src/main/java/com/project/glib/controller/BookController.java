@@ -46,7 +46,7 @@ public class BookController {
                 System.out.println(book.getCount());
                 bookDao.decrementCountById(book.getId());
                 System.out.println(book.getCount());
-                docPhysDao.remove(book.getId());
+                docPhysDao.removeByDocId(book.getId());
             }
             return "Book/books is/are successfully removed";
         } catch (Exception e) {
