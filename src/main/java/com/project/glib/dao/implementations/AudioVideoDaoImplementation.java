@@ -3,6 +3,7 @@ package com.project.glib.dao.implementations;
 import com.project.glib.dao.interfaces.AudioVideoRepository;
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.model.AudioVideo;
+import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +31,14 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     @Override
     public void add(AudioVideo audioVideo) throws Exception {
         try {
-            if (!isAlreadyExist(audioVideo)) {
+            AudioVideo existedAV = isAlreadyExist(audioVideo);
+            if (existedAV == null) {
                 audioVideoRepository.saveAndFlush(audioVideo);
                 logger.info("AudioVideo successfully saved. AudioVideo details : " + audioVideo);
             } else {
-                // TODO change method for finding existedAV
-                AudioVideo existedAV = audioVideoRepository.findAll().stream()
-                        .filter(av -> av.getTitle().equals(audioVideo.getTitle())).collect(Collectors.toList()).get(0);
-
                 logger.info("Try to add " + audioVideo.getCount() + " copies of AV : " + existedAV);
                 existedAV.setCount(existedAV.getCount() + audioVideo.getCount());
+                existedAV.setPrice(audioVideo.getPrice());
                 update(existedAV);
             }
         } catch (Exception e) {
@@ -123,8 +122,11 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     @Override
-    public boolean isAlreadyExist(AudioVideo audioVideo) {
-        return audioVideoRepository.existsAllByTitle(audioVideo.getTitle());
+    public AudioVideo isAlreadyExist(AudioVideo audioVideo) {
+        return audioVideoRepository.findAll().stream()
+                .filter(av -> av.getTitle().equals(audioVideo.getTitle()) &&
+                av.getAuthor().equals(audioVideo.getAuthor()))
+                .findFirst().get();
     }
 
     /**
