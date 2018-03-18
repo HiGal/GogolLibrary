@@ -1,7 +1,9 @@
 package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.*;
-import com.project.glib.model.*;
+import com.project.glib.model.Booking;
+import com.project.glib.model.Checkout;
+import com.project.glib.model.User;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -53,41 +55,26 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.GET)
-    //   public ModelAndView librarianConfirm(Model model, String login) {
-    public List<User> librarianConfirm(Model model, String login) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("allUsers", usersDao.getList());
-//        modelAndView.setViewName("confirm");
-        return usersDao.getListNotAuthUsers();
+    public ModelAndView librarianConfirm(Model model, String login) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allUsers", usersDao.getListNotAuthUsers());
+        modelAndView.setViewName("confirm_user");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
-//    public ModelAndView librarianConfirm(User user, String login) {
-    public String librarianConfirm(@RequestBody User user) {
+    public ModelAndView librarianConfirm(User user, String login) {
         User realUser = usersDao.findByLogin(user.getLogin());
         realUser.setAuth(true);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("student");
         try {
             usersDao.update(realUser);
-            return "- successfully updated -";
+            modelAndView.addObject("error", "");
         } catch (Exception e) {
-            return "- failed! -";
+            modelAndView.addObject("error", e.getMessage());
         }
-    }
-
-    @RequestMapping(value = "librarian/add/book", method = RequestMethod.POST)
-    public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
-                          @RequestParam(value = "isReference") boolean flag) {
-        try {
-            bookDao.add(book);
-            for (int i = 0; i < book.getCount(); i++) {
-                // TODO add keywords options
-                docPhysDao.add(
-                        new DocumentPhysical(shelf, true, flag, book.getId(), Document.BOOK, null));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/librarian/user/delete", method = RequestMethod.GET)
@@ -166,59 +153,6 @@ public class LibrarianController {
         }
     }
 
-
-    @RequestMapping(value = "/librarian/add/AV")
-    public String addAV(@RequestBody AudioVideo audioVideo,
-                        @RequestParam(value = "shelf") String shelf,
-                        @RequestParam(value = "isReference") boolean flag) {
-        try {
-            avDao.add(audioVideo);
-            for (int i = 0; i < audioVideo.getCount(); i++) {
-                // TODO add keywords options
-                docPhysDao.add(
-                        new DocumentPhysical(shelf, true, flag, audioVideo.getId(), Document.AV, null));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
-
-
-    @RequestMapping(value = "/librarian/add/Journal")
-    public String addJournal(@RequestBody Journal journal,
-                             @RequestParam(value = "shelf") String shelf,
-                             @RequestParam(value = "isReference") boolean flag) {
-        try {
-            journalDao.add(journal);
-            for (int i = 0; i < journal.getCount(); i++) {
-                // TODO add keywords options
-                docPhysDao.add(
-                        new DocumentPhysical(shelf, true, flag, journal.getId(), Document.JOURNAL, null));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
-
-    @RequestMapping(value = "/librarian/remove/book/{num_copies}", method = RequestMethod.POST)
-    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") long num) {
-        try {
-            for (int i = 0; i < num; i++) {
-                System.out.println(book.getCount());
-                bookDao.decrementCountById(book.getId());
-                System.out.println(book.getCount());
-                docPhysDao.remove(book.getId());
-            }
-            return "Book/books is/are successfully removed";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 //    @RequestMapping(value = "/librarian/user/info/overdue", method = RequestMethod.GET)
 ////    public ModelAndView librarianConfirm(User user, String login) {
 //    public Pair<User, List<Checkout>> librarianGetOverdue(@RequestParam String login) throws Exception {

@@ -1,7 +1,6 @@
 package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.ModifyByLibrarian;
-import com.project.glib.dao.interfaces.RoleRepository;
 import com.project.glib.dao.interfaces.UserRepository;
 import com.project.glib.model.User;
 import org.slf4j.Logger;
@@ -16,14 +15,11 @@ import java.util.stream.Collectors;
 public class UsersDaoImplementation implements ModifyByLibrarian<User> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final CheckoutDaoImplementation checkoutDao;
 
     @Autowired
-    public UsersDaoImplementation(UserRepository userRepository,
-                                  RoleRepository roleRepository, CheckoutDaoImplementation checkoutDao) {
+    public UsersDaoImplementation(UserRepository userRepository, CheckoutDaoImplementation checkoutDao) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.checkoutDao = checkoutDao;
     }
 

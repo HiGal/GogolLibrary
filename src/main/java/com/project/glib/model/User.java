@@ -158,19 +158,9 @@ public class User {
         this.auth = auth;
     }
 
-//    @ManyToMany
-//    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    public Set<Role> getRoles() {
-//        return roles;
-//    }
-
     public String getRole() {
         return role;
     }
-
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
 
     public void setRole(String role) {
         this.role = role;

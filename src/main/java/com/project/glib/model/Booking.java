@@ -26,6 +26,13 @@ public class Booking {
     @Column(name = "bookingDate")
     private long bookingDate;
 
+    @Column(name = "is_active")
+    private long is_active;
+
+    @Column(name = "priority")
+    private long priority;
+
+
     protected Booking() {
     }
 
@@ -95,5 +102,21 @@ public class Booking {
 
     public void setBookingDate(long bookingDate) {
         this.bookingDate = bookingDate;
+    }
+
+    public long getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(long is_active) {
+        this.is_active = is_active;
+    }
+
+    public long getPriority() {
+        return priority;
+    }
+
+    public void setPriority(long priority) {
+        this.priority = priority;
     }
 }

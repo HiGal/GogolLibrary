@@ -2,7 +2,6 @@ package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.AudioVideoDaoImplementation;
 import com.project.glib.dao.implementations.BookDaoImplementation;
-import com.project.glib.dao.implementations.CheckoutDaoImplementation;
 import com.project.glib.dao.implementations.JournalDaoImplementation;
 import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
@@ -10,7 +9,6 @@ import com.project.glib.model.Booking;
 import com.project.glib.model.Journal;
 import com.project.glib.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,7 +39,7 @@ public class BookingController {
     public List<Book> bookingBook() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allBooks", bookDao.getListCountNotZeroOrRenewed());
-        modelAndView.setViewName("order");
+        modelAndView.setViewName("order_book");
         return bookDao.getListCountNotZeroOrRenewed();
     }
 

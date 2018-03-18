@@ -42,7 +42,7 @@ public class CheckoutController {
         try {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("allBookings", bookingService.getBookingsByUser(usersDao.getIdByLogin(login)));
-            modelAndView.setViewName("order");
+            modelAndView.setViewName("order_book");
             return bookingService.getBookingsByUser(usersDao.getIdByLogin(login));
         } catch (Exception e) {
             return null;

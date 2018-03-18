@@ -45,7 +45,7 @@ public class ReturnController {
         try {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("allBookings", checkOutService.getCheckoutsByUser(usersDao.getIdByLogin(login)));
-            modelAndView.setViewName("order");
+            modelAndView.setViewName("order_book");
             return checkOutService.getCheckoutsByUser(usersDao.getIdByLogin(login));
         } catch (Exception e) {
             return null;
