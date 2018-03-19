@@ -5,7 +5,8 @@ Introduction to Programming project by students of Innopolis University of BS1-2
 
 # Contents
   + <a href="#main">Main scheme</a>
-  + <a href="#arc">Architecture of the website</a>
+    + <a href="#arcw">Architecture of the server</a>
+    + <a href="#arcp">Architecture of the website</a>
   + <a href="#imp">Implementation</a>
     + <a href="#doc">Documentation</a>
     + <a href="#user">Users</a>
@@ -24,15 +25,24 @@ Introduction to Programming project by students of Innopolis University of BS1-2
 </a>
 Patrons are able survey diffrent documents on the main page and check them out for a certain time.
 Librarins are used to manage their moves and them as objects. 
-<a name="arc"> 
-   
-# Architecture of the website
+
+<a name="arcp"> 
+
+## Architecture of the server
 </a> 
  <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
+ 
+<a name="arcw"> 
+   
+## Architecture of the website
+</a> 
+ <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
+ 
 <a name="imp">
    
 # Implementation
 </a>
+
 <a name="doc">
    
 ## Documents
