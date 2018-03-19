@@ -5,8 +5,8 @@ Introduction to Programming project by students of Innopolis University of BS1-2
 
 # Contents
   + <a href="#main">Main scheme</a>
-    + <a href="#arcw">Architecture of the server</a>
-    + <a href="#arcp">Architecture of the website</a>
+    + <a href="#arcp">Architecture of the server</a>
+    + <a href="#arcw">Architecture of the website</a>
   + <a href="#imp">Implementation</a>
     + <a href="#doc">Documentation</a>
     + <a href="#user">Users</a>
@@ -22,9 +22,7 @@ Introduction to Programming project by students of Innopolis University of BS1-2
 <a name="main">
 
 # Main scheme
-</a>
-Patrons are able survey diffrent documents on the main page and check them out for a certain time.
-Librarins are used to manage their moves and them as objects. 
+</a> 
 
 <a name="arcp"> 
 
@@ -47,7 +45,7 @@ Librarins are used to manage their moves and them as objects.
    
 ## Documents
 </a>
-We store all documents in documents db. 
+All documents are stored in Database 
 
 which is typicly the abstract class for all documents.
 Below we have particular types of document extending from it: 
@@ -102,7 +100,7 @@ Every time user check out document - mount of copies in the library decrease.
 
 #### Install Intellij IDEA 
   + use <a href="https://www.jetbrains.com/help/idea/install-and-set-up-intellij-idea.html"> this guide</a> 
-  + Spring Framework and Maven are alreadu preinstalled in Intellij IDEA
+  + Spring Framework, Maven and SQLite are already preinstalled in Intellij IDEA
   
 <a name="launch"> 
    
@@ -148,6 +146,7 @@ There are some pre-signed up users:
 
   + <a href="http://maven.apache.org/POM/4.0.0">Maven</a>
   + <a href="https://spring.io/docs">Spring Framework</a>
+  + <a href="http://www.sqlite.org/docs.html">SQLite</a>
   + <a href="https://www.jetbrains.com/idea/">Intellij IDEA</a>
   + <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java JDK</a>
   
@@ -158,7 +157,7 @@ There are some pre-signed up users:
 
 ### If something goes wrong:
   + Still have some problems? Please contact one of us in Telegram:
-    + Zhuchkov Alexey 
-    + Mazan Ilya
+    + Zhuchkov Alexey @Aleksey_zhu
+    + Mazan Ilya 
     + Galeev Farit 
     + Zaynullin Ruslan
