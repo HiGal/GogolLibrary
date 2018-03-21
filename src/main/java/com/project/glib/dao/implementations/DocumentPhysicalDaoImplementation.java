@@ -66,8 +66,7 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
         return documentPhysicalRepository.findAll().stream()
                 .filter(doc -> doc.getIdDoc() == documentId)
                 .filter(doc -> doc.getDocType().equals(documentType))
-                .filter(DocumentPhysical::isCanBooked)
-                .filter(doc -> !doc.isReference()).findFirst().get().getId();
+                .filter(DocumentPhysical::isCanBooked).findFirst().get().getId();
     }
 
     public void inverseCanBooked(long documentId) {

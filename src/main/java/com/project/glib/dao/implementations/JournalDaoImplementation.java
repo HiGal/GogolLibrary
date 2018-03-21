@@ -2,7 +2,6 @@ package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.dao.interfaces.JournalRepository;
-import com.project.glib.model.Book;
 import com.project.glib.model.Journal;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,5 +188,15 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
         }
 
         return journals;
+    }
+
+    public String getNote(long journalId) throws Exception {
+        try {
+            logger.info("Try to get note journal with journal id = " + journalId);
+            return journalRepository.findOne(journalId).getNote();
+        } catch (Exception e) {
+            logger.info("Try to get note journal with wrong journal id = " + journalId);
+            throw new Exception("Information not available, journal don't exist");
+        }
     }
 }

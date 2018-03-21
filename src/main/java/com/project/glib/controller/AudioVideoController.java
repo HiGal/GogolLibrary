@@ -28,14 +28,13 @@ public class AudioVideoController {
 
     @RequestMapping(value = "/librarian/add/AV")
     public String addAV(@RequestBody AudioVideo audioVideo,
-                        @RequestParam(value = "shelf") String shelf,
-                        @RequestParam(value = "isReference") boolean flag) {
+                        @RequestParam(value = "shelf") String shelf) {
         try {
             audioVideoDao.add(audioVideo);
             for (int i = 0; i < audioVideo.getCount(); i++) {
                 // TODO add keywords options
                 docPhysDao.add(
-                        new DocumentPhysical(shelf, true, flag, audioVideo.getId(), Document.AV, null));
+                        new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -27,21 +27,22 @@ public class Booking {
     private long bookingDate;
 
     @Column(name = "is_active")
-    private long is_active;
+    private boolean isActive;
 
     @Column(name = "priority")
-    private long priority;
-
+    private int priority;
 
     protected Booking() {
     }
 
-    public Booking(long idUser, long idDoc, String docType, String shelf, long bookingDate) {
+    public Booking(long idUser, long idDoc, String docType, String shelf, long bookingDate, boolean isActive, int priority) {
         this.idUser = idUser;
         this.idDoc = idDoc;
         this.docType = docType;
         this.shelf = shelf;
         this.bookingDate = bookingDate;
+        this.isActive = isActive;
+        this.priority = priority;
     }
 
     @Override
@@ -53,6 +54,8 @@ public class Booking {
                 ", docType='" + docType + '\'' +
                 ", shelf='" + shelf + '\'' +
                 ", bookingDate=" + bookingDate +
+                ", isActive=" + isActive +
+                ", priority=" + priority +
                 '}';
     }
 
@@ -104,19 +107,19 @@ public class Booking {
         this.bookingDate = bookingDate;
     }
 
-    public long getIs_active() {
-        return is_active;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setIs_active(long is_active) {
-        this.is_active = is_active;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
-    public long getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(long priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 }

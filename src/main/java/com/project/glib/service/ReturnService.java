@@ -19,40 +19,52 @@ public class ReturnService {
     private final JournalDaoImplementation journalDao;
     private final AudioVideoDaoImplementation avDao;
     private final DocumentPhysicalDaoImplementation docPhysDao;
+    private final BookingDaoImplementation bookingDao;
     private final CheckoutDaoImplementation checkoutDao;
     private final UsersDaoImplementation usersDao;
+    private final BookingService bookingService;
 
     @Autowired
     public ReturnService(BookDaoImplementation bookDao,
                          JournalDaoImplementation journalDao,
                          AudioVideoDaoImplementation avDao,
                          DocumentPhysicalDaoImplementation docPhysDao,
+                         BookingDaoImplementation bookingDao,
                          CheckoutDaoImplementation checkoutDao,
-                         UsersDaoImplementation usersDao) {
+                         UsersDaoImplementation usersDao,
+                         BookingService bookingService) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
         this.docPhysDao = docPhysDao;
+        this.bookingDao = bookingDao;
         this.checkoutDao = checkoutDao;
         this.usersDao = usersDao;
+        this.bookingService = bookingService;
     }
 
     public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
         checkoutDao.remove(checkout.getId());
         long docId = docPhysDao.getDocIdByID(checkout.getIdDoc());
-        docPhysDao.inverseCanBooked(checkout.getIdDoc());
-        switch (checkout.getDocType()) {
-            case Document.BOOK:
-                bookDao.incrementCountById(docId);
-                break;
-            case Document.JOURNAL:
-                journalDao.incrementCountById(docId);
-                break;
-            case Document.AV:
-                avDao.incrementCountById(docId);
-                break;
-            default:
-                return null;
+        String docType = checkout.getDocType();
+        if (bookingDao.hasNotActiveBooking(docId, docType)) {
+            docPhysDao.inverseCanBooked(checkout.getIdDoc());
+            switch (checkout.getDocType()) {
+                case Document.BOOK:
+                    bookDao.incrementCountById(docId);
+                    break;
+                case Document.JOURNAL:
+                    journalDao.incrementCountById(docId);
+                    break;
+                case Document.AV:
+                    avDao.incrementCountById(docId);
+                    break;
+                default:
+                    return null;
+            }
+        } else {
+            bookingService.setBookingActiveToTrue(bookingDao.getBookingWithMaxPriority(docId, docType));
+            // TODO notify happy user
         }
         return new Pair<>(checkout, getOverdue(checkout));
     }

@@ -121,4 +121,11 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
                 .filter(checkout -> checkout.getIdDoc() == docId)
                 .anyMatch(checkout -> checkout.getDocType().equals(docType));
     }
+
+    public boolean hasRenewedCheckout(long docId, String docType) {
+        return checkoutRepository.findAll().stream()
+                .filter(checkout -> checkout.getIdDoc() == docId)
+                .filter(checkout -> checkout.getDocType().equals(docType))
+                .anyMatch(Checkout::isRenewed);
+    }
 }

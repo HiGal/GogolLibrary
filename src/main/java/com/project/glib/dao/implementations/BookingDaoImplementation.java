@@ -119,4 +119,29 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         }
         return a || b;
     }
+
+    public boolean hasActiveBooking(long docId, String docType) {
+        return bookingRepository.findAll().stream()
+                .filter(booking -> booking.getIdDoc() == docId)
+                .filter(booking -> booking.getDocType().equals(docType))
+                .anyMatch(Booking::isActive);
+    }
+
+    public List<Booking> getListBookingsByIdDocAndDocType(long docId, String docType) {
+        return bookingRepository.findAll().stream()
+                .filter(booking -> booking.getIdDoc() == docId)
+                .filter(booking -> booking.getDocType().equals(docType))
+                .collect(Collectors.toList());
+    }
+
+    public boolean hasNotActiveBooking(long docId, String docType) {
+        return bookingRepository.findAll().stream()
+                .filter(booking -> booking.getIdDoc() == docId)
+                .filter(booking -> booking.getDocType().equals(docType))
+                .anyMatch(booking -> !booking.isActive());
+    }
+
+    public Booking getBookingWithMaxPriority(long docId, String docType) {
+        return bookingRepository.findByIdDocAndDocTypeOrderByPriority(docId, docType);
+    }
 }

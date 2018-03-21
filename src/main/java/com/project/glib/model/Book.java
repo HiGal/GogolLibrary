@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "book")
 public class Book extends Document {
+    public static final String BESTSELLER = "BESTSELLER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,8 +26,8 @@ public class Book extends Document {
     @Column(name = "year")
     private int year;
 
-    @Column(name = "is_bestseller")
-    private boolean isBestSeller;
+    @Column(name = "note")
+    private String note;
 
     @Column(name = "price")
     private int price;
@@ -37,14 +38,14 @@ public class Book extends Document {
     protected Book() {
     }
 
-    public Book(String title, String bookAuthor, String publisher, String edition, int year, int price, boolean isBestSeller, int count) {
+    public Book(String title, String bookAuthor, String publisher, String edition, int year, String note, int price, int count) {
         this.title = title;
         this.bookAuthor = bookAuthor;
         this.publisher = publisher;
         this.edition = edition;
         this.year = year;
+        this.note = note;
         this.price = price;
-        this.isBestSeller = isBestSeller;
         this.count = count;
     }
 
@@ -57,7 +58,7 @@ public class Book extends Document {
                 ", publisher='" + publisher + '\'' +
                 ", edition='" + edition + '\'' +
                 ", year=" + year +
-                ", isBestSeller=" + isBestSeller +
+                ", note=" + note +
                 ", price=" + price +
                 ", count=" + count +
                 '}';
@@ -111,12 +112,12 @@ public class Book extends Document {
         this.price = price;
     }
 
-    public boolean isBestSeller() {
-        return isBestSeller;
+    public String getNote() {
+        return note;
     }
 
-    public void setBestSeller(boolean bestSeller) {
-        isBestSeller = bestSeller;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getTitle() {

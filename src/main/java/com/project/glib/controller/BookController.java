@@ -24,14 +24,13 @@ public class BookController {
     }
 
     @RequestMapping(value = "/book/add", method = RequestMethod.POST)
-    public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf,
-                          @RequestParam(value = "isReference") boolean flag) {
+    public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf) {
         try {
             bookDao.add(book);
             for (int i = 0; i < book.getCount(); i++) {
                 // TODO add keywords options
                 docPhysDao.add(
-                        new DocumentPhysical(shelf, true, flag, book.getId(), Document.BOOK, null));
+                        new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -30,14 +30,13 @@ public class JournalController {
 
     @RequestMapping(value = "/librarian/add/Journal")
     public String addJournal(@RequestBody Journal journal,
-                             @RequestParam(value = "shelf") String shelf,
-                             @RequestParam(value = "isReference") boolean flag) {
+                             @RequestParam(value = "shelf") String shelf) {
         try {
             journalDao.add(journal);
             for (int i = 0; i < journal.getCount(); i++) {
                 // TODO add keywords options
                 docPhysDao.add(
-                        new DocumentPhysical(shelf, true, flag, journal.getId(), Document.JOURNAL, null));
+                        new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL, null));
             }
         } catch (Exception e) {
             e.printStackTrace();

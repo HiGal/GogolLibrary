@@ -38,7 +38,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@RequestBody User userForm, BindingResult bindingResult) throws Exception {
+    public String registration(@RequestBody User userForm, BindingResult bindingResult) {
 
         userValidator.validate(userForm, bindingResult);
 
@@ -88,7 +88,9 @@ public class LoginController {
                         modelAndView.addObject("user",user);
                         modelAndView.setViewName("librarian");
                         break;
-                    case User.FACULTY:
+                    case User.INSTRUCTOR:
+                    case User.TA:
+                    case User.PROFESSOR:
                         modelAndView.addObject("user",user);
                         modelAndView.setViewName("faculty");
                         break;

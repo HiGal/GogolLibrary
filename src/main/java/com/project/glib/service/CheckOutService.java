@@ -1,10 +1,7 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.*;
-import com.project.glib.model.Booking;
-import com.project.glib.model.Checkout;
-import com.project.glib.model.Document;
-import com.project.glib.model.User;
+import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,12 +46,14 @@ public class CheckOutService {
 
         if (booking.getDocType().equals(Document.BOOK)) {
             switch (usersDao.getTypeById(booking.getIdUser())) {
-                case User.FACULTY:
+                case User.INSTRUCTOR:
+                case User.TA:
+                case User.PROFESSOR:
                     additionalTime = 4 * WEEK_IN_MILLISECONDS;
                     break;
                 case User.STUDENT:
                     long bookId = docPhysDao.getIdByDocument(booking.getIdDoc(), booking.getDocType());
-                    if (bookDao.getIsBestseller(bookId)) {
+                    if (bookDao.getNote(bookId).equals(Book.BESTSELLER)) {
                         additionalTime = 2 * WEEK_IN_MILLISECONDS;
                     } else {
                         additionalTime = 3 * WEEK_IN_MILLISECONDS;

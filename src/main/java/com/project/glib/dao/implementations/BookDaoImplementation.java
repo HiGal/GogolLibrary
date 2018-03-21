@@ -195,12 +195,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         }
     }
 
-    public boolean getIsBestseller(long bookId) throws Exception {
+    public String getNote(long bookId) throws Exception {
         try {
-            logger.info("Try to get is bestseller book with book id = " + bookId);
-            return bookRepository.findOne(bookId).isBestSeller();
+            logger.info("Try to get note book with book id = " + bookId);
+            return bookRepository.findOne(bookId).getNote();
         } catch (Exception e) {
-            logger.info("Try to get is bestseller book with wrong book id = " + bookId);
+            logger.info("Try to get note book with wrong book id = " + bookId);
             throw new Exception("Information not available, book don't exist");
         }
     }

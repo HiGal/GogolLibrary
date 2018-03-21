@@ -5,9 +5,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-    public static final String FACULTY = "FACULTY";
-    public static final String STUDENT = "STUDENT";
     public static final String LIBRARIAN = "LIBRARIAN";
+    public static final String STUDENT = "STUDENT";
+    public static final String INSTRUCTOR = "INSTRUCTOR";
+    public static final String TA = "TEACHER_ASSISTANT";
+    public static final String PROFESSOR = "PROFESSOR";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

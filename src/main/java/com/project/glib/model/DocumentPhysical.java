@@ -17,9 +17,6 @@ public class DocumentPhysical {
     @Column(name = "can_booked")
     private boolean canBooked;
 
-    @Column(name = "is_reference")
-    private boolean isReference;
-
     @Column(name = "id_doc")
     private long idDoc;
 
@@ -34,10 +31,9 @@ public class DocumentPhysical {
     protected DocumentPhysical() {
     }
 
-    public DocumentPhysical(String shelf, boolean canBooked, boolean isReference, long idDoc, String docType, Set<Keyword> keywords) {
+    public DocumentPhysical(String shelf, boolean canBooked, long idDoc, String docType, Set<Keyword> keywords) {
         this.shelf = shelf;
         this.canBooked = canBooked;
-        this.isReference = isReference;
         this.idDoc = idDoc;
         this.docType = docType;
 //        this.keywords = keywords;
@@ -49,7 +45,6 @@ public class DocumentPhysical {
                 "id=" + id +
                 ", shelf='" + shelf + '\'' +
                 ", canBooked=" + canBooked +
-                ", isReference=" + isReference +
                 ", idDoc=" + idDoc +
                 ", docType='" + docType + '\'' +
 //                ", keywords=" + keywords +
@@ -78,14 +73,6 @@ public class DocumentPhysical {
 
     public void setCanBooked(boolean canBooked) {
         this.canBooked = canBooked;
-    }
-
-    public boolean isReference() {
-        return isReference;
-    }
-
-    public void setReference(boolean reference) {
-        isReference = reference;
     }
 
     public long getIdDoc() {

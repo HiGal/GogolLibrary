@@ -3,7 +3,6 @@ package com.project.glib.dao.implementations;
 import com.project.glib.dao.interfaces.AudioVideoRepository;
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.model.AudioVideo;
-import com.project.glib.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
