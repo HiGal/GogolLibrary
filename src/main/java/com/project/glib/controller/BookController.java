@@ -2,7 +2,6 @@ package com.project.glib.controller;
 
 import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
-import com.project.glib.dao.interfaces.BookRepository;
 import com.project.glib.model.Book;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
@@ -12,13 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController()
 public class BookController {
 
-    private final BookRepository bookRepository;
     private final BookDaoImplementation bookDao;
     private final DocumentPhysicalDaoImplementation docPhysDao;
 
     @Autowired
-    public BookController(BookRepository bookRepository, BookDaoImplementation bookDao, DocumentPhysicalDaoImplementation documentPhysicalDao) {
-        this.bookRepository = bookRepository;
+    public BookController(BookDaoImplementation bookDao, DocumentPhysicalDaoImplementation documentPhysicalDao) {
         this.bookDao = bookDao;
         this.docPhysDao = documentPhysicalDao;
     }
@@ -39,7 +36,7 @@ public class BookController {
     }
 
     @RequestMapping(value = "/book/remove/{num_copies}", method = RequestMethod.POST)
-    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") long num) {
+    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") int num) {
         try {
             for (int i = 0; i < num; i++) {
                 System.out.println(book.getCount());

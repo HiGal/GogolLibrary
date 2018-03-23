@@ -49,6 +49,28 @@ public class Book extends Document {
         this.count = count;
     }
 
+    public Book(Book book) {
+        this.title = book.title;
+        this.bookAuthor = book.bookAuthor;
+        this.publisher = book.publisher;
+        this.edition = book.edition;
+        this.year = book.year;
+        this.note = book.note;
+        this.price = book.price;
+        this.count = book.count;
+    }
+
+    public Book(Book book, int count) {
+        this.title = book.title;
+        this.bookAuthor = book.bookAuthor;
+        this.publisher = book.publisher;
+        this.edition = book.edition;
+        this.year = book.year;
+        this.note = book.note;
+        this.price = book.price;
+        this.count = count;
+    }
+
     @Override
     public String toString() {
         return "Book{" +

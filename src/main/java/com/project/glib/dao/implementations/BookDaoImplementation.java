@@ -3,6 +3,7 @@ package com.project.glib.dao.implementations;
 import com.project.glib.dao.interfaces.BookRepository;
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.model.Book;
+import com.project.glib.model.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Repository
@@ -114,21 +116,31 @@ public class BookDaoImplementation implements DocumentDao<Book> {
             throw new Exception("Publisher must exist");
         }
 
+        // TODO not accuracy
+        if (!book.getNote().equals(Document.REFERENCE) && !book.getNote().equals(Document.DEFAULT_NOTE) && !book.getNote().equals(Book.BESTSELLER)) {
+            throw new Exception("Invalid note");
+        }
+
         // TODO reduce method getYear()
-        if (book.getYear() > new Date().getYear()) {
+        if (book.getYear() > new Date(System.nanoTime()).getYear()) {
             throw new Exception("Year must be less or equal than current");
         }
     }
 
     @Override
     public Book isAlreadyExist(Book book) {
-        return bookRepository.findAll().stream()
-                .filter(b -> b.getTitle().equals(book.getTitle()) &&
-                        b.getBookAuthor().equals(book.getBookAuthor()) &&
-                        b.getPublisher().equals(book.getPublisher()) &&
-                        b.getEdition().equals(book.getEdition()) &&
-                        b.getYear() == book.getYear()
-                ).findFirst().get();
+        try {
+            return bookRepository.findAll().stream()
+                    .filter(b -> b.getTitle().equals(book.getTitle()) &&
+                            b.getBookAuthor().equals(book.getBookAuthor()) &&
+                            b.getPublisher().equals(book.getPublisher()) &&
+                            b.getEdition().equals(book.getEdition()) &&
+                            b.getYear() == book.getYear() &&
+                            b.getNote().equals(book.getNote()))
+                    .findFirst().get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     /**
@@ -148,13 +160,14 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     }
 
     @Override
-    public int getCountById(long bookId) throws Exception {
+    public int getCountById(long bookId) {
         try {
             logger.info("Try to get count of book with book id = " + bookId);
             return bookRepository.findOne(bookId).getCount();
         } catch (Exception e) {
-            logger.info("Try to get count of book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book don't exist");
+//            logger.info("Try to get count of book with wrong book id = " + bookId);
+//            throw new Exception("Information not available, book don't exist");
+            return 0;
         }
     }
 

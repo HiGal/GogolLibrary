@@ -2,6 +2,7 @@ package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.dao.interfaces.JournalRepository;
+import com.project.glib.model.Document;
 import com.project.glib.model.Journal;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,10 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
         if (journal.getName().equals("")) {
             throw new Exception("Name must exist");
         }
+
+        if (!journal.getNote().equals(Document.REFERENCE) && !journal.getNote().equals(Document.DEFAULT_NOTE)) {
+            throw new Exception("Invalid note");
+        }
     }
 
     @Override
@@ -113,7 +118,8 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
                 j.getAuthor().equals(j.getAuthor()) &&
                 j.getEditor().equals(journal.getEditor()) &&
                 j.getTitle().equals(journal.getTitle()) &&
-                j.getIssue() == journal.getIssue())
+                        j.getIssue() == journal.getIssue() &&
+                        j.getNote().equals(journal.getNote()))
                 .findFirst().get();
     }
 
