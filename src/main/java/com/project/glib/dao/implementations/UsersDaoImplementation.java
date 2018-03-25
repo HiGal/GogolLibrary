@@ -71,17 +71,27 @@ public class UsersDaoImplementation implements ModifyByLibrarian<User> {
             System.out.println(checkoutDao.getCheckoutsByUser(userId));
             if (checkoutDao.getCheckoutsByUser(userId).size() == 0) {
                 userRepository.delete(userId);
-                List<Booking> listOfBookings = bookingDao.getBookingsByUser(userId);
-                for (Booking booking : listOfBookings) {
-                    bookingDao.remove(booking.getId());
-                }
+                removeAllBookingsByUserId(userId);
             } else {
                 throw new Exception(REMOVE_USER_HAS_CHECKOUTS);
             }
         } catch (Exception e) {
-            logger.info("Try to delete user with wrong user id = " + userId);
-            e.printStackTrace();
-            throw new Exception("Delete this patron not available, patron doesn't exist");
+            if (!e.getMessage().equals(REMOVE_USER_HAS_CHECKOUTS)) {
+                logger.info("Try to delete user with wrong user id = " + userId);
+                throw new Exception("Delete this patron not available, patron doesn't exist");
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    private void removeAllBookingsByUserId(long userId) throws Exception {
+        try {
+            List<Booking> listOfBookings = bookingDao.getBookingsByUser(userId);
+            for (Booking booking : listOfBookings) {
+                bookingDao.remove(booking.getId());
+            }
+        } catch (NoSuchElementException | NullPointerException ignore) {
         }
     }
 

@@ -4,7 +4,6 @@ import com.project.glib.model.*;
 import com.project.glib.service.CheckOutService;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +82,6 @@ public class UsersDaoImplementationTest {
     }
 
     @Test
-    @Ignore
     public void removeHasCheckout1() throws Exception {
         usersDao.add(user);
         Book book = new Book("title", "author", "publisher",
@@ -102,10 +100,10 @@ public class UsersDaoImplementationTest {
         }
 
         checkoutDao.remove(checkout.getId());
+        bookDao.remove(book.getId());
     }
 
     @Test
-    @Ignore
     public void removeHasCheckout2() throws Exception {
         usersDao.add(user);
         Journal journal = new Journal("title", "author", "name", 2,
@@ -124,10 +122,10 @@ public class UsersDaoImplementationTest {
         }
 
         checkoutDao.remove(checkout.getId());
+        journalDao.remove(journal.getId());
     }
 
     @Test
-    @Ignore
     public void removeHasCheckout3() throws Exception {
         usersDao.add(user);
         AudioVideo av = new AudioVideo("title", "author", 400, 2);
@@ -145,6 +143,7 @@ public class UsersDaoImplementationTest {
         }
 
         checkoutDao.remove(checkout.getId());
+        avDao.remove(av.getId());
     }
 
     @Test
