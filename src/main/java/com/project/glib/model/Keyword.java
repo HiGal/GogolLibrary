@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "keywords")
@@ -17,6 +18,21 @@ public class Keyword {
 
     public Keyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Keyword keyword1 = (Keyword) o;
+        return Objects.equals(id, keyword1.id) &&
+                Objects.equals(keyword, keyword1.keyword);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, keyword);
     }
 
     @Override

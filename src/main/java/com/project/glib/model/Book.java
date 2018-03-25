@@ -1,12 +1,11 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "book")
 public class Book extends Document {
-    public static final String BESTSELLER = "BESTSELLER";
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -15,7 +14,7 @@ public class Book extends Document {
     private String title;
 
     @Column(name = "author")
-    private String bookAuthor;
+    private String author;
 
     @Column(name = "publisher")
     private String publisher;
@@ -38,9 +37,9 @@ public class Book extends Document {
     protected Book() {
     }
 
-    public Book(String title, String bookAuthor, String publisher, String edition, int year, String note, int price, int count) {
+    public Book(String title, String author, String publisher, String edition, int year, String note, int price, int count) {
         this.title = title;
-        this.bookAuthor = bookAuthor;
+        this.author = author;
         this.publisher = publisher;
         this.edition = edition;
         this.year = year;
@@ -51,7 +50,7 @@ public class Book extends Document {
 
     public Book(Book book) {
         this.title = book.title;
-        this.bookAuthor = book.bookAuthor;
+        this.author = book.author;
         this.publisher = book.publisher;
         this.edition = book.edition;
         this.year = book.year;
@@ -62,7 +61,7 @@ public class Book extends Document {
 
     public Book(Book book, int count) {
         this.title = book.title;
-        this.bookAuthor = book.bookAuthor;
+        this.author = book.author;
         this.publisher = book.publisher;
         this.edition = book.edition;
         this.year = book.year;
@@ -72,11 +71,33 @@ public class Book extends Document {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return id == book.id &&
+                year == book.year &&
+                price == book.price &&
+                count == book.count &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(author, book.author) &&
+                Objects.equals(publisher, book.publisher) &&
+                Objects.equals(edition, book.edition) &&
+                Objects.equals(note, book.note);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, title, author, publisher, edition, year, note, price, count);
+    }
+
+    @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", bookAuthor='" + bookAuthor + '\'' +
+                ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", edition='" + edition + '\'' +
                 ", year=" + year +
@@ -94,12 +115,12 @@ public class Book extends Document {
         this.id = id;
     }
 
-    public String getBookAuthor() {
-        return bookAuthor;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setBookAuthor(String bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getPublisher() {

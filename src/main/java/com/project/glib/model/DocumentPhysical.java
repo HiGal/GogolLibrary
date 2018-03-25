@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -37,6 +38,24 @@ public class DocumentPhysical {
         this.idDoc = idDoc;
         this.docType = docType;
 //        this.keywords = keywords;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DocumentPhysical that = (DocumentPhysical) o;
+        return id == that.id &&
+                canBooked == that.canBooked &&
+                idDoc == that.idDoc &&
+                Objects.equals(shelf, that.shelf) &&
+                Objects.equals(docType, that.docType);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, shelf, canBooked, idDoc, docType);
     }
 
     @Override

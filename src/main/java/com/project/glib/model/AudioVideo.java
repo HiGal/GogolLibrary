@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "audio_video")
@@ -29,6 +30,24 @@ public class AudioVideo extends Document {
         this.author = author;
         this.price = price;
         this.count = count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AudioVideo that = (AudioVideo) o;
+        return id == that.id &&
+                price == that.price &&
+                count == that.count &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(author, that.author);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, title, author, price, count);
     }
 
     @Override

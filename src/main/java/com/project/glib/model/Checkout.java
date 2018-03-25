@@ -1,13 +1,13 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "checkout")
 public class Checkout {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -44,6 +44,27 @@ public class Checkout {
         this.returnTime = returnTime;
         this.isRenewed = isRenewed;
         this.shelf = shelf;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Checkout checkout = (Checkout) o;
+        return id == checkout.id &&
+                idUser == checkout.idUser &&
+                idDoc == checkout.idDoc &&
+                checkoutTime == checkout.checkoutTime &&
+                returnTime == checkout.returnTime &&
+                isRenewed == checkout.isRenewed &&
+                Objects.equals(docType, checkout.docType) &&
+                Objects.equals(shelf, checkout.shelf);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, idUser, idDoc, docType, checkoutTime, returnTime, isRenewed, shelf);
     }
 
     @Override

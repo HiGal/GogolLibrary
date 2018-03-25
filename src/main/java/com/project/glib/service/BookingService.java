@@ -14,7 +14,17 @@ import java.util.Map;
 @Service
 public class BookingService {
     //TODO change priorities
-    private static final String ACTIVE = "ACTIVE";
+    public static final String ACTIVE = "ACTIVE";
+    public static final String NO_AUTH = "Sorry, but your registration is not approved yet.";
+    public static final String ALREADY_HAS_THIS_BOOKING = "Sorry, but your already have this booking. Go to the library and check out ";
+    public static final String ALREADY_HAS_THIS_CHECKOUT = "Sorry, but your already have this check out. ";
+    public static final String RENEW = "You could renew this ";
+    public static final String CHECKOUT_AGAIN = "OR return and check out again.";
+    public static final String REFERENCE_DOCUMENT = "Sorry, you try to book reference ";
+    public static final String MISTAKE_PART1 = "Sorry, we have a mistake in our library, all copies this ";
+    public static final String MISTAKE_PART2 = " already on hand.";
+    public static final String INVALID_TYPE_PART1 = "Sorry, but you try to book invalid type of document (";
+    public static final String INVALID_TYPE_PART2 = ") maybe it program mistake.";
     private static final Map<String, Integer> PRIORITY = new HashMap<>();
 
     static {
@@ -61,24 +71,20 @@ public class BookingService {
      */
     public Booking toBookDocument(long docId, String docType, long userId) throws Exception {
         if (!usersDao.getIsAuthById(userId)) {
-            throw new Exception("Sorry, but your registration is not approved yet.");
+            throw new Exception(NO_AUTH);
         }
 
         if (bookingDao.alreadyHasThisBooking(docId, docType, userId)) {
-            throw new Exception("Sorry, but your already have this booking. " +
-                    "Go to the library and check out " + docType.toLowerCase() + ".");
+            throw new Exception(ALREADY_HAS_THIS_BOOKING + docType.toLowerCase());
         }
 
         if (checkoutDao.alreadyHasThisCheckout(docId, docType, userId)) {
-            throw new Exception("Sorry, but your already have this check out. " +
-                    "You could renew this " + docType.toLowerCase() +
-                    "OR return and check out again.");
+            throw new Exception(ALREADY_HAS_THIS_CHECKOUT + RENEW + docType.toLowerCase() + CHECKOUT_AGAIN);
         }
 
 
-        String referenceDoc = "Sorry, you try to book reference " + docType.toLowerCase();
-        String zeroCount = "Sorry, we have a mistake in our library, " +
-                "all copies this " + docType.toLowerCase() + " already on hand.";
+        String referenceDoc = REFERENCE_DOCUMENT + docType.toLowerCase();
+        String zeroCount = MISTAKE_PART1 + docType.toLowerCase() + MISTAKE_PART2;
         boolean isActive;
         switch (docType) {
             case Document.BOOK:
@@ -111,9 +117,7 @@ public class BookingService {
                 }
                 break;
             default:
-                throw new Exception("Sorry, but you try to book invalid type of " +
-                        "document (" + docType.toLowerCase() + ")" +
-                        "maybe it program mistake.");
+                throw new Exception(INVALID_TYPE_PART1 + docType.toLowerCase() + INVALID_TYPE_PART2);
         }
 
         // TODO add method to notify user with renewed document

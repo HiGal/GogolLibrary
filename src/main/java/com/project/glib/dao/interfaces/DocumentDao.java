@@ -1,11 +1,12 @@
 package com.project.glib.dao.interfaces;
 
-import com.project.glib.model.Book;
 import com.project.glib.model.Document;
 
 import java.util.List;
 
 public interface DocumentDao<T extends Document> extends ModifyByLibrarian<T> {
+    void add(T t, String shelf) throws Exception;
+
     int getCountById(long documentId) throws Exception;
 
     void decrementCountById(long documentId) throws Exception;
@@ -14,9 +15,10 @@ public interface DocumentDao<T extends Document> extends ModifyByLibrarian<T> {
 
     int getPriceById(long documentId) throws Exception;
 
-    void checkValidParameters(T t) throws Exception;
-
     T isAlreadyExist(T t);
 
+    // TODO add renewed document to the list
     List<T> getListCountNotZeroOrRenewed();
+
+    boolean isNote(String note);
 }

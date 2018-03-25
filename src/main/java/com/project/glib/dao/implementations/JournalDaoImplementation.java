@@ -3,24 +3,35 @@ package com.project.glib.dao.implementations;
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.dao.interfaces.JournalRepository;
 import com.project.glib.model.Document;
+import com.project.glib.model.DocumentPhysical;
 import com.project.glib.model.Journal;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Repository
 public class JournalDaoImplementation implements DocumentDao<Journal> {
     private static final org.slf4j.Logger logger = (org.slf4j.Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private final JournalRepository journalRepository;
+    private final DocumentPhysicalDaoImplementation docPhysDao;
 
     @Autowired
-    public JournalDaoImplementation(JournalRepository journalRepository) {
+    public JournalDaoImplementation(JournalRepository journalRepository, DocumentPhysicalDaoImplementation docPhysDao) {
         this.journalRepository = journalRepository;
+        this.docPhysDao = docPhysDao;
     }
 
+    /**
+     * Add new item of Journal in library
+     *
+     * @param journal new Journal
+     * @throws Exception
+     */
     @Override
     public void add(Journal journal) throws Exception {
         checkValidParameters(journal);
@@ -32,6 +43,7 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
             } else {
                 logger.info("Try to add " + journal.getCount() + " copies of journal : " + existedJournal);
                 existedJournal.setCount(existedJournal.getCount() + journal.getCount());
+                existedJournal.setPrice(journal.getPrice());
                 update(existedJournal);
             }
         } catch (Exception e) {
@@ -40,6 +52,22 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
         }
     }
 
+    @Override
+    public void add(Journal journal, String shelf) throws Exception {
+        if (shelf.equals("")) throw new Exception("Shelf must exist");
+        add(journal);
+        for (int i = 0; i < journal.getCount(); i++) {
+            // TODO add keywords options
+            docPhysDao.add(new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL, null));
+        }
+    }
+
+    /**
+     * Update existed journal or create if it not exist
+     *
+     * @param journal - updated Journal
+     * @throws Exception
+     */
     @Override
     public void update(Journal journal) throws Exception {
         checkValidParameters(journal);
@@ -54,10 +82,17 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
         }
     }
 
+    /**
+     * Remove Journal from library
+     *
+     * @param journalId id of Journal
+     * @throws Exception
+     */
     @Override
     public void remove(long journalId) throws Exception {
         try {
             logger.info("Try to delete journal with journal id = " + journalId);
+            docPhysDao.removeAllByDocId(journalId);
             journalRepository.delete(journalId);
         } catch (Exception e) {
             logger.info("Try to delete journal with wrong journal id = " + journalId);
@@ -66,27 +101,16 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     }
 
     @Override
-    public Journal getById(long journalId) throws Exception {
-        try {
-            logger.info("Try to get count of journal with journal id = " + journalId);
-            return journalRepository.findOne(journalId);
-        } catch (Exception e) {
-            logger.info("Try to get count of journal with wrong journal id = " + journalId);
-            throw new Exception("Information not available, journal don't exist");
-        }
-    }
-
-    @Override
     public void checkValidParameters(Journal journal) throws Exception {
         if (journal.getPrice() < 0) {
-            throw new Exception("Price must be positive");
+            throw new Exception("Price must be not negative");
         }
 
         if (journal.getCount() < 0) {
-            throw new Exception("Count must be positive");
+            throw new Exception("Count must be not negative");
         }
 
-        if (journal.getIssue() < 0) {
+        if (journal.getIssue() <= 0) {
             throw new Exception("Issue must be positive");
         }
 
@@ -106,21 +130,36 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
             throw new Exception("Name must exist");
         }
 
-        if (!journal.getNote().equals(Document.REFERENCE) && !journal.getNote().equals(Document.DEFAULT_NOTE)) {
+        if (!isNote(journal.getNote())) {
             throw new Exception("Invalid note");
         }
     }
 
     @Override
     public Journal isAlreadyExist(Journal journal) {
-        return journalRepository.findAll().stream()
-                .filter(j -> j.getName().equals(journal.getName()) &&
-                j.getAuthor().equals(j.getAuthor()) &&
-                j.getEditor().equals(journal.getEditor()) &&
-                j.getTitle().equals(journal.getTitle()) &&
-                        j.getIssue() == journal.getIssue() &&
-                        j.getNote().equals(journal.getNote()))
-                .findFirst().get();
+        try {
+            return journalRepository.findAll().stream()
+                    .filter(j -> j.getName().equals(journal.getName()) &&
+                            j.getAuthor().equals(journal.getAuthor()) &&
+                            j.getEditor().equals(journal.getEditor()) &&
+                            j.getTitle().equals(journal.getTitle()) &&
+                            j.getIssue() == journal.getIssue() &&
+                            j.getNote().equals(journal.getNote()))
+                    .findFirst().get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Journal getById(long journalId) throws Exception {
+        try {
+            logger.info("Try to get count of journal with journal id = " + journalId);
+            return journalRepository.findOne(journalId);
+        } catch (Exception e) {
+            logger.info("Try to get count of journal with wrong journal id = " + journalId);
+            throw new Exception("Information not available, journal don't exist");
+        }
     }
 
     @Override
@@ -138,9 +177,8 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     public void decrementCountById(long journalId) throws Exception {
         try {
             logger.info("Try to decrement count of journal with journal id = " + journalId);
-            int i = journalRepository.findOne(journalId).getCount();
             Journal journal = journalRepository.findOne(journalId);
-            journal.setCount(i - 1);
+            journal.setCount(journal.getCount() - 1);
             journalRepository.saveAndFlush(journal);
         } catch (Exception e) {
             logger.info("Try to decrement count of journal with wrong journal id = " + journalId);
@@ -152,9 +190,8 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     public void incrementCountById(long journalId) throws Exception {
         try {
             logger.info("Try to increment count of journal with journal id = " + journalId);
-            int i = journalRepository.findOne(journalId).getCount();
             Journal journal = journalRepository.findOne(journalId);
-            journal.setCount(i + 1);
+            journal.setCount(journal.getCount() + 1);
             journalRepository.saveAndFlush(journal);
         } catch (Exception e) {
             logger.info("Try to increment count of journal with wrong journal id = " + journalId);
@@ -173,29 +210,6 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
         }
     }
 
-    @Override
-    public List<Journal> getListCountNotZeroOrRenewed() {
-        List<Journal> journals = journalRepository.findAll().stream().filter(journal -> journal.getCount() > 0).collect(Collectors.toList());
-
-        for (Journal journal : journals) {
-            logger.info("Journal list : " + journal);
-        }
-
-        return journals;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Journal> getList() {
-        List<Journal> journals = journalRepository.findAll();
-
-        for (Journal journal : journals) {
-            logger.info("Journal list : " + journal);
-        }
-
-        return journals;
-    }
-
     public String getNote(long journalId) throws Exception {
         try {
             logger.info("Try to get note journal with journal id = " + journalId);
@@ -204,5 +218,50 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
             logger.info("Try to get note journal with wrong journal id = " + journalId);
             throw new Exception("Information not available, journal don't exist");
         }
+    }
+
+    @Override
+    public List<Journal> getListCountNotZeroOrRenewed() {
+        try {
+            List<Journal> journals = journalRepository.findAll().stream().filter(journal -> journal.getCount() > 0).collect(Collectors.toList());
+
+            for (Journal journal : journals) {
+                logger.info("Journal list : " + journal);
+            }
+
+            return journals;
+        } catch (NoSuchElementException | NullPointerException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Journal> getList() {
+        try {
+            List<Journal> journals = journalRepository.findAll();
+
+            for (Journal journal : journals) {
+                logger.info("Journal list : " + journal);
+            }
+
+            return journals;
+        } catch (NoSuchElementException | NullPointerException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public long getId(Journal journal) throws Exception {
+        try {
+            return isAlreadyExist(journal).getId();
+        } catch (NoSuchElementException | NullPointerException e) {
+            throw new Exception("Journal does not exist");
+        }
+    }
+
+    @Override
+    public boolean isNote(String note) {
+        return note.equals(Document.DEFAULT_NOTE) || note.equals(Document.REFERENCE);
     }
 }

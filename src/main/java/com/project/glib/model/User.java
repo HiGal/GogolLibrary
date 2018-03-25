@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -48,7 +49,8 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, String surname, String address, String phone, boolean isAuth, String role, boolean auth) {
+    public User(String login, String password, String passwordConfirm, String name, String surname,
+                String address, String phone, String role, boolean auth) {
         this.login = login;
         this.password = password;
         this.passwordConfirm = passwordConfirm;
@@ -61,6 +63,28 @@ public class User {
         this.auth = auth;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                auth == user.auth &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(passwordConfirm, user.passwordConfirm) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(role, user.role);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, login, password, passwordConfirm, name, surname, address, phone, auth, role);
+    }
 
     @Override
     public String toString() {
@@ -79,11 +103,11 @@ public class User {
                 '}';
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

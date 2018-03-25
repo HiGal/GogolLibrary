@@ -3,8 +3,6 @@ package com.project.glib.controller;
 import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
 import com.project.glib.dao.implementations.JournalDaoImplementation;
 import com.project.glib.dao.interfaces.JournalRepository;
-import com.project.glib.model.Document;
-import com.project.glib.model.DocumentPhysical;
 import com.project.glib.model.Journal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,12 +30,7 @@ public class JournalController {
     public String addJournal(@RequestBody Journal journal,
                              @RequestParam(value = "shelf") String shelf) {
         try {
-            journalDao.add(journal);
-            for (int i = 0; i < journal.getCount(); i++) {
-                // TODO add keywords options
-                docPhysDao.add(
-                        new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL, null));
-            }
+            journalDao.add(journal, shelf);
         } catch (Exception e) {
             e.printStackTrace();
         }

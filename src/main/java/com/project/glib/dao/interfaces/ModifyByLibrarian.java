@@ -9,7 +9,11 @@ public interface ModifyByLibrarian<T> {
 
     void remove(long id) throws Exception;
 
+    void checkValidParameters(T t) throws Exception;
+
     T getById(long id) throws Exception;
+
+    long getId(T t) throws Exception;
 
     List<T> getList();
 }

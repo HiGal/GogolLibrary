@@ -4,7 +4,6 @@ import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
 import com.project.glib.model.Book;
 import com.project.glib.model.Document;
-import com.project.glib.model.DocumentPhysical;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +22,7 @@ public class BookController {
     @RequestMapping(value = "/book/add", method = RequestMethod.POST)
     public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf) {
         try {
-            bookDao.add(book);
-            for (int i = 0; i < book.getCount(); i++) {
-                // TODO add keywords options
-                docPhysDao.add(
-                        new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null));
-            }
+            bookDao.add(book, shelf);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,7 +36,7 @@ public class BookController {
                 System.out.println(book.getCount());
                 bookDao.decrementCountById(book.getId());
                 System.out.println(book.getCount());
-                docPhysDao.removeByDocId(book.getId());
+                docPhysDao.removeByDocIdAndDocType(book.getId(), Document.BOOK);
             }
             return "Book/books is/are successfully removed";
         } catch (Exception e) {

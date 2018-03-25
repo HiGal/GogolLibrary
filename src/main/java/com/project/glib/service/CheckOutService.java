@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class CheckOutService {
-    public final long WEEK_IN_MILLISECONDS = 604800000000000L;
+    public static final long WEEK_IN_MILLISECONDS = 604800000000000L;
 
     private final BookDaoImplementation bookDao;
     private final JournalDaoImplementation journalDao;

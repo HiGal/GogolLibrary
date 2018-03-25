@@ -4,8 +4,6 @@ import com.project.glib.dao.implementations.AudioVideoDaoImplementation;
 import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
 import com.project.glib.dao.interfaces.AudioVideoRepository;
 import com.project.glib.model.AudioVideo;
-import com.project.glib.model.Document;
-import com.project.glib.model.DocumentPhysical;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,12 +28,7 @@ public class AudioVideoController {
     public String addAV(@RequestBody AudioVideo audioVideo,
                         @RequestParam(value = "shelf") String shelf) {
         try {
-            audioVideoDao.add(audioVideo);
-            for (int i = 0; i < audioVideo.getCount(); i++) {
-                // TODO add keywords options
-                docPhysDao.add(
-                        new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
-            }
+            audioVideoDao.add(audioVideo, shelf);
         } catch (Exception e) {
             e.printStackTrace();
         }

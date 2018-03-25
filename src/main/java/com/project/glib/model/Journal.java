@@ -1,15 +1,15 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table (name = "journal")
 public class Journal extends Document {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @Column(name = "title")
     private String title;
@@ -50,6 +50,28 @@ public class Journal extends Document {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Journal journal = (Journal) o;
+        return id == journal.id &&
+                issue == journal.issue &&
+                price == journal.price &&
+                count == journal.count &&
+                Objects.equals(title, journal.title) &&
+                Objects.equals(author, journal.author) &&
+                Objects.equals(name, journal.name) &&
+                Objects.equals(editor, journal.editor) &&
+                Objects.equals(note, journal.note);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, title, author, name, issue, editor, note, price, count);
+    }
+
+    @Override
     public String toString() {
         return "Journal{" +
                 "id=" + id +
@@ -68,7 +90,7 @@ public class Journal extends Document {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

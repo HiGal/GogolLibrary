@@ -3,22 +3,28 @@ package com.project.glib.dao.implementations;
 import com.project.glib.dao.interfaces.AudioVideoRepository;
 import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.model.AudioVideo;
+import com.project.glib.model.Document;
+import com.project.glib.model.DocumentPhysical;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Repository
 public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(AudioVideoDaoImplementation.class);
     private final AudioVideoRepository audioVideoRepository;
+    private final DocumentPhysicalDaoImplementation docPhysDao;
 
     @Autowired
-    public AudioVideoDaoImplementation(AudioVideoRepository audioVideoRepository) {
+    public AudioVideoDaoImplementation(AudioVideoRepository audioVideoRepository, DocumentPhysicalDaoImplementation docPhysDao) {
         this.audioVideoRepository = audioVideoRepository;
+        this.docPhysDao = docPhysDao;
     }
 
     /**
@@ -43,6 +49,16 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         } catch (Exception e) {
             logger.info("Try to add AV with wrong parameters. New AV information : " + audioVideo);
             throw new Exception("Can't add this AudioVideo, some parameters are wrong");
+        }
+    }
+
+    @Override
+    public void add(AudioVideo audioVideo, String shelf) throws Exception {
+        if (shelf.equals("")) throw new Exception("Shelf must exist");
+        add(audioVideo);
+        for (int i = 0; i < audioVideo.getCount(); i++) {
+            // TODO add keywords options
+            docPhysDao.add(new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
         }
     }
 
@@ -76,28 +92,11 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     public void remove(long audioVideoId) throws Exception {
         try {
             logger.info("Try to delete AV with AV id = " + audioVideoId);
+            docPhysDao.removeAllByDocId(audioVideoId);
             audioVideoRepository.delete(audioVideoId);
         } catch (Exception e) {
             logger.info("Try to delete AV with wrong AV id = " + audioVideoId);
             throw new Exception("Delete this AV not available, AV don't exist");
-        }
-    }
-
-    /**
-     * get AudioVideo by it id
-     *
-     * @param audioVideoId id of AudioVideo
-     * @return AudioVideo object
-     * @throws Exception
-     */
-    @Override
-    public AudioVideo getById(long audioVideoId) throws Exception {
-        try {
-            logger.info("Try to get count of AV with AV id = " + audioVideoId);
-            return audioVideoRepository.findOne(audioVideoId);
-        } catch (Exception e) {
-            logger.info("Try to get count of AV with wrong AV id = " + audioVideoId);
-            throw new Exception("Information not available, AV don't exist");
         }
     }
 
@@ -122,10 +121,32 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
 
     @Override
     public AudioVideo isAlreadyExist(AudioVideo audioVideo) {
-        return audioVideoRepository.findAll().stream()
-                .filter(av -> av.getTitle().equals(audioVideo.getTitle()) &&
-                av.getAuthor().equals(audioVideo.getAuthor()))
-                .findFirst().get();
+        try {
+            return audioVideoRepository.findAll().stream()
+                    .filter(av -> av.getTitle().equals(audioVideo.getTitle()) &&
+                            av.getAuthor().equals(audioVideo.getAuthor()))
+                    .findFirst().get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    /**
+     * get AudioVideo by it id
+     *
+     * @param audioVideoId id of AudioVideo
+     * @return AudioVideo object
+     * @throws Exception
+     */
+    @Override
+    public AudioVideo getById(long audioVideoId) throws Exception {
+        try {
+            logger.info("Try to get count of AV with AV id = " + audioVideoId);
+            return audioVideoRepository.findOne(audioVideoId);
+        } catch (Exception e) {
+            logger.info("Try to get count of AV with wrong AV id = " + audioVideoId);
+            throw new Exception("Information not available, AV don't exist");
+        }
     }
 
     /**
@@ -147,7 +168,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
-     * set count to count-1 for AudioVideo
+     * set count to count - 1 for AudioVideo
      *
      * @param avId id of AudioVideo
      * @throws Exception
@@ -156,9 +177,8 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     public void decrementCountById(long avId) throws Exception {
         try {
             logger.info("Try to decrement count of AV with AV id = " + avId);
-            int i = audioVideoRepository.findOne(avId).getCount();
             AudioVideo audioVideo = audioVideoRepository.findOne(avId);
-            audioVideo.setCount(i - 1);
+            audioVideo.setCount(audioVideo.getCount() - 1);
             audioVideoRepository.saveAndFlush(audioVideo);
         } catch (Exception e) {
             logger.info("Try to decrement count of AV with wrong AV id = " + avId);
@@ -166,13 +186,18 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * set count to count + 1 for AudioVideo
+     *
+     * @param avId id of AudioVideo
+     * @throws Exception
+     */
     @Override
     public void incrementCountById(long avId) throws Exception {
         try {
             logger.info("Try to increment count of AV with AV id = " + avId);
-            int i = audioVideoRepository.findOne(avId).getCount();
             AudioVideo audioVideo = audioVideoRepository.findOne(avId);
-            audioVideo.setCount(i + 1);
+            audioVideo.setCount(audioVideo.getCount() + 1);
             audioVideoRepository.saveAndFlush(audioVideo);
         } catch (Exception e) {
             logger.info("Try to increment count of AV with wrong AV id = " + avId);
@@ -199,6 +224,26 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
+     * get list of all AudioVideo with count bigger than zero or renewed
+     *
+     * @return list of AudioVideo with count bigger than zero or renewed
+     */
+    @Override
+    public List<AudioVideo> getListCountNotZeroOrRenewed() {
+        try {
+            List<AudioVideo> audioVideos = audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
+
+            for (AudioVideo audioVideo : audioVideos) {
+                logger.info("AudioVideo list : " + audioVideo);
+            }
+
+            return audioVideos;
+        } catch (NoSuchElementException | NullPointerException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    /**
      * get list of all AudioVideo
      *
      * @return
@@ -206,28 +251,30 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     @Override
     @SuppressWarnings("unchecked")
     public List<AudioVideo> getList() {
-        List<AudioVideo> audioVideos = audioVideoRepository.findAll();
+        try {
+            List<AudioVideo> audioVideos = audioVideoRepository.findAll();
 
-        for (AudioVideo audioVideo : audioVideos) {
-            logger.info("AudioVideo list : " + audioVideo);
+            for (AudioVideo audioVideo : audioVideos) {
+                logger.info("AudioVideo list : " + audioVideo);
+            }
+
+            return audioVideos;
+        } catch (NoSuchElementException | NullPointerException e) {
+            return new ArrayList<>();
         }
-
-        return audioVideos;
     }
 
-    /**
-     * get list of all AudioVideo with count bigger than zero or renewed
-     *
-     * @return list of AudioVideo with count bigger than zero or renewed
-     */
     @Override
-    public List<AudioVideo> getListCountNotZeroOrRenewed() {
-        List<AudioVideo> audioVideos = audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
-
-        for (AudioVideo audioVideo : audioVideos) {
-            logger.info("AudioVideo list : " + audioVideo);
+    public long getId(AudioVideo audioVideo) throws Exception {
+        try {
+            return isAlreadyExist(audioVideo).getId();
+        } catch (NoSuchElementException | NullPointerException e) {
+            throw new Exception("AV does not exist");
         }
+    }
 
-        return audioVideos;
+    @Override
+    public boolean isNote(String note) {
+        return false;
     }
 }
