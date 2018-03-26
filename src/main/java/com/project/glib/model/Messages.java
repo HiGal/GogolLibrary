@@ -20,14 +20,18 @@ public class Messages {
     @Column(name = "id_doc")
     private long id_doc;
 
+    @Column(name = "doc_type")
+    private String doc_type;
+
     public Messages() {
 
     }
 
-    public Messages(long id_user, String message, long id_doc) {
+    public Messages(long id_user, String message, long id_doc, String doc_type) {
         this.id_user = id_user;
         this.message = message;
         this.id_doc = id_doc;
+        this.doc_type = doc_type;
     }
 
     @Override
@@ -37,6 +41,7 @@ public class Messages {
                 ", id_user=" + id_user +
                 ", message=" + message +
                 ", id_doc=" + id_doc +
+                ", doc_type=" + doc_type +
                 '}';
     }
 
@@ -70,5 +75,13 @@ public class Messages {
 
     public void setId_doc(long id_doc) {
         this.id_doc = id_doc;
+    }
+
+    public String getDoc_type() {
+        return doc_type;
+    }
+
+    public void setDoc_type(String doc_type) {
+        this.doc_type = doc_type;
     }
 }

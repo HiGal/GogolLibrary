@@ -160,10 +160,10 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
                 .anyMatch(booking -> booking.getDocType().equals(docType));
     }
 
-    public boolean hasActiveBooking(long docId, String docType) {
+    public boolean hasActiveBooking(long docVirtualId, String docType) {
         try {
             return bookingRepository.findAll().stream()
-                    .filter(booking -> booking.getIdDoc() == docId)
+                    .filter(booking -> booking.getIdDoc() == docVirtualId)
                     .filter(booking -> booking.getDocType().equals(docType))
                     .anyMatch(Booking::isActive);
         } catch (NoSuchElementException e) {
@@ -193,9 +193,9 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         }
     }
 
-    public Booking getBookingWithMaxPriority(long docId, String docType) {
+    public Booking getBookingWithMaxPriority(long docVirtualId, String docType) {
         try {
-            return bookingRepository.findByIdDocAndDocTypeOrderByPriority(docId, docType);
+            return bookingRepository.findByIdDocAndDocTypeOrderByPriority(docVirtualId, docType);
         } catch (NoSuchElementException e) {
             return null;
         }

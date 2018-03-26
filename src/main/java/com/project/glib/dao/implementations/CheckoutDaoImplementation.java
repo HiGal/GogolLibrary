@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
 public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(CheckoutDaoImplementation.class);
     private final CheckoutRepository checkoutRepository;
+    private final DocumentPhysicalDaoImplementation documentPhysicalDao;
 
     @Autowired
-    public CheckoutDaoImplementation(CheckoutRepository checkoutRepository) {
+    public CheckoutDaoImplementation(CheckoutRepository checkoutRepository, DocumentPhysicalDaoImplementation documentPhysicalDao) {
         this.checkoutRepository = checkoutRepository;
+        this.documentPhysicalDao = documentPhysicalDao;
     }
 
     @Override
@@ -127,6 +129,29 @@ public class CheckoutDaoImplementation implements ModifyByLibrarian<Checkout> {
     public List<Checkout> getList() {
         try {
             List<Checkout> checkouts = checkoutRepository.findAll();
+
+            for (Checkout checkout : checkouts) {
+                logger.info("Checkout list : " + checkout);
+            }
+
+            logger.info("Check out list successfully printed");
+            return checkouts;
+        } catch (NoSuchElementException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Checkout> getCheckoutsByVirtualDoc(long docVirtualID, String type) {
+        try {
+            List<Checkout> checkouts = checkoutRepository.findAll().stream()
+                    .filter(checkout -> checkout.getDocType().equals(type))
+                    .collect(Collectors.toList());
+
+            for (Checkout checkout1 : checkouts) {
+                if (!(documentPhysicalDao.getDocIdByID(checkout1.getIdDoc()) == docVirtualID)) {
+                    checkouts.remove(checkout1);
+                }
+            }
 
             for (Checkout checkout : checkouts) {
                 logger.info("Checkout list : " + checkout);

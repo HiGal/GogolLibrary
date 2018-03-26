@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Repository
 public class MessageDaoImplementation {
     public static final String RETURN_DOCUMENT = "Please, return next document to the library: ";
+    public static final String CHECKOUT_DOCUMENT = "Please, visit a library and checkout a document:  ";
     private static final Logger logger = (Logger) LoggerFactory.getLogger(MessageDaoImplementation.class);
     private final MessagesRepository messagesRepository;
 
@@ -52,8 +53,8 @@ public class MessageDaoImplementation {
         }
     }
 
-    public void addMes(long id_user, long id_doc, String message) throws Exception {
-        Messages messages = new Messages(id_user, message, id_doc);
+    public void addMes(long id_user, long id_doc, String message, String type) throws Exception {
+        Messages messages = new Messages(id_user, message, id_doc, type);
         try {
             if (!alreadyHasThisMessage(id_user, id_doc, message)) {
                 add(messages);

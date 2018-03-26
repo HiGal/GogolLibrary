@@ -69,7 +69,15 @@ public class ReturnService {
             }
         } else {
             bookingService.setBookingActiveToTrue(bookingDao.getBookingWithMaxPriority(docId, docType));
-            // TODO notify happy user
+
+            // message takes id of virtual book and doc type
+            long docID = docPhysDao.getDocIdByID(docId);
+            String type = docPhysDao.getTypeByID(docId);
+            messageDao.addMes(
+                    bookingDao.getBookingWithMaxPriority(docID, type).getIdUser(),
+                    docID,
+                    MessageDaoImplementation.CHECKOUT_DOCUMENT,
+                    type);
         }
         return new Pair<>(checkout, getOverdue(checkout));
     }
@@ -88,15 +96,15 @@ public class ReturnService {
             int price;
             switch (checkout.getDocType()) {
                 case Document.BOOK:
-                    long bookId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
+                    long bookId = docPhysDao.getDocIdByPhysDocument(checkout.getIdDoc());
                     price = bookDao.getPriceById(bookId);
                     break;
                 case Document.JOURNAL:
-                    long journalId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
+                    long journalId = docPhysDao.getDocIdByPhysDocument(checkout.getIdDoc());
                     price = journalDao.getPriceById(journalId);
                     break;
                 case Document.AV:
-                    long avId = docPhysDao.getIdByDocument(checkout.getIdDoc(), checkout.getDocType());
+                    long avId = docPhysDao.getDocIdByPhysDocument(checkout.getIdDoc());
                     price = avDao.getPriceById(avId);
                     break;
                 default:
