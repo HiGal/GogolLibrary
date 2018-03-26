@@ -10,12 +10,12 @@
     <script>
         function make_json(form) {
             var json = {
-                "name":form[0].value,
-                "surname":form[1].value,
-                "address":form[2].address.value,
-                "phone":form.phone[3].value,
-                "login":form.username[4].value,
-                "password":form.password[5].value
+                "name": form[0].value,
+                "surname": form[1].value,
+                "address": form[2].address.value,
+                "phone": form.phone[3].value,
+                "login": form.username[4].value,
+                "password": form.password[5].value
             };
             alert(json);
             return false;
@@ -74,7 +74,8 @@
                                 <td>Innopolis</td>
                                 <td>+7(906)-321-15-58</td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block submit" onsubmit="return make_json(this)">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block submit"
+                                            onsubmit="return make_json(this)">
                                         Submit
                                     </button>
                                 </td>

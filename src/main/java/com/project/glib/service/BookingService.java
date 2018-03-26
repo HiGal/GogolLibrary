@@ -42,6 +42,7 @@ public class BookingService {
     private final UsersDaoImplementation usersDao;
     private final DocumentPhysicalDaoImplementation documentPhysDao;
     private final CheckoutDaoImplementation checkoutDao;
+    private final MessageDaoImplementation messageDao;
 
     @Autowired
     public BookingService(BookDaoImplementation bookDao,
@@ -50,7 +51,7 @@ public class BookingService {
                           BookingDaoImplementation bookingDao,
                           UsersDaoImplementation usersDao,
                           DocumentPhysicalDaoImplementation documentPhysDao,
-                          CheckoutDaoImplementation checkoutDao) {
+                          CheckoutDaoImplementation checkoutDao, MessageDaoImplementation messageDao) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
@@ -58,6 +59,7 @@ public class BookingService {
         this.usersDao = usersDao;
         this.documentPhysDao = documentPhysDao;
         this.checkoutDao = checkoutDao;
+        this.messageDao = messageDao;
     }
 
     /**
@@ -120,10 +122,17 @@ public class BookingService {
                 throw new Exception(INVALID_TYPE_PART1 + docType.toLowerCase() + INVALID_TYPE_PART2);
         }
 
-        // TODO add method to notify user with renewed document
         int priority = isActive ? PRIORITY.get(ACTIVE) : PRIORITY.get(usersDao.getTypeById(userId));
         recalculatePriority(docId, docType);
         long physId = documentPhysDao.getValidPhysicalId(docId, docType);
+
+        if (checkoutDao.hasRenewedCheckout(physId)) {
+            messageDao.addMes(checkoutDao.getUserIdByDocPhysId(physId),
+                    physId,
+                    MessageDaoImplementation.RETURN_DOCUMENT
+            );
+        }
+
         String shelf = documentPhysDao.getShelfById(physId);
         documentPhysDao.inverseCanBooked(physId);
 
@@ -175,6 +184,7 @@ public class BookingService {
     }
 
     private boolean getValidIsActive(long docId, String docType) {
-        return !bookingDao.hasActiveBooking(docId, docType) && checkoutDao.hasRenewedCheckout(docId, docType);
+        long physId = documentPhysDao.getValidPhysicalId(docId, docType);
+        return !bookingDao.hasActiveBooking(docId, docType) && checkoutDao.hasRenewedCheckout(physId);
     }
 }

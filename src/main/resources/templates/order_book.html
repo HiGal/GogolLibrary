@@ -86,21 +86,22 @@
                         </thead>
                         <tbody>
                         {{#allBooks}}
-                            <tr>
-                                <td>{{id}}</td>
-                                <td>{{title}}</td>
-                                <td>{{author}}</td>
-                                <td>{{edition}}</td>
-                                <td>{{publisher}}</td>
-                                <td>{{year}}</td>
-                                <td>{{isBestSeller}}</td>
-                                <td>{{price}}</td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove" onsubmit="return make_json(this)">
-                                        Order
-                                    </button>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{title}}</td>
+                            <td>{{bookAuthor}}</td>
+                            <td>{{edition}}</td>
+                            <td>{{publisher}}</td>
+                            <td>{{year}}</td>
+                            <td>{{isBestSeller}}</td>
+                            <td>{{price}}</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm btn-block row-remove"
+                                        onsubmit="return make_json(this)">
+                                    Order
+                                </button>
+                            </td>
+                        </tr>
                         {{/allBooks}}
                         </tbody>
                     </table>

@@ -3,6 +3,7 @@ package com.project.glib.controller;
 import com.project.glib.dao.implementations.*;
 import com.project.glib.model.Booking;
 import com.project.glib.model.Checkout;
+import com.project.glib.model.Messages;
 import com.project.glib.model.User;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,13 @@ public class LibrarianController {
     private final CheckoutDaoImplementation checkoutDao;
     private final AudioVideoDaoImplementation avDao;
     private final JournalDaoImplementation journalDao;
+    private final MessageDaoImplementation messageDao;
 
     @Autowired
     public LibrarianController(UsersDaoImplementation usersDao, BookDaoImplementation bookDao,
                                DocumentPhysicalDaoImplementation docPhysDao,
                                BookingDaoImplementation bookingDao, CheckoutDaoImplementation checkoutDao,
-                               AudioVideoDaoImplementation avDao, JournalDaoImplementation journalDao) {
+                               AudioVideoDaoImplementation avDao, JournalDaoImplementation journalDao, MessageDaoImplementation messageDao) {
         this.usersDao = usersDao;
         this.bookDao = bookDao;
         this.docPhysDao = docPhysDao;
@@ -35,15 +37,14 @@ public class LibrarianController {
         this.checkoutDao = checkoutDao;
         this.avDao = avDao;
         this.journalDao = journalDao;
+        this.messageDao = messageDao;
     }
 
 
     @RequestMapping(value = "/librarian", method = RequestMethod.GET)
-    public ModelAndView librarianDashboard(Model model, String login, String logout) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("user", usersDao.findByLogin(login));
-        modelAndView.setViewName("librarian");
-        return modelAndView;
+    public Pair<User, List<Messages>> librarianDashboard(Model model, String login, String logout) {
+        return new Pair<>(usersDao.findByLogin(login),
+                messageDao.getAllByUserID(usersDao.getIdByLogin(login)));
     }
 
     @RequestMapping(value = "/librarian", method = RequestMethod.POST)

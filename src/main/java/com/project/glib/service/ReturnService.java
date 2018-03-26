@@ -23,6 +23,7 @@ public class ReturnService {
     private final CheckoutDaoImplementation checkoutDao;
     private final UsersDaoImplementation usersDao;
     private final BookingService bookingService;
+    private final MessageDaoImplementation messageDao;
 
     @Autowired
     public ReturnService(BookDaoImplementation bookDao,
@@ -32,7 +33,7 @@ public class ReturnService {
                          BookingDaoImplementation bookingDao,
                          CheckoutDaoImplementation checkoutDao,
                          UsersDaoImplementation usersDao,
-                         BookingService bookingService) {
+                         BookingService bookingService, MessageDaoImplementation messageDao) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
@@ -41,10 +42,14 @@ public class ReturnService {
         this.checkoutDao = checkoutDao;
         this.usersDao = usersDao;
         this.bookingService = bookingService;
+        this.messageDao = messageDao;
     }
 
     public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
         checkoutDao.remove(checkout.getId());
+
+        messageDao.removeOneByUserID(checkout.getIdUser(), checkout.getIdDoc());
+
         long docId = docPhysDao.getDocIdByID(checkout.getIdDoc());
         String docType = checkout.getDocType();
         if (bookingDao.hasNotActiveBooking(docId, docType)) {
@@ -130,7 +135,6 @@ public class ReturnService {
      * get list of pairs<User, Integer> with positive total overdue
      *
      * @return list of pairs<User, Integer>
-     * @throws Exception
      */
     public List<Pair<User, Integer>> getListOfTotalOverdue() throws Exception {
         List<Pair<User, Integer>> listOverdue = new ArrayList<>();
