@@ -19,9 +19,6 @@ public class Booking {
     @Column(name = "docType")
     private String docType;
 
-    @Column(name = "shelf")
-    private String shelf;
-
     @Column(name = "bookingDate")
     private long bookingDate;
 
@@ -31,17 +28,25 @@ public class Booking {
     @Column(name = "priority")
     private int priority;
 
+    @Column(name = "id_virtual")
+    private long id_virtual;
+
+    @Column(name = "shelf")
+    private String shelf;
+
+
     protected Booking() {
     }
 
-    public Booking(long idUser, long idDoc, String docType, String shelf, long bookingDate, boolean isActive, int priority) {
+    public Booking(long idUser, long idDoc, String docType, long bookingDate, boolean isActive, int priority, long id_virtual, String shelf) {
         this.idUser = idUser;
         this.idDoc = idDoc;
         this.docType = docType;
-        this.shelf = shelf;
         this.bookingDate = bookingDate;
         this.isActive = isActive;
         this.priority = priority;
+        this.id_virtual = id_virtual;
+        this.shelf = shelf;
     }
 
     @Override
@@ -55,14 +60,13 @@ public class Booking {
                 bookingDate == booking.bookingDate &&
                 isActive == booking.isActive &&
                 priority == booking.priority &&
-                Objects.equals(docType, booking.docType) &&
-                Objects.equals(shelf, booking.shelf);
+                Objects.equals(docType, booking.docType);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, idUser, idDoc, docType, shelf, bookingDate, isActive, priority);
+        return Objects.hash(id, idUser, idDoc, docType, bookingDate, isActive, priority);
     }
 
     @Override
@@ -72,7 +76,6 @@ public class Booking {
                 ", idUser=" + idUser +
                 ", idDoc=" + idDoc +
                 ", docType='" + docType + '\'' +
-                ", shelf='" + shelf + '\'' +
                 ", bookingDate=" + bookingDate +
                 ", isActive=" + isActive +
                 ", priority=" + priority +
@@ -111,14 +114,6 @@ public class Booking {
         this.docType = docType;
     }
 
-    public String getShelf() {
-        return shelf;
-    }
-
-    public void setShelf(String shelf) {
-        this.shelf = shelf;
-    }
-
     public long getBookingDate() {
         return bookingDate;
     }
@@ -141,5 +136,21 @@ public class Booking {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public long getId_virtual() {
+        return id_virtual;
+    }
+
+    public void setId_virtual(long id_virtual) {
+        this.id_virtual = id_virtual;
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
     }
 }

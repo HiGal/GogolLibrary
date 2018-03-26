@@ -2,6 +2,7 @@ package com.project.glib.service;
 
 import com.project.glib.dao.implementations.*;
 import com.project.glib.model.Booking;
+import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
 import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,14 +125,18 @@ public class BookingService {
 
         int priority = isActive ? PRIORITY.get(ACTIVE) : PRIORITY.get(usersDao.getTypeById(userId));
         recalculatePriority(docId, docType);
-        long physId = documentPhysDao.getValidPhysicalId(docId, docType);
 
-        if (checkoutDao.hasRenewedCheckout(physId)) {
-            messageDao.addMes(checkoutDao.getUserIdByDocPhysId(physId),
-                    physId,
-                    MessageDaoImplementation.RETURN_DOCUMENT
-            );
+        List<Checkout> checkouts = checkoutDao.getCheckoutsByVirtualDoc(docId, docType);
+        for (Checkout checkout : checkouts) {
+            if (checkoutDao.hasRenewedCheckout(checkout.getIdDoc())) {
+                messageDao.addMes(checkout.getIdUser(),
+                        docId,
+                        MessageDaoImplementation.RETURN_DOCUMENT,
+                        docType
+                );
+            }
         }
+
 
         String shelf = documentPhysDao.getShelfById(physId);
         documentPhysDao.inverseCanBooked(physId);

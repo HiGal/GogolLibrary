@@ -52,7 +52,7 @@ public class CheckOutService {
                     additionalTime = 4 * WEEK_IN_MILLISECONDS;
                     break;
                 case User.STUDENT:
-                    long bookId = docPhysDao.getIdByDocument(booking.getIdDoc(), booking.getDocType());
+                    long bookId = docPhysDao.getDocIdByPhysDocument(booking.getIdDoc());
                     if (bookDao.getNote(bookId).equals(Book.BESTSELLER)) {
                         additionalTime = 2 * WEEK_IN_MILLISECONDS;
                     } else {

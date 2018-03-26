@@ -52,11 +52,11 @@ public class BookingDaoImplementationTest {
         userDao.add(user);
 
         booking1 = new Booking(user.getId(), book.getId(), Document.BOOK,
-                shelf1, System.nanoTime(), false, 0);
+                shelf1, System.nanoTime(), false, 0, shelf);
         booking2 = new Booking(user.getId(), journal.getId(), Document.JOURNAL,
-                shelf1, System.nanoTime(), false, 0);
+                shelf1, System.nanoTime(), false, 0, shelf);
         booking3 = new Booking(user.getId(), av.getId(), Document.AV,
-                shelf1, System.nanoTime(), false, 0);
+                shelf1, System.nanoTime(), false, 0, shelf);
     }
 
     @After
