@@ -18,6 +18,7 @@ public class CheckOutService {
     private final BookingDaoImplementation bookingDao;
     private final CheckoutDaoImplementation checkoutDao;
     private final UsersDaoImplementation usersDao;
+    private final MessageDaoImplementation messageDao;
 
     @Autowired
     public CheckOutService(BookDaoImplementation bookDao,
@@ -26,7 +27,8 @@ public class CheckOutService {
                            DocumentPhysicalDaoImplementation docPhysDao,
                            BookingDaoImplementation bookingDao,
                            CheckoutDaoImplementation checkoutDao,
-                           UsersDaoImplementation usersDao) {
+                           UsersDaoImplementation usersDao,
+                           MessageDaoImplementation messageDao) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
@@ -34,6 +36,7 @@ public class CheckOutService {
         this.bookingDao = bookingDao;
         this.checkoutDao = checkoutDao;
         this.usersDao = usersDao;
+        this.messageDao = messageDao;
     }
 
     /**
@@ -73,6 +76,7 @@ public class CheckOutService {
                 false, booking.getShelf());
         bookingDao.remove(booking.getId());
         checkoutDao.add(newCheckout);
+        messageDao.removeOneByUserID(booking.getIdUser(), booking.getIdDoc());
 
         return newCheckout;
     }
