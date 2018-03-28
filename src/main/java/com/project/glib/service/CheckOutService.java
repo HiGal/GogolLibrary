@@ -136,10 +136,11 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
         }
 
         bookingService.remove(booking.getId());
+        messageDao.removeOneByUserID(booking.getUserId(), booking.getDocVirId());
         add(new Checkout(booking.getUserId(), booking.getDocPhysId(),
                 booking.getDocType(), System.nanoTime(), System.nanoTime() + additionalTime,
                 false, booking.getShelf()));
-    }   //messageDao.removeOneByUserID(booking.getIdUser(), booking.getIdDoc());
+    }
 
     /**
      * get number of check out documents by current user
