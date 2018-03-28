@@ -53,7 +53,7 @@ public class MessageDaoImplementation {
         }
     }
 
-    public void addMes(long id_user, long id_doc, String message, String type) throws Exception {
+    public void addMes(long id_user, long id_doc, String type, String message) throws Exception {
         Messages messages = new Messages(id_user, message, id_doc, type);
         try {
             if (!alreadyHasThisMessage(id_user, id_doc, message)) {

@@ -42,7 +42,7 @@ public class LibrarianController {
 
 
     @RequestMapping(value = "/librarian", method = RequestMethod.GET)
-    public Pair<User, List<Messages>> librarianDashboard(Model model, String login, String logout) {
+    public Pair<User, List<Messages>> librarianDashboard(Model model, String login, String logout) throws Exception {
         return new Pair<>(usersDao.findByLogin(login),
                 messageDao.getAllByUserID(usersDao.getIdByLogin(login)));
     }
@@ -56,7 +56,7 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.GET)
-    public ModelAndView librarianConfirm(Model model, String login) {
+    public ModelAndView librarianConfirm(Model model, String login) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allUsers", usersDao.getListNotAuthUsers());
         modelAndView.setViewName("confirm_user");
@@ -64,7 +64,7 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/librarian/user/confirm", method = RequestMethod.POST)
-    public ModelAndView librarianConfirm(User user, String login) {
+    public ModelAndView librarianConfirm(User user, String login) throws Exception {
         User realUser = usersDao.findByLogin(user.getLogin());
         realUser.setAuth(true);
         ModelAndView modelAndView = new ModelAndView();

@@ -115,6 +115,14 @@ public class Book extends Document {
         this.id = id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getAuthor() {
         return author;
     }
@@ -147,14 +155,6 @@ public class Book extends Document {
         this.year = year;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public String getNote() {
         return note;
     }
@@ -163,12 +163,12 @@ public class Book extends Document {
         this.note = note;
     }
 
-    public String getTitle() {
-        return title;
+    public int getPrice() {
+        return price;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public int getCount() {

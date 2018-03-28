@@ -71,12 +71,12 @@ public class UserController {
 
     @RequestMapping(value = "accessiblebooks", method = RequestMethod.GET)
     public List<Book> getAllForCheckoutBook() {
-        return bookDao.getListCountNotZeroOrRenewed();
+        return bookDao.getList();
     }
 
     @RequestMapping(value = "accessibleAV", method = RequestMethod.GET)
     public List<AudioVideo> getAllForCheckoutAV() {
-        return avDao.getListCountNotZeroOrRenewed();
+        return avDao.getList();
     }
 
 }

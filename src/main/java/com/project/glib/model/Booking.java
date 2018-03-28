@@ -6,15 +6,16 @@ import java.util.Objects;
 @Entity
 @Table(name = "booking")
 public class Booking {
+    public static final String TYPE = "BOOKING";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "idUser")
-    private long idUser;
+    @Column(name = "userId")
+    private long userId;
 
     @Column(name = "id_document")
-    private long idDoc;
+    private long docPhysId;
 
     @Column(name = "docType")
     private String docType;
@@ -28,8 +29,8 @@ public class Booking {
     @Column(name = "priority")
     private int priority;
 
-    @Column(name = "id_virtual")
-    private long id_virtual;
+    @Column(name = "docVirId")
+    private long docVirId;
 
     @Column(name = "shelf")
     private String shelf;
@@ -38,14 +39,14 @@ public class Booking {
     protected Booking() {
     }
 
-    public Booking(long idUser, long idDoc, String docType, long bookingDate, boolean isActive, int priority, long id_virtual, String shelf) {
-        this.idUser = idUser;
-        this.idDoc = idDoc;
+    public Booking(long userId, long docVirId, String docType, long docPhysId, long bookingDate, boolean isActive, int priority, String shelf) {
+        this.userId = userId;
+        this.docVirId = docVirId;
         this.docType = docType;
+        this.docPhysId = docPhysId;
         this.bookingDate = bookingDate;
         this.isActive = isActive;
         this.priority = priority;
-        this.id_virtual = id_virtual;
         this.shelf = shelf;
     }
 
@@ -55,8 +56,8 @@ public class Booking {
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
         return id == booking.id &&
-                idUser == booking.idUser &&
-                idDoc == booking.idDoc &&
+                userId == booking.userId &&
+                docPhysId == booking.docPhysId &&
                 bookingDate == booking.bookingDate &&
                 isActive == booking.isActive &&
                 priority == booking.priority &&
@@ -66,15 +67,15 @@ public class Booking {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, idUser, idDoc, docType, bookingDate, isActive, priority);
+        return Objects.hash(id, userId, docPhysId, docType, bookingDate, isActive, priority);
     }
 
     @Override
     public String toString() {
         return "Booking{" +
                 "id=" + id +
-                ", idUser=" + idUser +
-                ", idDoc=" + idDoc +
+                ", userId=" + userId +
+                ", docPhysId=" + docPhysId +
                 ", docType='" + docType + '\'' +
                 ", bookingDate=" + bookingDate +
                 ", isActive=" + isActive +
@@ -90,20 +91,20 @@ public class Booking {
         this.id = id;
     }
 
-    public long getIdUser() {
-        return idUser;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getIdDoc() {
-        return idDoc;
+    public long getDocPhysId() {
+        return docPhysId;
     }
 
-    public void setIdDoc(long idDoc) {
-        this.idDoc = idDoc;
+    public void setDocPhysId(long docPhysId) {
+        this.docPhysId = docPhysId;
     }
 
     public String getDocType() {
@@ -138,12 +139,12 @@ public class Booking {
         this.priority = priority;
     }
 
-    public long getId_virtual() {
-        return id_virtual;
+    public long getDocVirId() {
+        return docVirId;
     }
 
-    public void setId_virtual(long id_virtual) {
-        this.id_virtual = id_virtual;
+    public void setDocVirId(long docVirId) {
+        this.docVirId = docVirId;
     }
 
     public String getShelf() {

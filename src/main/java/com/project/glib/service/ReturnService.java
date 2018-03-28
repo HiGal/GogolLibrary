@@ -48,12 +48,12 @@ public class ReturnService {
     public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
         checkoutDao.remove(checkout.getId());
 
-        messageDao.removeOneByUserID(checkout.getIdUser(), checkout.getIdDoc());
+        messageDao.removeOneByUserID(checkout.getUserId(), checkout.getDocPhysId());
 
-        long docId = docPhysDao.getDocIdByID(checkout.getIdDoc());
+        long docId = docPhysDao.getDocIdByID(checkout.getDocPhysId());
         String docType = checkout.getDocType();
         if (bookingDao.hasNotActiveBooking(docId, docType)) {
-            docPhysDao.inverseCanBooked(checkout.getIdDoc());
+            docPhysDao.inverseCanBooked(checkout.getDocPhysId());
             switch (checkout.getDocType()) {
                 case Document.BOOK:
                     bookDao.incrementCountById(docId);
@@ -74,7 +74,7 @@ public class ReturnService {
             long docID = docPhysDao.getDocIdByID(docId);
             String type = docPhysDao.getTypeByID(docId);
             messageDao.addMes(
-                    bookingDao.getBookingWithMaxPriority(docID, type).getIdUser(),
+                    bookingDao.getBookingWithMaxPriority(docID, type).getUserId(),
                     docID,
                     MessageDaoImplementation.CHECKOUT_DOCUMENT,
                     type);
@@ -96,15 +96,15 @@ public class ReturnService {
             int price;
             switch (checkout.getDocType()) {
                 case Document.BOOK:
-                    long bookId = docPhysDao.getDocIdByPhysDocument(checkout.getIdDoc());
+                    long bookId = docPhysDao.getDocIdByPhysDocument(checkout.getDocPhysId());
                     price = bookDao.getPriceById(bookId);
                     break;
                 case Document.JOURNAL:
-                    long journalId = docPhysDao.getDocIdByPhysDocument(checkout.getIdDoc());
+                    long journalId = docPhysDao.getDocIdByPhysDocument(checkout.getDocPhysId());
                     price = journalDao.getPriceById(journalId);
                     break;
                 case Document.AV:
-                    long avId = docPhysDao.getDocIdByPhysDocument(checkout.getIdDoc());
+                    long avId = docPhysDao.getDocIdByPhysDocument(checkout.getDocPhysId());
                     price = avDao.getPriceById(avId);
                     break;
                 default:
@@ -149,7 +149,7 @@ public class ReturnService {
         List<Checkout> checkouts = checkoutDao.getList();
 
         for (Checkout checkout : checkouts) {
-            long userId = checkout.getIdUser();
+            long userId = checkout.getUserId();
             if (getTotalOverdueByUser(userId) > 0) {
                 listOverdue.add(new Pair<>(usersDao.getById(userId), getTotalOverdueByUser(userId)));
             }

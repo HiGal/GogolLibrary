@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -16,6 +17,12 @@ import java.util.stream.Collectors;
 @Repository
 public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<DocumentPhysical> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(DocumentPhysicalDaoImplementation.class);
+    private static final String TYPE = DocumentPhysical.TYPE;
+    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
+    private static final String ADD_DOCUMENT = TYPE + ADD;
+    private static final String UPDATE_DOCUMENT = TYPE + UPDATE;
+    private static final String REMOVE_DOCUMENT = TYPE + REMOVE;
+    private static final String LIST = TYPE + ModifyByLibrarian.LIST;
     private final DocumentPhysicalRepository documentPhysicalRepository;
 
     @Autowired
@@ -24,71 +31,40 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
     }
 
     @Override
-    public void add(DocumentPhysical documentPhysical) throws Exception {
-        checkValidParameters(documentPhysical);
-        try {
-            documentPhysicalRepository.saveAndFlush(documentPhysical);
-            logger.info("Document successfully saved. Document details : " + documentPhysical);
-        } catch (Exception e) {
-            throw new Exception("Can not add this document. Document details : " + documentPhysical);
-        }
+    public void add(DocumentPhysical docPhys) {
+        documentPhysicalRepository.saveAndFlush(docPhys);
+        logger.info(ADD_DOCUMENT + docPhys);
     }
 
     @Override
-    public void update(DocumentPhysical documentPhysical) throws Exception {
-        // TODO if librarian change count?
-        checkValidParameters(documentPhysical);
-        try {
-            documentPhysicalRepository.saveAndFlush(documentPhysical);
-            logger.info("Document successfully update. Document details : " + documentPhysical);
-        } catch (Exception e) {
-            throw new Exception("Can not update this document. Document details : " + documentPhysical);
-        }
+    public void update(DocumentPhysical docPhys) {
+        documentPhysicalRepository.saveAndFlush(docPhys);
+        logger.info(UPDATE_DOCUMENT + docPhys);
     }
 
     @Override
-    public void remove(long physID) throws Exception {
-        try {
-            documentPhysicalRepository.delete(physID);
-            logger.info("Delete physical document with id = " + physID);
-        } catch (Exception e) {
-            throw new Exception("Can not delete document with this id = " + physID);
-        }
+    public void remove(long docPhysId) {
+        documentPhysicalRepository.delete(docPhysId);
+        logger.info(REMOVE_DOCUMENT + docPhysId);
     }
 
     @Override
-    public void checkValidParameters(DocumentPhysical documentPhysical) throws Exception {
-        if (documentPhysical.getIdDoc() <= 0) {
-            throw new Exception("Invalid virtual document id");
-        }
-
-        if (!Document.isType(documentPhysical.getDocType())) {
-            throw new Exception("Invalid document type");
-        }
-
-        if (documentPhysical.getShelf().equals("")) {
-            throw new Exception("Must have shelf");
-        }
-    }
-
-
-    @Override
-    public DocumentPhysical getById(long docPhysID) {
-        return documentPhysicalRepository.findOne(docPhysID);
+    public DocumentPhysical getById(long docPhysId) {
+        return documentPhysicalRepository.findOne(docPhysId);
 
     }
 
     @Override
-    public long getId(DocumentPhysical documentPhysical) throws Exception {
+    public long getId(DocumentPhysical docPhys) throws Exception {
         try {
             return documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getIdDoc() == documentPhysical.getIdDoc() &&
-                            doc.isCanBooked() == documentPhysical.isCanBooked() &&
-                            doc.getDocType().equals(documentPhysical.getDocType()) &&
-                            doc.getShelf().equals(documentPhysical.getShelf()))
+                    .filter(doc -> doc.getIdDoc() == docPhys.getIdDoc() &&
+                            doc.isCanBooked() == docPhys.isCanBooked() &&
+                            doc.getDocType().equals(docPhys.getDocType()) &&
+                            doc.getShelf().equals(docPhys.getShelf()))
                     .findFirst().get().getId();
-        } catch (NullPointerException | NoSuchElementException e) {
-            throw new Exception("Document does not exist");
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
@@ -99,40 +75,40 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
             List<DocumentPhysical> documentPhysicals = documentPhysicalRepository.findAll();
 
             for (DocumentPhysical documentPhysical : documentPhysicals) {
-                logger.info("Document list : " + documentPhysical);
+                logger.info(LIST + documentPhysical);
             }
             return documentPhysicals;
         } catch (NullPointerException | NoSuchElementException e) {
-            return null;
+            return new ArrayList<>();
         }
     }
 
-    public void removeByDocIdAndDocType(long docVirtualID, String docType) throws Exception {
+    public void removeByDocIdAndDocType(long docVirId, String docType) throws Exception {
         try {
             long physID = documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getIdDoc() == docVirtualID)
+                    .filter(doc -> doc.getIdDoc() == docVirId)
                     .filter(doc -> doc.getDocType().equals(docType))
                     .findFirst().get().getId();
             documentPhysicalRepository.delete(physID);
         } catch (NoSuchElementException | NullPointerException e) {
-            throw new Exception("Document with this virtual document id = " + docVirtualID + " does not exist");
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
-    public long getValidPhysicalId(long docVirtualID, String docType) throws Exception {
+    public long getValidPhysId(long docVirId, String docType) throws Exception {
         try {
             return documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getIdDoc() == docVirtualID)
+                    .filter(doc -> doc.getIdDoc() == docVirId)
                     .filter(doc -> doc.getDocType().equals(docType))
                     .filter(DocumentPhysical::isCanBooked).findFirst().get().getId();
         } catch (NullPointerException | NoSuchElementException e) {
-            throw new Exception(docType.toLowerCase() + " with this id = " + docVirtualID + " does not exist");
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
-    public void inverseCanBooked(long docPhysID) {
+    public void inverseCanBooked(long docPhysId) {
         try {
-            DocumentPhysical docPhys = documentPhysicalRepository.findOne(docPhysID);
+            DocumentPhysical docPhys = documentPhysicalRepository.findOne(docPhysId);
             boolean canBooked = !docPhys.isCanBooked();
             docPhys.setCanBooked(canBooked);
             documentPhysicalRepository.saveAndFlush(docPhys);
@@ -140,72 +116,78 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
         }
     }
 
-    public String getShelfById(long docPhysID) throws Exception {
+    public String getShelfById(long docPhysId) throws Exception {
         try {
-            return documentPhysicalRepository.findOne(docPhysID).getShelf();
-        } catch (NoSuchElementException e) {
-            throw new Exception("Document does not exist");
+            return documentPhysicalRepository.findOne(docPhysId).getShelf();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
-    /**
-     *
-     * @param docPhysID id of physical document
-     * @return id of virtual document
-     * @throws Exception
-     */
-
-    public long getDocIdByPhysDocument(long docPhysID) throws Exception {
+    public long getDocIdByPhysDocument(long docPhysId) throws Exception {
         try {
             return documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getId() == docPhysID)
+                    .filter(doc -> doc.getId() == docPhysId)
                     .findFirst().get().getIdDoc();
-        } catch (NoSuchElementException e) {
-            throw new Exception("This document does not exist");
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
 
-    public void removeAllByDocId(long docVirtualID) throws Exception {
+    public void removeAllByDocId(long docVirId) throws Exception {
         try {
             List<DocumentPhysical> documentPhysicals = documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getIdDoc() == docVirtualID).collect(Collectors.toList());
+                    .filter(doc -> doc.getIdDoc() == docVirId).collect(Collectors.toList());
             for (DocumentPhysical doc : documentPhysicals) {
                 remove(doc.getId());
             }
-        } catch (Exception e) {
-            throw new Exception("Document does not exist");
+        } catch (NullPointerException | NoSuchElementException e) {
+            throw new Exception(EXIST_EXCEPTION);
         }
 
     }
 
-    public long getDocIdByID(long docPhysID) {
-        return documentPhysicalRepository.findOne(docPhysID).getIdDoc();
+    public long getDocIdByID(long docPhysId) throws Exception {
+        try {
+            return documentPhysicalRepository.findOne(docPhysId).getIdDoc();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
     }
 
-    public String getTypeByID(long docPhysID) {
-        return documentPhysicalRepository.findOne(docPhysID).getDocType();
+    public String getTypeByID(long docPhysId) throws Exception {
+        try {
+            return documentPhysicalRepository.findOne(docPhysId).getDocType();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
     }
 
-    public int getCount(long docVirtualId, String docType) throws Exception {
-        if (!Document.isType(docType)) throw new Exception("Invalid type");
+    public int getCount(long docVirId, String docType) throws Exception {
+        if (!Document.isType(docType)) throw new Exception(TYPE_EXCEPTION);
         try {
             return (int) documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getIdDoc() == docVirtualId && doc.getDocType().equals(docType)).count();
-        } catch (NoSuchElementException e) {
+                    .filter(doc -> doc.getIdDoc() == docVirId)
+                    .filter(doc -> doc.getDocType().equals(docType))
+                    .count();
+        } catch (NullPointerException | NoSuchElementException e) {
             return 0;
         }
     }
 
     public int getCount(DocumentPhysical docPhys) throws Exception {
-        if (!Document.isType(docPhys.getDocType())) throw new Exception("Invalid type");
+        return getCount(docPhys.getIdDoc(), docPhys.getDocType());
+    }
+
+    public List<DocumentPhysical> getByDocVirIdAndDocType(long docVirId, String docType) {
         try {
-            return (int) documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getIdDoc() == docPhys.getIdDoc())
-                    .filter(doc -> doc.getDocType().equals(docPhys.getDocType()))
-                    .count();
-        } catch (NoSuchElementException e) {
-            return 0;
+            return documentPhysicalRepository.findAll().stream()
+                    .filter(doc -> doc.getIdDoc() == docVirId)
+                    .filter(doc -> doc.getDocType().equals(docType))
+                    .collect(Collectors.toList());
+        } catch (NullPointerException | NoSuchElementException e) {
+            return new ArrayList<>();
         }
     }
 }

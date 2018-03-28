@@ -7,6 +7,8 @@ import java.util.Set;
 @Entity
 @Table(name = "documents_physical")
 public class DocumentPhysical {
+    public static final String TYPE = "DOCUMENT_PHYSICAL";
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -38,15 +38,15 @@ public class BookingController {
     @RequestMapping(value = "/booking/book", method = RequestMethod.GET)
     public List<Book> bookingBook() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allBooks", bookDao.getListCountNotZeroOrRenewed());
+        modelAndView.addObject("allBooks", bookDao.getList());
         modelAndView.setViewName("order_book");
-        return bookDao.getListCountNotZeroOrRenewed();
+        return bookDao.getList();
     }
 
     @RequestMapping(value = "/booking/book", method = RequestMethod.POST)
     public String bookingBook(@RequestBody Booking bookingForm, Model model)  {
         try {
-            bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
+            bookingService.toBookDocument(bookingForm.getDocPhysId(), bookingForm.getDocType(), bookingForm.getUserId());
             return " book successfully ordered";
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
@@ -58,15 +58,15 @@ public class BookingController {
     @RequestMapping(value = "/booking/journal", method = RequestMethod.GET)
     public List<Journal> bookingJournal() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allJournals", journalDao.getListCountNotZeroOrRenewed());
+        modelAndView.addObject("allJournals", journalDao.getList());
         modelAndView.setViewName("orderJ");
-        return journalDao.getListCountNotZeroOrRenewed();
+        return journalDao.getList();
     }
 
     @RequestMapping(value = "/booking/journal", method = RequestMethod.POST)
     public String bookingJournal(@RequestBody Booking bookingForm, Model model)  {
         try {
-            bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
+            bookingService.toBookDocument(bookingForm.getDocPhysId(), bookingForm.getDocType(), bookingForm.getUserId());
             return "journal successfully ordered";
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());
@@ -78,15 +78,15 @@ public class BookingController {
     @RequestMapping(value = "/booking/av", method = RequestMethod.GET)
     public List<AudioVideo> bookingAV() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allAv", audioVideoDao.getListCountNotZeroOrRenewed());
+        modelAndView.addObject("allAv", audioVideoDao.getList());
         modelAndView.setViewName("orderAV");
-        return audioVideoDao.getListCountNotZeroOrRenewed();
+        return audioVideoDao.getList();
     }
 
     @RequestMapping(value = "/booking/av", method = RequestMethod.POST)
     public String bookingAV(@RequestBody Booking bookingForm, Model model)  {
         try {
-            bookingService.toBookDocument(bookingForm.getIdDoc(),bookingForm.getDocType(),bookingForm.getIdUser());
+            bookingService.toBookDocument(bookingForm.getDocPhysId(), bookingForm.getDocType(), bookingForm.getUserId());
             return "audio_video successfully ordered";
         }catch (Exception e){
             model.addAttribute("error", e.getMessage());

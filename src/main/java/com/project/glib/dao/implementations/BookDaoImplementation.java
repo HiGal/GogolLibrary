@@ -2,141 +2,69 @@ package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.BookRepository;
 import com.project.glib.dao.interfaces.DocumentDao;
+import com.project.glib.dao.interfaces.ModifyByLibrarian;
 import com.project.glib.model.Book;
 import com.project.glib.model.Document;
-import com.project.glib.model.DocumentPhysical;
+import com.sun.istack.internal.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Repository
 public class BookDaoImplementation implements DocumentDao<Book> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
+    private static final String TYPE = Document.BOOK;
+    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
+    private static final String ADD_BOOK = TYPE + ADD;
+    private static final String UPDATE_BOOK = TYPE + UPDATE;
+    private static final String REMOVE_BOOK = TYPE + REMOVE;
+    private static final String LIST = TYPE + ModifyByLibrarian.LIST;
     private final BookRepository bookRepository;
-    private final DocumentPhysicalDaoImplementation docPhysDao;
 
     @Autowired
-    public BookDaoImplementation(BookRepository bookRepository, DocumentPhysicalDaoImplementation docPhysDao) {
+    public BookDaoImplementation(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.docPhysDao = docPhysDao;
     }
 
     /**
      * Add new item of Book in library
      *
      * @param book new Book
-     * @throws Exception
      */
     @Override
-    public void add(Book book) throws Exception {
-        checkValidParameters(book);
-        try {
-            Book existedBook = isAlreadyExist(book);
-            if (existedBook == null) {
-                bookRepository.saveAndFlush(book);
-                logger.info("Book successfully saved. Book details : " + book);
-            } else {
-                logger.info("Try to add " + book.getCount() + " copies of book : " + existedBook);
-                existedBook.setCount(existedBook.getCount() + book.getCount());
-                existedBook.setPrice(book.getPrice());
-                update(existedBook);
-            }
-        } catch (Exception e) {
-            logger.info("Error in method add() in class BookDaoImplementation");
-            throw new Exception("Can't add this book, something wrong");
-        }
-    }
-
-    @Override
-    public void add(Book book, String shelf) throws Exception {
-        if (shelf.equals("")) throw new Exception("Shelf must exist");
-        add(book);
-        for (int i = 0; i < book.getCount(); i++) {
-            // TODO add keywords options
-            docPhysDao.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null));
-        }
+    public void add(Book book) {
+        bookRepository.saveAndFlush(book);
+        logger.info(ADD_BOOK + book);
     }
 
     /**
      * Update existed Book or create if it not exist
      *
      * @param book - updated Book
-     * @throws Exception
      */
     @Override
-    public void update(Book book) throws Exception {
-        checkValidParameters(book);
-        // TODO solve case then librarian change count of books
-        try {
-            bookRepository.saveAndFlush(book);
-            logger.info("Book successfully update. Book details : " + book);
-        } catch (Exception e) {
-            logger.info("Try to update this book, book don't exist or something wrong. " +
-                    "Update book information : " + book);
-            throw new Exception("Can't update this book, book don't exist or something wrong");
-        }
+    public void update(Book book) {
+        bookRepository.saveAndFlush(book);
+        logger.info(UPDATE_BOOK + book);
     }
 
     /**
      * Remove Book from library
      *
      * @param bookId id of Book
-     * @throws Exception
      */
     @Override
-    public void remove(long bookId) throws Exception {
-        try {
-            logger.info("Try to delete book with book id = " + bookId);
-            docPhysDao.removeAllByDocId(bookId);
-            bookRepository.delete(bookId);
-        } catch (Exception e) {
-            logger.info("Try to delete book with wrong book id = " + bookId);
-            throw new Exception("Delete this book not available, book don't exist");
-        }
+    public void remove(long bookId) {
+        bookRepository.delete(bookId);
+        logger.info(REMOVE_BOOK + bookId);
     }
 
-    @Override
-    public void checkValidParameters(Book book) throws Exception {
-        if (book.getPrice() < 0) {
-            throw new Exception("Price must be not negative");
-        }
-
-        if (book.getCount() < 0) {
-            throw new Exception("Count must be not negative");
-        }
-
-        if (book.getTitle().equals("")) {
-            throw new Exception("Title must exist");
-        }
-
-        if (book.getAuthor().equals("")) {
-            throw new Exception("Author must exist");
-        }
-
-        if (book.getEdition().equals("")) {
-            throw new Exception("Edition must exist");
-        }
-
-        if (book.getPublisher().equals("")) {
-            throw new Exception("Publisher must exist");
-        }
-
-        if (!isNote(book.getNote())) {
-            throw new Exception("Invalid note");
-        }
-
-        if (book.getYear() > Calendar.getInstance().get(Calendar.YEAR)) {
-            throw new Exception("Year must be less or equal than current");
-        }
-    }
-
+    @Nullable
     @Override
     public Book isAlreadyExist(Book book) {
         try {
@@ -148,25 +76,14 @@ public class BookDaoImplementation implements DocumentDao<Book> {
                             b.getYear() == book.getYear() &&
                             b.getNote().equals(book.getNote()))
                     .findFirst().get();
-        } catch (NoSuchElementException e) {
+        } catch (NullPointerException | NoSuchElementException e) {
             return null;
         }
     }
 
-    /**
-     * @param bookId
-     * @return
-     * @throws Exception
-     */
     @Override
-    public Book getById(long bookId) throws Exception {
-        try {
-            logger.info("Try to get book with book id = " + bookId);
-            return bookRepository.findOne(bookId);
-        } catch (Exception e) {
-            logger.info("Try to get book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book doesn't exist. Get by ID failed");
-        }
+    public Book getById(long bookId) {
+        return bookRepository.findOne(bookId);
     }
 
     /**
@@ -174,16 +91,14 @@ public class BookDaoImplementation implements DocumentDao<Book> {
      *
      * @param bookId id of book
      * @return count of copies
-     * @throws Exception
+     * @throws Exception invalid id
      */
     @Override
     public int getCountById(long bookId) throws Exception {
         try {
-            logger.info("Try to get count of book with book id = " + bookId);
             return bookRepository.findOne(bookId).getCount();
-        } catch (Exception e) {
-            logger.info("Try to get count of book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book don't exist");
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
@@ -191,38 +106,24 @@ public class BookDaoImplementation implements DocumentDao<Book> {
      * set count to count - 1 for book
      *
      * @param bookId id of book
-     * @throws Exception
      */
     @Override
-    public void decrementCountById(long bookId) throws Exception {
-        try {
-            logger.info("Try to decrement count of book with book id = " + bookId);
-            Book book = bookRepository.findOne(bookId);
-            book.setCount(book.getCount() - 1);
-            bookRepository.saveAndFlush(book);
-        } catch (Exception e) {
-            logger.info("Try to decrement count of book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book don't exist");
-        }
+    public void decrementCountById(long bookId) {
+        Book book = bookRepository.findOne(bookId);
+        book.setCount(book.getCount() - 1);
+        bookRepository.saveAndFlush(book);
     }
 
     /**
      * set count to count + 1 for book
      *
      * @param bookId id of book
-     * @throws Exception
      */
     @Override
-    public void incrementCountById(long bookId) throws Exception {
-        try {
-            logger.info("Try to increment count of book with book id = " + bookId);
-            Book book = bookRepository.findOne(bookId);
-            book.setCount(book.getCount() + 1);
-            bookRepository.saveAndFlush(book);
-        } catch (Exception e) {
-            logger.info("Try to increment count of book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book don't exist");
-        }
+    public void incrementCountById(long bookId) {
+        Book book = bookRepository.findOne(bookId);
+        book.setCount(book.getCount() + 1);
+        bookRepository.saveAndFlush(book);
     }
 
     /**
@@ -230,54 +131,50 @@ public class BookDaoImplementation implements DocumentDao<Book> {
      *
      * @param bookId id of AudioVideo
      * @return price of book
-     * @throws Exception
+     * @throws Exception got invalid id
      */
     @Override
     public int getPriceById(long bookId) throws Exception {
         try {
-            logger.info("Try to get price of book with book id = " + bookId);
             return bookRepository.findOne(bookId).getPrice();
-        } catch (Exception e) {
-            logger.info("Try to get price of book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book don't exist");
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
     public String getNote(long bookId) throws Exception {
         try {
-            logger.info("Try to get note book with book id = " + bookId);
             return bookRepository.findOne(bookId).getNote();
         } catch (Exception e) {
-            logger.info("Try to get note book with wrong book id = " + bookId);
-            throw new Exception("Information not available, book don't exist");
+            throw new Exception(EXIST_EXCEPTION);
         }
     }
 
-    /**
-     * get list of all books with count bigger than zero or renewed
-     *
-     * @return list of books with count bigger than zero or renewed
-     */
-    @Override
-    public List<Book> getListCountNotZeroOrRenewed() {
-        try {
-            List<Book> books = bookRepository.findAll().stream()
-                    .filter(book -> book.getCount() > 0).collect(Collectors.toList());
-
-            for (Book book : books) {
-                logger.info("Book list : " + book);
-            }
-
-            return books;
-        } catch (NoSuchElementException | NullPointerException e) {
-            return new ArrayList<>();
-        }
-    }
+//    /**
+//     * get list of all books with count bigger than zero or renewed
+//     *
+//     * @return list of books with count bigger than zero or renewed
+//     */
+//    @Override
+//    public List<Book> getListCountNotZeroOrRenewed() {
+//        try {
+//            List<Book> books = bookRepository.findAll().stream()
+//                    .filter(book -> book.getCount() > 0).collect(Collectors.toList());
+//
+//            for (Book book : books) {
+//                logger.info("Book list : " + book);
+//            }
+//
+//            return books;
+//        } catch (NoSuchElementException | NullPointerException e) {
+//            return new ArrayList<>();
+//        }
+//    }
 
     /**
      * get list of all books
      *
-     * @return
+     * @return list of books
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -286,7 +183,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
             List<Book> books = bookRepository.findAll();
 
             for (Book book : books) {
-                logger.info("Book list : " + book);
+                logger.info(LIST + book);
             }
 
             return books;
@@ -299,13 +196,8 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     public long getId(Book book) throws Exception {
         try {
             return isAlreadyExist(book).getId();
-        } catch (NoSuchElementException | NullPointerException e) {
-            throw new Exception("Book does not exist");
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
         }
-    }
-
-    @Override
-    public boolean isNote(String note) {
-        return note.equals(Document.DEFAULT_NOTE) || note.equals(Document.REFERENCE) || note.equals(Document.BESTSELLER);
     }
 }

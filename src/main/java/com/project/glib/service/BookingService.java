@@ -1,47 +1,48 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.*;
-import com.project.glib.model.Booking;
-import com.project.glib.model.Checkout;
-import com.project.glib.model.Document;
-import com.project.glib.model.User;
+import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class BookingService {
+public class BookingService implements ModifyByLibrarianService<Booking> {
     //TODO change priorities
-    public static final String ACTIVE = "ACTIVE";
-    public static final String NO_AUTH = "Sorry, but your registration is not approved yet.";
-    public static final String ALREADY_HAS_THIS_BOOKING = "Sorry, but your already have this booking. Go to the library and check out ";
-    public static final String ALREADY_HAS_THIS_CHECKOUT = "Sorry, but your already have this check out. ";
-    public static final String RENEW = "You could renew this ";
-    public static final String CHECKOUT_AGAIN = "OR return and check out again.";
-    public static final String REFERENCE_DOCUMENT = "Sorry, you try to book reference ";
-    public static final String MISTAKE_PART1 = "Sorry, we have a mistake in our library, all copies this ";
-    public static final String MISTAKE_PART2 = " already on hand.";
-    public static final String INVALID_TYPE_PART1 = "Sorry, but you try to book invalid type of document (";
-    public static final String INVALID_TYPE_PART2 = ") maybe it program mistake.";
-    private static final Map<String, Integer> PRIORITY = new HashMap<>();
-
-    static {
+    public static final String TYPE = Booking.TYPE;
+    public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
+    public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;
+    public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
+    public static final String USER_ID_EXCEPTION = " invalid id user ";
+    public static final String DOC_TYPE_EXCEPTION = " invalid type of document";
+    public static final String DOC_PHYS_ID_EXCEPTION = " invalid id of physical document ";
+    public static final String BOOKING_DATE_EXCEPTION = " booking date cannot be in future ";
+    public static final String PRIORITY_EXCEPTION = " priority must be not negative ";
+    public static final String REFERENCE_EXCEPTION = "Sorry, you try to book reference ";
+    public static final String ALREADY_HAS_THIS_BOOKING_EXCEPTION = "Sorry, but your already have this booking ";
+    public static final String ALREADY_HAS_THIS_CHECKOUT_EXCEPTION = "Sorry, but your already have this check out ";
+    public static final String AUTH_EXCEPTION = "Sorry, but your registration is not approved yet.";
+    private static final String ACTIVE = "ACTIVE";
+    private static final String EXPECTED = "EXPECTED";
+    private static final String EMPTY_SHELF = "EMPTY";
+    private static final long EMPTY_ID = 0L;
+    private static final HashMap<String, Integer> PRIORITY = new HashMap<String, Integer>() {{
         PRIORITY.put(ACTIVE, 10000);
+        PRIORITY.put(EXPECTED, 5000);
         PRIORITY.put(User.STUDENT, 21);
         PRIORITY.put(User.INSTRUCTOR, 14);
         PRIORITY.put(User.TA, 7);
         PRIORITY.put(User.PROFESSOR, 1);
-    }
+    }};
 
     private final BookDaoImplementation bookDao;
     private final JournalDaoImplementation journalDao;
     private final AudioVideoDaoImplementation avDao;
     private final BookingDaoImplementation bookingDao;
     private final UsersDaoImplementation usersDao;
-    private final DocumentPhysicalDaoImplementation documentPhysDao;
+    private final DocumentPhysicalDaoImplementation docPhysDao;
     private final CheckoutDaoImplementation checkoutDao;
     private final MessageDaoImplementation messageDao;
 
@@ -51,104 +52,173 @@ public class BookingService {
                           AudioVideoDaoImplementation avDao,
                           BookingDaoImplementation bookingDao,
                           UsersDaoImplementation usersDao,
-                          DocumentPhysicalDaoImplementation documentPhysDao,
+                          DocumentPhysicalDaoImplementation docPhysDao,
                           CheckoutDaoImplementation checkoutDao, MessageDaoImplementation messageDao) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
         this.bookingDao = bookingDao;
         this.usersDao = usersDao;
-        this.documentPhysDao = documentPhysDao;
+        this.docPhysDao = docPhysDao;
         this.checkoutDao = checkoutDao;
         this.messageDao = messageDao;
+    }
+
+    @Override
+    public void add(Booking booking) throws Exception {
+        checkValidParameters(booking);
+        try {
+            bookingDao.add(booking);
+        } catch (Exception e) {
+            throw new Exception(ADD_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void update(Booking booking) throws Exception {
+        checkValidParameters(booking);
+        try {
+            bookingDao.update(booking);
+        } catch (Exception e) {
+            throw new Exception(UPDATE_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void remove(long bookingId) throws Exception {
+        Booking booking = bookingDao.getById(bookingId);
+        if (booking.getPriority() == PRIORITY.get(ACTIVE)) {
+            switch (booking.getDocType()) {
+                case Document.BOOK:
+                    bookDao.incrementCountById(booking.getDocVirId());
+                    break;
+                case Document.JOURNAL:
+                    journalDao.incrementCountById(booking.getDocVirId());
+                    break;
+                case Document.AV:
+                    avDao.incrementCountById(booking.getDocVirId());
+                    break;
+                default:
+                    throw new Exception(DOC_TYPE_EXCEPTION);
+            }
+        }
+        try {
+            bookingDao.remove(bookingId);
+        } catch (Exception e) {
+            throw new Exception(REMOVE_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void checkValidParameters(Booking booking) throws Exception {
+        if (booking.getUserId() <= 0) {
+            throw new Exception(USER_ID_EXCEPTION);
+        }
+
+        if (!Document.isType(booking.getDocType())) {
+            throw new Exception(DOC_TYPE_EXCEPTION);
+        }
+
+        if (booking.getDocPhysId() <= 0) {
+            throw new Exception(DOC_PHYS_ID_EXCEPTION);
+        }
+
+        if (booking.getBookingDate() > System.nanoTime()) {
+            throw new Exception(BOOKING_DATE_EXCEPTION);
+        }
+
+        if (booking.getPriority() < 0) {
+            throw new Exception(PRIORITY_EXCEPTION);
+        }
+
+        if (booking.getShelf().equals("")) {
+            throw new Exception(SHELF_EXCEPTION);
+        }
     }
 
     /**
      * Booking document by user if it possibility
      *
-     * @param docId   id of this document
-     * @param docType type of this document (valid types wrote in constants in superclass Document.java)
-     * @param userId  id of user whom try to book document
-     * @return Booking if all validate
+     * @param docVirId id of this document
+     * @param docType  type of this document (valid types wrote in constants in superclass Document.java)
+     * @param userId   id of user whom try to book document
      * @throws Exception if has an exception in run-time
      */
-    public Booking toBookDocument(long docId, String docType, long userId) throws Exception {
+    public void toBookDocument(long docVirId, String docType, long userId) throws Exception {
         if (!usersDao.getIsAuthById(userId)) {
-            throw new Exception(NO_AUTH);
+            throw new Exception(AUTH_EXCEPTION);
         }
 
-        if (bookingDao.alreadyHasThisBooking(docId, docType, userId)) {
-            throw new Exception(ALREADY_HAS_THIS_BOOKING + docType.toLowerCase());
+        if (bookingDao.alreadyHasThisBooking(docVirId, docType, userId)) {
+            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
         }
 
-        if (checkoutDao.alreadyHasThisCheckout(docId, docType, userId)) {
-            throw new Exception(ALREADY_HAS_THIS_CHECKOUT + RENEW + docType.toLowerCase() + CHECKOUT_AGAIN);
+        if (checkoutDao.alreadyHasThisCheckout(docVirId, docType, userId)) {
+            throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
         }
 
+        checkValidToBook(docVirId, docType);
 
-        String referenceDoc = REFERENCE_DOCUMENT + docType.toLowerCase();
-        String zeroCount = MISTAKE_PART1 + docType.toLowerCase() + MISTAKE_PART2;
-        boolean isActive;
+        long docPhysId = EMPTY_ID;
+        String shelf = EMPTY_SHELF;
+        int priority = PRIORITY.get(usersDao.getTypeById(userId));
+        boolean isActive = false;
+        try {
+            docPhysId = docPhysDao.getValidPhysId(docVirId, docType);
+            shelf = docPhysDao.getShelfById(docPhysId);
+            priority = PRIORITY.get(ACTIVE);
+            isActive = true;
+            switch (docType) {
+                case Document.BOOK:
+                    bookDao.decrementCountById(docVirId);
+                    docPhysDao.inverseCanBooked(docPhysId);
+                    break;
+                case Document.JOURNAL:
+                    journalDao.decrementCountById(docVirId);
+                    docPhysDao.inverseCanBooked(docPhysId);
+                    break;
+                case Document.AV:
+                    avDao.decrementCountById(docVirId);
+                    docPhysDao.inverseCanBooked(docPhysId);
+                    break;
+                default:
+                    throw new Exception(TYPE_EXCEPTION);
+            }
+        } catch (Exception e) {
+            DocumentPhysical docPhys = getValidDocPhys(docVirId, docType);
+            if (docPhys != null) {
+                docPhysId = docPhys.getId();
+                shelf = docPhys.getShelf();
+                priority = PRIORITY.get(EXPECTED);
+                isActive = true;
+            }
+        } finally {
+            recalculatePriority(docVirId, docType);
+            add(new Booking(userId, docVirId, docType, docPhysId, System.nanoTime(), isActive, priority, shelf));
+        }
+    }
+
+    private void checkValidToBook(long docVirId, String docType) throws Exception {
         switch (docType) {
             case Document.BOOK:
-                if (bookDao.getNote(docId).equals(Document.REFERENCE)) throw new Exception(referenceDoc);
-                if (bookDao.getCountById(docId) <= 0) throw new Exception(zeroCount);
-                if (bookDao.getCountById(docId) > 0) {
-                    isActive = true;
-                    bookDao.decrementCountById(docId);
-                } else {
-                    isActive = getValidIsActive(docId, docType);
+                if (bookDao.getNote(docVirId).equals(Document.REFERENCE)) {
+                    throw new Exception(REFERENCE_EXCEPTION + docType.toLowerCase());
                 }
                 break;
             case Document.JOURNAL:
-                if (journalDao.getNote(docId).equals(Document.REFERENCE)) throw new Exception(referenceDoc);
-                if (journalDao.getCountById(docId) <= 0) throw new Exception(zeroCount);
-                if (journalDao.getCountById(docId) > 0) {
-                    isActive = true;
-                    journalDao.decrementCountById(docId);
-                } else {
-                    isActive = getValidIsActive(docId, docType);
+                if (journalDao.getNote(docVirId).equals(Document.REFERENCE)) {
+                    throw new Exception(REFERENCE_EXCEPTION + docType.toLowerCase());
                 }
                 break;
             case Document.AV:
-                if (avDao.getCountById(docId) <= 0) throw new Exception(zeroCount);
-                if (avDao.getCountById(docId) > 0) {
-                    isActive = true;
-                    avDao.decrementCountById(docId);
-                } else {
-                    isActive = getValidIsActive(docId, docType);
-                }
                 break;
             default:
-                throw new Exception(INVALID_TYPE_PART1 + docType.toLowerCase() + INVALID_TYPE_PART2);
+                throw new Exception(TYPE_EXCEPTION);
         }
-
-        int priority = isActive ? PRIORITY.get(ACTIVE) : PRIORITY.get(usersDao.getTypeById(userId));
-        recalculatePriority(docId, docType);
-
-        List<Checkout> checkouts = checkoutDao.getCheckoutsByVirtualDoc(docId, docType);
-        for (Checkout checkout : checkouts) {
-            if (checkoutDao.hasRenewedCheckout(checkout.getIdDoc())) {
-                messageDao.addMes(checkout.getIdUser(),
-                        docId,
-                        MessageDaoImplementation.RETURN_DOCUMENT,
-                        docType
-                );
-            }
-        }
-
-
-        String shelf = documentPhysDao.getShelfById(physId);
-        documentPhysDao.inverseCanBooked(physId);
-
-        Booking newBooking = new Booking(userId, physId, docType, shelf, System.nanoTime(), isActive, priority);
-        bookingDao.add(newBooking);
-
-        return newBooking;
     }
 
-    private void recalculatePriority(long docId, String docType) throws Exception {
-        List<Booking> bookings = bookingDao.getListBookingsByIdDocAndDocType(docId, docType);
+    private void recalculatePriority(long docVirId, String docType) {
+        List<Booking> bookings = bookingDao.getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
             if (!booking.isActive()) {
                 int waitingDays = convertToDays(System.nanoTime() - booking.getBookingDate());
@@ -158,10 +228,10 @@ public class BookingService {
         }
     }
 
-    public void setBookingActiveToTrue(Booking booking) throws Exception {
+    public void setBookingActiveToTrue(Booking booking) {
         booking.setActive(true);
-        booking.setPriority(PRIORITY.get(ACTIVE));
-        recalculatePriority(booking.getIdDoc(), booking.getDocType());
+        booking.setPriority(PRIORITY.get(EXPECTED));
+        recalculatePriority(booking.getDocPhysId(), booking.getDocType());
     }
 
     private int convertToDays(long milliseconds) {
@@ -174,7 +244,7 @@ public class BookingService {
      * @param userId id of current user
      * @return number of booked
      */
-    public long numberOfBookedDocumentsByUser(long userId) throws Exception {
+    public long numberOfBookedDocumentsByUser(long userId) {
         return bookingDao.getNumberOfBookingsDocumentsByUser(userId);
     }
 
@@ -184,12 +254,27 @@ public class BookingService {
      * @param userId id of current user
      * @return array of bookings
      */
-    public List<Booking> getBookingsByUser(long userId) throws Exception {
+    public List<Booking> getBookingsByUser(long userId) {
         return bookingDao.getBookingsByUser(userId);
     }
 
-    private boolean getValidIsActive(long docId, String docType) {
-        long physId = documentPhysDao.getValidPhysicalId(docId, docType);
-        return !bookingDao.hasActiveBooking(docId, docType) && checkoutDao.hasRenewedCheckout(physId);
+    // TODO rename method
+    private DocumentPhysical getValidDocPhys(long docVirId, String docType) throws Exception {
+        List<DocumentPhysical> docPhysList = docPhysDao.getByDocVirIdAndDocType(docVirId, docType);
+        for (DocumentPhysical docPhys : docPhysList) {
+            long docPhysId = docPhys.getId();
+            Checkout checkout = checkoutDao.getByDocPhysId(docPhysId);
+            if (checkout.isRenewed()) {
+                notifyUserToReturnDocument(checkout.getUserId(), docVirId, docType);
+                if (!bookingDao.hasActiveBooking(docPhysId, docType)) {
+                    return docPhys;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void notifyUserToReturnDocument(long userId, long docVirId, String docType) throws Exception {
+        messageDao.addMes(userId, docVirId, docType, MessageDaoImplementation.RETURN_DOCUMENT);
     }
 }

@@ -40,8 +40,12 @@ public class UserValidator implements Validator {
             errors.rejectValue("login", "Size.userForm.login");
         }
 
-        if (usersDao.findByLogin(user.getLogin()) != null) {
-            errors.rejectValue("login", "Duplicate.userForm.login");
+        try {
+            if (usersDao.findByLogin(user.getLogin()) != null) {
+                errors.rejectValue("login", "Duplicate.userForm.login");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");

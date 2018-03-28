@@ -77,7 +77,7 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(Model model, @RequestParam(value = "login") String login,
-                              @RequestParam(value = "password") String password, String logout) {
+                              @RequestParam(value = "password") String password, String logout) throws Exception {
         User user = usersDao.findByLogin(login);
         ModelAndView modelAndView = new ModelAndView();
         if (user != null) {

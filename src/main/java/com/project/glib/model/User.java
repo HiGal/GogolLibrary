@@ -6,11 +6,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 public class User {
+    public static final String TYPE = "USER";
     public static final String LIBRARIAN = "LIBRARIAN";
     public static final String STUDENT = "STUDENT";
     public static final String INSTRUCTOR = "INSTRUCTOR";
     public static final String TA = "TEACHER_ASSISTANT";
     public static final String PROFESSOR = "PROFESSOR";
+    public static final String[] ROLES = {LIBRARIAN, STUDENT, INSTRUCTOR, TA, PROFESSOR};
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,7 +45,7 @@ public class User {
     @Column(name = "auth")
     private boolean auth;
 
-    @Column(name = "role" )
+    @Column(name = "role")
     private String role;
 
     public User() {

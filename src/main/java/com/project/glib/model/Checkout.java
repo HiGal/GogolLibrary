@@ -6,16 +6,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "checkout")
 public class Checkout {
+    public static final String TYPE = "CHECKOUT";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "idUser")
-    private long idUser;
+    private long userId;
 
     @Column(name = "idDoc")
-    private long idDoc;
+    private long docPhysId;
 
     @Column(name = "docType")
     private String docType;
@@ -35,10 +36,10 @@ public class Checkout {
     protected Checkout() {
     }
 
-    public Checkout(long idUser, long idDoc, String docType, long checkoutTime, long returnTime, boolean isRenewed, String shelf) {
+    public Checkout(long userId, long docPhysId, String docType, long checkoutTime, long returnTime, boolean isRenewed, String shelf) {
 
-        this.idUser = idUser;
-        this.idDoc = idDoc;
+        this.userId = userId;
+        this.docPhysId = docPhysId;
         this.docType = docType;
         this.checkoutTime = checkoutTime;
         this.returnTime = returnTime;
@@ -52,8 +53,8 @@ public class Checkout {
         if (o == null || getClass() != o.getClass()) return false;
         Checkout checkout = (Checkout) o;
         return id == checkout.id &&
-                idUser == checkout.idUser &&
-                idDoc == checkout.idDoc &&
+                userId == checkout.userId &&
+                docPhysId == checkout.docPhysId &&
                 checkoutTime == checkout.checkoutTime &&
                 returnTime == checkout.returnTime &&
                 isRenewed == checkout.isRenewed &&
@@ -64,15 +65,15 @@ public class Checkout {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, idUser, idDoc, docType, checkoutTime, returnTime, isRenewed, shelf);
+        return Objects.hash(id, userId, docPhysId, docType, checkoutTime, returnTime, isRenewed, shelf);
     }
 
     @Override
     public String toString() {
         return "Checkout{" +
                 "id=" + id +
-                ", idUser=" + idUser +
-                ", idDoc=" + idDoc +
+                ", userId=" + userId +
+                ", docPhysId=" + docPhysId +
                 ", docType='" + docType + '\'' +
                 ", checkoutTime=" + checkoutTime +
                 ", returnTime=" + returnTime +
@@ -89,20 +90,20 @@ public class Checkout {
         this.id = id;
     }
 
-    public long getIdUser() {
-        return idUser;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getIdDoc() {
-        return idDoc;
+    public long getDocPhysId() {
+        return docPhysId;
     }
 
-    public void setIdDoc(long idDoc) {
-        this.idDoc = idDoc;
+    public void setDocPhysId(long docPhysId) {
+        this.docPhysId = docPhysId;
     }
 
     public String getDocType() {
