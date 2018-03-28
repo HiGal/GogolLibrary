@@ -13,7 +13,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     //TODO change priorities
     public static final String TYPE = Booking.TYPE;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
-    public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String USER_ID_EXCEPTION = " invalid id user ";
     public static final String DOC_TYPE_EXCEPTION = " invalid type of document";
@@ -64,8 +63,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         this.messageDao = messageDao;
     }
 
-    @Override
-    public void add(Booking booking) throws Exception {
+    private void add(Booking booking) throws Exception {
         checkValidParameters(booking);
         try {
             bookingDao.add(booking);
@@ -74,17 +72,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    @Override
-    public void update(Booking booking) throws Exception {
-        checkValidParameters(booking);
-        try {
-            bookingDao.update(booking);
-        } catch (Exception e) {
-            throw new Exception(UPDATE_EXCEPTION);
-        }
-    }
-
-    @Override
     public void remove(long bookingId) throws Exception {
         Booking booking = bookingDao.getById(bookingId);
         if (booking.getPriority() == PRIORITY.get(ACTIVE)) {
@@ -103,6 +90,10 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
         try {
+            if (booking.isActive()) {
+                setBookingActiveToTrue(bookingDao.getBookingWithMaxPriority(booking.getDocVirId(), booking.getDocType()));
+            }
+            recalculatePriority(booking.getDocVirId(), booking.getDocType());
             bookingDao.remove(bookingId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -266,7 +257,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             Checkout checkout = checkoutDao.getByDocPhysId(docPhysId);
             if (checkout.isRenewed()) {
                 notifyUserToReturnDocument(checkout.getUserId(), docVirId, docType);
-                if (!bookingDao.hasActiveBooking(docPhysId, docType)) {
+                if (!bookingDao.hasActiveBooking(docPhysId)) {
                     return docPhys;
                 }
             }

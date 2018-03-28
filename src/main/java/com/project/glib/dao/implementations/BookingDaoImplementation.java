@@ -108,22 +108,20 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
                 .anyMatch(booking -> booking.getDocType().equals(docType));
     }
 
-    public boolean hasActiveBooking(long docPhysId, String docType) {
+    public boolean hasActiveBooking(long docPhysId) {
         try {
             return bookingRepository.findAll().stream()
                     .filter(booking -> booking.getDocPhysId() == docPhysId)
-                    .filter(booking -> booking.getDocType().equals(docType))
                     .anyMatch(Booking::isActive);
         } catch (NoSuchElementException e) {
             return false;
         }
     }
 
-    public boolean hasNotActiveBooking(long docPhysId, String docType) {
+    public boolean hasNotActiveBooking(long docPhysId) {
         try {
             return bookingRepository.findAll().stream()
                     .filter(booking -> booking.getDocPhysId() == docPhysId)
-                    .filter(booking -> booking.getDocType().equals(docType))
                     .anyMatch(booking -> !booking.isActive());
         } catch (NoSuchElementException e) {
             return false;
@@ -145,6 +143,16 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         try {
             return bookingRepository.findByDocVirIdAndDocTypeOrderByPriority(docVirId, docType);
         } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    public Booking getBookingOnThisDocument(long docPhysId) {
+        try {
+            return bookingRepository.findAll().stream()
+                    .filter(booking -> booking.getDocPhysId() == docPhysId)
+                    .findFirst().get();
+        } catch (NullPointerException | NoSuchElementException e) {
             return null;
         }
     }

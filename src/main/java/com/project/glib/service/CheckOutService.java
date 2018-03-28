@@ -12,8 +12,6 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
     public static final long WEEK_IN_MILLISECONDS = 604800000000000L;
     public static final String TYPE = Checkout.TYPE;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
-    public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;
-    public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String ALREADY_HAS_THIS_CHECKOUT_EXCEPTION = "Sorry, but your already have this check out ";
     public static final String CHECKOUT_TIME_EXCEPTION = " checkout cannot be in future ";
     public static final String RETURN_TIME_EXCEPTION = " return time cannot be less than checkout time ";
@@ -47,7 +45,6 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
         this.messageDao = messageDao;
     }
 
-    @Override
     public void add(Checkout checkout) throws Exception {
         checkValidParameters(checkout);
         if (checkoutDao.alreadyHasThisCheckout(checkout.getDocPhysId(), checkout.getDocType(), checkout.getUserId()))
@@ -56,26 +53,6 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
             checkoutDao.add(checkout);
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
-        }
-    }
-
-    @Override
-    public void update(Checkout checkout) throws Exception {
-        checkValidParameters(checkout);
-        try {
-            checkoutDao.update(checkout);
-        } catch (Exception e) {
-            throw new Exception(UPDATE_EXCEPTION);
-        }
-    }
-
-    // TODO priority queue!!!
-    @Override
-    public void remove(long checkoutId) throws Exception {
-        try {
-            checkoutDao.remove(checkoutId);
-        } catch (Exception e) {
-            throw new Exception(REMOVE_EXCEPTION);
         }
     }
 

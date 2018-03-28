@@ -21,8 +21,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         this.docPhysDao = docPhysDao;
     }
 
-    @Override
-    public void add(AudioVideo audioVideo) throws Exception {
+    private void add(AudioVideo audioVideo) throws Exception {
         checkValidParameters(audioVideo);
         try {
             AudioVideo existedAV = avDao.isAlreadyExist(audioVideo);

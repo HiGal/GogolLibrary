@@ -9,11 +9,5 @@ public interface ModifyByLibrarianService<T> {
     String TYPE_EXCEPTION = " invalid type ";
     String ID_EXCEPTION = " invalid id ";
 
-    void add(T t) throws Exception;
-
-    void update(T t) throws Exception;
-
-    void remove(long id) throws Exception;
-
     void checkValidParameters(T t) throws Exception;
 }

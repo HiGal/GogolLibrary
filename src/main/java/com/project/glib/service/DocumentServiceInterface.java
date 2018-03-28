@@ -14,6 +14,10 @@ public interface DocumentServiceInterface<T extends Document> extends ModifyByLi
     String NOTE_EXCEPTION = " invalid note ";
     String YEAR_EXCEPTION = " year must be less or equal than current ";
 
+    void update(T t) throws Exception;
+
+    void remove(long id) throws Exception;
+
     void add(T t, String shelf) throws Exception;
 
     boolean isNote(String note);

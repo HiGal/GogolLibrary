@@ -1,6 +1,7 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.*;
+import com.project.glib.model.Booking;
 import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
 import com.project.glib.model.User;
@@ -50,34 +51,41 @@ public class ReturnService {
 
         messageDao.removeOneByUserID(checkout.getUserId(), checkout.getDocPhysId());
 
-        long docId = docPhysDao.getDocIdByID(checkout.getDocPhysId());
+        long docVirId = docPhysDao.getDocIdByID(checkout.getDocPhysId());
         String docType = checkout.getDocType();
-        if (bookingDao.hasNotActiveBooking(docId, docType)) {
+        Booking bookingOnThisDocument = bookingDao.getBookingOnThisDocument(checkout.getDocPhysId());
+        boolean hasNotActiveBooking = bookingDao.hasNotActiveBooking(checkout.getDocPhysId());
+
+        if (bookingOnThisDocument == null && hasNotActiveBooking) {
             docPhysDao.inverseCanBooked(checkout.getDocPhysId());
             switch (checkout.getDocType()) {
                 case Document.BOOK:
-                    bookDao.incrementCountById(docId);
+                    bookDao.incrementCountById(docVirId);
                     break;
                 case Document.JOURNAL:
-                    journalDao.incrementCountById(docId);
+                    journalDao.incrementCountById(docVirId);
                     break;
                 case Document.AV:
-                    avDao.incrementCountById(docId);
+                    avDao.incrementCountById(docVirId);
                     break;
                 default:
                     return null;
             }
-        } else {
-            bookingService.setBookingActiveToTrue(bookingDao.getBookingWithMaxPriority(docId, docType));
-
-            // message takes id of virtual book and doc type
-            long docID = docPhysDao.getDocIdByID(docId);
-            String type = docPhysDao.getTypeByID(docId);
+        } else if (bookingOnThisDocument != null) {
             messageDao.addMes(
-                    bookingDao.getBookingWithMaxPriority(docID, type).getUserId(),
-                    docID,
-                    MessageDaoImplementation.CHECKOUT_DOCUMENT,
-                    type);
+                    bookingOnThisDocument.getId(),
+                    docVirId,
+                    docType,
+                    MessageDaoImplementation.CHECKOUT_DOCUMENT);
+        } else {
+            Booking bookingWithMaxPriority = bookingDao.getBookingWithMaxPriority(docVirId, docType);
+            bookingService.setBookingActiveToTrue(bookingWithMaxPriority);
+
+            messageDao.addMes(
+                    bookingWithMaxPriority.getId(),
+                    docVirId,
+                    docType,
+                    MessageDaoImplementation.CHECKOUT_DOCUMENT);
         }
         return new Pair<>(checkout, getOverdue(checkout));
     }

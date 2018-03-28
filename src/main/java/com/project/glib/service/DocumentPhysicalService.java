@@ -29,7 +29,6 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         this.docPhysDao = docPhysDao;
     }
 
-    @Override
     public void add(DocumentPhysical docPhys) throws Exception {
         checkValidParameters(docPhys);
         try {
@@ -52,7 +51,6 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         }
     }
 
-    @Override
     public void update(DocumentPhysical docPhys) throws Exception {
         // TODO if librarian change count?
         checkValidParameters(docPhys);
@@ -63,7 +61,6 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         }
     }
 
-    @Override
     public void remove(long docPhysId) throws Exception {
         try {
             switch (docPhysDao.getTypeByID(docPhysId)) {

@@ -26,15 +26,14 @@ public class BookService implements DocumentServiceInterface<Book> {
     @Override
     public void add(Book book, String shelf) throws Exception {
         if (shelf.equals("")) throw new Exception(SHELF_EXCEPTION);
-        bookDao.add(book);
+        add(book);
         for (int i = 0; i < book.getCount(); i++) {
             // TODO add keywords options
             docPhysDao.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null));
         }
     }
 
-    @Override
-    public void add(Book book) throws Exception {
+    private void add(Book book) throws Exception {
         checkValidParameters(book);
         try {
             Book existedBook = bookDao.isAlreadyExist(book);
