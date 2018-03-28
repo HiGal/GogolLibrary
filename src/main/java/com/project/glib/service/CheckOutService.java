@@ -26,6 +26,7 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
     private final BookingService bookingService;
     private final CheckoutDaoImplementation checkoutDao;
     private final UsersDaoImplementation usersDao;
+    private final MessageDaoImplementation messageDao;
 
     @Autowired
     public CheckOutService(BookDaoImplementation bookDao,
@@ -34,7 +35,8 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
                            DocumentPhysicalDaoImplementation docPhysDao,
                            BookingService bookingService,
                            CheckoutDaoImplementation checkoutDao,
-                           UsersDaoImplementation usersDao) {
+                           UsersDaoImplementation usersDao,
+                           MessageDaoImplementation messageDao) {
         this.bookDao = bookDao;
         this.journalDao = journalDao;
         this.avDao = avDao;
@@ -42,6 +44,7 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
         this.bookingService = bookingService;
         this.checkoutDao = checkoutDao;
         this.usersDao = usersDao;
+        this.messageDao = messageDao;
     }
 
     @Override
@@ -136,7 +139,7 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
         add(new Checkout(booking.getUserId(), booking.getDocPhysId(),
                 booking.getDocType(), System.nanoTime(), System.nanoTime() + additionalTime,
                 false, booking.getShelf()));
-    }
+    }   //messageDao.removeOneByUserID(booking.getIdUser(), booking.getIdDoc());
 
     /**
      * get number of check out documents by current user
