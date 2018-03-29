@@ -60,6 +60,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         logger.info(REMOVE_AV + audioVideoId);
     }
 
+    /**
+     * Checks existence of current AudioVideo in database
+     *
+     * @param audioVideo instance of AudioVideo
+     * @return returns the instance such that all parameters equals to input one
+     */
     @Override
     public AudioVideo isAlreadyExist(AudioVideo audioVideo) {
         return audioVideoRepository.findAll().stream()

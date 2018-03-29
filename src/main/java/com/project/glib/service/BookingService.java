@@ -29,9 +29,9 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     public static final String AUTH_EXCEPTION = "Sorry, but your registration is not approved yet.";
     private static final String OUTSTANDING = "OUTSTANDING REQUEST";
     private static final String ACTIVE = "ACTIVE";
+    private static final String OUTSTANDING = "OUTSTANDING REQUEST";
     private static final String EXPECTED = "EXPECTED";
     private static final String EMPTY_SHELF = "EMPTY";
-    private static final long EMPTY_ID = 0L;
     private static final HashMap<String, Integer> PRIORITY = new HashMap<String, Integer>();
 
     static {
@@ -73,6 +73,26 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         this.bookingDao = bookingDao;
     }
 
+    /**
+     * Creates an outstanding request for the document.
+     * In this case all priority queue about this document will be deleted
+     *
+     * @param booking outstanding booking from the librarian for the user
+     * @throws Exception run-time exception
+     */
+    public void outstandingRequest(Booking booking) throws Exception {
+        checkValidParameters(booking);
+        deletePriority(booking.getDocVirId(), booking.getDocType());
+        booking.setPriority(PRIORITY.get(OUTSTANDING));
+        add(booking);
+    }
+
+    /**
+     * Adds new booking record in the database
+     *
+     * @param booking booking to put in the DB
+     * @throws Exception run-time exception
+     */
     private void add(Booking booking) throws Exception {
         checkValidParameters(booking);
         try {
@@ -82,6 +102,12 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
+    /**
+     * Removes a booking by booking ID from the database
+     *
+     * @param bookingId ID of current booking
+     * @throws Exception run-time exception
+     */
     public void remove(long bookingId) throws Exception {
         Booking booking = getById(bookingId);
         if (booking.getPriority() == PRIORITY.get(ACTIVE)) {
@@ -110,6 +136,13 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
+    /**
+     * Checks all parametrs of the booking in case of appropriation
+     * to the library system
+     *
+     * @param booking booking record to put in the DB
+     * @throws Exception run-time exception
+     */
     @Override
     public void checkValidParameters(Booking booking) throws Exception {
         if (booking.getUserId() <= 0) {
@@ -134,12 +167,12 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     }
 
     /**
-     * Booking document by user if it possibility
+     * Booking a document user if it possible
      *
-     * @param docVirId id of this document
+     * @param docVirId ID of this document
      * @param docType  type of this document (valid types wrote in constants in superclass Document.java)
-     * @param userId   id of user whom try to book document
-     * @throws Exception if has an exception in run-time
+     * @param userId   ID of user whom try to book document
+     * @throws Exception run-time exception
      */
     public void toBookDocument(long docVirId, String docType, long userId) throws Exception {
         if (!userService.getIsAuthById(userId)) {
@@ -220,6 +253,15 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 int waitingDays = convertToDays(System.nanoTime() - booking.getBookingDate());
                 booking.setPriority(booking.getPriority() + waitingDays);
                 bookingDao.update(booking);
+            }
+        }
+    }
+
+    private void deletePriority(long docVirId, String docType) {
+        List<Booking> bookings = bookingDao.getListBookingsByDocVirIdAndDocType(docVirId, docType);
+        for (Booking booking : bookings) {
+            if (!booking.isActive()) {
+                bookingDao.remove(booking.getId());
             }
         }
     }

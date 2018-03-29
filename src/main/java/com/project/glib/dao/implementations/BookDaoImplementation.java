@@ -30,7 +30,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     /**
      * Add new item of Book in library
      *
-     * @param book new Book
+     * @param book new Book record
      */
     @Override
     public void add(Book book) {
@@ -60,6 +60,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         logger.info(REMOVE_BOOK + bookId);
     }
 
+    /**
+     * Checks existence of current Book in database
+     *
+     * @param book instance of Book
+     * @return returns the instance such that all parameters equals to input one
+     */
     @Override
     public Book isAlreadyExist(Book book) {
         return bookRepository.findAll().stream()
@@ -78,7 +84,7 @@ public class BookDaoImplementation implements DocumentDao<Book> {
     }
 
     /**
-     * get list of all books
+     * Gets list of all Book instances from DB
      *
      * @return list of books
      */
@@ -94,6 +100,12 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         return books;
     }
 
+    /**
+     * Gets an ID of Book instance
+     *
+     * @param book instance of Book
+     * @return ID of instance of Book
+     */
     @Override
     public long getId(Book book) {
         return isAlreadyExist(book).getId();
