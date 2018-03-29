@@ -11,7 +11,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     private long userId;
 
     @Column(name = "id_document")

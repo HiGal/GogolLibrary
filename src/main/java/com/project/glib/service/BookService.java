@@ -7,7 +7,10 @@ import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BookService implements DocumentServiceInterface<Book> {
@@ -15,6 +18,7 @@ public class BookService implements DocumentServiceInterface<Book> {
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
+    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private final BookDaoImplementation bookDao;
     private final DocumentPhysicalDaoImplementation docPhysDao;
 
@@ -108,5 +112,107 @@ public class BookService implements DocumentServiceInterface<Book> {
     @Override
     public boolean isNote(String note) {
         return note.equals(Document.DEFAULT_NOTE) || note.equals(Document.REFERENCE) || note.equals(Document.BESTSELLER);
+    }
+
+    @Override
+    public Book isAlreadyExist(Book book) {
+        try {
+            return bookDao.isAlreadyExist(book);
+        } catch (NullPointerException | NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Book getById(long bookId) {
+        return bookDao.getById(bookId);
+    }
+
+    /**
+     * get how many copies of books we already have in library
+     *
+     * @param bookId id of book
+     * @return count of copies
+     * @throws Exception invalid id
+     */
+    @Override
+    public int getCountById(long bookId) throws Exception {
+        try {
+            return getById(bookId).getCount();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    /**
+     * set count to count - 1 for book
+     *
+     * @param bookId id of book
+     */
+    @Override
+    public void decrementCountById(long bookId) throws Exception {
+        Book book = getById(bookId);
+        book.setCount(book.getCount() - 1);
+        update(book);
+    }
+
+    /**
+     * set count to count + 1 for book
+     *
+     * @param bookId id of book
+     */
+    @Override
+    public void incrementCountById(long bookId) throws Exception {
+        Book book = getById(bookId);
+        book.setCount(book.getCount() + 1);
+        update(book);
+    }
+
+    /**
+     * get price of book by id
+     *
+     * @param bookId id of AudioVideo
+     * @return price of book
+     * @throws Exception got invalid id
+     */
+    @Override
+    public int getPriceById(long bookId) throws Exception {
+        try {
+            return getById(bookId).getPrice();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public String getNote(long bookId) throws Exception {
+        try {
+            return getById(bookId).getNote();
+        } catch (Exception e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    /**
+     * get list of all books
+     *
+     * @return list of books
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Book> getList() {
+        try {
+            return bookDao.getList();
+        } catch (NoSuchElementException | NullPointerException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public long getId(Book book) throws Exception {
+        try {
+            return bookDao.getId(book);
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
     }
 }

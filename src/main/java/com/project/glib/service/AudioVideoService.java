@@ -7,12 +7,17 @@ import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     public static final String TYPE = Document.AV;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
+    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private final AudioVideoDaoImplementation avDao;
     private final DocumentPhysicalDaoImplementation docPhysDao;
 
@@ -90,5 +95,70 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     @Override
     public boolean isNote(String note) {
         return false;
+    }
+
+    @Override
+    public AudioVideo isAlreadyExist(AudioVideo audioVideo) {
+        try {
+            return avDao.isAlreadyExist(audioVideo);
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public AudioVideo getById(long audioVideoId) {
+        return avDao.getById(audioVideoId);
+    }
+
+    @Override
+    public int getCountById(long audioVideoId) throws Exception {
+        try {
+            return getById(audioVideoId).getCount();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void decrementCountById(long avId) throws Exception {
+        AudioVideo audioVideo = getById(avId);
+        audioVideo.setCount(audioVideo.getCount() - 1);
+        update(audioVideo);
+    }
+
+    @Override
+    public void incrementCountById(long avId) throws Exception {
+        AudioVideo audioVideo = getById(avId);
+        audioVideo.setCount(audioVideo.getCount() + 1);
+        update(audioVideo);
+    }
+
+    @Override
+    public int getPriceById(long avId) throws Exception {
+        try {
+            return getById(avId).getPrice();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<AudioVideo> getList() {
+        try {
+            return avDao.getList();
+        } catch (NoSuchElementException | NullPointerException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public long getId(AudioVideo audioVideo) throws Exception {
+        try {
+            return avDao.getId(audioVideo);
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
     }
 }
