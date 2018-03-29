@@ -31,8 +31,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         }
     }
 
-    @Override
-    public void add(Journal journal) throws Exception {
+    private void add(Journal journal) throws Exception {
         checkValidParameters(journal);
         try {
             Journal existedJournal = journalDao.isAlreadyExist(journal);

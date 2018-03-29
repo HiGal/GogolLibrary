@@ -27,14 +27,16 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private static final String EXPECTED = "EXPECTED";
     private static final String EMPTY_SHELF = "EMPTY";
     private static final long EMPTY_ID = 0L;
-    private static final HashMap<String, Integer> PRIORITY = new HashMap<String, Integer>() {{
+    private static final HashMap<String, Integer> PRIORITY = new HashMap<String, Integer>();
+
+    static {
         PRIORITY.put(ACTIVE, 10000);
         PRIORITY.put(EXPECTED, 5000);
         PRIORITY.put(User.STUDENT, 21);
         PRIORITY.put(User.INSTRUCTOR, 14);
         PRIORITY.put(User.TA, 7);
         PRIORITY.put(User.PROFESSOR, 1);
-    }};
+    }
 
     private final BookDaoImplementation bookDao;
     private final JournalDaoImplementation journalDao;

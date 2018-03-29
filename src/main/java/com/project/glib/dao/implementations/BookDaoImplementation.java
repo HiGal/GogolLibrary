@@ -5,7 +5,6 @@ import com.project.glib.dao.interfaces.DocumentDao;
 import com.project.glib.dao.interfaces.ModifyByLibrarian;
 import com.project.glib.model.Book;
 import com.project.glib.model.Document;
-import com.sun.istack.internal.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,6 @@ public class BookDaoImplementation implements DocumentDao<Book> {
         logger.info(REMOVE_BOOK + bookId);
     }
 
-    @Nullable
     @Override
     public Book isAlreadyExist(Book book) {
         try {

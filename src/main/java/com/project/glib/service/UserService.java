@@ -40,7 +40,6 @@ public class UserService implements ModifyByLibrarianService<User> {
         this.checkoutDao = checkoutDao;
     }
 
-    @Override
     public void add(User user) throws Exception {
         //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         //userRepository.save(user);
@@ -56,7 +55,6 @@ public class UserService implements ModifyByLibrarianService<User> {
 
     }
 
-    @Override
     public void update(User user) throws Exception {
 //        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         checkValidParameters(user);
@@ -67,7 +65,6 @@ public class UserService implements ModifyByLibrarianService<User> {
         }
     }
 
-    @Override
     public void remove(long userId) throws Exception {
         try {
             if (checkoutDao.getCheckoutsByUser(userId).size() == 0) {

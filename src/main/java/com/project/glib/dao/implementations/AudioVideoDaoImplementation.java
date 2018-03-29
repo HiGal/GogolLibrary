@@ -96,7 +96,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     @Override
     public int getCountById(long audioVideoId) throws Exception {
         try {
-            return audioVideoRepository.findOne(audioVideoId).getCount();
+            return getById(audioVideoId).getCount();
         } catch (NullPointerException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
@@ -109,7 +109,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
      */
     @Override
     public void decrementCountById(long avId) {
-        AudioVideo audioVideo = audioVideoRepository.findOne(avId);
+        AudioVideo audioVideo = getById(avId);
         audioVideo.setCount(audioVideo.getCount() - 1);
         audioVideoRepository.saveAndFlush(audioVideo);
     }
@@ -121,7 +121,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
      */
     @Override
     public void incrementCountById(long avId) {
-            AudioVideo audioVideo = audioVideoRepository.findOne(avId);
+        AudioVideo audioVideo = getById(avId);
             audioVideo.setCount(audioVideo.getCount() + 1);
             audioVideoRepository.saveAndFlush(audioVideo);
     }
@@ -136,7 +136,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     @Override
     public int getPriceById(long avId) throws Exception {
         try {
-            return audioVideoRepository.findOne(avId).getPrice();
+            return getById(avId).getPrice();
         } catch (NullPointerException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
