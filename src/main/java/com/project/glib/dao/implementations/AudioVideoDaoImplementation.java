@@ -31,7 +31,7 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
-     * Add new item of AudioVideo in library
+     * Add new item of AudioVideo in database library
      *
      * @param audioVideo new AudioVideo
      */
@@ -53,9 +53,9 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
-     * Remove AudioVideo from library
+     * Removes AudioVideo instance from library
      *
-     * @param audioVideoId id of AudioVideo
+     * @param audioVideoId ID of AudioVideo
      */
     @Override
     public void remove(long audioVideoId) {
@@ -63,6 +63,12 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         logger.info(REMOVE_AV + audioVideoId);
     }
 
+    /**
+     * Checks existence of AudioVideo in database
+     *
+     * @param audioVideo instance of AudioVideo module
+     * @return instance of AudioVideo module
+     */
     @Override
     public AudioVideo isAlreadyExist(AudioVideo audioVideo) {
         try {
@@ -76,10 +82,10 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
-     * get AudioVideo by it id
+     * Gets AudioVideo by it ID
      *
-     * @param audioVideoId id of AudioVideo
-     * @return AudioVideo object
+     * @param audioVideoId id of AudioVideo instance
+     * @return instance of AudioVideo module
      */
     @Override
     public AudioVideo getById(long audioVideoId) {
@@ -87,9 +93,9 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
-     * get how many copies of AudioVideo we already have in library
+     * Gets the number of copies of AudioVideo that are already in a library
      *
-     * @param audioVideoId id of AudioVideo
+     * @param audioVideoId ID of AudioVideo instance
      * @return count of copies
      * @throws Exception
      */
@@ -103,65 +109,50 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
-     * set count to count - 1 for AudioVideo
+     * Decrements the number of one AudioVideo document
      *
-     * @param avId id of AudioVideo
+     * @param av_ID ID of AudioVideo instance
      */
     @Override
-    public void decrementCountById(long avId) {
-        AudioVideo audioVideo = getById(avId);
+    public void decrementCountById(long av_ID) {
+        AudioVideo audioVideo = getById(av_ID);
         audioVideo.setCount(audioVideo.getCount() - 1);
         audioVideoRepository.saveAndFlush(audioVideo);
     }
 
     /**
-     * set count to count + 1 for AudioVideo
+     * Increments the number of one AudioVideo document
      *
-     * @param avId id of AudioVideo
+     * @param av_ID ID of AudioVideo
      */
     @Override
-    public void incrementCountById(long avId) {
-        AudioVideo audioVideo = getById(avId);
-            audioVideo.setCount(audioVideo.getCount() + 1);
-            audioVideoRepository.saveAndFlush(audioVideo);
+    public void incrementCountById(long av_ID) {
+        AudioVideo audioVideo = getById(av_ID);
+        audioVideo.setCount(audioVideo.getCount() + 1);
+        audioVideoRepository.saveAndFlush(audioVideo);
     }
 
     /**
-     * get price of AudioVideo by id
+     * Gets price of AudioVideo instance by ID
      *
-     * @param avId id of AudioVideo
+     * @param av_ID ID of AudioVideo
      * @return price of book
      * @throws Exception
      */
     @Override
-    public int getPriceById(long avId) throws Exception {
+    public int getPriceById(long av_ID) throws Exception {
         try {
-            return getById(avId).getPrice();
+            return getById(av_ID).getPrice();
         } catch (NullPointerException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
     }
 
-//    /**
-//     * get list of all AudioVideo with count bigger than zero or renewed
-//     *
-//     * @return list of AudioVideo with count bigger than zero or renewed
-//     */
-//    @Override
-//    public List<AudioVideo> getListCountNotZeroOrRenewed() {
-//        try {
-//            List<AudioVideo> audioVideos = audioVideoRepository.findAll().stream().filter(audioVideo -> audioVideo.getCount() > 0).collect(Collectors.toList());
-//
-//            for (AudioVideo audioVideo : audioVideos) {
-//                logger.info("AudioVideo list : " + audioVideo);
-//            }
-//
-//            return audioVideos;
-//        } catch (NoSuchElementException | NullPointerException e) {
-//            return new ArrayList<>();
-//        }
-//    }
-
+    /**
+     * Collects all AudioVideo instances from the database to the list
+     *
+     * @return list of all AudioVideo instances
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<AudioVideo> getList() {
@@ -178,6 +169,13 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
         }
     }
 
+    /**
+     * Gets ID of AudioVideo instance
+     *
+     * @param audioVideo AudioVideo instance
+     * @return ID of AudioVideo
+     * @throws Exception
+     */
     @Override
     public long getId(AudioVideo audioVideo) throws Exception {
         try {
