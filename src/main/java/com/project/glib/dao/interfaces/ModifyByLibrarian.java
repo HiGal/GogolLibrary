@@ -19,7 +19,7 @@ public interface ModifyByLibrarian<T> {
 
     T getById(long id);
 
-    long getId(T t) throws Exception;
+    long getId(T t);
 
     List<T> getList();
 }

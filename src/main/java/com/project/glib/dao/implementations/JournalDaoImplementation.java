@@ -17,7 +17,6 @@ import java.util.NoSuchElementException;
 public class JournalDaoImplementation implements DocumentDao<Journal> {
     private static final org.slf4j.Logger logger = (org.slf4j.Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private static final String TYPE = Document.JOURNAL;
-    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private static final String ADD_JOURNAL = TYPE + ADD;
     private static final String UPDATE_JOURNAL = TYPE + UPDATE;
     private static final String REMOVE_JOURNAL = TYPE + REMOVE;
@@ -64,79 +63,20 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
 
     @Override
     public Journal isAlreadyExist(Journal journal) {
-        try {
-            return journalRepository.findAll().stream()
-                    .filter(j -> j.getName().equals(journal.getName()) &&
-                            j.getAuthor().equals(journal.getAuthor()) &&
-                            j.getEditor().equals(journal.getEditor()) &&
-                            j.getTitle().equals(journal.getTitle()) &&
-                            j.getIssue() == journal.getIssue() &&
-                            j.getNote().equals(journal.getNote()))
-                    .findFirst().get();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+        return journalRepository.findAll().stream()
+                .filter(j -> j.getName().equals(journal.getName()) &&
+                        j.getAuthor().equals(journal.getAuthor()) &&
+                        j.getEditor().equals(journal.getEditor()) &&
+                        j.getTitle().equals(journal.getTitle()) &&
+                        j.getIssue() == journal.getIssue() &&
+                        j.getNote().equals(journal.getNote()))
+                .findFirst().get();
     }
 
     @Override
     public Journal getById(long journalId) {
         return journalRepository.findOne(journalId);
     }
-
-    @Override
-    public int getCountById(long journalId) throws Exception {
-        try {
-            return journalRepository.findOne(journalId).getCount();
-        } catch (NullPointerException e) {
-            throw new Exception("Information not available, journal don't exist");
-        }
-    }
-
-    @Override
-    public void decrementCountById(long journalId) {
-        Journal journal = journalRepository.findOne(journalId);
-        journal.setCount(journal.getCount() - 1);
-        journalRepository.saveAndFlush(journal);
-    }
-
-    @Override
-    public void incrementCountById(long journalId) {
-            Journal journal = journalRepository.findOne(journalId);
-            journal.setCount(journal.getCount() + 1);
-            journalRepository.saveAndFlush(journal);
-    }
-
-    @Override
-    public int getPriceById(long journalId) throws Exception {
-        try {
-            return journalRepository.findOne(journalId).getPrice();
-        } catch (NullPointerException e) {
-            throw new Exception(EXIST_EXCEPTION);
-        }
-    }
-
-    public String getNote(long journalId) throws Exception {
-        try {
-            return journalRepository.findOne(journalId).getNote();
-        } catch (Exception e) {
-            throw new Exception(EXIST_EXCEPTION);
-        }
-    }
-
-//    @Override
-//    public List<Journal> getListCountNotZeroOrRenewed() {
-//        try {
-//            List<Journal> journals = journalRepository.findAll().stream().filter(journal -> journal.getCount() > 0).collect(Collectors.toList());
-//
-//            for (Journal journal : journals) {
-//                logger.info("Journal list : " + journal);
-//            }
-//
-//            return journals;
-//        } catch (NoSuchElementException | NullPointerException e) {
-//            return new ArrayList<>();
-//        }
-//    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -155,11 +95,7 @@ public class JournalDaoImplementation implements DocumentDao<Journal> {
     }
 
     @Override
-    public long getId(Journal journal) throws Exception {
-        try {
-            return isAlreadyExist(journal).getId();
-        } catch (NullPointerException e) {
-            throw new Exception(EXIST_EXCEPTION);
-        }
+    public long getId(Journal journal) {
+        return isAlreadyExist(journal).getId();
     }
 }

@@ -7,12 +7,17 @@ import com.project.glib.model.DocumentPhysical;
 import com.project.glib.model.Journal;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 public class JournalService implements DocumentServiceInterface<Journal> {
     public static final String TYPE = Document.JOURNAL;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
+    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private final JournalDaoImplementation journalDao;
     private final DocumentPhysicalDaoImplementation docPhysDao;
 
@@ -108,4 +113,76 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         return note.equals(Document.DEFAULT_NOTE) || note.equals(Document.REFERENCE);
     }
 
+    @Override
+    public Journal isAlreadyExist(Journal journal) {
+        try {
+            return journalDao.isAlreadyExist(journal);
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Journal getById(long journalId) {
+        return journalDao.getById(journalId);
+    }
+
+    @Override
+    public int getCountById(long journalId) throws Exception {
+        try {
+            return getById(journalId).getCount();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void decrementCountById(long journalId) throws Exception {
+        Journal journal = getById(journalId);
+        journal.setCount(journal.getCount() - 1);
+        update(journal);
+    }
+
+    @Override
+    public void incrementCountById(long journalId) throws Exception {
+        Journal journal = getById(journalId);
+        journal.setCount(journal.getCount() + 1);
+        update(journal);
+    }
+
+    @Override
+    public int getPriceById(long journalId) throws Exception {
+        try {
+            return getById(journalId).getPrice();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public String getNote(long journalId) throws Exception {
+        try {
+            return getById(journalId).getNote();
+        } catch (Exception e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Journal> getList() {
+        try {
+            return journalDao.getList();
+        } catch (NoSuchElementException | NullPointerException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public long getId(Journal journal) throws Exception {
+        try {
+            return journalDao.getId(journal);
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
 }
