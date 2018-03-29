@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class MessageDaoImplementation {
-    public static final String RETURN_DOCUMENT = "Please, return next document to the library: ";
+    public static final String RETURN_DOCUMENT = "Please, return next document(s) to the library: ";
     public static final String CHECKOUT_DOCUMENT = "Please, visit a library and checkout a document:  ";
     private static final Logger logger = (Logger) LoggerFactory.getLogger(MessageDaoImplementation.class);
     private final MessagesRepository messagesRepository;
