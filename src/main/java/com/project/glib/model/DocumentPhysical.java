@@ -21,7 +21,7 @@ public class DocumentPhysical {
     private boolean canBooked;
 
     @Column(name = "id_doc")
-    private long idDoc;
+    private long docVirId;
 
     @Column(name = "doc_type")
     private String docType;
@@ -34,10 +34,10 @@ public class DocumentPhysical {
     protected DocumentPhysical() {
     }
 
-    public DocumentPhysical(String shelf, boolean canBooked, long idDoc, String docType, Set<Keyword> keywords) {
+    public DocumentPhysical(String shelf, boolean canBooked, long docVirId, String docType, Set<Keyword> keywords) {
         this.shelf = shelf;
         this.canBooked = canBooked;
-        this.idDoc = idDoc;
+        this.docVirId = docVirId;
         this.docType = docType;
 //        this.keywords = keywords;
     }
@@ -49,7 +49,7 @@ public class DocumentPhysical {
         DocumentPhysical that = (DocumentPhysical) o;
         return id == that.id &&
                 canBooked == that.canBooked &&
-                idDoc == that.idDoc &&
+                docVirId == that.docVirId &&
                 Objects.equals(shelf, that.shelf) &&
                 Objects.equals(docType, that.docType);
     }
@@ -57,7 +57,7 @@ public class DocumentPhysical {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, shelf, canBooked, idDoc, docType);
+        return Objects.hash(id, shelf, canBooked, docVirId, docType);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class DocumentPhysical {
                 "id=" + id +
                 ", shelf='" + shelf + '\'' +
                 ", canBooked=" + canBooked +
-                ", idDoc=" + idDoc +
+                ", docVirId=" + docVirId +
                 ", docType='" + docType + '\'' +
 //                ", keywords=" + keywords +
                 '}';
@@ -96,12 +96,12 @@ public class DocumentPhysical {
         this.canBooked = canBooked;
     }
 
-    public long getIdDoc() {
-        return idDoc;
+    public long getDocVirId() {
+        return docVirId;
     }
 
-    public void setIdDoc(long idDoc) {
-        this.idDoc = idDoc;
+    public void setDocVirId(long docVirId) {
+        this.docVirId = docVirId;
     }
 
     public String getDocType() {

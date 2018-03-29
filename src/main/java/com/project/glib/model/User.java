@@ -12,6 +12,8 @@ public class User {
     public static final String INSTRUCTOR = "INSTRUCTOR";
     public static final String TA = "TEACHER_ASSISTANT";
     public static final String PROFESSOR = "PROFESSOR";
+    public static final String PROFESSOR_VISITING = "VISITING_PROFESSOR";
+    public static final String[] FACULTY = {INSTRUCTOR, TA, PROFESSOR};
     public static final String[] ROLES = {LIBRARIAN, STUDENT, INSTRUCTOR, TA, PROFESSOR};
 
     @Id

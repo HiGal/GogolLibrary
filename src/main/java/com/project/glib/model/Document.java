@@ -8,6 +8,7 @@ public class Document {
     public static final String REFERENCE = "REFERENCE";
     public static final String DEFAULT_NOTE = "NA";
     private static final String[] TYPES = {BOOK, JOURNAL, AV};
+    private static final String[] NOTES = {DEFAULT_NOTE, REFERENCE};
 
     public static boolean isType(String type) {
         for (String t : TYPES) {

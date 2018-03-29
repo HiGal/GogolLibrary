@@ -21,4 +21,15 @@ public interface DocumentServiceInterface<T extends Document> extends ModifyByLi
     void add(T t, String shelf) throws Exception;
 
     boolean isNote(String note);
+
+    void incrementCountById(long docId) throws Exception;
+
+    void decrementCountById(long docId) throws Exception;
+
+    int getCountById(long docId) throws Exception;
+
+    int getPriceById(long docId) throws Exception;
+
+    T isAlreadyExist(T t);
+
 }
