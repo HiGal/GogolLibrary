@@ -69,21 +69,32 @@ public class AudioVideoDaoImplementation implements DocumentDao<AudioVideo> {
     }
 
     /**
-     * get AudioVideo by it id
+     * Gets an instance of AudioVideo by its ID
      *
-     * @param audioVideoId id of AudioVideo
-     * @return AudioVideo object
+     * @param audioVideoId ID of AudioVideo
+     * @return AudioVideo instance
      */
     @Override
     public AudioVideo getById(long audioVideoId) {
         return audioVideoRepository.findOne(audioVideoId);
     }
 
+    /**
+     * Gets an ID of AudioVideo instance
+     *
+     * @param audioVideo instance of AV
+     * @return ID of instance of AudioVideo
+     */
     @Override
     public long getId(AudioVideo audioVideo) {
         return isAlreadyExist(audioVideo).getId();
     }
 
+    /**
+     * Collects all the instances of AudioVideo model from the database to the list
+     *
+     * @return list of AudioVideo instances
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<AudioVideo> getList() {

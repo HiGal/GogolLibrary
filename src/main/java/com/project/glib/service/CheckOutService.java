@@ -85,6 +85,7 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
 
     /**
      * check out current booking
+     *
      * @param booking current booking
      */
     public void toCheckoutDocument(Booking booking) throws Exception {
@@ -96,6 +97,9 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
                 case User.TA:
                 case User.PROFESSOR:
                     additionalTime = 4 * WEEK_IN_MILLISECONDS;
+                    break;
+                case User.PROFESSOR_VISITING:
+                    additionalTime = WEEK_IN_MILLISECONDS;
                     break;
                 case User.STUDENT:
                     long bookId = docPhysDao.getDocIdByPhysDocument(booking.getDocPhysId());
@@ -121,6 +125,7 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
 
     /**
      * get number of check out documents by current user
+     *
      * @param userId id of current user
      * @return number of check out
      */
@@ -130,6 +135,7 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
 
     /**
      * get all check outs by current user
+     *
      * @param userId id of current user
      * @return array of check outs
      */
