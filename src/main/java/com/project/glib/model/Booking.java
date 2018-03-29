@@ -14,13 +14,10 @@ public class Booking {
     @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "id_document")
-    private long docPhysId;
-
-    @Column(name = "docType")
+    @Column(name = "doc_type")
     private String docType;
 
-    @Column(name = "bookingDate")
+    @Column(name = "booking_date")
     private long bookingDate;
 
     @Column(name = "is_active")
@@ -29,8 +26,11 @@ public class Booking {
     @Column(name = "priority")
     private int priority;
 
-    @Column(name = "docVirId")
+    @Column(name = "doc_vir_id")
     private long docVirId;
+
+    @Column(name = "doc_phys_id")
+    private long docPhysId;
 
     @Column(name = "shelf")
     private String shelf;
@@ -41,12 +41,12 @@ public class Booking {
 
     public Booking(long userId, long docVirId, String docType, long docPhysId, long bookingDate, boolean isActive, int priority, String shelf) {
         this.userId = userId;
-        this.docVirId = docVirId;
         this.docType = docType;
-        this.docPhysId = docPhysId;
         this.bookingDate = bookingDate;
         this.isActive = isActive;
         this.priority = priority;
+        this.docVirId = docVirId;
+        this.docPhysId = docPhysId;
         this.shelf = shelf;
     }
 
@@ -57,17 +57,19 @@ public class Booking {
         Booking booking = (Booking) o;
         return id == booking.id &&
                 userId == booking.userId &&
-                docPhysId == booking.docPhysId &&
                 bookingDate == booking.bookingDate &&
                 isActive == booking.isActive &&
                 priority == booking.priority &&
-                Objects.equals(docType, booking.docType);
+                docVirId == booking.docVirId &&
+                docPhysId == booking.docPhysId &&
+                Objects.equals(docType, booking.docType) &&
+                Objects.equals(shelf, booking.shelf);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, userId, docPhysId, docType, bookingDate, isActive, priority);
+        return Objects.hash(id, userId, docType, bookingDate, isActive, priority, docVirId, docPhysId, shelf);
     }
 
     @Override
@@ -75,11 +77,13 @@ public class Booking {
         return "Booking{" +
                 "id=" + id +
                 ", userId=" + userId +
-                ", docPhysId=" + docPhysId +
                 ", docType='" + docType + '\'' +
                 ", bookingDate=" + bookingDate +
                 ", isActive=" + isActive +
                 ", priority=" + priority +
+                ", docVirId=" + docVirId +
+                ", docPhysId=" + docPhysId +
+                ", shelf='" + shelf + '\'' +
                 '}';
     }
 
@@ -97,14 +101,6 @@ public class Booking {
 
     public void setUserId(long userId) {
         this.userId = userId;
-    }
-
-    public long getDocPhysId() {
-        return docPhysId;
-    }
-
-    public void setDocPhysId(long docPhysId) {
-        this.docPhysId = docPhysId;
     }
 
     public String getDocType() {
@@ -145,6 +141,14 @@ public class Booking {
 
     public void setDocVirId(long docVirId) {
         this.docVirId = docVirId;
+    }
+
+    public long getDocPhysId() {
+        return docPhysId;
+    }
+
+    public void setDocPhysId(long docPhysId) {
+        this.docPhysId = docPhysId;
     }
 
     public String getShelf() {

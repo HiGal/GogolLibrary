@@ -8,16 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Repository
 public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(BookDaoImplementation.class);
     private static final String TYPE = Booking.TYPE;
-    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private static final String ADD_BOOKING = TYPE + ADD;
     private static final String UPDATE_BOOKING = TYPE + UPDATE;
     private static final String REMOVE_BOOKING = TYPE + REMOVE;
@@ -47,113 +43,38 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         logger.info(REMOVE_BOOKING + bookingId);
     }
 
-
     @Override
     public Booking getById(long bookingId) {
         return bookingRepository.findOne(bookingId);
     }
 
     @Override
-    public long getId(Booking booking) throws Exception {
-        try {
-            return bookingRepository.findAll().stream()
-                    .filter(b -> b.getPriority() == booking.getPriority() &&
-                            b.getDocVirId() == booking.getDocVirId() &&
-                            b.getDocPhysId() == booking.getDocPhysId() &&
-                            b.getUserId() == booking.getUserId() &&
-                            b.getBookingDate() == booking.getBookingDate() &&
-                            b.isActive() == booking.isActive() &&
-                            b.getDocType().equals(booking.getDocType()) &&
-                            b.getShelf().equals(booking.getShelf()))
-                    .findFirst().get().getId();
-        } catch (NoSuchElementException e) {
-            throw new Exception(EXIST_EXCEPTION);
-        }
+    public long getId(Booking booking) {
+        return bookingRepository.findAll().stream()
+                .filter(b -> b.getPriority() == booking.getPriority() &&
+                        b.getDocVirId() == booking.getDocVirId() &&
+                        b.getDocPhysId() == booking.getDocPhysId() &&
+                        b.getUserId() == booking.getUserId() &&
+                        b.getBookingDate() == booking.getBookingDate() &&
+                        b.isActive() == booking.isActive() &&
+                        b.getDocType().equals(booking.getDocType()) &&
+                        b.getShelf().equals(booking.getShelf()))
+                .findFirst().get().getId();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<Booking> getList() {
-        try {
-            List<Booking> bookings = bookingRepository.findAll();
+        List<Booking> bookings = bookingRepository.findAll();
 
-            for (Booking booking : bookings) {
-                logger.info(LIST + booking);
-            }
-
-            return bookings;
-        } catch (NullPointerException e) {
-            return new ArrayList<>();
+        for (Booking booking : bookings) {
+            logger.info(LIST + booking);
         }
-    }
 
-    public long getNumberOfBookingsDocumentsByUser(long userId) {
-        return getBookingsByUser(userId).size();
-    }
-
-    public List<Booking> getBookingsByUser(long userId) {
-        try {
-            return bookingRepository.findAll().stream()
-                    .filter(booking -> booking.getUserId() == userId)
-                    .collect(Collectors.toList());
-        } catch (NoSuchElementException e) {
-            return new ArrayList<>();
-        }
-    }
-
-    public boolean alreadyHasThisBooking(long docVirId, String docType, long userId) {
-        return bookingRepository.findAll().stream()
-                .filter(booking -> booking.getUserId() == userId)
-                .filter(booking -> booking.getDocVirId() == docVirId)
-                .anyMatch(booking -> booking.getDocType().equals(docType));
-    }
-
-    public boolean hasActiveBooking(long docPhysId) {
-        try {
-            return bookingRepository.findAll().stream()
-                    .filter(booking -> booking.getDocPhysId() == docPhysId)
-                    .anyMatch(Booking::isActive);
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    public boolean hasNotActiveBooking(long docPhysId) {
-        try {
-            return bookingRepository.findAll().stream()
-                    .filter(booking -> booking.getDocPhysId() == docPhysId)
-                    .anyMatch(booking -> !booking.isActive());
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    public List<Booking> getListBookingsByDocVirIdAndDocType(long docVirId, String docType) {
-        try {
-            return bookingRepository.findAll().stream()
-                    .filter(booking -> booking.getDocVirId() == docVirId)
-                    .filter(booking -> booking.getDocType().equals(docType))
-                    .collect(Collectors.toList());
-        } catch (NoSuchElementException e) {
-            return new ArrayList<>();
-        }
+        return bookings;
     }
 
     public Booking getBookingWithMaxPriority(long docVirId, String docType) {
-        try {
-            return bookingRepository.findByDocVirIdAndDocTypeOrderByPriority(docVirId, docType);
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    public Booking getBookingOnThisDocument(long docPhysId) {
-        try {
-            return bookingRepository.findAll().stream()
-                    .filter(booking -> booking.getDocPhysId() == docPhysId)
-                    .findFirst().get();
-        } catch (NullPointerException | NoSuchElementException e) {
-            return null;
-        }
+        return bookingRepository.findByDocVirIdAndDocTypeOrderByPriority(docVirId, docType);
     }
 }

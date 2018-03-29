@@ -1,6 +1,6 @@
 package com.project.glib.validator;
 
-import com.project.glib.dao.implementations.UsersDaoImplementation;
+import com.project.glib.dao.implementations.UserDaoImplementation;
 import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
 @Component
 public class UserValidator implements Validator {
     @Autowired
-    private UsersDaoImplementation usersDao;
+    private UserDaoImplementation usersDao;
 
     /**
      * Check is it user

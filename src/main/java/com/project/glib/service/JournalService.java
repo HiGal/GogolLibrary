@@ -1,6 +1,5 @@
 package com.project.glib.service;
 
-import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
 import com.project.glib.dao.implementations.JournalDaoImplementation;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
@@ -19,11 +18,11 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private final JournalDaoImplementation journalDao;
-    private final DocumentPhysicalDaoImplementation docPhysDao;
+    private final DocumentPhysicalService docPhysService;
 
-    public JournalService(JournalDaoImplementation journalDao, DocumentPhysicalDaoImplementation docPhysDao) {
+    public JournalService(JournalDaoImplementation journalDao, DocumentPhysicalService docPhysService) {
         this.journalDao = journalDao;
-        this.docPhysDao = docPhysDao;
+        this.docPhysService = docPhysService;
     }
 
     @Override
@@ -32,7 +31,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         add(journal);
         for (int i = 0; i < journal.getCount(); i++) {
             // TODO add keywords options
-            docPhysDao.add(new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL, null));
+            docPhysService.add(new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL, null));
         }
     }
 
@@ -45,7 +44,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
             } else {
                 existedJournal.setCount(existedJournal.getCount() + journal.getCount());
                 existedJournal.setPrice(journal.getPrice());
-                journalDao.update(existedJournal);
+                update(existedJournal);
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
@@ -66,7 +65,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     @Override
     public void remove(long journalId) throws Exception {
         try {
-            docPhysDao.removeAllByDocId(journalId);
+            docPhysService.removeAllByDocId(journalId);
             journalDao.remove(journalId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);

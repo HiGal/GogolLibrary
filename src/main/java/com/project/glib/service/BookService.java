@@ -1,7 +1,6 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.BookDaoImplementation;
-import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
 import com.project.glib.model.Book;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
@@ -20,11 +19,11 @@ public class BookService implements DocumentServiceInterface<Book> {
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private final BookDaoImplementation bookDao;
-    private final DocumentPhysicalDaoImplementation docPhysDao;
+    private final DocumentPhysicalService docPhysService;
 
-    public BookService(BookDaoImplementation bookDao, DocumentPhysicalDaoImplementation docPhysDao) {
+    public BookService(BookDaoImplementation bookDao, DocumentPhysicalService docPhysService) {
         this.bookDao = bookDao;
-        this.docPhysDao = docPhysDao;
+        this.docPhysService = docPhysService;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class BookService implements DocumentServiceInterface<Book> {
         add(book);
         for (int i = 0; i < book.getCount(); i++) {
             // TODO add keywords options
-            docPhysDao.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null));
+            docPhysService.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null));
         }
     }
 
@@ -46,7 +45,7 @@ public class BookService implements DocumentServiceInterface<Book> {
             } else {
                 existedBook.setCount(existedBook.getCount() + book.getCount());
                 existedBook.setPrice(book.getPrice());
-                bookDao.update(existedBook);
+                update(existedBook);
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
@@ -67,7 +66,7 @@ public class BookService implements DocumentServiceInterface<Book> {
     @Override
     public void remove(long bookId) throws Exception {
         try {
-            docPhysDao.removeAllByDocId(bookId);
+            docPhysService.removeAllByDocId(bookId);
             bookDao.remove(bookId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);

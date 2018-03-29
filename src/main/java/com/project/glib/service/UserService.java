@@ -1,16 +1,16 @@
 package com.project.glib.service;
 
-import com.project.glib.dao.implementations.BookingDaoImplementation;
-import com.project.glib.dao.implementations.CheckoutDaoImplementation;
-import com.project.glib.dao.implementations.UsersDaoImplementation;
+import com.project.glib.dao.implementations.UserDaoImplementation;
 import com.project.glib.model.Booking;
 import com.project.glib.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
-import static com.project.glib.dao.implementations.UsersDaoImplementation.REMOVE_USER_HAS_CHECKOUTS_EXCEPTION;
+import static com.project.glib.dao.implementations.UserDaoImplementation.REMOVE_USER_HAS_CHECKOUTS_EXCEPTION;
 
 @Service
 public class UserService implements ModifyByLibrarianService<User> {
@@ -19,6 +19,7 @@ public class UserService implements ModifyByLibrarianService<User> {
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
+    public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     public static final String ROLE_EXCEPTION = " invalid role ";
     public static final String ADDRESS_EXCEPTION = " address must exist ";
     public static final String LOGIN_EXCEPTION = " login must exist ";
@@ -28,16 +29,16 @@ public class UserService implements ModifyByLibrarianService<User> {
     public static final String SURNAME_EXCEPTION = " surname must exist ";
     public static final String PHONE_EXCEPTION = " phone number must exist ";
     public static final String PHONE_LENGTH_EXCEPTION = " phone length must equals " + PHONE_LENGTH;
-    private final UsersDaoImplementation usersDao;
-    private final BookingDaoImplementation bookingDao;
-    private final CheckoutDaoImplementation checkoutDao;
+    private final BookingService bookingService;
+    private final CheckOutService checkoutService;
+    private final UserDaoImplementation usersDao;
 
-    public UserService(UsersDaoImplementation usersDao,
-                       BookingDaoImplementation bookingDao,
-                       CheckoutDaoImplementation checkoutDao) {
+    public UserService(UserDaoImplementation usersDao,
+                       BookingService bookingService,
+                       CheckOutService checkoutService) {
         this.usersDao = usersDao;
-        this.bookingDao = bookingDao;
-        this.checkoutDao = checkoutDao;
+        this.bookingService = bookingService;
+        this.checkoutService = checkoutService;
     }
 
     public void add(User user) throws Exception {
@@ -67,7 +68,7 @@ public class UserService implements ModifyByLibrarianService<User> {
 
     public void remove(long userId) throws Exception {
         try {
-            if (checkoutDao.getCheckoutsByUser(userId).size() == 0) {
+            if (checkoutService.getCheckoutsByUser(userId).size() == 0) {
                 removeAllBookingsByUserId(userId);
                 usersDao.remove(userId);
             } else {
@@ -123,11 +124,11 @@ public class UserService implements ModifyByLibrarianService<User> {
 
     private void removeAllBookingsByUserId(long userId) {
         try {
-            List<Booking> listOfBookings = bookingDao.getBookingsByUser(userId);
+            List<Booking> listOfBookings = bookingService.getBookingsByUser(userId);
             for (Booking booking : listOfBookings) {
-                bookingDao.remove(booking.getId());
+                bookingService.remove(booking.getId());
             }
-        } catch (NoSuchElementException | NullPointerException ignore) {
+        } catch (Exception ignore) {
         }
     }
 
@@ -136,5 +137,81 @@ public class UserService implements ModifyByLibrarianService<User> {
             if (r.equals(role)) return true;
         }
         return false;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<User> getList() {
+        try {
+            return usersDao.getList();
+        } catch (NullPointerException | NoSuchElementException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public User getById(long userId) {
+        return usersDao.getById(userId);
+    }
+
+    @Override
+    public long getId(User user) throws Exception {
+        try {
+            return usersDao.getId(user);
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public User findByLogin(String login) throws Exception {
+        try {
+            return usersDao.findByLogin(login);
+        } catch (NullPointerException | NoSuchElementException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public List<User> getListAuthUsers() {
+        try {
+            return getList().stream()
+                    .filter(User::getAuth)
+                    .collect(Collectors.toList());
+        } catch (NullPointerException | NoSuchElementException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<User> getListNotAuthUsers() throws Exception {
+        try {
+            return getList().stream()
+                    .filter(User -> !User.getAuth())
+                    .collect(Collectors.toList());
+        } catch (NullPointerException | NoSuchElementException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public boolean getIsAuthById(long userId) throws Exception {
+        try {
+            return getById(userId).getAuth();
+        } catch (Exception e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public String getTypeById(long userId) throws Exception {
+        try {
+            return getById(userId).getRole();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public long getIdByLogin(String login) throws Exception {
+        try {
+            return findByLogin(login).getId();
+        } catch (NullPointerException e) {
+            throw new Exception(EXIST_EXCEPTION);
+        }
     }
 }

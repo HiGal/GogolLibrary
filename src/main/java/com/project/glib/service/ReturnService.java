@@ -1,6 +1,6 @@
 package com.project.glib.service;
 
-import com.project.glib.dao.implementations.*;
+import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.Booking;
 import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
@@ -16,57 +16,56 @@ import java.util.List;
 public class ReturnService {
     public static final int PENNY = 100;
 
-    private final BookDaoImplementation bookDao;
-    private final JournalDaoImplementation journalDao;
-    private final AudioVideoDaoImplementation avDao;
-    private final DocumentPhysicalDaoImplementation docPhysDao;
-    private final BookingDaoImplementation bookingDao;
-    private final CheckoutDaoImplementation checkoutDao;
-    private final UsersDaoImplementation usersDao;
+    private final BookService bookService;
+    private final JournalService journalService;
+    private final AudioVideoService avService;
+    private final DocumentPhysicalService docPhysService;
+    private final CheckOutService checkoutService;
+    private final UserService userService;
     private final BookingService bookingService;
+    // TODO modify to service
     private final MessageDaoImplementation messageDao;
 
     @Autowired
-    public ReturnService(BookDaoImplementation bookDao,
-                         JournalDaoImplementation journalDao,
-                         AudioVideoDaoImplementation avDao,
-                         DocumentPhysicalDaoImplementation docPhysDao,
-                         BookingDaoImplementation bookingDao,
-                         CheckoutDaoImplementation checkoutDao,
-                         UsersDaoImplementation usersDao,
-                         BookingService bookingService, MessageDaoImplementation messageDao) {
-        this.bookDao = bookDao;
-        this.journalDao = journalDao;
-        this.avDao = avDao;
-        this.docPhysDao = docPhysDao;
-        this.bookingDao = bookingDao;
-        this.checkoutDao = checkoutDao;
-        this.usersDao = usersDao;
+    public ReturnService(BookService bookService,
+                         JournalService journalService,
+                         AudioVideoService avService,
+                         DocumentPhysicalService docPhysService,
+                         CheckOutService checkoutService,
+                         UserService userService,
+                         BookingService bookingService,
+                         MessageDaoImplementation messageDao) {
+        this.bookService = bookService;
+        this.journalService = journalService;
+        this.avService = avService;
+        this.docPhysService = docPhysService;
+        this.checkoutService = checkoutService;
+        this.userService = userService;
         this.bookingService = bookingService;
         this.messageDao = messageDao;
     }
 
     public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
-        checkoutDao.remove(checkout.getId());
+        checkoutService.remove(checkout.getId());
 
         messageDao.removeOneByUserID(checkout.getUserId(), checkout.getDocPhysId());
 
-        long docVirId = docPhysDao.getDocIdByID(checkout.getDocPhysId());
-        String docType = checkout.getDocType();
-        Booking bookingOnThisDocument = bookingDao.getBookingOnThisDocument(checkout.getDocPhysId());
-        boolean hasNotActiveBooking = bookingDao.hasNotActiveBooking(checkout.getDocPhysId());
+        long docVirId = docPhysService.getDocIdByID(checkout.getDocPhysId());
+        String docType = docPhysService.getTypeByID(checkout.getDocPhysId());
+        Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
+        boolean hasNotActiveBooking = bookingService.hasNotActiveBooking(checkout.getDocPhysId());
 
         if (bookingOnThisDocument == null && hasNotActiveBooking) {
-            docPhysDao.inverseCanBooked(checkout.getDocPhysId());
-            switch (checkout.getDocType()) {
+            docPhysService.inverseCanBooked(checkout.getDocPhysId());
+            switch (docType) {
                 case Document.BOOK:
-                    bookDao.incrementCountById(docVirId);
+                    bookService.incrementCountById(docVirId);
                     break;
                 case Document.JOURNAL:
-                    journalDao.incrementCountById(docVirId);
+                    journalService.incrementCountById(docVirId);
                     break;
                 case Document.AV:
-                    avDao.incrementCountById(docVirId);
+                    avService.incrementCountById(docVirId);
                     break;
                 default:
                     return null;
@@ -78,7 +77,7 @@ public class ReturnService {
                     docType,
                     MessageDaoImplementation.CHECKOUT_DOCUMENT);
         } else {
-            Booking bookingWithMaxPriority = bookingDao.getBookingWithMaxPriority(docVirId, docType);
+            Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
             bookingService.setBookingActiveToTrue(bookingWithMaxPriority);
 
             messageDao.addMes(
@@ -102,18 +101,18 @@ public class ReturnService {
         if (difference < 0) {
             int days = convertToDays(difference);
             int price;
-            switch (checkout.getDocType()) {
+            switch (docPhysService.getTypeByID(checkout.getDocPhysId())) {
                 case Document.BOOK:
-                    long bookId = docPhysDao.getDocIdByPhysDocument(checkout.getDocPhysId());
-                    price = bookDao.getPriceById(bookId);
+                    long bookId = docPhysService.getDocIdByPhysDocument(checkout.getDocPhysId());
+                    price = bookService.getPriceById(bookId);
                     break;
                 case Document.JOURNAL:
-                    long journalId = docPhysDao.getDocIdByPhysDocument(checkout.getDocPhysId());
-                    price = journalDao.getPriceById(journalId);
+                    long journalId = docPhysService.getDocIdByPhysDocument(checkout.getDocPhysId());
+                    price = journalService.getPriceById(journalId);
                     break;
                 case Document.AV:
-                    long avId = docPhysDao.getDocIdByPhysDocument(checkout.getDocPhysId());
-                    price = avDao.getPriceById(avId);
+                    long avId = docPhysService.getDocIdByPhysDocument(checkout.getDocPhysId());
+                    price = avService.getPriceById(avId);
                     break;
                 default:
                     return overdue;
@@ -140,7 +139,7 @@ public class ReturnService {
      */
     public int getTotalOverdueByUser(long userId) throws Exception {
         int totalOverdue = 0;
-        for (Checkout currentCheckout : checkoutDao.getCheckoutsByUser(userId)) {
+        for (Checkout currentCheckout : checkoutService.getCheckoutsByUser(userId)) {
             totalOverdue += getOverdue(currentCheckout);
         }
 
@@ -154,12 +153,12 @@ public class ReturnService {
      */
     public List<Pair<User, Integer>> getListOfTotalOverdue() throws Exception {
         List<Pair<User, Integer>> listOverdue = new ArrayList<>();
-        List<Checkout> checkouts = checkoutDao.getList();
+        List<Checkout> checkouts = checkoutService.getList();
 
         for (Checkout checkout : checkouts) {
             long userId = checkout.getUserId();
             if (getTotalOverdueByUser(userId) > 0) {
-                listOverdue.add(new Pair<>(usersDao.getById(userId), getTotalOverdueByUser(userId)));
+                listOverdue.add(new Pair<>(userService.getById(userId), getTotalOverdueByUser(userId)));
             }
         }
 

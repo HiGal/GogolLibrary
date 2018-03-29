@@ -1,7 +1,6 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.AudioVideoDaoImplementation;
-import com.project.glib.dao.implementations.DocumentPhysicalDaoImplementation;
 import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
@@ -19,23 +18,23 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private final AudioVideoDaoImplementation avDao;
-    private final DocumentPhysicalDaoImplementation docPhysDao;
+    private final DocumentPhysicalService docPhysService;
 
-    public AudioVideoService(AudioVideoDaoImplementation avDao, DocumentPhysicalDaoImplementation docPhysDao) {
+    public AudioVideoService(AudioVideoDaoImplementation avDao, DocumentPhysicalService docPhysService) {
         this.avDao = avDao;
-        this.docPhysDao = docPhysDao;
+        this.docPhysService = docPhysService;
     }
 
     private void add(AudioVideo audioVideo) throws Exception {
         checkValidParameters(audioVideo);
         try {
-            AudioVideo existedAV = avDao.isAlreadyExist(audioVideo);
+            AudioVideo existedAV = isAlreadyExist(audioVideo);
             if (existedAV == null) {
                 avDao.add(audioVideo);
             } else {
                 existedAV.setCount(existedAV.getCount() + audioVideo.getCount());
                 existedAV.setPrice(audioVideo.getPrice());
-                avDao.update(existedAV);
+                update(existedAV);
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
@@ -48,7 +47,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         add(audioVideo);
         for (int i = 0; i < audioVideo.getCount(); i++) {
             // TODO add keywords options
-            docPhysDao.add(new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
+            docPhysService.add(new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
         }
     }
 
@@ -66,7 +65,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     @Override
     public void remove(long audioVideoId) throws Exception {
         try {
-            docPhysDao.removeAllByDocId(audioVideoId);
+            docPhysService.removeAllByDocId(audioVideoId);
             avDao.remove(audioVideoId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
