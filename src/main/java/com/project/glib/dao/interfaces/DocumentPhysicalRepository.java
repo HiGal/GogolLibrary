@@ -6,7 +6,4 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource()
 public interface DocumentPhysicalRepository extends JpaRepository<DocumentPhysical, Long> {
-    DocumentPhysical getFirstByIdDoc(long id_doc);
-
-    void deleteByIdDoc(long id);
 }

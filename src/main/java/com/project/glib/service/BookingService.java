@@ -4,6 +4,7 @@ import com.project.glib.dao.implementations.BookingDaoImplementation;
 import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,10 +30,10 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     public static final String AUTH_EXCEPTION = "Sorry, but your registration is not approved yet.";
     private static final String OUTSTANDING = "OUTSTANDING REQUEST";
     private static final String ACTIVE = "ACTIVE";
-    private static final String OUTSTANDING = "OUTSTANDING REQUEST";
     private static final String EXPECTED = "EXPECTED";
     private static final String EMPTY_SHELF = "EMPTY";
-    private static final HashMap<String, Integer> PRIORITY = new HashMap<String, Integer>();
+    private static final long EMPTY_ID = 0L;
+    private static final HashMap<String, Integer> PRIORITY = new HashMap<>();
 
     static {
         PRIORITY.put(OUTSTANDING, 2000000);
@@ -59,8 +60,8 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                           JournalService journalService,
                           AudioVideoService avService,
                           DocumentPhysicalService docPhysService,
-                          UserService userService,
-                          CheckOutService checkoutService,
+                          @Lazy UserService userService,
+                          @Lazy CheckOutService checkoutService,
                           MessageDaoImplementation messageDao,
                           BookingDaoImplementation bookingDao) {
         this.bookService = bookService;
@@ -258,7 +259,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     }
 
     private void deletePriority(long docVirId, String docType) {
-        List<Booking> bookings = bookingDao.getListBookingsByDocVirIdAndDocType(docVirId, docType);
+        List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
             if (!booking.isActive()) {
                 bookingDao.remove(booking.getId());

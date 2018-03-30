@@ -4,6 +4,7 @@ import com.project.glib.dao.implementations.CheckoutDaoImplementation;
 import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
                            JournalService journalService,
                            AudioVideoService avService,
                            DocumentPhysicalService docPhysService,
-                           BookingService bookingService,
-                           UserService userService,
+                           @Lazy BookingService bookingService,
+                           @Lazy UserService userService,
                            MessageDaoImplementation messageDao,
                            CheckoutDaoImplementation checkoutDao) {
         this.bookService = bookService;
