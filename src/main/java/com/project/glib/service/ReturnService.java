@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 public class ReturnService {
     public static final int PENNY = 100;
+    public static final String DOC_TYPE_EXCEPTION = " invalid type of document";
 
     private final BookService bookService;
     private final JournalService journalService;
@@ -55,7 +56,7 @@ public class ReturnService {
         Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
         boolean hasNotActiveBooking = bookingService.hasNotActiveBooking(checkout.getDocPhysId());
 
-        if (bookingOnThisDocument == null && hasNotActiveBooking) {
+        if (bookingOnThisDocument == null && !hasNotActiveBooking) {
             docPhysService.inverseCanBooked(checkout.getDocPhysId());
             switch (docType) {
                 case Document.BOOK:
@@ -68,9 +69,10 @@ public class ReturnService {
                     avService.incrementCountById(docVirId);
                     break;
                 default:
-                    return null;
+                    throw new Exception(DOC_TYPE_EXCEPTION);
             }
         } else if (bookingOnThisDocument != null) {
+            // TODO Maybe change method parameters to (Booking booking, String message)
             messageDao.addMes(
                     bookingOnThisDocument.getId(),
                     docVirId,

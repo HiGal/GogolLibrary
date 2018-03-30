@@ -2,7 +2,10 @@ package com.project.glib.service;
 
 import com.project.glib.dao.implementations.BookingDaoImplementation;
 import com.project.glib.dao.implementations.MessageDaoImplementation;
-import com.project.glib.model.*;
+import com.project.glib.model.Booking;
+import com.project.glib.model.Document;
+import com.project.glib.model.DocumentPhysical;
+import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -82,8 +85,28 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
      * @throws Exception run-time exception
      */
     public void outstandingRequest(Booking booking) throws Exception {
+        long userId = booking.getUserId();
+        long docVirId = booking.getDocVirId();
+        String docType = booking.getDocType();
+
+        if (!userService.getIsAuthById(userId)) {
+            throw new Exception(AUTH_EXCEPTION);
+        }
+
+        if (alreadyHasThisBooking(docVirId, docType, userId)) {
+            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
+        }
+
+        if (checkoutService.alreadyHasThisCheckout(docVirId, docType, userId)) {
+            throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
+        }
+
         checkValidParameters(booking);
-        deletePriority(booking.getDocVirId(), booking.getDocType());
+
+        // TODO really?
+        deletePriority(docVirId, docType);
+        booking.setActive(true);
+        booking.setBookingDate(System.nanoTime());
         booking.setPriority(PRIORITY.get(OUTSTANDING));
         add(booking);
     }
@@ -218,6 +241,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         } catch (Exception e) {
             DocumentPhysical docPhys = getValidDocPhys(docVirId, docType);
             if (docPhys != null) {
+                docPhysId = docPhys.getId();
                 shelf = docPhys.getShelf();
                 priority = PRIORITY.get(EXPECTED);
                 isActive = true;
@@ -261,7 +285,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private void deletePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
-            if (!booking.isActive()) {
+            if (booking.getPriority() < PRIORITY.get(ACTIVE)) {
                 bookingDao.remove(booking.getId());
             }
         }
@@ -269,6 +293,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
     public void setBookingActiveToTrue(Booking booking) {
         booking.setActive(true);
+        booking.setBookingDate(System.nanoTime());
         booking.setPriority(PRIORITY.get(EXPECTED));
         recalculatePriority(booking.getDocVirId(), booking.getDocType());
     }
@@ -372,12 +397,11 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     }
 
     // TODO rename method
-    private DocumentPhysical getValidDocPhys(long docVirId, String docType) throws Exception {
+    private DocumentPhysical getValidDocPhys(long docVirId, String docType) {
         List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(docVirId, docType);
         for (DocumentPhysical docPhys : docPhysList) {
             long docPhysId = docPhys.getId();
-            Checkout checkout = checkoutService.getByDocPhysId(docPhysId);
-            if (!hasActiveBooking(docPhysId)) {
+            if (docPhys.isCanBooked() || !hasActiveBooking(docPhysId)) {
                 return docPhys;
             }
         }

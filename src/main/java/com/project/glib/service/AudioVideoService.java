@@ -25,6 +25,16 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         this.docPhysService = docPhysService;
     }
 
+    @Override
+    public void add(AudioVideo audioVideo, String shelf) throws Exception {
+        if (shelf.equals("")) throw new Exception(SHELF_EXCEPTION);
+        add(audioVideo);
+        for (int i = 0; i < audioVideo.getCount(); i++) {
+            // TODO add keywords options
+            docPhysService.add(new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
+        }
+    }
+
     private void add(AudioVideo audioVideo) throws Exception {
         checkValidParameters(audioVideo);
         try {
@@ -38,16 +48,6 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
-        }
-    }
-
-    @Override
-    public void add(AudioVideo audioVideo, String shelf) throws Exception {
-        if (shelf.equals("")) throw new Exception(SHELF_EXCEPTION);
-        add(audioVideo);
-        for (int i = 0; i < audioVideo.getCount(); i++) {
-            // TODO add keywords options
-            docPhysService.add(new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
         }
     }
 
