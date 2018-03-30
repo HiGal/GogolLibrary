@@ -25,29 +25,56 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         this.bookingRepository = bookingRepository;
     }
 
+    /**
+     * Adds new Booking instance to the database
+     *
+     * @param booking booking instance
+     */
     @Override
     public void add(Booking booking) {
         bookingRepository.saveAndFlush(booking);
         logger.info(ADD_BOOKING + booking);
     }
 
+    /**
+     * Updates booking record in the database
+     *
+     * @param booking booking instance
+     */
     @Override
     public void update(Booking booking) {
         bookingRepository.saveAndFlush(booking);
         logger.info(UPDATE_BOOKING + booking);
     }
 
+    /**
+     * Deletes the booking from the database by its ID
+     *
+     * @param bookingId ID of booking to delete
+     */
     @Override
     public void remove(long bookingId) {
         bookingRepository.delete(bookingId);
         logger.info(REMOVE_BOOKING + bookingId);
     }
 
+    /**
+     * Gets the Booking record by its ID
+     *
+     * @param bookingId ID of booking to get
+     * @return
+     */
     @Override
     public Booking getById(long bookingId) {
         return bookingRepository.findOne(bookingId);
     }
 
+    /**
+     * Gets ID of booking
+     *
+     * @param booking Booking instance
+     * @return
+     */
     @Override
     public long getId(Booking booking) {
         return bookingRepository.findAll().stream()
@@ -62,6 +89,11 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
                 .findFirst().get().getId();
     }
 
+    /**
+     * Collect all Bookings to the list
+     *
+     * @return list of all bookings
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<Booking> getList() {
@@ -74,6 +106,13 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
         return bookings;
     }
 
+    /**
+     * Retrieve the booking on certain document with max priority
+     *
+     * @param docVirId ID of virtual document
+     * @param docType
+     * @return
+     */
     public Booking getBookingWithMaxPriority(long docVirId, String docType) {
         return bookingRepository.findByDocVirIdAndDocTypeOrderByPriority(docVirId, docType);
     }
