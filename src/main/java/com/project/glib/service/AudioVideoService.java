@@ -65,7 +65,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     @Override
     public void remove(long audioVideoId) throws Exception {
         try {
-            docPhysService.removeAllByDocId(audioVideoId);
+            docPhysService.removeAllByDocIdAndDocType(audioVideoId, Document.AV);
             avDao.remove(audioVideoId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -156,7 +156,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     public long getId(AudioVideo audioVideo) throws Exception {
         try {
             return avDao.getId(audioVideo);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
     }

@@ -38,7 +38,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     private void add(Journal journal) throws Exception {
         checkValidParameters(journal);
         try {
-            Journal existedJournal = journalDao.isAlreadyExist(journal);
+            Journal existedJournal = isAlreadyExist(journal);
             if (existedJournal == null) {
                 journalDao.add(journal);
             } else {
@@ -65,7 +65,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     @Override
     public void remove(long journalId) throws Exception {
         try {
-            docPhysService.removeAllByDocId(journalId);
+            docPhysService.removeAllByDocIdAndDocType(journalId, Document.JOURNAL);
             journalDao.remove(journalId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -180,7 +180,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     public long getId(Journal journal) throws Exception {
         try {
             return journalDao.getId(journal);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
     }

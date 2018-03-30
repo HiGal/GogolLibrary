@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
-public class CheckOutService implements ModifyByLibrarianService<Checkout> {
+public class CheckoutService implements ModifyByLibrarianService<Checkout> {
     public static final long WEEK_IN_MILLISECONDS = 604800000000000L;
     public static final String TYPE = Checkout.TYPE;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
@@ -34,7 +34,7 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
     private final CheckoutDaoImplementation checkoutDao;
 
     @Autowired
-    public CheckOutService(BookService bookService,
+    public CheckoutService(BookService bookService,
                            JournalService journalService,
                            AudioVideoService avService,
                            DocumentPhysicalService docPhysService,
@@ -82,8 +82,10 @@ public class CheckOutService implements ModifyByLibrarianService<Checkout> {
                 throw new Exception(DOC_TYPE_EXCEPTION);
         }
         try {
-            bookingService.setBookingActiveToTrue(bookingService.getBookingWithMaxPriority(docVirId, docType));
-            bookingService.recalculatePriority(docVirId, docType);
+            if (bookingService.hasNotActiveBooking(checkout.getDocPhysId())) {
+                bookingService.setBookingActiveToTrue(bookingService.getBookingWithMaxPriority(docVirId, docType));
+                bookingService.recalculatePriority(docVirId, docType);
+            }
             checkoutDao.remove(checkoutId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);

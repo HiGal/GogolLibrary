@@ -39,7 +39,7 @@ public class BookService implements DocumentServiceInterface<Book> {
     private void add(Book book) throws Exception {
         checkValidParameters(book);
         try {
-            Book existedBook = bookDao.isAlreadyExist(book);
+            Book existedBook = isAlreadyExist(book);
             if (existedBook == null) {
                 bookDao.add(book);
             } else {
@@ -66,7 +66,7 @@ public class BookService implements DocumentServiceInterface<Book> {
     @Override
     public void remove(long bookId) throws Exception {
         try {
-            docPhysService.removeAllByDocId(bookId);
+            docPhysService.removeAllByDocIdAndDocType(bookId, Document.BOOK);
             bookDao.remove(bookId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -92,7 +92,7 @@ public class BookService implements DocumentServiceInterface<Book> {
         }
 
         if (book.getEdition().equals("")) {
-            throw new Exception(EDITOR_EXCEPTION);
+            throw new Exception(EDITION_EXCEPTION);
         }
 
         if (book.getPublisher().equals("")) {
@@ -210,7 +210,7 @@ public class BookService implements DocumentServiceInterface<Book> {
     public long getId(Book book) throws Exception {
         try {
             return bookDao.getId(book);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
     }

@@ -29,13 +29,14 @@ public class UserService implements ModifyByLibrarianService<User> {
     public static final String SURNAME_EXCEPTION = " surname must exist ";
     public static final String PHONE_EXCEPTION = " phone number must exist ";
     public static final String PHONE_LENGTH_EXCEPTION = " phone length must equals " + PHONE_LENGTH;
+    public static final String LOGIN_ALREADY_EXIST_EXCEPTION = " login already exist ";
     private final BookingService bookingService;
-    private final CheckOutService checkoutService;
+    private final CheckoutService checkoutService;
     private final UserDaoImplementation usersDao;
 
     public UserService(UserDaoImplementation usersDao,
                        BookingService bookingService,
-                       CheckOutService checkoutService) {
+                       CheckoutService checkoutService) {
         this.usersDao = usersDao;
         this.bookingService = bookingService;
         this.checkoutService = checkoutService;
@@ -46,8 +47,8 @@ public class UserService implements ModifyByLibrarianService<User> {
         //userRepository.save(user);
         //user.setRole(roleRepository.findOne(user.getId()));
         checkValidParameters(user);
+        if (usersDao.findByLogin(user.getLogin()) != null) throw new Exception(LOGIN_ALREADY_EXIST_EXCEPTION);
         try {
-            if (usersDao.findByLogin(user.getLogin()) != null) throw new Exception();
             user.setAuth(false);
             usersDao.add(user);
         } catch (Exception e) {

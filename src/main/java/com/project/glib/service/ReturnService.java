@@ -21,7 +21,7 @@ public class ReturnService {
     private final JournalService journalService;
     private final AudioVideoService avService;
     private final DocumentPhysicalService docPhysService;
-    private final CheckOutService checkoutService;
+    private final CheckoutService checkoutService;
     private final UserService userService;
     private final BookingService bookingService;
     // TODO modify to service
@@ -32,7 +32,7 @@ public class ReturnService {
                          JournalService journalService,
                          AudioVideoService avService,
                          DocumentPhysicalService docPhysService,
-                         CheckOutService checkoutService,
+                         CheckoutService checkoutService,
                          UserService userService,
                          BookingService bookingService,
                          MessageDaoImplementation messageDao) {

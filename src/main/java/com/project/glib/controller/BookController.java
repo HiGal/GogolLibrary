@@ -32,7 +32,7 @@
 ////                System.out.println(book.getCount());
 ////                bookDao.decrementCountById(book.getId());
 ////                System.out.println(book.getCount());
-////                docPhysDao.removeByDocIdAndDocType(book.getId(), Document.BOOK);
+////                docPhysDao.removeAllByDocIdAndDocType(book.getId(), Document.BOOK);
 ////            }
 ////            return "Book/books is/are successfully removed";
 ////        } catch (Exception e) {

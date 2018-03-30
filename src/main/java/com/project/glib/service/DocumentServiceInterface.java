@@ -9,6 +9,7 @@ public interface DocumentServiceInterface<T extends Document> extends ModifyByLi
     String TITLE_EXCEPTION = " title must exist ";
     String AUTHOR_EXCEPTION = " author must exist ";
     String EDITOR_EXCEPTION = " editor must exist ";
+    String EDITION_EXCEPTION = " edition must be positive ";
     String PUBLISHER_EXCEPTION = " publisher must exist ";
     String NAME_EXCEPTION = " name must exist ";
     String NOTE_EXCEPTION = " invalid note ";

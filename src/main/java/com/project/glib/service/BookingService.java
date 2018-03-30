@@ -53,7 +53,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private final AudioVideoService avService;
     private final UserService userService;
     private final DocumentPhysicalService docPhysService;
-    private final CheckOutService checkoutService;
+    private final CheckoutService checkoutService;
     // TODO modify to Service
     private final MessageDaoImplementation messageDao;
     private final BookingDaoImplementation bookingDao;
@@ -64,7 +64,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                           AudioVideoService avService,
                           DocumentPhysicalService docPhysService,
                           @Lazy UserService userService,
-                          @Lazy CheckOutService checkoutService,
+                          @Lazy CheckoutService checkoutService,
                           MessageDaoImplementation messageDao,
                           BookingDaoImplementation bookingDao) {
         this.bookService = bookService;

@@ -46,8 +46,8 @@ public class AudioVideoServiceTest {
         avService.add(av, shelf1);
         avInDao = avService.isAlreadyExist(av);
 
-        assertEquals(avInDao, av);
-        assertTrue(docPhysService.getCount(avInDao.getId(), Document.AV) == avInDao.getCount());
+        assertEquals(av, avInDao);
+        assertEquals(docPhysService.getCount(avInDao.getId(), Document.AV), avInDao.getCount());
     }
 
     @Test
@@ -58,8 +58,8 @@ public class AudioVideoServiceTest {
         avService.add(av, shelf2);
         avInDao = avService.isAlreadyExist(av);
 
-        assertTrue(avInDao.getCount() == count1 + count2);
-        assertTrue(docPhysService.getCount(avInDao.getId(), Document.AV) == avInDao.getCount());
+        assertEquals(count1 + count2, avInDao.getCount());
+        assertEquals(docPhysService.getCount(avInDao.getId(), Document.AV), avInDao.getCount());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class AudioVideoServiceTest {
         try {
             avService.add(av, "");
         } catch (Exception e) {
-            assertEquals(e.getMessage(), SHELF_EXCEPTION);
+            assertEquals(SHELF_EXCEPTION, e.getMessage());
         }
     }
 
@@ -83,8 +83,8 @@ public class AudioVideoServiceTest {
         avService.update(av);
         avInDao = avService.isAlreadyExist(av);
 
-        assertEquals(avInDao, av);
-        assertTrue(docPhysService.getCount(avInDao.getId(), Document.AV) == avInDao.getCount());
+        assertEquals(av, avInDao);
+        assertEquals(docPhysService.getCount(avInDao.getId(), Document.AV), avInDao.getCount());
     }
 
     @Test
@@ -94,7 +94,7 @@ public class AudioVideoServiceTest {
 
         avInDao = avService.isAlreadyExist(av);
         assertNull(avInDao);
-        assertTrue(docPhysService.getCount(av.getId(), Document.AV) == 0);
+        assertEquals(0, docPhysService.getCount(av.getId(), Document.AV));
     }
 
     @Test
@@ -103,7 +103,7 @@ public class AudioVideoServiceTest {
             av.setTitle("");
             avService.checkValidParameters(av);
         } catch (Exception e){
-            assertEquals(e.getMessage(), TITLE_EXCEPTION);
+            assertEquals(TITLE_EXCEPTION, e.getMessage());
         }
     }
 
@@ -113,7 +113,7 @@ public class AudioVideoServiceTest {
             av.setAuthor("");
             avService.checkValidParameters(av);
         } catch (Exception e){
-            assertEquals(e.getMessage(), AUTHOR_EXCEPTION);
+            assertEquals(AUTHOR_EXCEPTION, e.getMessage());
         }
     }
 
@@ -123,7 +123,7 @@ public class AudioVideoServiceTest {
             av.setPrice(-1);
             avService.checkValidParameters(av);
         } catch (Exception e){
-            assertEquals(e.getMessage(), PRICE_EXCEPTION);
+            assertEquals(PRICE_EXCEPTION, e.getMessage());
         }
     }
 
@@ -133,7 +133,7 @@ public class AudioVideoServiceTest {
             av.setCount(-10);
             avService.checkValidParameters(av);
         } catch (Exception e){
-            assertEquals(e.getMessage(), COUNT_EXCEPTION);
+            assertEquals(COUNT_EXCEPTION, e.getMessage());
         }
     }
 
@@ -150,20 +150,7 @@ public class AudioVideoServiceTest {
         avInDao = avService.isAlreadyExist(av);
 
         assertNotNull(avInDao);
-        assertEquals(avInDao, av);
-    }
-
-    @Test
-    public void getByIdReturnNull(){
-        assertNull(avService.getById(av.getId()));
-    }
-
-    @Test
-    public void getByIdReturnAV() throws Exception {
-        avService.add(av, shelf1);
-        avInDao = avService.getById(av.getId());
-
-        assertEquals(avInDao, av);
+        assertEquals(av, avInDao);
     }
 
     @Test
@@ -171,13 +158,13 @@ public class AudioVideoServiceTest {
         try {
             avService.getId(av);
         } catch (Exception e){
-            assertEquals(e.getMessage(), EXIST_EXCEPTION);
+            assertEquals(EXIST_EXCEPTION, e.getMessage());
         }
     }
 
     @Test
     public void getIdReturnId() throws Exception {
         avService.add(av, shelf1);
-        assertTrue(avService.getId(av) == av.getId());
+        assertEquals(av.getId(), avService.getId(av));
     }
 }
