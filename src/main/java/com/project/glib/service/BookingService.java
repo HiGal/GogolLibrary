@@ -164,7 +164,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
         try {
-            if (booking.isActive()) {
+            if (bookingCanCheckout(booking)) {
                 setBookingActiveToTrue(getBookingWithMaxPriority(booking.getDocVirId(), booking.getDocType()));
             }
             recalculatePriority(booking.getDocVirId(), booking.getDocType());
@@ -299,14 +299,42 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private void deletePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
-            if (booking.getPriority() < PRIORITY.get(ACTIVE)) {
+            if (bookingInQueue(booking)) {
                 bookingDao.remove(booking.getId());
             }
         }
     }
 
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    private void recalculateAll() {
+        for (Booking booking : getList()) {
+            if (bookingInQueue(booking)) {
+                int waitingDays = convertToDays(System.nanoTime() - booking.getBookingDate());
+                booking.setPriority(booking.getPriority() + waitingDays);
+                bookingDao.update(booking);
+            }
+        }
+    }
 
-    public void setBookingActiveToTrue(Booking booking) {
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    private void deleteLateBookings() throws Exception {
+        for (Booking booking : getList()) {
+            boolean isLate = System.nanoTime() - booking.getBookingDate() > DAY_IN_MILLISECONDS;
+            if (bookingCanCheckout(booking) && isLate) {
+                remove(booking.getId());
+            }
+        }
+    }
+
+    private boolean bookingInQueue(Booking booking) {
+        return booking.getPriority() < PRIORITY.get(ACTIVE);
+    }
+
+    private boolean bookingCanCheckout(Booking booking) {
+        return booking.getPriority() >= PRIORITY.get(EXPECTED);
+    }
+
+    protected void setBookingActiveToTrue(Booking booking) {
         booking.setActive(true);
         booking.setBookingDate(System.nanoTime());
         booking.setPriority(PRIORITY.get(EXPECTED));
