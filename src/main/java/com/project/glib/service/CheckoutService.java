@@ -52,10 +52,9 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         this.messageDao = messageDao;
     }
 
-    public void add(Checkout checkout) throws Exception {
+    protected void add(Checkout checkout) throws Exception {
         checkValidParameters(checkout);
-        if (alreadyHasThisCheckout(checkout.getDocPhysId(),
-                docPhysService.getTypeByID(checkout.getDocPhysId()), checkout.getUserId()))
+        if (alreadyHasThisCheckout(checkout.getDocPhysId(), checkout.getUserId()))
             throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
         try {
             checkoutDao.add(checkout);
@@ -168,13 +167,9 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
 
         bookingService.remove(booking.getId());
         messageDao.removeOneByUserID(booking.getUserId(), booking.getDocVirId());
-        long docPhysId = getValidDocPhysId(booking.getDocVirId(), booking.getDocType());
+        long docPhysId = booking.getDocPhysId();
         add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
-    }
-
-    private long getValidDocPhysId(long docVirId, String docType) {
-        return 0;
     }
 
     @Override
@@ -201,11 +196,9 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
-    public long getNumberOfCheckoutDocumentsByUser(long userId) throws Exception {
+    public int getNumberOfCheckoutDocumentsByUser(long userId) throws Exception {
         try {
-            return getList().stream()
-                    .filter(checkout -> checkout.getUserId() == userId)
-                    .count();
+            return getCheckoutsByUser(userId).size();
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
@@ -221,10 +214,25 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
-    public boolean alreadyHasThisCheckout(long docId, String docType, long userId) {
-        return getList().stream()
+    public boolean alreadyHasThisCheckout(long docPhysId, long userId) {
+        DocumentPhysical docPhys = docPhysService.getById(docPhysId);
+
+        List<DocumentPhysical> docPhysList = docPhysService.getList().stream()
+                .filter(doc -> doc.getDocVirId() == docPhys.getDocVirId())
+                .filter(doc -> doc.getDocType().equals(docPhys.getDocType()))
+                .collect(Collectors.toList());
+
+        List<Checkout> checkoutList = getList().stream()
                 .filter(checkout -> checkout.getUserId() == userId)
-                .anyMatch(checkout -> checkout.getDocPhysId() == docId);
+                .collect(Collectors.toList());
+
+        for (Checkout checkout : checkoutList) {
+            for (DocumentPhysical currentDocPhys : docPhysList) {
+                if (checkout.getDocPhysId() == currentDocPhys.getId()) return true;
+            }
+        }
+
+        return false;
     }
 
     public long getUserIdByDocPhysId(long docPhysId) throws Exception {

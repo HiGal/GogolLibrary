@@ -8,6 +8,7 @@ import com.project.glib.model.DocumentPhysical;
 import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private static final String EXPECTED = "EXPECTED";
     private static final String EMPTY_SHELF = "EMPTY";
     private static final long EMPTY_ID = 0L;
+    private static final long DAY_IN_MILLISECONDS = 86400000000000L;
     private static final HashMap<String, Integer> PRIORITY = new HashMap<>();
 
     static {
@@ -87,6 +89,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     public void outstandingRequest(Booking booking) throws Exception {
         long userId = booking.getUserId();
         long docVirId = booking.getDocVirId();
+        long docPhysId = booking.getDocPhysId();
         String docType = booking.getDocType();
 
         if (!userService.getIsAuthById(userId)) {
@@ -97,7 +100,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
         }
 
-        if (checkoutService.alreadyHasThisCheckout(docVirId, docType, userId)) {
+        if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
             throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
         }
 
@@ -161,7 +164,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     }
 
     /**
-     * Checks all parametrs of the booking in case of appropriation
+     * Checks all parameters of the booking in case of appropriation
      * to the library system
      *
      * @param booking booking record to put in the DB
@@ -207,10 +210,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
         }
 
-        if (checkoutService.alreadyHasThisCheckout(docVirId, docType, userId)) {
-            throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
-        }
-
         checkValidToBook(docVirId, docType);
 
         long docPhysId = EMPTY_ID;
@@ -246,10 +245,14 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 priority = PRIORITY.get(EXPECTED);
                 isActive = true;
             }
-        } finally {
-            recalculatePriority(docVirId, docType);
-            add(new Booking(userId, docVirId, docType, docPhysId, System.nanoTime(), isActive, priority, shelf));
         }
+
+        if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
+            throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
+        }
+
+        recalculatePriority(docVirId, docType);
+        add(new Booking(userId, docVirId, docType, docPhysId, System.nanoTime(), isActive, priority, shelf));
     }
 
     private void checkValidToBook(long docVirId, String docType) throws Exception {
@@ -271,7 +274,8 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    void recalculatePriority(long docVirId, String docType) {
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    public void recalculatePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
             if (!booking.isActive()) {
@@ -290,6 +294,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
     }
+
 
     public void setBookingActiveToTrue(Booking booking) {
         booking.setActive(true);
