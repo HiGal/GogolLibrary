@@ -12,41 +12,41 @@ public class Messages {
     private long id;
 
     @Column(name = "id_user")
-    private long id_user;
+    private long userId;
 
     @Column(name = "message")
     private String message;
 
     @Column(name = "id_doc")
-    private long id_doc;
+    private long docPhysId;
 
     @Column(name = "doc_type")
-    private String doc_type;
+    private String docType;
 
     @Column(name = "is_read")
-    private boolean is_read;
+    private boolean isRead;
 
     public Messages() {
 
     }
 
-    public Messages(long id_user, String message, long id_doc, String doc_type, boolean is_read) {
-        this.id_user = id_user;
+    public Messages(long userId, String message, long docPhysId, String docType, boolean isRead) {
+        this.userId = userId;
         this.message = message;
-        this.id_doc = id_doc;
-        this.doc_type = doc_type;
-        this.is_read = is_read;
+        this.docPhysId = docPhysId;
+        this.docType = docType;
+        this.isRead = isRead;
     }
 
     @Override
     public String toString() {
         return "Messages{" +
                 "id=" + id +
-                ", id_user=" + id_user +
+                ", userId=" + userId +
                 ", message=" + message +
-                ", id_doc=" + id_doc +
-                ", doc_type=" + doc_type +
-                ", is_read=" + is_read +
+                ", docPhysId=" + docPhysId +
+                ", docType=" + docType +
+                ", isRead=" + isRead +
                 '}';
     }
 
@@ -58,12 +58,12 @@ public class Messages {
         this.id = id;
     }
 
-    public long getId_user() {
-        return id_user;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId_user(long id_user) {
-        this.id_user = id_user;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getMessage() {
@@ -74,27 +74,27 @@ public class Messages {
         this.message = message;
     }
 
-    public long getId_doc() {
-        return id_doc;
+    public long getDocPhysId() {
+        return docPhysId;
     }
 
-    public void setId_doc(long id_doc) {
-        this.id_doc = id_doc;
+    public void setDocPhysId(long docPhysId) {
+        this.docPhysId = docPhysId;
     }
 
-    public String getDoc_type() {
-        return doc_type;
+    public String getDocType() {
+        return docType;
     }
 
-    public void setDoc_type(String doc_type) {
-        this.doc_type = doc_type;
+    public void setDocType(String docType) {
+        this.docType = docType;
     }
 
     public boolean getIsRead() {
-        return is_read;
+        return isRead;
     }
 
-    public void setIs_read(boolean is_read) {
-        this.is_read = is_read;
+    public void setRead(boolean read) {
+        this.isRead = read;
     }
 }

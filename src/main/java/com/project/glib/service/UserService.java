@@ -1,6 +1,5 @@
 package com.project.glib.service;
 
-import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.dao.implementations.UserDaoImplementation;
 import com.project.glib.model.Booking;
 import com.project.glib.model.User;
@@ -34,15 +33,16 @@ public class UserService implements ModifyByLibrarianService<User> {
     private final BookingService bookingService;
     private final CheckoutService checkoutService;
     private final UserDaoImplementation usersDao;
-    private final MessageDaoImplementation messageDao;
+    private final MessageService messageService;
 
     public UserService(UserDaoImplementation usersDao,
                        BookingService bookingService,
-                       CheckoutService checkoutService, MessageDaoImplementation messageDao) {
+                       CheckoutService checkoutService,
+                       MessageService messageService) {
         this.usersDao = usersDao;
         this.bookingService = bookingService;
         this.checkoutService = checkoutService;
-        this.messageDao = messageDao;
+        this.messageService = messageService;
     }
 
     public void add(User user) throws Exception {
@@ -76,7 +76,7 @@ public class UserService implements ModifyByLibrarianService<User> {
     public void remove(long userId) throws Exception {
         try {
             if (checkoutService.getCheckoutsByUser(userId).size() == 0) {
-                messageDao.removeAllByUserID(userId);
+                messageService.removeAllByUserID(userId);
                 removeAllBookingsByUserId(userId);
                 usersDao.remove(userId);
             } else {
