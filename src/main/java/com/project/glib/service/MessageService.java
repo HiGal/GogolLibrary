@@ -4,7 +4,9 @@ import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.dao.interfaces.MessagesRepository;
 import com.project.glib.model.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import sun.misc.resources.Messages_es;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +17,7 @@ public class MessageService {
     public static final String CHECKOUT_DOCUMENT = "Please, visit a library and checkout a document:  ";
     public static final String DELETED_QUEUE = "Sorry, but you were deleted from the queue for the next document: ";
     public static final String LATE_DELETED = "Sorry, but you are late to checkout document: ";
-
+    private static final long DAY_IN_MILLISECONDS = 86400000000000L;
     private final MessageDaoImplementation messageDao;
     private final MessagesRepository messagesRepository;
 
@@ -24,6 +26,20 @@ public class MessageService {
         this.messageDao = messageDao;
 
         this.messagesRepository = messagesRepository;
+    }
+
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    private void deleteReadMes() throws Exception {
+        List<Messages> list = messageDao.getList();
+        for (int i = 0; i < list.size(); i++) {
+            Messages mes = list.get(i);
+            if (!(mes.getMessage().equals(RETURN_DOCUMENT) ||
+                    mes.getMessage().equals(CHECKOUT_DOCUMENT))) {
+                if (mes.getIsRead()) {
+                    messageDao.remove(mes.getId());
+                }
+            }
+        }
     }
 
     public void addMes(long id_user, long id_doc, String type, String message) throws Exception {

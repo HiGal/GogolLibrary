@@ -25,7 +25,7 @@ public class ReturnService {
     private final UserService userService;
     private final BookingService bookingService;
     // TODO modify to service
-    private final MessageDaoImplementation messageDao;
+    private final MessageService messageService;
 
     @Autowired
     public ReturnService(BookService bookService,
@@ -35,7 +35,7 @@ public class ReturnService {
                          CheckoutService checkoutService,
                          UserService userService,
                          BookingService bookingService,
-                         MessageDaoImplementation messageDao) {
+                         MessageService messageService) {
         this.bookService = bookService;
         this.journalService = journalService;
         this.avService = avService;
@@ -43,13 +43,15 @@ public class ReturnService {
         this.checkoutService = checkoutService;
         this.userService = userService;
         this.bookingService = bookingService;
-        this.messageDao = messageDao;
+        this.messageService = messageService;
     }
 
     public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
         checkoutService.remove(checkout.getId());
 
-        messageDao.removeOneByUserID(checkout.getUserId(), checkout.getDocPhysId());
+        messageService.removeOneByUserID(checkout.getUserId(),
+                checkout.getDocPhysId(),
+                MessageService.RETURN_DOCUMENT);
 
         long docVirId = docPhysService.getDocIdByID(checkout.getDocPhysId());
         String docType = docPhysService.getTypeByID(checkout.getDocPhysId());
@@ -73,20 +75,20 @@ public class ReturnService {
             }
         } else if (bookingOnThisDocument != null) {
             // TODO Maybe change method parameters to (Booking booking, String message)
-            messageDao.addMes(
+            messageService.addMes(
                     bookingOnThisDocument.getId(),
                     docVirId,
                     docType,
-                    MessageDaoImplementation.CHECKOUT_DOCUMENT);
+                    MessageService.CHECKOUT_DOCUMENT);
         } else {
             Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
             bookingService.setBookingActiveToTrue(bookingWithMaxPriority);
 
-            messageDao.addMes(
+            messageService.addMes(
                     bookingWithMaxPriority.getId(),
                     docVirId,
                     docType,
-                    MessageDaoImplementation.CHECKOUT_DOCUMENT);
+                    MessageService.CHECKOUT_DOCUMENT);
         }
         return new Pair<>(checkout, getOverdue(checkout));
     }

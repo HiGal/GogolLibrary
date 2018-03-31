@@ -40,7 +40,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                            DocumentPhysicalService docPhysService,
                            @Lazy BookingService bookingService,
                            @Lazy UserService userService,
-                          MessageService messageService,
+                           MessageService messageService,
                            CheckoutDaoImplementation checkoutDao) {
         this.bookService = bookService;
         this.journalService = journalService;
@@ -166,11 +166,12 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         bookingService.remove(booking.getId());
-        messageService.removeOneByUserID(booking.getUserId(), booking.getDocVirId(), MessageService.CHECKOUT_DOCUMENT);
-        long docPhysId = getValidDocPhysId(booking.getDocVirId(), booking.getDocType());
+        messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
+        long docPhysId = booking.getDocPhysId();
         add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
     }
+
 
     @Override
     public Checkout getById(long checkoutId) {

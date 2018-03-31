@@ -90,7 +90,7 @@ public class Messages {
         this.doc_type = doc_type;
     }
 
-    public boolean isIs_read() {
+    public boolean getIsRead() {
         return is_read;
     }
 

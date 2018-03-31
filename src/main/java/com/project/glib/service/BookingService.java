@@ -285,7 +285,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
     public void recalculatePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {

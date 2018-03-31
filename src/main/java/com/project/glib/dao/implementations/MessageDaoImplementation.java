@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Repository
 public class MessageDaoImplementation {
@@ -49,5 +49,10 @@ public class MessageDaoImplementation {
             logger.info("Try to delete message with wrong message id = " + messageID);
             throw new Exception("Delete this message not available, message don't exist");
         }
+    }
+
+    public List<Messages> getList() {
+        List<Messages> mes = messagesRepository.findAll();
+        return mes;
     }
 }
