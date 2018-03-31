@@ -1,8 +1,10 @@
 package com.project.glib.service;
 
+import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.dao.implementations.UserDaoImplementation;
 import com.project.glib.model.Booking;
 import com.project.glib.model.User;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,16 +35,21 @@ public class UserService implements ModifyByLibrarianService<User> {
     private final BookingService bookingService;
     private final CheckoutService checkoutService;
     private final UserDaoImplementation usersDao;
+    private final MessageDaoImplementation messageDao;
 
     public UserService(UserDaoImplementation usersDao,
                        BookingService bookingService,
-                       CheckoutService checkoutService) {
+                       CheckoutService checkoutService, MessageDaoImplementation messageDao) {
         this.usersDao = usersDao;
         this.bookingService = bookingService;
         this.checkoutService = checkoutService;
+        this.messageDao = messageDao;
     }
 
     public void add(User user) throws Exception {
+
+        //TODO check this code ->
+
         //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         //userRepository.save(user);
         //user.setRole(roleRepository.findOne(user.getId()));
@@ -70,6 +77,7 @@ public class UserService implements ModifyByLibrarianService<User> {
     public void remove(long userId) throws Exception {
         try {
             if (checkoutService.getCheckoutsByUser(userId).size() == 0) {
+                messageDao.removeAllByUserID(userId);
                 removeAllBookingsByUserId(userId);
                 usersDao.remove(userId);
             } else {

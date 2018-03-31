@@ -55,7 +55,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private final DocumentPhysicalService docPhysService;
     private final CheckoutService checkoutService;
     // TODO modify to Service
-    private final MessageDaoImplementation messageDao;
+    private final MessageService messageService;
     private final BookingDaoImplementation bookingDao;
 
     @Autowired
@@ -65,7 +65,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                           DocumentPhysicalService docPhysService,
                           @Lazy UserService userService,
                           @Lazy CheckoutService checkoutService,
-                          MessageDaoImplementation messageDao,
+                          MessageService messageService,
                           BookingDaoImplementation bookingDao) {
         this.bookService = bookService;
         this.journalService = journalService;
@@ -73,7 +73,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         this.docPhysService = docPhysService;
         this.userService = userService;
         this.checkoutService = checkoutService;
-        this.messageDao = messageDao;
+        this.messageService = messageService;
         this.bookingDao = bookingDao;
     }
 
@@ -103,8 +103,19 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
         checkValidParameters(booking);
 
-        // TODO really?
+        List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
+        for (int i = 0; i < bookings.size(); i++) {
+            messageService.addMes(bookings.get(i).getUserId(),
+                    bookings.get(i).getDocVirId(),
+                    bookings.get(i).getDocType(),
+                    MessageService.DELETED_QUEUE
+            );
+        }
+
+        // TODO check the deletion of all priority
         deletePriority(docVirId, docType);
+
+        // add outstanding booking
         booking.setActive(true);
         booking.setBookingDate(System.nanoTime());
         booking.setPriority(PRIORITY.get(OUTSTANDING));

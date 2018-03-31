@@ -30,7 +30,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
     private final BookingService bookingService;
     private final UserService userService;
     // TODO modify to service
-    private final MessageDaoImplementation messageDao;
+    private final MessageService messageService;
     private final CheckoutDaoImplementation checkoutDao;
 
     @Autowired
@@ -40,7 +40,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                            DocumentPhysicalService docPhysService,
                            @Lazy BookingService bookingService,
                            @Lazy UserService userService,
-                           MessageDaoImplementation messageDao,
+                          MessageService messageService,
                            CheckoutDaoImplementation checkoutDao) {
         this.bookService = bookService;
         this.journalService = journalService;
@@ -49,7 +49,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         this.bookingService = bookingService;
         this.checkoutDao = checkoutDao;
         this.userService = userService;
-        this.messageDao = messageDao;
+        this.messageService = messageService;
     }
 
     public void add(Checkout checkout) throws Exception {
@@ -167,7 +167,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         bookingService.remove(booking.getId());
-        messageDao.removeOneByUserID(booking.getUserId(), booking.getDocVirId());
+        messageService.removeOneByUserID(booking.getUserId(), booking.getDocVirId(), MessageService.CHECKOUT_DOCUMENT);
         long docPhysId = getValidDocPhysId(booking.getDocVirId(), booking.getDocType());
         add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
