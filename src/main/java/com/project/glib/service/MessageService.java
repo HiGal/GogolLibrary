@@ -61,21 +61,21 @@ public class MessageService {
 
     public boolean alreadyHasThisMessage(long id_user, long id_doc, String message) {
         Messages mes = messagesRepository.findAll().stream()
-                .filter(messages -> messages.getId_user() == id_doc)
-                .filter(messages -> messages.getId_doc() == id_user)
+                .filter(messages -> messages.getUserId() == id_doc)
+                .filter(messages -> messages.getDocPhysId() == id_user)
                 .findAny().get();
         return mes.getMessage().equals(message);
     }
 
     public List<Messages> getAllByUserID(long userId) {
         return messagesRepository.findAll().stream()
-                .filter(messages -> messages.getId_user() == userId)
+                .filter(messages -> messages.getUserId() == userId)
                 .collect(Collectors.toList());
     }
 
     public void removeAllByUserID(long userId) throws Exception {
         List<Messages> list = messagesRepository.findAll().stream()
-                .filter(messages -> messages.getId_user() == userId)
+                .filter(messages -> messages.getUserId() == userId)
                 .collect(Collectors.toList());
         try {
             for (Messages aList : list) {
@@ -88,8 +88,8 @@ public class MessageService {
 
     public void removeOneByUserID(long userId, long doc_id, String mes) throws Exception {
         List<Messages> list = messagesRepository.findAll().stream()
-                .filter(messages -> messages.getId_user() == userId)
-                .filter(messages -> messages.getId_doc() == doc_id)
+                .filter(messages -> messages.getUserId() == userId)
+                .filter(messages -> messages.getDocPhysId() == doc_id)
                 .filter(messages -> messages.getMessage().equals(mes))
                 .collect(Collectors.toList());
         if (list != null) {
