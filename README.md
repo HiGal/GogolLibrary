@@ -1,6 +1,6 @@
 # GogolLibrary
-+ Java (Spring) -CSS-HTML-JavaScript implemetion of Library Management System web application: 
-Introduction to Programming project by students of Innopolis University of BS1-2 group.
++ Java (Spring) -CSS-HTML-JavaScript implementation of Library Management System web application.
++ Introduction to Programming project by students of Innopolis University of BS1-2 group.
 + Team: Zhuchkov Alexey, Mazan Ilya, Galeev Farit, Zaynullin Ruslan
 
 # Contents
@@ -15,7 +15,7 @@ Introduction to Programming project by students of Innopolis University of BS1-2
   + <a href="#installation">Usage</a>
     + <a href="#inst">Installation of software</a>
     + <a href="#launch">Launching the project</a>
-    + <a href="#entry">Entrying</a>
+    + <a href="#entry">Entering</a>
     + <a href="#browse">Browsing web pages</a>
   + <a href="#soft">Soft in use</a>
   + <a href="#issue">Issues?</a>
@@ -116,28 +116,21 @@ Every time user check out document - mount of copies in the library decrease.
 ## Entrying
 </a>
 There are some pre-signed up users:
-<ul>
-   <li> Student:
-      <ul>
-         <li> login - 
-         <li> password - 123
-      </ul>
-   <li> Professor:
-      <ul>
-         <li> login - 
-         <li> password - 123
-      </ul>
-   <li> Librarian:
-      <ul>
-         <li> login - 
-         <li> password  - 123
-     </ul>
- </ul>
+
+|     User           |     Login          | Password |
+| ------------------ |:------------------:| --------:|
+| Student            | a.zhuchkov         |    123   |
+| Student            | r.zaunullin        |    123   |
+| Professor          | f.galeev           |    123   |
+| Instructor         | i.mazan            |    123   |
+| Teacher Assistant  | h.aslam            |    123   |
+| Visiting Professor | b.meyer            |    123   |
+| Librarian          | a.admin            |    666   |
      
 <a name="browse">
 
 ##Browsing Web pages
-### There are some scenarious
+### There are some scenarios
 
 <a name="soft">
 
@@ -153,11 +146,8 @@ There are some pre-signed up users:
 <a name="issue">
     
 ## Issues ?
-</a>
-
-### If something goes wrong:
-  + Still have some problems? Please contact one of us in Telegram:
-    + Zhuchkov Alexey @Aleksey_zhu
-    + Mazan Ilya @HardLight
-    + Galeev Farit @FirstOfAll
-    + Zaynullin Ruslan @BloodyTag51
+ If something goes wrong, please, contact one of us via Telegram:
+   + Zhuchkov Alexey ***@Aleksey_zhu***
+   + Mazan Ilya ***@HardLight***
+   + Galeev Farit ***@FirstOfAll***
+   + Zaynullin Ruslan ***@BloodyTag51***
