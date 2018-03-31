@@ -8,7 +8,7 @@
 }
 
 body {
-    background: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg') no-repeat center center fixed;
+    background: url('img/wall.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -29,9 +29,19 @@ body {
 
 .users{
     background-color: white;
-    max-width: 800px;
+    width: 1200px;
     border-radius: 6px;
     margin-top: 100px;
+}
+
+img{
+    max-height: 200px;
+    box-shadow: 5px 5px 15px grey;
+}
+
+
+.deck{
+    height: 400px;
 }
 
 #patrons{
@@ -58,6 +68,3 @@ body {
     padding: 15px;
 }
 
-.submit{
-
-}

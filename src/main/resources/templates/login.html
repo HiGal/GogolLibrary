@@ -5,7 +5,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -27,17 +27,39 @@
 
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
             <p id="profile-name" class="profile-name-card"></p>
-            <form class="form-signin" action="/login" method="post">
-                <pre>{{error}}</pre>
-                <input type="text" name="login" class="form-control"  placeholder="Login" required autofocus>
-                <input type="password" name="password"  class="form-control" placeholder="Password" required>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" formmethod="post">Sign in</button>
+            <form class="form-signin"  onsubmit="logcall()">
+                <input type="text" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
             </form><!-- /form -->
             <div class="register">
-                <a href="/registration" class="register">
+                <a href="register.html" class="register">
                     Create account
                 </a>
             </div>
+
+
+            <script type="text/javascript" language="javascript">
+                function logcall() {
+                    var myJson = {
+                        "login":document.getElementById("inputEmail").value,
+                        "password":document.getElementById("inputPassword").value
+                        };
+                    console.log(JSON.stringify(myJson));
+                    $.ajax({
+                        url: "/login",
+                        type: 'POST',
+                        data: myJson,
+                        success: function(data) {
+                                alert(data)},
+                        error:
+                                alert('fork')
+                    });
+
+                }
+            </script>
+
+
         </div>
     </div><!-- /card-container -->
 </div><!-- /container -->

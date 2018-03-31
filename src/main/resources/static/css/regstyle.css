@@ -1,7 +1,7 @@
 body, html {
     height: 100%;
     background-size: 100%;
-    background: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg') no-repeat;
+    background: url('img/wall.jpg') no-repeat;
     -webkit-background-size: 100%;
     font-family: 'Oxygen', sans-serif;
 }
@@ -27,7 +27,7 @@ hr {
 }
 
 label {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .input-group {
@@ -60,7 +60,12 @@ input::-webkit-input-placeholder {
 }
 
 .login-button {
-    margin-top: 5px;
+    margin-top: 3px;
+    background-color: #8391C4  ;
+}
+
+.login-button:hover{
+    background-color:#292262 ;
 }
 
 .login-register {

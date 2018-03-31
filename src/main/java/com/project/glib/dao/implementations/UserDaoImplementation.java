@@ -78,4 +78,5 @@ public class UserDaoImplementation implements ModifyByLibrarian<User> {
     public User findByLogin(String login) {
         return userRepository.findUserByLogin(login);
     }
+
 }
