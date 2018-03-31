@@ -2,11 +2,10 @@ package com.project.glib.service;
 
 import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.dao.interfaces.MessagesRepository;
-import com.project.glib.model.Messages;
+import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import sun.misc.resources.Messages_es;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,19 +19,26 @@ public class MessageService {
     private static final long DAY_IN_MILLISECONDS = 86400000000000L;
     private final MessageDaoImplementation messageDao;
     private final MessagesRepository messagesRepository;
+    private final DocumentPhysicalService documentPhysicalService;
+    private final BookService bookService;
+    private final JournalService journalService;
+    private final AudioVideoService audioVideoService;
 
     @Autowired
-    MessageService(MessageDaoImplementation messageDao, MessagesRepository messagesRepository) {
+    MessageService(MessageDaoImplementation messageDao, MessagesRepository messagesRepository, DocumentPhysicalService documentPhysicalService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService) {
         this.messageDao = messageDao;
 
         this.messagesRepository = messagesRepository;
+        this.documentPhysicalService = documentPhysicalService;
+        this.bookService = bookService;
+        this.journalService = journalService;
+        this.audioVideoService = audioVideoService;
     }
 
     @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
     private void deleteReadMes() throws Exception {
         List<Messages> list = messageDao.getList();
-        for (int i = 0; i < list.size(); i++) {
-            Messages mes = list.get(i);
+        for (Messages mes : list) {
             if (!(mes.getMessage().equals(RETURN_DOCUMENT) ||
                     mes.getMessage().equals(CHECKOUT_DOCUMENT))) {
                 if (mes.getIsRead()) {
@@ -58,11 +64,7 @@ public class MessageService {
                 .filter(messages -> messages.getId_user() == id_doc)
                 .filter(messages -> messages.getId_doc() == id_user)
                 .findAny().get();
-        if (mes != null) {
-            return mes.getMessage().equals(message);
-        } else {
-            return false;
-        }
+        return mes.getMessage().equals(message);
     }
 
     public List<Messages> getAllByUserID(long userId) {
@@ -93,8 +95,8 @@ public class MessageService {
         if (list != null) {
             if (list.get(0) != null) {
                 try {
-                    for (int i = 0; i < list.size(); i++) {
-                        messageDao.remove(list.get(i).getId());
+                    for (Messages aList : list) {
+                        messageDao.remove(aList.getId());
                     }
 
                 } catch (Exception e) {
@@ -106,5 +108,29 @@ public class MessageService {
         } else {
             throw new Exception("There is no messages for user " + userId + " about document " + doc_id);
         }
+    }
+
+    public String createMessage(long idPhys) {
+        DocumentPhysical documentPhysical = documentPhysicalService.getById(idPhys);
+        String result = "";
+        long id = documentPhysical.getDocVirId();
+        String type = documentPhysical.getDocType();
+
+        switch (type) {
+            case Document.BOOK:
+                Book book = bookService.getById(id);
+                result = book.getTitle() + book.getAuthor();
+                break;
+            case Document.JOURNAL:
+                Journal journal = journalService.getById(id);
+                result = journal.getTitle() + journal.getAuthor();
+                break;
+            case Document.AV:
+                AudioVideo av = audioVideoService.getById(id);
+                result = av.getTitle() + av.getAuthor();
+                break;
+        }
+
+        return result;
     }
 }

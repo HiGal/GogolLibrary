@@ -1,7 +1,6 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.CheckoutDaoImplementation;
-import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

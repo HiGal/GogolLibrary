@@ -9,12 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 @SpringBootApplication
 public class GlibApplication extends SpringBootServletInitializer {
+    public static void main(String[] args) {
+        SpringApplication.run(GlibApplication.class, args);
+    }
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(GlibApplication.class);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(GlibApplication.class, args);
     }
 }

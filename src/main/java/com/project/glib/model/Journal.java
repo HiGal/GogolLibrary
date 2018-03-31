@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table (name = "journal")
+@Table(name = "journal")
 public class Journal extends Document {
 
     @Id

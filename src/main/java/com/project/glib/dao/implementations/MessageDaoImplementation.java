@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public class MessageDaoImplementation {
-   private static final Logger logger = (Logger) LoggerFactory.getLogger(MessageDaoImplementation.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(MessageDaoImplementation.class);
     private final MessagesRepository messagesRepository;
 
     @Autowired

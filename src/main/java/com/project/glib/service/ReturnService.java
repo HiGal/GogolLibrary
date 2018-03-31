@@ -1,6 +1,5 @@
 package com.project.glib.service;
 
-import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.Booking;
 import com.project.glib.model.Checkout;
 import com.project.glib.model.Document;
@@ -79,7 +78,8 @@ public class ReturnService {
                     bookingOnThisDocument.getId(),
                     docVirId,
                     docType,
-                    MessageService.CHECKOUT_DOCUMENT);
+                    MessageService.CHECKOUT_DOCUMENT
+            );
         } else {
             Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
             bookingService.setBookingActiveToTrue(bookingWithMaxPriority);
@@ -88,7 +88,8 @@ public class ReturnService {
                     bookingWithMaxPriority.getId(),
                     docVirId,
                     docType,
-                    MessageService.CHECKOUT_DOCUMENT);
+                    MessageService.CHECKOUT_DOCUMENT
+            );
         }
         return new Pair<>(checkout, getOverdue(checkout));
     }

@@ -1,7 +1,6 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.BookingDaoImplementation;
-import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.Booking;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
@@ -321,6 +320,11 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         for (Booking booking : getList()) {
             boolean isLate = System.nanoTime() - booking.getBookingDate() > DAY_IN_MILLISECONDS;
             if (bookingCanCheckout(booking) && isLate) {
+                messageService.addMes(booking.getUserId(),
+                        booking.getDocPhysId(),
+                        booking.getDocType(),
+                        MessageService.LATE_DELETED
+                );
                 remove(booking.getId());
             }
         }

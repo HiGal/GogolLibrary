@@ -47,7 +47,7 @@ Introduction to Programming project by students of Innopolis University of BS1-2
 </a>
 All documents are stored in Database 
 
-which is typicly the abstract class for all documents.
+which is typically the abstract class for all documents.
 Below we have particular types of document extending from it: 
 
 <a name="user">
@@ -64,7 +64,7 @@ Below we have particular types of document extending from it:
   + Librarian
    *Is allowed to ***modify/delete/add*** any document or patron.*
 
-We assign the loged in user with new exemplar of appropriate class:
+We assign the logged in user with new exemplar of appropriate class:
 
         
 <a name="lib">
@@ -158,6 +158,6 @@ There are some pre-signed up users:
 ### If something goes wrong:
   + Still have some problems? Please contact one of us in Telegram:
     + Zhuchkov Alexey @Aleksey_zhu
-    + Mazan Ilya 
-    + Galeev Farit 
-    + Zaynullin Ruslan
+    + Mazan Ilya @HardLight
+    + Galeev Farit @FirstOfAll
+    + Zaynullin Ruslan @BloodyTag51
