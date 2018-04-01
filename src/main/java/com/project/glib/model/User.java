@@ -5,6 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
+
 public class User {
     public static final String TYPE = "USER";
     public static final String LIBRARIAN = "LIBRARIAN";
