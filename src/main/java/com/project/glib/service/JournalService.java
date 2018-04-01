@@ -73,6 +73,12 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     }
 
     @Override
+    public void removeCopy(long journalId, long copyId) throws Exception {
+        docPhysService.remove(copyId);
+        decrementCountById(journalId);
+    }
+
+    @Override
     public void checkValidParameters(Journal journal) throws Exception {
         if (journal.getPrice() <= 0) {
             throw new Exception(PRICE_EXCEPTION);

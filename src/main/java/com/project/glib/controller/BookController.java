@@ -1,43 +1,49 @@
-//package com.project.glib.controller;
-//
-//import com.project.glib.model.Book;
-//import com.project.glib.service.BookService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//@RestController()
-//public class BookController {
-//
-//    private final BookService bookDao;
-//
-//    @Autowired
-//    public BookController(BookService bookDao) {
-//        this.bookDao = bookDao;
-//    }
-//
-//    @RequestMapping(value = "/book/add", method = RequestMethod.POST)
-//    public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf) {
-//        try {
-//            bookDao.add(book, shelf);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return "";
-//    }
-//
-////    @RequestMapping(value = "/book/remove/{num_copies}", method = RequestMethod.POST)
-////    public String removeBook(@RequestBody Book book, @PathVariable("num_copies") int num) {
-////        try {
-////            for (int i = 0; i < num; i++) {
-////                System.out.println(book.getCount());
-////                bookDao.decrementCountById(book.getId());
-////                System.out.println(book.getCount());
-////                docPhysDao.removeAllByDocIdAndDocType(book.getId(), Document.BOOK);
-////            }
-////            return "Book/books is/are successfully removed";
-////        } catch (Exception e) {
-////            e.printStackTrace();
-////        }
-////        return "";
-////    }
-//}
+package com.project.glib.controller;
+
+import com.project.glib.model.Book;
+import com.project.glib.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+public class BookController {
+    private final BookService bookService;
+
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @RequestMapping(value = "/book/add", method = RequestMethod.POST)
+    public String addBook(@RequestBody Book book, @RequestParam(value = "shelf") String shelf) {
+        try {
+            bookService.add(book, shelf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    //    @RequestMapping(value = "/book/remove/{num_copies}", method = RequestMethod.POST)
+    public String removeBook(@RequestBody Book book) {
+        try {
+            bookService.remove(book.getId());
+            return "Book is successfully removed";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @RequestMapping(value = "/book/remove/{id_copy}", method = RequestMethod.POST)
+    public String removeCopyOfBook(@RequestBody Book book, @PathVariable("id_copy") long copyId) {
+        try {
+            bookService.removeCopy(book.getId(), copyId);
+            return "Copy of book is successfully removed";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+}

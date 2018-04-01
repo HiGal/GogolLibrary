@@ -37,10 +37,10 @@ public class LoginController {
 
                 if (role.equals(User.LIBRARIAN)) {
                     model.setViewName("librarian");
-                } else if (role.equals(User.STUDENT)) {
-                    model.setViewName("student");
-                } else if (Arrays.asList(User.FACULTY).contains(role)) {
-                    model.setViewName("faculty");
+                } else if (role.equals(User.STUDENT) ||
+                        Arrays.asList(User.FACULTY).contains(role) ||
+                        role.equals(User.PROFESSOR_VISITING)) {
+                    model.setViewName("patron");
                 } else {
                     throw new Exception("WRONG ROLE");
                 }

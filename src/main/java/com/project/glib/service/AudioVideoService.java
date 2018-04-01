@@ -73,6 +73,12 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     }
 
     @Override
+    public void removeCopy(long avId, long copyId) throws Exception {
+        docPhysService.remove(copyId);
+        decrementCountById(avId);
+    }
+
+    @Override
     public void checkValidParameters(AudioVideo audioVideo) throws Exception {
         if (audioVideo.getPrice() <= 0) {
             throw new Exception(PRICE_EXCEPTION);

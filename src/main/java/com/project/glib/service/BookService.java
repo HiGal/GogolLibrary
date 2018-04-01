@@ -74,6 +74,12 @@ public class BookService implements DocumentServiceInterface<Book> {
     }
 
     @Override
+    public void removeCopy(long bookId, long copyId) throws Exception {
+        docPhysService.remove(copyId);
+        decrementCountById(bookId);
+    }
+
+    @Override
     public void checkValidParameters(Book book) throws Exception {
         if (book.getPrice() <= 0) {
             throw new Exception(PRICE_EXCEPTION);

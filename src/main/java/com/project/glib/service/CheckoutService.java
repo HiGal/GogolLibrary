@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -120,44 +121,30 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
      */
     public void toCheckoutDocument(Booking booking) throws Exception {
         long additionalTime;
+        String userType = userService.getTypeById(booking.getUserId());
 
         switch (booking.getDocType()) {
             case Document.BOOK:
-                switch (userService.getTypeById(booking.getUserId())) {
-                    case User.STUDENT:
-                        long bookId = booking.getDocVirId();
-                        if (bookService.getNote(bookId).equals(Book.BESTSELLER)) {
-                            additionalTime = 2 * WEEK_IN_MILLISECONDS;
-                        } else {
-                            additionalTime = 3 * WEEK_IN_MILLISECONDS;
-                        }
-                        break;
-                    case User.INSTRUCTOR:
-                    case User.TA:
-                    case User.PROFESSOR:
-                        additionalTime = 4 * WEEK_IN_MILLISECONDS;
-                        break;
-                    case User.PROFESSOR_VISITING:
-                        additionalTime = WEEK_IN_MILLISECONDS;
-                        break;
-                    default:
-                        throw new Exception(TYPE_EXCEPTION);
+                if (userType.equals(User.STUDENT)) {
+                    long bookId = booking.getDocVirId();
+                    boolean isBestseller = bookService.getNote(bookId).equals(Book.BESTSELLER);
+                    additionalTime = isBestseller ? 2 * WEEK_IN_MILLISECONDS : 3 * WEEK_IN_MILLISECONDS;
+                } else if (Arrays.asList(User.FACULTY).contains(userType)) {
+                    additionalTime = 4 * WEEK_IN_MILLISECONDS;
+                } else if (userType.equals(User.PROFESSOR_VISITING)) {
+                    additionalTime = WEEK_IN_MILLISECONDS;
+                } else {
+                    throw new Exception(TYPE_EXCEPTION);
                 }
                 break;
             case Document.JOURNAL:
             case Document.AV:
-                switch (userService.getTypeById(booking.getUserId())) {
-                    case User.STUDENT:
-                    case User.INSTRUCTOR:
-                    case User.TA:
-                    case User.PROFESSOR:
-                        additionalTime = 2 * WEEK_IN_MILLISECONDS;
-                        break;
-                    case User.PROFESSOR_VISITING:
-                        additionalTime = WEEK_IN_MILLISECONDS;
-                        break;
-                    default:
-                        throw new Exception(DOC_TYPE_EXCEPTION);
+                if (userType.equals(User.STUDENT) || Arrays.asList(User.FACULTY).contains(userType)) {
+                    additionalTime = 2 * WEEK_IN_MILLISECONDS;
+                } else if (userType.equals(User.PROFESSOR_VISITING)) {
+                    additionalTime = WEEK_IN_MILLISECONDS;
+                } else {
+                    throw new Exception(TYPE_EXCEPTION);
                 }
                 break;
             default:
@@ -167,7 +154,10 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         bookingService.remove(booking.getId());
         messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
         long docPhysId = booking.getDocPhysId();
-        add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
+
+        add(new Checkout(booking.getUserId(), docPhysId, System.
+
+                nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
     }
 
