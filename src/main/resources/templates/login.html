@@ -26,13 +26,13 @@
 
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
             <p id="profile-name" class="profile-name-card"></p>
-            <form class="form-signin" action="Librarian.html" onsubmit="logcall()">
-                <input type="text" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <form class="form-signin" method="post" action="/login"  onsubmit="logcall()">
+                <input type="text" id="inputEmail" name="login" class="form-control" placeholder="Email address" required autofocus>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
             </form><!-- /form -->
             <div class="register">
-                <a href="register.html" class="register">
+                <a href="/register" class="register">
                     Create account
                 </a>
             </div>
@@ -40,24 +40,20 @@
 
             <script type="text/javascript" language="javascript">
                 function logcall() {
-                    var login = $("#inputEmail").val();
-                    var password =  $("#inputPassword").val();
                     var myJson = {
-                        "login": login,
-                        "password": password
+                        "login": $("#inputEmail").val(),
+                        "password": $("#inputPassword").val()
                     };
+                    var send = JSON.stringify(myJson);
+                    return false;
 
-                    $.ajax({
-                        url: '/login',
-
-                        type: 'POST',
-                        data: JSON.stringify(myJson),
-                        contentType: 'application/json',
-                        success:
-                            alert('succ'),
-                        error:
-                            alert('fork')
-                    });
+                    // $.ajax({
+                    //     url: '/login',
+                    //
+                    //     type: 'POST',
+                    //     data: JSON.stringify(myJson),
+                    //     contentType: 'application/json',
+                    // });
 
                 }
             </script>
