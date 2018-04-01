@@ -4,7 +4,9 @@ import com.project.glib.model.AudioVideo;
 import com.project.glib.service.AudioVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AudioVideoController {
@@ -28,25 +30,25 @@ public class AudioVideoController {
         return "";
     }
 
-    //    @RequestMapping(value = "/book/remove/{num_copies}", method = RequestMethod.POST)
-    public String removeAV(@RequestBody AudioVideo audioVideo) {
-        try {
-            audioVideoService.remove(audioVideo.getId());
-            return "AV is successfully removed";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    @RequestMapping(value = "/book/remove/{num_copies}", method = RequestMethod.POST)
+//    public String removeAV(@RequestBody AudioVideo audioVideo) {
+//        try {
+//            audioVideoService.remove(audioVideo.getId());
+//            return "AV is successfully removed";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
 
-    @RequestMapping(value = "/book/remove/{id_copy}", method = RequestMethod.POST)
-    public String removeCopyOfAV(@RequestBody AudioVideo audioVideo, @PathVariable("id_copy") long copyId) {
-        try {
-            audioVideoService.removeCopy(audioVideo.getId(), copyId);
-            return "Copy of AV is successfully removed";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+//    @RequestMapping(value = "/book/remove/{id_copy}", method = RequestMethod.POST)
+//    public String removeCopyOfAV(@RequestBody AudioVideo audioVideo, @PathVariable("id_copy") long copyId) {
+//        try {
+//            audioVideoService.removeCopy(audioVideo.getId(), copyId);
+//            return "Copy of AV is successfully removed";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+//    }
 }
