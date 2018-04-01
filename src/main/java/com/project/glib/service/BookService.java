@@ -57,6 +57,12 @@ public class BookService implements DocumentServiceInterface<Book> {
         checkValidParameters(book);
         // TODO solve case then librarian change count of books
         try {
+            Book existedBook = isAlreadyExist(book);
+            if (existedBook != null) {
+                existedBook.setCount(existedBook.getCount() + book.getCount());
+                existedBook.setPrice(book.getPrice());
+                book = existedBook;
+            }
             bookDao.update(book);
         } catch (Exception e) {
             throw new Exception(UPDATE_EXCEPTION);
