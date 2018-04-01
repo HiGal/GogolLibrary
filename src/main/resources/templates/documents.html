@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Books</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/patrons.css">
+    <link rel="stylesheet" href="../css/dialog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gogol Library</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="#">Books</a></li>
+                <li><a href="journals.html">Journals</a></li>
+                <li><a href="av.html">Auidio/Video</a></li>
+                <li><a href="../librarian/LogIn.html">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<section>
+
+    <div class="container users">
+        <div class="output"></div>
+
+        <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>Books</u></p>
+        <p class="header">Books</p>
+        <div class="container-fluid">
+            <div class="card-group">
+                <div class="col-sm-4 deck">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title">Introduction to Algorithms</h3>
+                            <h5 class="card-subtitle text-muted">Cormen</h5>
+                            <img src="../img/cormen.jpg">
+                            <p></p>
+                            <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 deck">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title">Touch of Class</h3>
+                            <h5 class="card-subtitle text-muted">B.Meyer</h5>
+                            <img src="../img/meyer.jpg">
+                            <p></p>
+                            <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 deck">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title">Introduction to Algorithms</h3>
+                            <h5 class="card-subtitle text-muted">Cormen</h5>
+                            <img src="../img/cormen.jpg">
+                            <p></p>
+                            <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 deck">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h3 class="card-title">Introduction to Algorithms</h3>
+                            <h5 class="card-subtitle text-muted">Cormen</h5>
+                            <img src="../img/cormen.jpg">
+                            <p></p>
+                            <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Modal, need to be field using js-->
+                <div class="modal" id="details" tabindex="-1" role="dialog" aria-labelledby="expansion"
+                     aria-hidden="true">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 id="expansion">Introduction to algorithms</h3>
+                        </div>
+                        <div class="modal-body body">
+                            <div class="row">
+                                <img src="../img/cormen.jpg" class="col-lg-4 image">
+                                <div class="col-lg-6 fields">
+                                    <h4 class="title"><b>Title: </b></h4>
+                                    <h4 class="edition"><b>Edition: </b></h4>
+                                    <h4 class="author"><b>Author: </b></h4>
+                                    <h4 class="publisher"><b>Published by: </b></h4>
+                                    <h4 class="description"><b>Description: </b></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="editB.html" class="btn btn-primary" >Edit</a>
+                            <button class="btn btn-primary">Delete</button>
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+</body>
+</html>

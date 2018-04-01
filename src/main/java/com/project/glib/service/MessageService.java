@@ -36,7 +36,7 @@ public class MessageService {
     }
 
     @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
-    private void deleteReadMes() throws Exception {
+    public void deleteReadMes() throws Exception {
         List<Messages> list = messageDao.getList();
         for (Messages mes : list) {
             if (!(mes.getMessage().equals(RETURN_DOCUMENT) ||

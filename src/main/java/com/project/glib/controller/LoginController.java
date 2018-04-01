@@ -1,6 +1,7 @@
 package com.project.glib.controller;
 
 import com.project.glib.model.User;
+import com.project.glib.service.BookService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,12 @@ import java.util.Arrays;
 @Controller
 public class LoginController {
     private final UserService userService;
+    private final BookService bookService;
 
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, BookService bookService) {
         this.userService = userService;
+        this.bookService = bookService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -50,5 +53,14 @@ public class LoginController {
         }
         return model;
     }
+
+    @RequestMapping(value = "/books", method = RequestMethod.GET)
+    public ModelAndView books() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allBooks", bookService.getList());
+        modelAndView.setViewName("documents");
+        return modelAndView;
+    }
+
 
 }
