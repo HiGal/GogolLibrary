@@ -14,7 +14,8 @@ public class User {
     public static final String PROFESSOR = "PROFESSOR";
     public static final String PROFESSOR_VISITING = "VISITING_PROFESSOR";
     public static final String[] FACULTY = {INSTRUCTOR, TA, PROFESSOR};
-    public static final String[] ROLES = {LIBRARIAN, STUDENT, INSTRUCTOR, TA, PROFESSOR};
+    public static final String[] PATRONS = {STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
+    public static final String[] ROLES = {LIBRARIAN, STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
