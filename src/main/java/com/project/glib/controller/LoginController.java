@@ -1,15 +1,17 @@
 package com.project.glib.controller;
 
-import com.project.glib.dao.implementations.UserDaoImplementation;
 import com.project.glib.model.User;
 import com.project.glib.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class LoginController{
 
+    @Autowired
     UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
