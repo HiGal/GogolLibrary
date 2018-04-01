@@ -51,22 +51,22 @@ public class DocumentPhysicalDaoImplementation implements ModifyByLibrarian<Docu
 
     @Override
     public long getId(DocumentPhysical docPhys) {
-            return documentPhysicalRepository.findAll().stream()
-                    .filter(doc -> doc.getDocVirId() == docPhys.getDocVirId() &&
-                            doc.isCanBooked() == docPhys.isCanBooked() &&
-                            doc.getDocType().equals(docPhys.getDocType()) &&
-                            doc.getShelf().equals(docPhys.getShelf()))
-                    .findFirst().get().getId();
+        return documentPhysicalRepository.findAll().stream()
+                .filter(doc -> doc.getDocVirId() == docPhys.getDocVirId() &&
+                        doc.isCanBooked() == docPhys.isCanBooked() &&
+                        doc.getDocType().equals(docPhys.getDocType()) &&
+                        doc.getShelf().equals(docPhys.getShelf()))
+                .findFirst().get().getId();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<DocumentPhysical> getList() {
-            List<DocumentPhysical> documentPhysicals = documentPhysicalRepository.findAll();
+        List<DocumentPhysical> documentPhysicals = documentPhysicalRepository.findAll();
 
-            for (DocumentPhysical documentPhysical : documentPhysicals) {
-                logger.info(LIST + documentPhysical);
-            }
-            return documentPhysicals;
+        for (DocumentPhysical documentPhysical : documentPhysicals) {
+            logger.info(LIST + documentPhysical);
+        }
+        return documentPhysicals;
     }
 }

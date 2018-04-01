@@ -1,7 +1,6 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.BookingDaoImplementation;
-import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.Booking;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
@@ -57,7 +56,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private final DocumentPhysicalService docPhysService;
     private final CheckoutService checkoutService;
     // TODO modify to Service
-    private final MessageDaoImplementation messageDao;
+    private final MessageService messageService;
     private final BookingDaoImplementation bookingDao;
 
     @Autowired
@@ -67,7 +66,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                           DocumentPhysicalService docPhysService,
                           @Lazy UserService userService,
                           @Lazy CheckoutService checkoutService,
-                          MessageDaoImplementation messageDao,
+                          MessageService messageService,
                           BookingDaoImplementation bookingDao) {
         this.bookService = bookService;
         this.journalService = journalService;
@@ -75,7 +74,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         this.docPhysService = docPhysService;
         this.userService = userService;
         this.checkoutService = checkoutService;
-        this.messageDao = messageDao;
+        this.messageService = messageService;
         this.bookingDao = bookingDao;
     }
 
@@ -106,8 +105,19 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
         checkValidParameters(booking);
 
-        // TODO really?
+        List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
+        for (int i = 0; i < bookings.size(); i++) {
+            messageService.addMes(bookings.get(i).getUserId(),
+                    bookings.get(i).getDocVirId(),
+                    bookings.get(i).getDocType(),
+                    MessageService.DELETED_QUEUE
+            );
+        }
+
+        // TODO check the deletion of all priority
         deletePriority(docVirId, docType);
+
+        // add outstanding booking
         booking.setActive(true);
         booking.setBookingDate(System.nanoTime());
         booking.setPriority(PRIORITY.get(OUTSTANDING));
@@ -153,7 +163,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
         try {
-            if (booking.isActive()) {
+            if (bookingCanCheckout(booking)) {
                 setBookingActiveToTrue(getBookingWithMaxPriority(booking.getDocVirId(), booking.getDocType()));
             }
             recalculatePriority(booking.getDocVirId(), booking.getDocType());
@@ -274,7 +284,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
     public void recalculatePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
@@ -289,14 +298,47 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private void deletePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
-            if (booking.getPriority() < PRIORITY.get(ACTIVE)) {
+            if (bookingInQueue(booking)) {
                 bookingDao.remove(booking.getId());
             }
         }
     }
 
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    private void recalculateAll() {
+        for (Booking booking : getList()) {
+            if (bookingInQueue(booking)) {
+                int waitingDays = convertToDays(System.nanoTime() - booking.getBookingDate());
+                booking.setPriority(booking.getPriority() + waitingDays);
+                bookingDao.update(booking);
+            }
+        }
+    }
 
-    public void setBookingActiveToTrue(Booking booking) {
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    private void deleteLateBookings() throws Exception {
+        for (Booking booking : getList()) {
+            boolean isLate = System.nanoTime() - booking.getBookingDate() > DAY_IN_MILLISECONDS;
+            if (bookingCanCheckout(booking) && isLate) {
+                messageService.addMes(booking.getUserId(),
+                        booking.getDocPhysId(),
+                        booking.getDocType(),
+                        MessageService.LATE_DELETED
+                );
+                remove(booking.getId());
+            }
+        }
+    }
+
+    private boolean bookingInQueue(Booking booking) {
+        return booking.getPriority() < PRIORITY.get(ACTIVE);
+    }
+
+    private boolean bookingCanCheckout(Booking booking) {
+        return booking.getPriority() >= PRIORITY.get(EXPECTED);
+    }
+
+    protected void setBookingActiveToTrue(Booking booking) {
         booking.setActive(true);
         booking.setBookingDate(System.nanoTime());
         booking.setPriority(PRIORITY.get(EXPECTED));

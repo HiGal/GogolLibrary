@@ -4,10 +4,7 @@ import com.project.glib.dao.implementations.UserDaoImplementation;
 import com.project.glib.model.User;
 import com.project.glib.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -28,7 +25,9 @@ public class LoginController{
         System.out.println();
         System.out.println();
         try {
+            System.out.println(form.getLogin());
             User user = userService.findByLogin(form.getLogin());
+            System.out.println(user);
             if(user !=null && user.getPassword().equals(form.getPassword()))
                 return "success";
         } catch (Exception e) {

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
@@ -27,7 +26,7 @@
 
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
             <p id="profile-name" class="profile-name-card"></p>
-            <form class="form-signin"  onsubmit="logcall()">
+            <form class="form-signin" action="Librarian.html" onsubmit="logcall()">
                 <input type="text" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
@@ -41,19 +40,23 @@
 
             <script type="text/javascript" language="javascript">
                 function logcall() {
+                    var login = $("#inputEmail").val();
+                    var password =  $("#inputPassword").val();
                     var myJson = {
-                        "login":document.getElementById("inputEmail").value,
-                        "password":document.getElementById("inputPassword").value
-                        };
-                    console.log(JSON.stringify(myJson));
+                        "login": login,
+                        "password": password
+                    };
+
                     $.ajax({
-                        url: "/login",
+                        url: '/login',
+
                         type: 'POST',
-                        data: myJson,
-                        success: function(data) {
-                                alert(data)},
+                        data: JSON.stringify(myJson),
+                        contentType: 'application/json',
+                        success:
+                            alert('succ'),
                         error:
-                                alert('fork')
+                            alert('fork')
                     });
 
                 }

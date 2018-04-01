@@ -26,7 +26,7 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
 //                                   @Lazy BookService bookService,
 //                                   @Lazy JournalService journalService,
 //                                   @Lazy AudioVideoService avService,
-                                   DocumentPhysicalDaoImplementation docPhysDao) {
+            DocumentPhysicalDaoImplementation docPhysDao) {
 //        this.bookService = bookService;
 //        this.journalService = journalService;
 //        this.avService = avService;

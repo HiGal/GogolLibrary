@@ -1,7 +1,6 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.CheckoutDaoImplementation;
-import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -30,7 +29,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
     private final BookingService bookingService;
     private final UserService userService;
     // TODO modify to service
-    private final MessageDaoImplementation messageDao;
+    private final MessageService messageService;
     private final CheckoutDaoImplementation checkoutDao;
 
     @Autowired
@@ -40,7 +39,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                            DocumentPhysicalService docPhysService,
                            @Lazy BookingService bookingService,
                            @Lazy UserService userService,
-                           MessageDaoImplementation messageDao,
+                           MessageService messageService,
                            CheckoutDaoImplementation checkoutDao) {
         this.bookService = bookService;
         this.journalService = journalService;
@@ -49,7 +48,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         this.bookingService = bookingService;
         this.checkoutDao = checkoutDao;
         this.userService = userService;
-        this.messageDao = messageDao;
+        this.messageService = messageService;
     }
 
     protected void add(Checkout checkout) throws Exception {
@@ -166,11 +165,12 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         bookingService.remove(booking.getId());
-        messageDao.removeOneByUserID(booking.getUserId(), booking.getDocVirId());
+        messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
         long docPhysId = booking.getDocPhysId();
         add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
     }
+
 
     @Override
     public Checkout getById(long checkoutId) {
