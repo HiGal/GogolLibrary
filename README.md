@@ -1,28 +1,30 @@
 # GogolLibrary
-+ Java (Spring) -CSS-HTML-JavaScript implemetion of Library Management System web application: 
-Introduction to Programming project by students of Innopolis University of BS1-2 group.
++ Java (Spring) -CSS-HTML-JavaScript implementation of Library Management System web application.
++ Introduction to Programming project by students of Innopolis University of BS1-2 group.
 + Team: Zhuchkov Alexey, Mazan Ilya, Galeev Farit, Zaynullin Ruslan
 
 # Contents
-  + <a href="#main">Main scheme</a>
+  + <a href="#main">Main</a>
     + <a href="#arcp">Architecture of the server</a>
+    + <a href="#arcd">Architecture of the database</a>
     + <a href="#arcw">Architecture of the website</a>
   + <a href="#imp">Implementation</a>
-    + <a href="#doc">Documentation</a>
+    + <a href="#doc">Documents</a>
     + <a href="#user">Users</a>
-    + <a href="#lib">Librarian features</a>
     + <a href="#book">Booking system</a>
   + <a href="#installation">Usage</a>
     + <a href="#inst">Installation of software</a>
     + <a href="#launch">Launching the project</a>
-    + <a href="#entry">Entrying</a>
+    + <a href="#entry">Entering</a>
     + <a href="#browse">Browsing web pages</a>
   + <a href="#soft">Soft in use</a>
   + <a href="#issue">Issues?</a>
 <a name="main">
 
-# Main scheme
-</a> 
+# Main
++ Library Management System (LMS) are used in libraries to track the different items in the library. 
+> The system contains all information about books, magazines, audio/video materials, as well as people allowed to check out the materials or those in charge of the management.LMS enable users to search for documents, check out or enter
+new materials, manage users of the library, among other functionalities.
 
 <a name="arcp"> 
 
@@ -31,7 +33,11 @@ Introduction to Programming project by students of Innopolis University of BS1-2
  <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
  
 <a name="arcw"> 
-   
+  
+## Architecture of the database
+
+<a name="arcd">
+  
 ## Architecture of the website
 </a> 
  <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
@@ -43,40 +49,46 @@ Introduction to Programming project by students of Innopolis University of BS1-2
 
 <a name="doc">
    
-## Documents
-</a>
-All documents are stored in Database 
 
-which is typically the abstract class for all documents.
-Below we have particular types of document extending from it: 
 
 <a name="user">
    
 ## Users
 </a>
 
-  + Patron 
-   *Could give requests to  ***search for, check out and return documents***.*
-    + Student
-   *Have permission to сheck out documents for ***3*** weeks* 
-    + Faculty member 
-   *Have permission to сheck out documents for ***4*** weeks* 
-  + Librarian
-   *Is allowed to ***modify/delete/add*** any document or patron.*
-
-We assign the logged in user with new exemplar of appropriate class:
-
-        
-<a name="lib">
-
-## Librarian features
-</a>
-Librarian is a user with manage abilities. One's 3special features
-defined in class Librarian. 
-
-        
++ There are two types of users:
+1. **Patron** - can *search for, check out and return documents* 
+    + **Faculty** (professors, instructors, TAs): 
+      *Have permission to сheck out document for ***4*** weeks (regardless the book is best seller) or ***2*** (if AV or journal article)*
+    + **Students**:
+      *Have permission to сheck out documents for ***3*** weeks (if book, but if bestseller - ***1***) or ***2*** (if AV or journal article)*
+    + **Visiting Professors**:
+      *Have permission to сheck out documents for ***1*** week only*
+2. **Librarians**- can *check overdue documents, manage patrons, and
+add/delete/modify documents*       
 
 <a name="book">
+  
+## Documents
+</a>
+
++ The main asset of the library are documents
+  + ***Books***: Books are written by one or more authors and published by a publisher.
+Books have a title and may exist in different editions – each
+published in a certain year. For example, “Introduction to Algorithms”
+is a book written by Thomas H. Cormen, Charles E. Leiserson, Ronald
+L. Rivest and Clifford Stein. It was published by the MIT Press. The
+third edition was published in 2009.  
+![Book table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/bookTable.PNG "Book table")
+
+  + ***Journal Articles***: Journal articles are written by one or more authors, have a title, and are published in a certain journal. Journals have a title and are published by a publisher in issues. Issues have editors and a publication date. For example, “Communication ACM” is a journal. The article “Go to Statement Considered Harmful” written by Edsger W. Dijkstra was published in the “March 1968” issue of this journal and Edward Nash Yourdon was the editor of the issue.
+![Journal table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/journalTable.PNG "Journal table")
+
+  + **Audio/Video materials (AV)**: AV materials have a title and the list of authors
+![AV table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/avTable.PNG "AV table")
+
+Documents also have the price value (in Rubles)
+
 
 ## Booking System (Document Copy)
 </a>
@@ -116,28 +128,22 @@ Every time user check out document - mount of copies in the library decrease.
 ## Entrying
 </a>
 There are some pre-signed up users:
-<ul>
-   <li> Student:
-      <ul>
-         <li> login - 
-         <li> password - 123
-      </ul>
-   <li> Professor:
-      <ul>
-         <li> login - 
-         <li> password - 123
-      </ul>
-   <li> Librarian:
-      <ul>
-         <li> login - 
-         <li> password  - 123
-     </ul>
- </ul>
+
+|     User           |     Login          | Password |
+| ------------------ |:------------------:| :-------:|
+| Student            | a.zhuchkov         |    123   |
+| Student            | r.zaunullin        |    123   |
+| Student            | f.galeev           |    123   |
+| Instructor         | i.mazan            |    123   |
+| Professor          | v.rivera           |    123   |
+| Teacher Assistant  | h.aslam            |    123   |
+| Visiting Professor | b.meyer            |    123   |
+| Librarian          | a.admin            |    666   |
      
 <a name="browse">
 
 ##Browsing Web pages
-### There are some scenarious
+### There are some scenarios
 
 <a name="soft">
 
@@ -153,11 +159,8 @@ There are some pre-signed up users:
 <a name="issue">
     
 ## Issues ?
-</a>
-
-### If something goes wrong:
-  + Still have some problems? Please contact one of us in Telegram:
-    + Zhuchkov Alexey @Aleksey_zhu
-    + Mazan Ilya @HardLight
-    + Galeev Farit @FirstOfAll
-    + Zaynullin Ruslan @BloodyTag51
+ If something goes wrong, please, contact one of us via Telegram:
+   + Zhuchkov Alexey ***@Aleksey_zhu***
+   + Mazan Ilya ***@HardLight***
+   + Galeev Farit ***@FirstOfAll***
+   + Zaynullin Ruslan ***@BloodyTag51***

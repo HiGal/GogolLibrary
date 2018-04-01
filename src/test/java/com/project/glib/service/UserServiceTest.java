@@ -189,7 +189,7 @@ public class UserServiceTest {
             user.setPasswordConfirm("");
             userService.checkValidParameters(user);
         } catch (Exception e) {
-            assertEquals(CONFIRM_PASSWORD_MUST_EXCEPTION, e.getMessage());
+            assertEquals(CONFIRM_PASSWORD_EXCEPTION, e.getMessage());
         }
     }
 
