@@ -16,10 +16,12 @@ import java.util.Arrays;
 @SessionAttributes("user")
 public class LoginController {
     private final UserService userService;
+    private final BookService bookService;
 
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, BookService bookService) {
         this.userService = userService;
+        this.bookService = bookService;
     }
 
 //    @ModelAttribute("user")
@@ -46,9 +48,7 @@ public class LoginController {
                 request.getSession().setAttribute("user",user);
                 if (role.equals(User.LIBRARIAN)) {
                     model.setViewName("librarian");
-                } else if (role.equals(User.STUDENT) ||
-                        Arrays.asList(User.FACULTY).contains(role) ||
-                        role.equals(User.PROFESSOR_VISITING)) {
+                } else if (Arrays.asList(User.PATRONS).contains(role)) {
                     model.setViewName("patron");
                 } else {
                     throw new Exception("WRONG ROLE");
@@ -62,9 +62,13 @@ public class LoginController {
         return model;
     }
 
-    @RequestMapping(value = "/check")
-    @ResponseBody
-    public String checkSession(@ModelAttribute User user){
-        return user.toString();
+    @RequestMapping(value = "/books", method = RequestMethod.GET)
+    public ModelAndView books() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allBooks", bookService.getList());
+        modelAndView.setViewName("documents");
+        return modelAndView;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.project.glib.dao.implementations;
 
 import com.project.glib.dao.interfaces.MessagesRepository;
+import com.project.glib.dao.interfaces.ModifyByLibrarian;
 import com.project.glib.model.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 @Repository
-public class MessageDaoImplementation {
+public class MessageDaoImplementation implements ModifyByLibrarian<Messages> {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(MessageDaoImplementation.class);
     private final MessagesRepository messagesRepository;
 
@@ -20,6 +21,7 @@ public class MessageDaoImplementation {
         this.messagesRepository = messagesRepository;
     }
 
+    @Override
     public void add(Messages message) throws Exception {
         try {
             messagesRepository.save(message);
@@ -30,6 +32,7 @@ public class MessageDaoImplementation {
         }
     }
 
+    @Override
     public void update(Messages message) throws Exception {
         try {
             messagesRepository.saveAndFlush(message);
@@ -41,6 +44,7 @@ public class MessageDaoImplementation {
         }
     }
 
+    @Override
     public void remove(long messageID) throws Exception {
         try {
             logger.info("Try to delete message with message id = " + messageID);
@@ -51,6 +55,17 @@ public class MessageDaoImplementation {
         }
     }
 
+    @Override
+    public Messages getById(long id) {
+        return messagesRepository.findOne(id);
+    }
+
+    @Override
+    public long getId(Messages messages) {
+        return messages.getId();
+    }
+
+    @Override
     public List<Messages> getList() {
         List<Messages> mes = messagesRepository.findAll();
         return mes;

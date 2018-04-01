@@ -36,7 +36,7 @@ public class MessageService {
     }
 
     @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
-    private void deleteReadMes() throws Exception {
+    public void deleteReadMes() throws Exception {
         List<Messages> list = messageDao.getList();
         for (Messages mes : list) {
             if (!(mes.getMessage().equals(RETURN_DOCUMENT) ||
@@ -60,11 +60,15 @@ public class MessageService {
     }
 
     public boolean alreadyHasThisMessage(long id_user, long id_doc, String message) {
-        Messages mes = messagesRepository.findAll().stream()
-                .filter(messages -> messages.getUserId() == id_doc)
-                .filter(messages -> messages.getDocPhysId() == id_user)
-                .findAny().get();
-        return mes.getMessage().equals(message);
+        try {
+            Messages mes = messagesRepository.findAll().stream()
+                    .filter(messages -> messages.getUserId() == id_doc)
+                    .filter(messages -> messages.getDocPhysId() == id_user)
+                    .findAny().get();
+            return mes.getMessage().equals(message);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public List<Messages> getAllByUserID(long userId) {
