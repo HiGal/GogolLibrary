@@ -151,13 +151,17 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                 throw new Exception(DOC_TYPE_EXCEPTION);
         }
 
+        bookingService.removeBecauseCheckout(booking.getId());
         bookingService.remove(booking.getId());
-        messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
+        try {
+            messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         long docPhysId = booking.getDocPhysId();
 
-        add(new Checkout(booking.getUserId(), docPhysId, System.
-
-                nanoTime(),
+        add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
     }
 
@@ -241,5 +245,26 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         } catch (NoSuchElementException | NullPointerException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
+    }
+
+    public List<Checkout> getCheckoutsByUserId(long userId) {
+        try {
+            return getList().stream()
+                    .filter(checkout -> checkout.getUserId() == userId)
+                    .collect(Collectors.toList());
+        } catch (NullPointerException | NoSuchElementException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public void deleteAllCheckouts() throws Exception {
+        List<Checkout> checkouts = getList();
+        for (Checkout checkout : checkouts) {
+            remove(checkout.getId());
+        }
+    }
+
+    public void update(Checkout checkout){
+        checkoutDao.update(checkout);
     }
 }
