@@ -1,6 +1,7 @@
 package com.project.glib.controller;
 
 import com.project.glib.model.*;
+import com.project.glib.service.AudioVideoService;
 import com.project.glib.service.BookService;
 import com.project.glib.service.JournalService;
 import com.project.glib.service.UserService;
@@ -19,12 +20,14 @@ public class LoginController {
     private final UserService userService;
     private final BookService bookService;
     private final JournalService journalService;
+    private final AudioVideoService audioVideoService;
 
     @Autowired
-    public LoginController(UserService userService, BookService bookService, JournalService journalService) {
+    public LoginController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
+        this.audioVideoService = audioVideoService;
     }
 
 //    @ModelAttribute("user")
@@ -134,14 +137,16 @@ public class LoginController {
 //        return modelAndView;
 //    }
 //
-//    /*
-//        AV CONTROLLER
-//     */
-//    @RequestMapping(value = "/av", method = RequestMethod.GET)
-//    public ModelAndView av() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
+    /*
+        AV CONTROLLER
+     */
+    @RequestMapping(value = "/av", method = RequestMethod.GET)
+    public ModelAndView av() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allAV",audioVideoService.getList());
+        modelAndView.setViewName("av");
+        return modelAndView;
+    }
 //    @RequestMapping(value = "/edit/AV")
 //    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo){
 //        ModelAndView modelAndView = new ModelAndView();
