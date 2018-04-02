@@ -115,7 +115,7 @@ Documents also have the price value (in Rubles)
 
 #### Install Java JDK according to your operation system
 
-  + use <a href="ProvidedDoc/java.pdf"> this guide </a>
+  + use <a href="https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/java.pdf"> this guide </a>
 
 #### Install Intellij IDEA 
   + use <a href="https://www.jetbrains.com/help/idea/install-and-set-up-intellij-idea.html"> this guide</a> 
