@@ -1,18 +1,17 @@
 package com.project.glib.controller;
 
 import com.project.glib.model.*;
+import com.project.glib.service.AudioVideoService;
 import com.project.glib.service.BookService;
+import com.project.glib.service.JournalService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 
 @Controller
@@ -20,11 +19,15 @@ import java.util.Arrays;
 public class LoginController {
     private final UserService userService;
     private final BookService bookService;
+    private final JournalService journalService;
+    private final AudioVideoService audioVideoService;
 
     @Autowired
-    public LoginController(UserService userService, BookService bookService) {
+    public LoginController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService) {
         this.userService = userService;
         this.bookService = bookService;
+        this.journalService = journalService;
+        this.audioVideoService = audioVideoService;
     }
 
 //    @ModelAttribute("user")
@@ -105,16 +108,16 @@ public class LoginController {
 //        return modelAndView;
 //    }
 //
-//    /*
-//        JOURNAL CONTROLLER
-//     */
-//    @RequestMapping(value = "/books", method = RequestMethod.GET)
-//    public ModelAndView journals() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("allBooks", bookService.getList());
-//        modelAndView.setViewName("documents");
-//        return modelAndView;
-//    }
+    /*
+        JOURNAL CONTROLLER
+     */
+    @RequestMapping(value = "/journals", method = RequestMethod.GET)
+    public ModelAndView journals() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allJournals", journalService.getList());
+        modelAndView.setViewName("journals");
+        return modelAndView;
+    }
 //
 //    @RequestMapping(value = "/edit/journal")
 //    public ModelAndView editJournal(@ModelAttribute Journal journal){
@@ -134,14 +137,16 @@ public class LoginController {
 //        return modelAndView;
 //    }
 //
-//    /*
-//        AV CONTROLLER
-//     */
-//    @RequestMapping(value = "/av", method = RequestMethod.GET)
-//    public ModelAndView av() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
+    /*
+        AV CONTROLLER
+     */
+    @RequestMapping(value = "/av", method = RequestMethod.GET)
+    public ModelAndView av() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allAV",audioVideoService.getList());
+        modelAndView.setViewName("av");
+        return modelAndView;
+    }
 //    @RequestMapping(value = "/edit/AV")
 //    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo){
 //        ModelAndView modelAndView = new ModelAndView();

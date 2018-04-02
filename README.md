@@ -30,26 +30,32 @@ new materials, manage users of the library, among other functionalities.
 
 ## Architecture of the server
 </a> 
- <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
+
++ MVC model
+
+![Server](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/packDep.png "Server") 
  
 <a name="arcw"> 
   
 ## Architecture of the database
+</a>
+
++ SQLite database scheme
+
+![Database](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/database.png "DB")
 
 <a name="arcd">
   
 ## Architecture of the website
 </a> 
- <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
+
+## Working on it
+ ![Websites](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/1.jpg "W")
  
 <a name="imp">
    
 # Implementation
 </a>
-
-<a name="doc">
-   
-
 
 <a name="user">
    
@@ -67,7 +73,7 @@ new materials, manage users of the library, among other functionalities.
 2. **Librarians**- can *check overdue documents, manage patrons, and
 add/delete/modify documents*       
 
-<a name="book">
+<a name="doc">
   
 ## Documents
 </a>
@@ -79,23 +85,23 @@ published in a certain year. For example, “Introduction to Algorithms”
 is a book written by Thomas H. Cormen, Charles E. Leiserson, Ronald
 L. Rivest and Clifford Stein. It was published by the MIT Press. The
 third edition was published in 2009.  
-![Book table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/bookTable.PNG "Book table")
+![Book table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/bookHead.png "Book table")
 
   + ***Journal Articles***: Journal articles are written by one or more authors, have a title, and are published in a certain journal. Journals have a title and are published by a publisher in issues. Issues have editors and a publication date. For example, “Communication ACM” is a journal. The article “Go to Statement Considered Harmful” written by Edsger W. Dijkstra was published in the “March 1968” issue of this journal and Edward Nash Yourdon was the editor of the issue.
-![Journal table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/journalTable.PNG "Journal table")
+![Journal table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/journalHead.png "Journal table")
 
   + **Audio/Video materials (AV)**: AV materials have a title and the list of authors
-![AV table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/avTable.PNG "AV table")
+![AV table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/avHead.png "AV table")
 
 Documents also have the price value (in Rubles)
 
-
+<a name="book">
+  
 ## Booking System (Document Copy)
 </a>
 
-         
++ Every time user check out document - mount of copies in the library decrease.
 
-Every time user check out document - mount of copies in the library decrease.
 <a name="installation">
   
 # Usage
@@ -108,7 +114,7 @@ Every time user check out document - mount of copies in the library decrease.
 
 #### Install Java JDK according to your operation system
 
-  + use <a href="ProvidedDoc/java.pdf"> this guide </a>
+  + use <a href="https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/java.pdf"> this guide </a>
 
 #### Install Intellij IDEA 
   + use <a href="https://www.jetbrains.com/help/idea/install-and-set-up-intellij-idea.html"> this guide</a> 
@@ -121,7 +127,11 @@ Every time user check out document - mount of copies in the library decrease.
 
 #### Download and launch the project
   
-  + use <a href="ProvidedDoc/project.pdf">this guide</a>
+  + First, download and unzip the project
+  + Second, open it with Intellij IDEA
+  + Third, in layout ***Database -> + -> Datasource from path*** and choose the database in root folder of the project
+  + Fourth, layout near Run button ***Edit configurations -> + -> Maven***. Write name for the configuration and enter ***spring-boot:run*** in **Command Line:***.
+  + Last, push Run button. Wait it finish compilation. Now, you can access Library System via address ***localhost:8080/login*** in your browser
     
 <a name="entry">
 
