@@ -42,7 +42,7 @@ public class LoginController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login( User form, HttpServletRequest request, SessionStatus status) {
+    public ModelAndView login(User form, HttpServletRequest request, SessionStatus status) {
         ModelAndView model = new ModelAndView();
         try {
             User user = userService.findByLogin(form.getLogin());
@@ -51,7 +51,7 @@ public class LoginController {
 
             if (user.getPassword().equals(form.getPassword())) {
                 model.addObject("info", user);
-                request.getSession().setAttribute("user",user);
+                request.getSession().setAttribute("user", user);
                 if (role.equals(User.LIBRARIAN)) {
                     model.setViewName("librarian");
                 } else if (Arrays.asList(User.PATRONS).contains(role)) {
@@ -68,6 +68,24 @@ public class LoginController {
         return model;
     }
 
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    public ModelAndView mainPage(@ModelAttribute("user") User user) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        try {
+            User user1 = userService.findByLogin(user.getLogin());
+            modelAndView.addObject("info", user1);
+            if(user1.getRole().equals(User.LIBRARIAN)){
+                modelAndView.setViewName("librarian");
+            }else {
+                modelAndView.setViewName("patron");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
     /*
          USER CONTROLLER
      */
@@ -82,7 +100,7 @@ public class LoginController {
     /*
         BOOK CONTROLLER
      */
-    @RequestMapping(value = "/books", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/books", method = RequestMethod.GET)
     public ModelAndView books() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allBooks", bookService.getList());
@@ -90,7 +108,7 @@ public class LoginController {
         return modelAndView;
     }
 
-//    @RequestMapping(value = "/edit/book")
+    //    @RequestMapping(value = "/edit/book")
 //    public ModelAndView editBook(@ModelAttribute Book book){
 //        ModelAndView modelAndView = new ModelAndView();
 //        return  modelAndView;
@@ -111,14 +129,15 @@ public class LoginController {
     /*
         JOURNAL CONTROLLER
      */
-    @RequestMapping(value = "/journals", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/journals", method = RequestMethod.GET)
     public ModelAndView journals() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allJournals", journalService.getList());
         modelAndView.setViewName("journals");
         return modelAndView;
     }
-//
+
+    //
 //    @RequestMapping(value = "/edit/journal")
 //    public ModelAndView editJournal(@ModelAttribute Journal journal){
 //        ModelAndView modelAndView = new ModelAndView();
@@ -140,10 +159,10 @@ public class LoginController {
     /*
         AV CONTROLLER
      */
-    @RequestMapping(value = "/av", method = RequestMethod.GET)
+    @RequestMapping(value = "/librarian/av", method = RequestMethod.GET)
     public ModelAndView av() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allAV",audioVideoService.getList());
+        modelAndView.addObject("allAV", audioVideoService.getList());
         modelAndView.setViewName("av");
         return modelAndView;
     }
@@ -190,6 +209,12 @@ public class LoginController {
 //
 //        return "unsuccess";
 //    }
+
+    @RequestMapping(value = "/librarian/taken_doc", method = RequestMethod.GET)
+    public ModelAndView takenDoc() {
+        ModelAndView modelAndView = new ModelAndView("taken_documents");
+        return modelAndView;
+    }
 
 
 }
