@@ -151,6 +151,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                 throw new Exception(DOC_TYPE_EXCEPTION);
         }
 
+        bookingService.removeBecauseCheckout(booking.getId());
         bookingService.remove(booking.getId());
         try {
             messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
@@ -160,9 +161,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
 
         long docPhysId = booking.getDocPhysId();
 
-        add(new Checkout(booking.getUserId(), docPhysId, System.
-
-                nanoTime(),
+        add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
     }
 
@@ -245,6 +244,16 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                     .findFirst().get();
         } catch (NoSuchElementException | NullPointerException e) {
             throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
+    public List<Checkout> getCheckoutsByUserId(long userId) {
+        try {
+            return getList().stream()
+                    .filter(checkout -> checkout.getUserId() == userId)
+                    .collect(Collectors.toList());
+        } catch (NullPointerException | NoSuchElementException e) {
+            return new ArrayList<>();
         }
     }
 
