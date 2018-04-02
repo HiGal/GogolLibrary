@@ -40,6 +40,8 @@ new materials, manage users of the library, among other functionalities.
 ## Architecture of the database
 </a>
 
++ SQLite database scheme
+
 ![Database](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/database.png "DB")
 
 <a name="arcd">
@@ -54,10 +56,6 @@ new materials, manage users of the library, among other functionalities.
    
 # Implementation
 </a>
-
-<a name="doc">
-   
-
 
 <a name="user">
    
@@ -75,7 +73,7 @@ new materials, manage users of the library, among other functionalities.
 2. **Librarians**- can *check overdue documents, manage patrons, and
 add/delete/modify documents*       
 
-<a name="book">
+<a name="doc">
   
 ## Documents
 </a>
@@ -97,7 +95,8 @@ third edition was published in 2009.
 
 Documents also have the price value (in Rubles)
 
-
+<a name="book">
+  
 ## Booking System (Document Copy)
 </a>
 
@@ -128,7 +127,11 @@ Documents also have the price value (in Rubles)
 
 #### Download and launch the project
   
-  + use <a href="ProvidedDoc/project.pdf">this guide</a>
+  + First, download and unzip the project
+  + Second, open it with Intellij IDEA
+  + Third, in layout ***Database -> + -> Datasource from path*** and choose the database in root folder of the project
+  + Fourth, layout near Run button ***Edit configurations -> + -> Maven***. Write name for the configuration and enter ***spring-boot:run*** in **Command Line:***.
+  + Last, push Run button. Wait it finish compilation. Now, you can access Library System via address ***localhost:8080/login*** in your browser
     
 <a name="entry">
 
