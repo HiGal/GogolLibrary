@@ -35,7 +35,7 @@ public class UserServiceTest {
 
     @Before
     public void setUp() {
-        user = new User("login", "password", "confpass", "name",
+        user = new User("login", "password", "name",
                 "surname", "address", "78953534634", User.STUDENT, true);
         shelf = "SHELF";
     }
@@ -68,7 +68,7 @@ public class UserServiceTest {
     public void addUserWithExistedLogin() {
         try {
             userService.add(user);
-            userService.add(new User(user.getLogin(), "pass", "cnfrpass", "n",
+            userService.add(new User(user.getLogin(), "pass", "n",
                     "surn", "ad", "78945612358", User.PROFESSOR, true));
         } catch (Exception e) {
             assertEquals(LOGIN_ALREADY_EXIST_EXCEPTION, e.getMessage());
@@ -186,16 +186,6 @@ public class UserServiceTest {
     @Test
     public void checkValidParameters3() {
         try {
-            user.setPasswordConfirm("");
-            userService.checkValidParameters(user);
-        } catch (Exception e) {
-            assertEquals(CONFIRM_PASSWORD_EXCEPTION, e.getMessage());
-        }
-    }
-
-    @Test
-    public void checkValidParameters4() {
-        try {
             user.setName("");
             userService.checkValidParameters(user);
         } catch (Exception e) {
@@ -204,7 +194,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkValidParameters5() {
+    public void checkValidParameters4() {
         try {
             user.setSurname("");
             userService.checkValidParameters(user);
@@ -214,7 +204,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkValidParameters6() {
+    public void checkValidParameters5() {
         try {
             user.setAddress("");
             userService.checkValidParameters(user);
@@ -224,7 +214,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkValidParameters7() {
+    public void checkValidParameters6() {
         try {
             user.setPhone("");
             userService.checkValidParameters(user);
@@ -234,7 +224,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkValidParameters8() {
+    public void checkValidParameters7() {
         try {
             user.setPhone("34567899876543456");
             userService.checkValidParameters(user);
@@ -244,7 +234,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkValidParameters9() {
+    public void checkValidParameters8() {
         try {
             user.setRole("NOT_ROLE");
             userService.checkValidParameters(user);
