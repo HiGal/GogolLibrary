@@ -1,13 +1,11 @@
 package com.project.glib.controller;
 
-import com.project.glib.model.AudioVideo;
-import com.project.glib.model.Book;
-import com.project.glib.model.Journal;
-import com.project.glib.model.User;
+import com.project.glib.model.*;
 import com.project.glib.service.BookService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -146,6 +144,32 @@ public class LoginController {
         return modelAndView;
     }
 
+    /*
+        CHECKOUT CONTROLLER
+     */
+    @RequestMapping(value = "/checkout", method = RequestMethod.GET)
+    public ModelAndView checkout(@RequestParam String login){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
+    public ModelAndView checkout(@ModelAttribute Booking booking, Model model){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/checkout/all", method = RequestMethod.POST)
+    public String checkoutAllDocument(@RequestParam String login, Model model) {
+        try {
+
+            return "success";
+        }catch (Exception e){
+
+        }
+
+        return "unsuccess";
+    }
 
 
 }
