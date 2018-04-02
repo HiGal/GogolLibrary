@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>3ac81838-de67-49d9-8173-80dafc4c1173.SCHEMA:main</OriginalElement>
+  <nodes>
+    <node x="764.3106011635423" y="423.0420168067227">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.HT_users</node>
+    <node x="774.75" y="8.0">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.book</node>
+    <node x="791.1809954751131" y="256.09825468648995">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.audio_video</node>
+    <node x="386.5" y="338.0">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.checkout</node>
+    <node x="576.3393665158371" y="247.28700711053654">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.documents_physical_keywords</node>
+    <node x="139.49999999999997" y="8.0">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.documents_physical</node>
+    <node x="938.2352941176471" y="9.499676793794293">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.sqlite_sequence</node>
+    <node x="178.49999999999997" y="323.0">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.booking</node>
+    <node x="933.3316095669036" y="96.19263089851324">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.sqlite_master</node>
+    <node x="579.1809954751131" y="334.05914673561733">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.messages</node>
+    <node x="578.75" y="7.0">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.journal</node>
+    <node x="-7.633904333988596" y="8.426284751474299">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.keywords</node>
+    <node x="18.49999999999997" y="322.0">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.document_keywords</node>
+    <node x="363.75" y="0.0">3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.users</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.checkout" target="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.documents_physical">
+      <point x="-41.25" y="-81.5" />
+      <point x="426.75" y="293.0" />
+      <point x="277.5" y="294.0" />
+      <point x="54.0" y="70.5" />
+    </edge>
+    <edge source="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.booking" target="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.documents_physical">
+      <point x="-40.0" y="-114.5" />
+      <point x="0.0" y="70.5" />
+    </edge>
+    <edge source="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.booking" target="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.users">
+      <point x="40.0" y="-114.5" />
+      <point x="298.5" y="311.0" />
+      <point x="412.25" y="309.0" />
+      <point x="-48.5" y="136.5" />
+    </edge>
+    <edge source="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.checkout" target="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.users">
+      <point x="41.25" y="-81.5" />
+      <point x="48.5" y="136.5" />
+    </edge>
+    <edge source="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.document_keywords" target="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.keywords">
+      <point x="-38.5" y="-37.5" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.document_keywords" target="3ac81838-de67-49d9-8173-80dafc4c1173.TABLE:main.documents_physical">
+      <point x="38.5" y="-37.5" />
+      <point x="134.99999999999997" y="278.0" />
+      <point x="165.49999999999997" y="278.0" />
+      <point x="-54.0" y="70.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.2000000000000002" x="541.4999999999999" y="274.16666666666663" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+  </Categories>
+</Diagram>
+
