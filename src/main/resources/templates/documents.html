@@ -82,6 +82,7 @@
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                 $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
                                 $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
+                                $('#expansion').html($(this).parent().find($('.card.title')).text());
                                 document.getElementById("etitle").style.display = "none";
                                 document.getElementById("eedition").style.display = "none";
                                 document.getElementById("epublisher").style.display = "none";
@@ -175,7 +176,7 @@
                         <div class="modal-body body">
                             <div class="row">
                                 <div class = "col-lg-4 fields">
-                                    <img src="../static/img/cormen.jpg" id="img"><br>
+                                    <img src="../img/no_image.jpg" id="img"><br>
                                     <input type="file" onchange="previewFile()" id="imgbtn">
                                 </div>
                                 <div class="col-lg-6 fields" id="container">
