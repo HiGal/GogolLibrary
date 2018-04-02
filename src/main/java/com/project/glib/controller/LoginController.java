@@ -1,5 +1,8 @@
 package com.project.glib.controller;
 
+import com.project.glib.model.AudioVideo;
+import com.project.glib.model.Book;
+import com.project.glib.model.Journal;
 import com.project.glib.model.User;
 import com.project.glib.service.BookService;
 import com.project.glib.service.UserService;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
@@ -63,13 +67,85 @@ public class LoginController {
         return model;
     }
 
+    /*
+        BOOK CONTROLLER
+     */
     @RequestMapping(value = "/books", method = RequestMethod.GET)
     public ModelAndView books() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allBooks", bookService.getList());
-        modelAndView.setViewName("documents");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/edit/book")
+    public ModelAndView editBook(@ModelAttribute Book book){
+        ModelAndView modelAndView = new ModelAndView();
+        return  modelAndView;
+    }
+
+    @RequestMapping(value = "/add/book")
+    public ModelAndView addBook(@ModelAttribute Book book){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/order/book")
+    public ModelAndView orderBook(@ModelAttribute Book book){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
+    /*
+        JOURNAL CONTROLLER
+     */
+    @RequestMapping(value = "/books", method = RequestMethod.GET)
+    public ModelAndView journals() {
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit/journal")
+    public ModelAndView editJournal(@ModelAttribute Journal journal){
+        ModelAndView modelAndView = new ModelAndView();
+        return  modelAndView;
+    }
+
+    @RequestMapping(value = "/add/journal")
+    public ModelAndView addJournal(@ModelAttribute Journal journal){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/order/journal")
+    public ModelAndView orderBook(@ModelAttribute Journal journal){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
+    /*
+        AV CONTROLLER
+     */
+    @RequestMapping(value = "/av", method = RequestMethod.GET)
+    public ModelAndView av() {
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+    @RequestMapping(value = "/edit/AV")
+    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo){
+        ModelAndView modelAndView = new ModelAndView();
+        return  modelAndView;
+    }
+
+    @RequestMapping(value = "/add/AV")
+    public ModelAndView addJournal(@ModelAttribute AudioVideo audioVideo){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+    @RequestMapping(value = "/order/AV")
+    public ModelAndView orderBook(@ModelAttribute AudioVideo audioVideo){
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
 
 
 }
