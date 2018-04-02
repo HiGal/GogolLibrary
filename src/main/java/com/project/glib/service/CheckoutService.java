@@ -242,4 +242,14 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
             throw new Exception(EXIST_EXCEPTION);
         }
     }
+
+    public List<Checkout> getCheckoutsByUserId(long userId) {
+        try {
+            return getList().stream()
+                    .filter(checkout -> checkout.getUserId() == userId)
+                    .collect(Collectors.toList());
+        } catch (NullPointerException | NoSuchElementException e) {
+            return new ArrayList<>();
+        }
+    }
 }
