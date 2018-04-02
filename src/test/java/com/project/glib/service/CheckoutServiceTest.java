@@ -34,7 +34,6 @@ public class CheckoutServiceTest {
     private Book book;
     private Journal journal;
     private AudioVideo av;
-    private long docPhysId1, docPhysId2, docPhysId3;
 
     @Before
     public void setup() throws Exception {
@@ -45,7 +44,7 @@ public class CheckoutServiceTest {
         journal = new Journal("title", "author", "name", 2,
                 "editor", Document.REFERENCE, 200, 3);
         av = new AudioVideo("title", "author", 400, 2);
-        user = new User("login", "password", "passconf",
+        user = new User("login", "password",
                 "name", "surname", "address", "79134562845", User.STUDENT, true);
 
         bookService.add(book, shelf1);
@@ -53,9 +52,9 @@ public class CheckoutServiceTest {
         avService.add(av, shelf1);
         userService.add(user);
 
-        docPhysId1 = docPhysService.getValidPhysId(book.getId(), Document.BOOK);
-        docPhysId2 = docPhysService.getValidPhysId(journal.getId(), Document.JOURNAL);
-        docPhysId3 = docPhysService.getValidPhysId(av.getId(), Document.AV);
+        long docPhysId1 = docPhysService.getValidPhysId(book.getId(), Document.BOOK);
+        long docPhysId2 = docPhysService.getValidPhysId(journal.getId(), Document.JOURNAL);
+        long docPhysId3 = docPhysService.getValidPhysId(av.getId(), Document.AV);
 
         checkout1 = new Checkout(user.getId(), docPhysId1, System.nanoTime(),
                 System.nanoTime() + WEEK_IN_MILLISECONDS * 3, shelf1);

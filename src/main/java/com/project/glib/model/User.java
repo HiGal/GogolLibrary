@@ -28,9 +28,6 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "confirm_password")
-    private String passwordConfirm;
-
     @Column(name = "name")
     private String name;
 
@@ -55,11 +52,10 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String passwordConfirm, String name, String surname,
+    public User(String login, String password, String name, String surname,
                 String address, String phone, String role, boolean auth) {
         this.login = login;
         this.password = password;
-        this.passwordConfirm = passwordConfirm;
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -78,7 +74,6 @@ public class User {
                 auth == user.auth &&
                 Objects.equals(login, user.login) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(passwordConfirm, user.passwordConfirm) &&
                 Objects.equals(name, user.name) &&
                 Objects.equals(surname, user.surname) &&
                 Objects.equals(address, user.address) &&
@@ -89,7 +84,7 @@ public class User {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, login, password, passwordConfirm, name, surname, address, phone, auth, role);
+        return Objects.hash(id, login, password, name, surname, address, phone, auth, role);
     }
 
     @Override
@@ -98,7 +93,6 @@ public class User {
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", passwordConfirm='" + passwordConfirm + '\'' +
                 ", name='" + name + '\'' +
                 ", surname=" + surname +
                 ", address='" + address + '\'' +
@@ -131,15 +125,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Transient
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 
     public String getName() {

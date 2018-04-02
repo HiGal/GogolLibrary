@@ -44,7 +44,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
             } else {
                 existedAV.setCount(existedAV.getCount() + audioVideo.getCount());
                 existedAV.setPrice(audioVideo.getPrice());
-                update(existedAV);
+                avDao.update(existedAV);
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
@@ -57,7 +57,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         // TODO solve case then librarian change count of AVs
         try {
             AudioVideo existedAV = isAlreadyExist(audioVideo);
-            if (existedAV != null) {
+            if (existedAV != null && !existedAV.equals(audioVideo)) {
                 existedAV.setCount(existedAV.getCount() + audioVideo.getCount());
                 existedAV.setPrice(audioVideo.getPrice());
                 audioVideo = existedAV;
@@ -132,17 +132,17 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     }
 
     @Override
-    public void decrementCountById(long avId) throws Exception {
+    public void decrementCountById(long avId) {
         AudioVideo audioVideo = getById(avId);
         audioVideo.setCount(audioVideo.getCount() - 1);
-        update(audioVideo);
+        avDao.update(audioVideo);
     }
 
     @Override
-    public void incrementCountById(long avId) throws Exception {
+    public void incrementCountById(long avId) {
         AudioVideo audioVideo = getById(avId);
         audioVideo.setCount(audioVideo.getCount() + 1);
-        update(audioVideo);
+        avDao.update(audioVideo);
     }
 
     @Override
