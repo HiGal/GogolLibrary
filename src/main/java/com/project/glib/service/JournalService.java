@@ -44,7 +44,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
             } else {
                 existedJournal.setCount(existedJournal.getCount() + journal.getCount());
                 existedJournal.setPrice(journal.getPrice());
-                update(existedJournal);
+                journalDao.update(existedJournal);
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
@@ -57,7 +57,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         // TODO solve case then librarian change count of journals
         try {
             Journal existedJournal = isAlreadyExist(journal);
-            if (existedJournal != null) {
+            if (existedJournal != null && !existedJournal.equals(journal)) {
                 existedJournal.setCount(existedJournal.getCount() + journal.getCount());
                 existedJournal.setPrice(journal.getPrice());
                 journal = existedJournal;
@@ -148,17 +148,17 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     }
 
     @Override
-    public void decrementCountById(long journalId) throws Exception {
+    public void decrementCountById(long journalId) {
         Journal journal = getById(journalId);
         journal.setCount(journal.getCount() - 1);
-        update(journal);
+        journalDao.update(journal);
     }
 
     @Override
-    public void incrementCountById(long journalId) throws Exception {
+    public void incrementCountById(long journalId) {
         Journal journal = getById(journalId);
         journal.setCount(journal.getCount() + 1);
-        update(journal);
+        journalDao.update(journal);
     }
 
     @Override

@@ -67,7 +67,6 @@ public class UserDaoImplementation implements ModifyByLibrarian<User> {
                 .filter(u -> u.getRole().equals(user.getRole()) &&
                         u.getLogin().equals(user.getLogin()) &&
                         u.getPassword().equals(user.getPassword()) &&
-                        u.getPasswordConfirm().equals(user.getPasswordConfirm()) &&
                         u.getName().equals(user.getName()) &&
                         u.getSurname().equals(user.getSurname()) &&
                         u.getPhone().equals(user.getPhone()) &&

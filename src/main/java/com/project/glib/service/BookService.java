@@ -45,7 +45,7 @@ public class BookService implements DocumentServiceInterface<Book> {
             } else {
                 existedBook.setCount(existedBook.getCount() + book.getCount());
                 existedBook.setPrice(book.getPrice());
-                update(existedBook);
+                bookDao.update(existedBook);
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
@@ -58,7 +58,7 @@ public class BookService implements DocumentServiceInterface<Book> {
         // TODO solve case then librarian change count of books
         try {
             Book existedBook = isAlreadyExist(book);
-            if (existedBook != null) {
+            if (existedBook != null && !existedBook.equals(book)) {
                 existedBook.setCount(existedBook.getCount() + book.getCount());
                 existedBook.setPrice(book.getPrice());
                 book = existedBook;
@@ -161,10 +161,10 @@ public class BookService implements DocumentServiceInterface<Book> {
      * @param bookId id of book
      */
     @Override
-    public void decrementCountById(long bookId) throws Exception {
+    public void decrementCountById(long bookId) {
         Book book = getById(bookId);
         book.setCount(book.getCount() - 1);
-        update(book);
+        bookDao.update(book);
     }
 
     /**
@@ -173,10 +173,10 @@ public class BookService implements DocumentServiceInterface<Book> {
      * @param bookId id of book
      */
     @Override
-    public void incrementCountById(long bookId) throws Exception {
+    public void incrementCountById(long bookId) {
         Book book = getById(bookId);
         book.setCount(book.getCount() + 1);
-        update(book);
+        bookDao.update(book);
     }
 
     /**

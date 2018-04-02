@@ -24,8 +24,6 @@ public class UserService implements ModifyByLibrarianService<User> {
     public static final String ADDRESS_EXCEPTION = " address must exist ";
     public static final String LOGIN_EXCEPTION = " login must exist ";
     public static final String PASSWORD_EXCEPTION = " password must exist ";
-    public static final String CONFIRM_PASSWORD_EXCEPTION = " confirm password must exist ";
-    private static final String NOT_EQUALS_PASSWORDS = " password and password confirm not equal";
     public static final String NAME_EXCEPTION = " name must exist ";
     public static final String SURNAME_EXCEPTION = " surname must exist ";
     public static final String PHONE_EXCEPTION = " phone number must exist ";
@@ -108,14 +106,6 @@ public class UserService implements ModifyByLibrarianService<User> {
 
         if (user.getPassword().equals("")) {
             throw new Exception(PASSWORD_EXCEPTION);
-        }
-
-        if (user.getPasswordConfirm().equals("")) {
-            throw new Exception(CONFIRM_PASSWORD_EXCEPTION);
-        }
-
-        if (!user.getPassword().equals(user.getPasswordConfirm())) {
-            throw new Exception(NOT_EQUALS_PASSWORDS);
         }
 
         if (user.getName().equals("")) {

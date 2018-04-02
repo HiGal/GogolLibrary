@@ -21,6 +21,7 @@ public class MessageDaoImplementation implements ModifyByLibrarian<Messages> {
         this.messagesRepository = messagesRepository;
     }
 
+    @Override
     public void add(Messages message) throws Exception {
         try {
             messagesRepository.save(message);
@@ -31,6 +32,7 @@ public class MessageDaoImplementation implements ModifyByLibrarian<Messages> {
         }
     }
 
+    @Override
     public void update(Messages message) throws Exception {
         try {
             messagesRepository.saveAndFlush(message);
@@ -42,6 +44,7 @@ public class MessageDaoImplementation implements ModifyByLibrarian<Messages> {
         }
     }
 
+    @Override
     public void remove(long messageID) throws Exception {
         try {
             logger.info("Try to delete message with message id = " + messageID);
@@ -62,6 +65,7 @@ public class MessageDaoImplementation implements ModifyByLibrarian<Messages> {
         return messages.getId();
     }
 
+    @Override
     public List<Messages> getList() {
         List<Messages> mes = messagesRepository.findAll();
         return mes;
