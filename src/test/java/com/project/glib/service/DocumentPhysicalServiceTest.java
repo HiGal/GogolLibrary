@@ -34,10 +34,10 @@ public class DocumentPhysicalServiceTest {
     public void setup() throws Exception {
         String shelf = "SHELF";
         book = new Book("title", "author", "publisher",
-                "edition", 2017, Document.DEFAULT_NOTE, 100, 0);
+                "edition", 2017, Document.DEFAULT_NOTE, 100, 0, "picture");
         journal = new Journal("title", "author", "name", 2,
-                "editor", Document.REFERENCE, 200, 0);
-        av = new AudioVideo("title", "author", 400, 0);
+                "editor", Document.REFERENCE, 200, 0, "picture");
+        av = new AudioVideo("title", "author", 400, 0, "picture");
 
         bookService.add(book, shelf);
         journalService.add(journal, shelf);

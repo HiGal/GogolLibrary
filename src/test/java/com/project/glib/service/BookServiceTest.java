@@ -31,7 +31,7 @@ public class BookServiceTest {
     @Before
     public void setup() {
         book = new Book("title", "author", "publisher",
-                "edition", 2017, Document.DEFAULT_NOTE, 100, 2);
+                "edition", 2017, Document.DEFAULT_NOTE, 100, 2, "picture");
         shelf1 = "Shelf1";
         shelf2 = "Shelf2";
         count1 = 2;

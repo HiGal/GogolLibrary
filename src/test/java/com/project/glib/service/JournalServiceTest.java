@@ -29,7 +29,7 @@ public class JournalServiceTest {
     @Before
     public void setup() {
         journal = new Journal("title", "author", "name", 2,
-                "editor", Document.REFERENCE, 200, 3);
+                "editor", Document.REFERENCE, 200, 3, "picture");
         shelf1 = "Shelf1";
         shelf2 = "Shelf2";
         count1 = 2;
