@@ -26,8 +26,8 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="#">Books</a></li>
-                <li><a href="/journals">Journals</a></li>
-                <li><a href="/av">Auidio/Video</a></li>
+                <li><a href="/librarian/journals">Journals</a></li>
+                <li><a href="/librarian/av">Auidio/Video</a></li>
                 <li><a href="/login">Log Out</a></li>
             </ul>
         </div>
@@ -39,7 +39,7 @@
     <div class="container users">
         <div class="output"></div>
 
-        <p id="patrons"><a id="linker" href="taken_documents.html">Documents</a> / <u>Books</u></p>
+        <p id="patrons"><a id="linker" href="/librarian/taken_doc">Documents</a> / <u>Books</u></p>
         <p class="header">Books</p>
         <div class="container-fluid">
             <div class="card-group">
@@ -52,7 +52,7 @@
                             <h5 class="card-subtitle text-muted">{{author}}</h5>
                             <input type="hidden" class="edition_card" value="{{edition}}">
                             <input type="hidden" class="publisher_card" value="{{publisher}}">
-                            <img class="image-book" src="../img/cormen.jpg">
+                            <img class="image-book" src="../img/no_image.jpg">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
                             <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
