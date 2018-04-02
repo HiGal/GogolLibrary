@@ -50,9 +50,10 @@
                             <!--put here other fields, make them hidden-->
                             <h3 class="card-title">{{title}}</h3>
                             <h5 class="card-subtitle text-muted">{{author}}</h5>
-                            <input type="hidden" id="edition_card" value="{{edition}}">
-                            <input type="hidden" id="publisher_card" value="{{publisher}}">
-                            <img src="../img/cormen.jpg">
+                            <input type="hidden" class="edition_card" value="{{edition}}">
+                            <input type="hidden" class="publisher_card" value="{{publisher}}">
+                            <img class="image-book" src="../img/cormen.jpg">
+                            <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
                             <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                         </div>
@@ -64,23 +65,107 @@
 
                 <script>
 
+                    //                    var image = $('#image-book');
+                    //                    image.src = 'data:image/png;base64,iVBORw0K...';
+                    //                    document.body.appendChild(image);
+
                     (function ($) {
                         $(document).ready(function () {
-                            $('.btn-primary').click(function (e) {
+                            $('.btn-lg').click(function (e) {
                                 e.preventDefault();
-                                //other fields the same way. If you want to make bold text you need another field.
+                                document.getElementById("title").style.display = "block";
+                                document.getElementById("edition").style.display = "block";
+                                document.getElementById("publisher").style.display = "block";
+                                document.getElementById("author").style.display = "block";
                                 $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
-                                $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('#edition_card')).attr('value'));
+                                $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
-                                $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('#publisher_card')).attr('value'));
+                                $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
+                                $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
+                                document.getElementById("etitle").style.display = "none";
+                                document.getElementById("eedition").style.display = "none";
+                                document.getElementById("epublisher").style.display = "none";
+                                document.getElementById("eauthor").style.display = "none";
+                                document.getElementById("okbtn").style.display = "none";
+                                document.getElementById("editbtn").style.display = "inline";
+                                document.getElementById("imgbtn").style.display = "none";
                             });
                         });
                         return false;
                     }(jQuery));
+
+                    function edit() {
+                        var title = document.getElementById("etitle");
+                        var edition = document.getElementById("eedition");
+                        var author = document.getElementById("eauthor");
+                        var publisher = document.getElementById("epublisher");
+                        title.placeholder = $('.title').text();
+                        edition.placeholder = $('.edition').text();
+                        author.placeholder = $('.author').text();
+                        publisher.placeholder = $('.publisher').text();
+                        document.getElementById("title").style.display = "none";
+                        title.style.display = "block";
+                        document.getElementById("edition").style.display = "none";
+                        edition.style.display = "block";
+                        document.getElementById("author").style.display = "none";
+                        author.style.display = "block";
+                        document.getElementById("publisher").style.display = "none";
+                        publisher.style.display = "block";
+                        document.getElementById("editbtn").style.display = "none";
+                        document.getElementById("okbtn").style.display = "inline";
+                        document.getElementById("imgbtn").style.display = "inline";
+                    }
+
+                    function bCall() {
+                        // var imgElem = document.getElementById('img');
+                        var myJson = {
+                            "title": document.getElementById("etitle").value,
+                            "edition": document.getElementById("eedition").value,
+                            "author": document.getElementById("eauthor").value,
+                            "publisher": document.getElementById("epublisher").value
+                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                        };
+                        $.ajax({
+                            url: "idk",
+                            type: 'POST',
+                            data: JSON.stringify(myJson),
+                            success: alert('succ'),
+                            error: alert('fork')
+                        });
+                        window.location.reload(false);
+                    }
+
+                    function previewFile() {
+                        var preview = document.getElementById('img');
+                        var file = document.querySelector('input[type=file]').files[0];
+                        var reader = new FileReader();
+
+                        reader.onloadend = function () {
+                            preview.src = reader.result;
+                        }
+
+                        if (file) {
+                            reader.readAsDataURL(file);
+                        } else {
+                            preview.src = "";
+                        }
+                    }
+
+                    function getBase64Image(imgElem) {
+                        var canvas = document.createElement("canvas");
+                        canvas.width = imgElem.clientWidth;
+                        canvas.height = imgElem.clientHeight;
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(imgElem, 0, 0);
+                        var dataURL = canvas.toDataURL("image/png");
+                        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                    }
+
+                    previewFile();
                 </script>
 
                 <!--Modal, need to be field using js-->
-                <div class="modal" id="details" tabindex="-1"  role="dialog" aria-labelledby="expansion"
+                <div class="modal" id="details" tabindex="-1" role="dialog" aria-labelledby="expansion"
                      aria-hidden="true">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -89,20 +174,27 @@
                         </div>
                         <div class="modal-body body">
                             <div class="row">
-                                <img src="../img/cormen.jpg" class="col-lg-4 image">
-                                <div class="col-lg-6 fields">
+                                <div class = "col-lg-4 fields">
+                                    <img src="../static/img/cormen.jpg" id="img"><br>
+                                    <input type="file" onchange="previewFile()" id="imgbtn">
+                                </div>
+                                <div class="col-lg-6 fields" id="container">
                                     <h4 class="title" id="title"><b>Title: </b></h4>
+                                    <input id="etitle">
                                     <h4 class="edition" id="edition"><b>Edition: </b></h4>
+                                    <input id="eedition">
                                     <h4 class="author" id="author"><b>Author: </b></h4>
+                                    <input id="eauthor">
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
-                                    <h4 class="description" id="description"><b>Description: </b></h4>
+                                    <input id="epublisher">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="editB.html" class="btn btn-primary" >Edit</a>
-                            <button class="btn btn-primary">Delete</button>
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <a id="okbtn" class="btn btn-primary" onclick="bCall()">OK</a>
+                            <a id="editbtn" onclick="edit()" class="btn btn-primary">Edit</a>
+                            <button class="btn btn-primary" onclick="bCall()">Delete</button>
+                            <button class="btn" data-dsismiss="modal" aria-hidden="true">Close</button>
                         </div>
                     </div>
                 </div>
