@@ -49,11 +49,14 @@ public class User {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "picture")
+    private String picture ;
+
     public User() {
     }
 
     public User(String login, String password, String name, String surname,
-                String address, String phone, String role, boolean auth) {
+                String address, String phone, String role, boolean auth, String picture) {
         this.login = login;
         this.password = password;
         this.name = name;
@@ -63,6 +66,7 @@ public class User {
 //        this.loggedIn = isAuth;
         this.role = role;
         this.auth = auth;
+        this.picture = picture;
     }
 
     @Override
@@ -181,5 +185,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

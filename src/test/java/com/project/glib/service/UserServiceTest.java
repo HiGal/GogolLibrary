@@ -36,7 +36,7 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         user = new User("login", "password", "name",
-                "surname", "address", "78953534634", User.STUDENT, true);
+                "surname", "address", "78953534634", User.STUDENT, true, "picture");
         shelf = "SHELF";
     }
 
@@ -69,7 +69,7 @@ public class UserServiceTest {
         try {
             userService.add(user);
             userService.add(new User(user.getLogin(), "pass", "n",
-                    "surn", "ad", "78945612358", User.PROFESSOR, true));
+                    "surn", "ad", "78945612358", User.PROFESSOR, true, "picture"));
         } catch (Exception e) {
             assertEquals(LOGIN_ALREADY_EXIST_EXCEPTION, e.getMessage());
         }
@@ -94,7 +94,7 @@ public class UserServiceTest {
     public void removeHasCheckout1() throws Exception {
         userService.add(user);
         Book book = new Book("title", "author", "publisher",
-                "edition", 2017, Document.DEFAULT_NOTE, 100, 2);
+                "edition", 2017, Document.DEFAULT_NOTE, 100, 2, "picture");
         bookService.add(book, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(book.getId(), Document.BOOK));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.nanoTime(),
@@ -115,7 +115,7 @@ public class UserServiceTest {
     public void removeHasCheckout2() throws Exception {
         userService.add(user);
         Journal journal = new Journal("title", "author", "name", 2,
-                "editor", Document.REFERENCE, 200, 3);
+                "editor", Document.REFERENCE, 200, 3, "picture");
         journalService.add(journal, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(journal.getId(), Document.JOURNAL));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.nanoTime(),
@@ -135,7 +135,7 @@ public class UserServiceTest {
     @Test
     public void removeHasCheckout3() throws Exception {
         userService.add(user);
-        AudioVideo av = new AudioVideo("title", "author", 400, 2);
+        AudioVideo av = new AudioVideo("title", "author", 400, 2, "picture");
         avService.add(av, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(av.getId(), Document.AV));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.nanoTime(),

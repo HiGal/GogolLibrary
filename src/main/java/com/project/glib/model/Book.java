@@ -34,10 +34,13 @@ public class Book extends Document {
     @Column(name = "count")
     private int count;
 
+    @Column(name = "picture")
+    private String picture;
+
     protected Book() {
     }
 
-    public Book(String title, String author, String publisher, String edition, int year, String note, int price, int count) {
+    public Book(String title, String author, String publisher, String edition, int year, String note, int price, int count, String picture) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -46,6 +49,7 @@ public class Book extends Document {
         this.note = note;
         this.price = price;
         this.count = count;
+        this.picture = picture;
     }
 
     public Book(Book book) {
@@ -57,6 +61,7 @@ public class Book extends Document {
         this.note = book.note;
         this.price = book.price;
         this.count = book.count;
+        this.picture = book.picture;
     }
 
     public Book(Book book, int count) {
@@ -67,6 +72,7 @@ public class Book extends Document {
         this.year = book.year;
         this.note = book.note;
         this.price = book.price;
+        this.picture = book.picture;
         this.count = count;
     }
 
@@ -177,5 +183,13 @@ public class Book extends Document {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

@@ -22,14 +22,18 @@ public class AudioVideo extends Document {
     @Column(name = "count")
     private int count;
 
+    @Column(name = "picture")
+    private String picture;
+
     protected AudioVideo() {
     }
 
-    public AudioVideo(String title, String author, int price, int count) {
+    public AudioVideo(String title, String author, int price, int count, String picture) {
         this.title = title;
         this.author = author;
         this.price = price;
         this.count = count;
+        this.picture = picture;
     }
 
     @Override
@@ -99,5 +103,13 @@ public class AudioVideo extends Document {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

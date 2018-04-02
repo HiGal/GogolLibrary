@@ -26,7 +26,7 @@ public class AudioVideoServiceTest {
 
     @Before
     public void setup() {
-        av = new AudioVideo("title", "author", 400, 2);
+        av = new AudioVideo("title", "author", 400, 2, "picture");
         shelf1 = "Shelf1";
         shelf2 = "Shelf2";
         count1 = 2;
