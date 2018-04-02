@@ -151,13 +151,11 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                 throw new Exception(DOC_TYPE_EXCEPTION);
         }
 
-        bookingService.remove(booking.getId());
+        bookingService.removeBecauseCheckout(booking.getId());
         messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
         long docPhysId = booking.getDocPhysId();
 
-        add(new Checkout(booking.getUserId(), docPhysId, System.
-
-                nanoTime(),
+        add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
     }
 

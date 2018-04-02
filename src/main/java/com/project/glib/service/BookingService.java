@@ -106,10 +106,10 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         checkValidParameters(booking);
 
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
-        for (int i = 0; i < bookings.size(); i++) {
-            messageService.addMes(bookings.get(i).getUserId(),
-                    bookings.get(i).getDocVirId(),
-                    bookings.get(i).getDocType(),
+        for (Booking b : bookings) {
+            messageService.addMes(b.getUserId(),
+                    b.getDocVirId(),
+                    b.getDocType(),
                     MessageService.DELETED_QUEUE
             );
         }
@@ -171,6 +171,10 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
         }
+    }
+
+    public void removeBecauseCheckout(long bookingId) {
+        bookingDao.remove(bookingId);
     }
 
     /**
