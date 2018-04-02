@@ -66,110 +66,125 @@ public class LoginController {
     }
 
     /*
+         USER CONTROLLER
+     */
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ModelAndView users() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allUsers", userService.getList());
+        modelAndView.setViewName("patrons");
+        return modelAndView;
+    }
+
+    /*
         BOOK CONTROLLER
      */
     @RequestMapping(value = "/books", method = RequestMethod.GET)
     public ModelAndView books() {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allBooks", bookService.getList());
+        modelAndView.setViewName("documents");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit/book")
-    public ModelAndView editBook(@ModelAttribute Book book){
-        ModelAndView modelAndView = new ModelAndView();
-        return  modelAndView;
-    }
-
-    @RequestMapping(value = "/add/book")
-    public ModelAndView addBook(@ModelAttribute Book book){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/order/book")
-    public ModelAndView orderBook(@ModelAttribute Book book){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    /*
-        JOURNAL CONTROLLER
-     */
-    @RequestMapping(value = "/books", method = RequestMethod.GET)
-    public ModelAndView journals() {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/edit/journal")
-    public ModelAndView editJournal(@ModelAttribute Journal journal){
-        ModelAndView modelAndView = new ModelAndView();
-        return  modelAndView;
-    }
-
-    @RequestMapping(value = "/add/journal")
-    public ModelAndView addJournal(@ModelAttribute Journal journal){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/order/journal")
-    public ModelAndView orderBook(@ModelAttribute Journal journal){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    /*
-        AV CONTROLLER
-     */
-    @RequestMapping(value = "/av", method = RequestMethod.GET)
-    public ModelAndView av() {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-    @RequestMapping(value = "/edit/AV")
-    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo){
-        ModelAndView modelAndView = new ModelAndView();
-        return  modelAndView;
-    }
-
-    @RequestMapping(value = "/add/AV")
-    public ModelAndView addJournal(@ModelAttribute AudioVideo audioVideo){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-    @RequestMapping(value = "/order/AV")
-    public ModelAndView orderBook(@ModelAttribute AudioVideo audioVideo){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    /*
-        CHECKOUT CONTROLLER
-     */
-    @RequestMapping(value = "/checkout", method = RequestMethod.GET)
-    public ModelAndView checkout(@RequestParam String login){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
-    public ModelAndView checkout(@ModelAttribute Booking booking, Model model){
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/checkout/all", method = RequestMethod.POST)
-    public String checkoutAllDocument(@RequestParam String login, Model model) {
-        try {
-
-            return "success";
-        }catch (Exception e){
-
-        }
-
-        return "unsuccess";
-    }
+//    @RequestMapping(value = "/edit/book")
+//    public ModelAndView editBook(@ModelAttribute Book book){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return  modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/add/book")
+//    public ModelAndView addBook(@ModelAttribute Book book){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/order/book")
+//    public ModelAndView orderBook(@ModelAttribute Book book){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//
+//    /*
+//        JOURNAL CONTROLLER
+//     */
+//    @RequestMapping(value = "/books", method = RequestMethod.GET)
+//    public ModelAndView journals() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("allBooks", bookService.getList());
+//        modelAndView.setViewName("documents");
+//        return modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/edit/journal")
+//    public ModelAndView editJournal(@ModelAttribute Journal journal){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return  modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/add/journal")
+//    public ModelAndView addJournal(@ModelAttribute Journal journal){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/order/journal")
+//    public ModelAndView orderBook(@ModelAttribute Journal journal){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//
+//    /*
+//        AV CONTROLLER
+//     */
+//    @RequestMapping(value = "/av", method = RequestMethod.GET)
+//    public ModelAndView av() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//    @RequestMapping(value = "/edit/AV")
+//    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return  modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/add/AV")
+//    public ModelAndView addJournal(@ModelAttribute AudioVideo audioVideo){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//    @RequestMapping(value = "/order/AV")
+//    public ModelAndView orderBook(@ModelAttribute AudioVideo audioVideo){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//
+//    /*
+//        CHECKOUT CONTROLLER
+//     */
+//    @RequestMapping(value = "/checkout", method = RequestMethod.GET)
+//    public ModelAndView checkout(@RequestParam String login){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
+//    public ModelAndView checkout(@ModelAttribute Booking booking, Model model){
+//        ModelAndView modelAndView = new ModelAndView();
+//        return modelAndView;
+//    }
+//
+//    @RequestMapping(value = "/checkout/all", method = RequestMethod.POST)
+//    public String checkoutAllDocument(@RequestParam String login, Model model) {
+//        try {
+//
+//            return "success";
+//        }catch (Exception e){
+//
+//        }
+//
+//        return "unsuccess";
+//    }
 
 
 }
