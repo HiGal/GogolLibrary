@@ -30,17 +30,23 @@ new materials, manage users of the library, among other functionalities.
 
 ## Architecture of the server
 </a> 
- <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
+
+![Server](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/packDep.png "Server") 
  
 <a name="arcw"> 
   
 ## Architecture of the database
+</a>
+
+![Database](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/database.png "DB")
 
 <a name="arcd">
   
 ## Architecture of the website
 </a> 
- <img src="ProvidedDoc/scheme.jpg" alt="ProvidedDoc/scheme.jpg"> 
+
+## Working on it
+ ![Websites](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/1.jpg "W")
  
 <a name="imp">
    
@@ -79,13 +85,13 @@ published in a certain year. For example, “Introduction to Algorithms”
 is a book written by Thomas H. Cormen, Charles E. Leiserson, Ronald
 L. Rivest and Clifford Stein. It was published by the MIT Press. The
 third edition was published in 2009.  
-![Book table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/bookTable.PNG "Book table")
+![Book table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/bookHead.png "Book table")
 
   + ***Journal Articles***: Journal articles are written by one or more authors, have a title, and are published in a certain journal. Journals have a title and are published by a publisher in issues. Issues have editors and a publication date. For example, “Communication ACM” is a journal. The article “Go to Statement Considered Harmful” written by Edsger W. Dijkstra was published in the “March 1968” issue of this journal and Edward Nash Yourdon was the editor of the issue.
-![Journal table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/journalTable.PNG "Journal table")
+![Journal table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/journalHead.png "Journal table")
 
   + **Audio/Video materials (AV)**: AV materials have a title and the list of authors
-![AV table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/avTable.PNG "AV table")
+![AV table](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/avHead.png "AV table")
 
 Documents also have the price value (in Rubles)
 
