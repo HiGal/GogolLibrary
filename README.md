@@ -31,6 +31,8 @@ new materials, manage users of the library, among other functionalities.
 ## Architecture of the server
 </a> 
 
++ MVC model
+
 ![Server](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/packDep.png "Server") 
  
 <a name="arcw"> 
@@ -99,9 +101,8 @@ Documents also have the price value (in Rubles)
 ## Booking System (Document Copy)
 </a>
 
-         
++ Every time user check out document - mount of copies in the library decrease.
 
-Every time user check out document - mount of copies in the library decrease.
 <a name="installation">
   
 # Usage
