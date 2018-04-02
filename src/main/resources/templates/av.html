@@ -50,7 +50,7 @@
                                 <!--put here other fields, make them hidden-->
                                 <h3 class="card-title">{{title}}</h3>
                                 <h5 class="card-subtitle text-muted">{{author}}</h5>
-                                <img src="../img/no_image.jpg">
+                                <img class="image-av" src="../img/no_image.jpg">
                                 <p></p>
                                 <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                             </div>
@@ -60,38 +60,116 @@
 
                     <script>
 
+                        //                    var image = $('#image-book');
+                        //                    image.src = 'data:image/png;base64,iVBORw0K...';
+                        //                    document.body.appendChild(image);
+
                         (function ($) {
                             $(document).ready(function () {
-                                $('.btn-primary').click(function (e) {
+                                $('.btn-lg').click(function (e) {
                                     e.preventDefault();
-                                    //other fields the same way. If you want to make bold text you need another field.
+                                    document.getElementById("title").style.display = "block";
+                                    document.getElementById("author").style.display = "block";
                                     $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                     $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
-                                    });
+                                    $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
+                                    $('#expansion').html($(this).parent().find($('.card.title')).text());
+                                    document.getElementById("etitle").style.display = "none";
+                                    document.getElementById("eauthor").style.display = "none";
+                                    document.getElementById("okbtn").style.display = "none";
+                                    document.getElementById("editbtn").style.display = "inline";
+                                    document.getElementById("imgbtn").style.display = "none";
+                                });
                             });
                             return false;
                         }(jQuery));
+
+                        function edit() {
+                            var title = document.getElementById("etitle");
+                            var author = document.getElementById("eauthor");
+                            title.placeholder = $('.title').text();
+                            author.placeholder = $('.author').text();
+                            document.getElementById("title").style.display = "none";
+                            title.style.display = "block";
+                            document.getElementById("author").style.display = "none";
+                            author.style.display = "block";
+                            document.getElementById("editbtn").style.display = "none";
+                            document.getElementById("okbtn").style.display = "inline";
+                            document.getElementById("imgbtn").style.display = "inline";
+                        }
+
+                        function bCall() {
+                            // var imgElem = document.getElementById('img');
+                            var myJson = {
+                                "title": document.getElementById("etitle").value,
+                                "author": document.getElementById("eauthor").value,
+                                //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                            };
+                            $.ajax({
+                                url: "idk",
+                                type: 'POST',
+                                data: JSON.stringify(myJson),
+                                success: alert('succ'),
+                                error: alert('fork')
+                            });
+                            window.location.reload(false);
+                        }
+
+                        function previewFile() {
+                            var preview = document.getElementById('img');
+                            var file = document.querySelector('input[type=file]').files[0];
+                            var reader = new FileReader();
+
+                            reader.onloadend = function () {
+                                preview.src = reader.result;
+                            }
+
+                            if (file) {
+                                reader.readAsDataURL(file);
+                            } else {
+                                preview.src = "";
+                            }
+                        }
+
+                        function getBase64Image(imgElem) {
+                            var canvas = document.createElement("canvas");
+                            canvas.width = imgElem.clientWidth;
+                            canvas.height = imgElem.clientHeight;
+                            var ctx = canvas.getContext("2d");
+                            ctx.drawImage(imgElem, 0, 0);
+                            var dataURL = canvas.toDataURL("image/png");
+                            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                        }
+
+                        previewFile();
                     </script>
+
                     <div class="modal" id="details" tabindex="-1" role="dialog" aria-labelledby="expansion"
                          aria-hidden="true">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h3 id="expansion">Brain on Tech</h3>
+                                <h3 id="expansion"></h3>
                             </div>
                             <div class="modal-body body">
                                 <div class="row">
-                                    <img src="../img/no_image.jpg" class="col-lg-4 image">
+                                    <div class = "col-lg-4 fields">
+                                        <img src="../img/no_image.jpg" id="img"><br>
+                                        <input type="file" onchange="previewFile()" id="imgbtn">
+                                    </div>
                                     <div class="col-lg-6 fields">
-                                        <h4 class="title"><b>Title: </b></h4>
-                                        <h4 class="author"><b>Author: </b></h4>
+                                        <h4 class="title" id="title"><b>Title: </b></h4>
+                                        <input id="etitle">
+                                        <h4 class="author" id="author"><b>Author: </b></h4>
+                                        <input id="eauthor">
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="editB.html" class="btn btn-primary">Edit</a>
-                                <button class="btn btn-primary">Delete</button>
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                <a id="okbtn" class="btn btn-primary" onclick="bCall()">OK</a>
+                                <a id="editbtn" onclick="edit()" class="btn btn-primary">Edit</a>
+                                <button class="btn btn-primary" onclick="bCall()">Delete</button>
+                                <button class="btn" data-dsismiss="modal" aria-hidden="true">Close</button>
                             </div>
                         </div>
                     </div>
