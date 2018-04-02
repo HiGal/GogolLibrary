@@ -152,7 +152,12 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         bookingService.remove(booking.getId());
-        messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
+        try {
+            messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         long docPhysId = booking.getDocPhysId();
 
         add(new Checkout(booking.getUserId(), docPhysId, System.
@@ -241,5 +246,16 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         } catch (NoSuchElementException | NullPointerException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
+    }
+
+    public void deleteAllCheckouts() throws Exception {
+        List<Checkout> checkouts = getList();
+        for (Checkout checkout : checkouts) {
+            remove(checkout.getId());
+        }
+    }
+
+    public void update(Checkout checkout){
+        checkoutDao.update(checkout);
     }
 }

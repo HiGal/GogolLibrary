@@ -454,4 +454,11 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
         return null;
     }
+
+    public void deleteAllBookings() throws Exception {
+        List<Booking> bookings = getList();
+        for (Booking booking : bookings) {
+            remove(booking.getId());
+        }
+    }
 }

@@ -96,7 +96,7 @@ public class MessageService {
                 .filter(messages -> messages.getDocPhysId() == doc_id)
                 .filter(messages -> messages.getMessage().equals(mes))
                 .collect(Collectors.toList());
-        if (list != null) {
+        if (list.size() != 0) {
             if (list.get(0) != null) {
                 try {
                     for (Messages aList : list) {
