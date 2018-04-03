@@ -31,12 +31,12 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     public static final String ALREADY_HAS_THIS_BOOKING_EXCEPTION = "Sorry, but your already have this booking ";
     public static final String ALREADY_HAS_THIS_CHECKOUT_EXCEPTION = "Sorry, but your already have this check out ";
     public static final String AUTH_EXCEPTION = "Sorry, but your registration is not approved yet.";
+    public static final long DAY_IN_MILLISECONDS = 86400000L;
     private static final String OUTSTANDING = "OUTSTANDING REQUEST";
     private static final String ACTIVE = "ACTIVE";
     private static final String EXPECTED = "EXPECTED";
     private static final String EMPTY_SHELF = "EMPTY";
     private static final long EMPTY_ID = 0L;
-    public static final long DAY_IN_MILLISECONDS = 86400000L;
     private static final HashMap<String, Integer> PRIORITY = new HashMap<>();
 
     static {
