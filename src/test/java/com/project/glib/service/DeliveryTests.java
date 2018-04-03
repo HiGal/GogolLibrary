@@ -40,6 +40,8 @@ public class DeliveryTests {
     private CheckoutService checkoutService;
     @Autowired
     private ReturnService returnService;
+    @Autowired
+    private MessageService messageService;
 
     @Before
     public void setup() throws Exception {
@@ -384,5 +386,12 @@ public class DeliveryTests {
         quq.add(userService.getId(p4));
 
         assertEquals(quq, usersQueue);
+
+        System.out.println(messageService.getAllByUserID(userService.getId(p1)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(p2)));
+        System.out.println(messageService.getAllByUserID(userService.getId(p3)));
+        System.out.println(messageService.getAllByUserID(userService.getId(st)));
+        System.out.println(messageService.getAllByUserID(userService.getId(vp)));
     }
 }

@@ -86,8 +86,7 @@ public class MessageService {
     }
 
 
-    private void removeAllByUserID(String login) throws Exception {
-        long userId = userService.getIdByLogin(login);
+    public void removeAllByUserID(long userId) throws Exception {
         List<Messages> list = messagesRepository.findAll().stream()
                 .filter(messages -> messages.getUserId() == userId)
                 .collect(Collectors.toList());

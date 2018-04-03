@@ -119,7 +119,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
 
-        List<Checkout> checkouts = checkoutService;
+        List<Checkout> checkouts = checkoutService.getByDocVirIdAndDocType(docVirId,docType);
 
         for (Checkout c : checkouts) {
             long virtId = docPhysService.getDocVirIdById(c.getDocPhysId());
