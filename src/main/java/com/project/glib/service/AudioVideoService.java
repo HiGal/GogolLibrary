@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
@@ -58,6 +59,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         try {
             AudioVideo existedAV = isAlreadyExist(audioVideo);
             if (existedAV != null && !existedAV.equals(audioVideo)) {
+                remove(audioVideo.getId());
                 existedAV.setCount(existedAV.getCount() + audioVideo.getCount());
                 existedAV.setPrice(audioVideo.getPrice());
                 audioVideo = existedAV;
@@ -71,7 +73,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     @Override
     public void remove(long audioVideoId) throws Exception {
         try {
-            docPhysService.removeAllByDocIdAndDocType(audioVideoId, Document.AV);
+            docPhysService.removeAllByDocVirIdAndDocType(audioVideoId, Document.AV);
             avDao.remove(audioVideoId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -82,6 +84,16 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     public void removeCopy(long avId, long copyId) throws Exception {
         docPhysService.remove(copyId);
         decrementCountById(avId);
+    }
+
+    @Override
+    public void removeAllCopiesByShelf(long avId, String shelf) throws Exception {
+        List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(avId, Document.AV)
+                .stream()
+                .filter(doc -> doc.getShelf().equals(shelf))
+                .collect(Collectors.toList());
+
+        for (DocumentPhysical docPhys : docPhysList) removeCopy(avId, docPhys.getId());
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService implements DocumentServiceInterface<Book> {
@@ -59,6 +60,7 @@ public class BookService implements DocumentServiceInterface<Book> {
         try {
             Book existedBook = isAlreadyExist(book);
             if (existedBook != null && !existedBook.equals(book)) {
+                remove(book.getId());
                 existedBook.setCount(existedBook.getCount() + book.getCount());
                 existedBook.setPrice(book.getPrice());
                 book = existedBook;
@@ -72,7 +74,7 @@ public class BookService implements DocumentServiceInterface<Book> {
     @Override
     public void remove(long bookId) throws Exception {
         try {
-            docPhysService.removeAllByDocIdAndDocType(bookId, Document.BOOK);
+            docPhysService.removeAllByDocVirIdAndDocType(bookId, Document.BOOK);
             bookDao.remove(bookId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -83,6 +85,16 @@ public class BookService implements DocumentServiceInterface<Book> {
     public void removeCopy(long bookId, long copyId) throws Exception {
         docPhysService.remove(copyId);
         decrementCountById(bookId);
+    }
+
+    @Override
+    public void removeAllCopiesByShelf(long bookId, String shelf) throws Exception {
+        List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(bookId, Document.BOOK)
+                .stream()
+                .filter(doc -> doc.getShelf().equals(shelf))
+                .collect(Collectors.toList());
+
+        for (DocumentPhysical docPhys : docPhysList) removeCopy(bookId, docPhys.getId());
     }
 
     @Override

@@ -52,68 +52,6 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         this.messageService = messageService;
     }
 
-    protected void add(Checkout checkout) throws Exception {
-        checkValidParameters(checkout);
-        if (alreadyHasThisCheckout(checkout.getDocPhysId(), checkout.getUserId()))
-            throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
-        try {
-            checkoutDao.add(checkout);
-        } catch (Exception e) {
-            throw new Exception(ADD_EXCEPTION);
-        }
-    }
-
-    public void remove(long checkoutId) throws Exception {
-        Checkout checkout = getById(checkoutId);
-        String docType = docPhysService.getTypeByID(checkout.getDocPhysId());
-        long docVirId = docPhysService.getDocIdByID(checkout.getDocPhysId());
-        switch (docType) {
-            case Document.BOOK:
-                bookService.incrementCountById(docVirId);
-                break;
-            case Document.JOURNAL:
-                journalService.incrementCountById(docVirId);
-                break;
-            case Document.AV:
-                avService.incrementCountById(docVirId);
-                break;
-            default:
-                throw new Exception(DOC_TYPE_EXCEPTION);
-        }
-        try {
-            if (bookingService.hasNotActiveBooking(checkout.getDocPhysId())) {
-                bookingService.setBookingActiveToTrue(bookingService.getBookingWithMaxPriority(docVirId, docType));
-                bookingService.recalculatePriority(docVirId, docType);
-            }
-            checkoutDao.remove(checkoutId);
-        } catch (Exception e) {
-            throw new Exception(REMOVE_EXCEPTION);
-        }
-    }
-
-    @Override
-    public void checkValidParameters(Checkout checkout) throws Exception {
-        if (checkout.getDocPhysId() <= 0) {
-            throw new Exception(ID_EXCEPTION);
-        }
-
-        if (checkout.getUserId() <= 0) {
-            throw new Exception(ID_EXCEPTION);
-        }
-
-        if (checkout.getCheckoutTime() > System.nanoTime()) {
-            throw new Exception(CHECKOUT_TIME_EXCEPTION);
-        }
-
-        if (checkout.getReturnTime() <= checkout.getCheckoutTime()) {
-            throw new Exception(RETURN_TIME_EXCEPTION);
-        }
-
-        if (checkout.getShelf().equals("")) {
-            throw new Exception(SHELF_EXCEPTION);
-        }
-    }
-
     /**
      * check out current booking
      *
@@ -152,7 +90,6 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         bookingService.removeBecauseCheckout(booking.getId());
-        bookingService.remove(booking.getId());
         try {
             messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
         }catch (Exception e){
@@ -161,8 +98,77 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
 
         long docPhysId = booking.getDocPhysId();
 
-        add(new Checkout(booking.getUserId(), docPhysId, System.nanoTime(),
+        add(new Checkout(booking.getUserId(), booking.getDocPhysId(), System.nanoTime(),
                 System.nanoTime() + additionalTime, booking.getShelf()));
+    }
+
+    protected void add(Checkout checkout) throws Exception {
+        checkValidParameters(checkout);
+        if (alreadyHasThisCheckout(checkout.getDocPhysId(), checkout.getUserId()))
+            throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
+        try {
+            checkoutDao.add(checkout);
+        } catch (Exception e) {
+            throw new Exception(ADD_EXCEPTION);
+        }
+    }
+
+    public void remove(long checkoutId) throws Exception {
+        Checkout checkout = getById(checkoutId);
+//        String docType = docPhysService.getTypeById(checkout.getDocPhysId());
+//        long docVirId = docPhysService.getDocVirIdById(checkout.getDocPhysId());
+        try {
+//            if (bookingService.hasNotActiveBooking(checkout.getDocPhysId())) {
+//                Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
+//                bookingService.setBookingActiveToTrue(bookingWithMaxPriority, checkout.getDocPhysId(), checkout.getShelf());
+//                messageService.addMes(
+//                        bookingWithMaxPriority.getId(),
+//                        docVirId,
+//                        docType,
+//                        MessageService.CHECKOUT_DOCUMENT
+//                );
+//            } else {
+//                switch (docType) {
+//                    case Document.BOOK:
+//                        bookService.incrementCountById(docVirId);
+//                        break;
+//                    case Document.JOURNAL:
+//                        journalService.incrementCountById(docVirId);
+//                        break;
+//                    case Document.AV:
+//                        avService.incrementCountById(docVirId);
+//                        break;
+//                    default:
+//                        throw new Exception(DOC_TYPE_EXCEPTION);
+//                }
+//            }
+            checkoutDao.remove(checkoutId);
+        } catch (Exception e) {
+            throw new Exception(REMOVE_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void checkValidParameters(Checkout checkout) throws Exception {
+        if (checkout.getDocPhysId() <= 0) {
+            throw new Exception(ID_EXCEPTION);
+        }
+
+        if (checkout.getUserId() <= 0) {
+            throw new Exception(ID_EXCEPTION);
+        }
+
+        if (checkout.getCheckoutTime() > System.nanoTime()) {
+            throw new Exception(CHECKOUT_TIME_EXCEPTION);
+        }
+
+        if (checkout.getReturnTime() <= checkout.getCheckoutTime()) {
+            throw new Exception(RETURN_TIME_EXCEPTION);
+        }
+
+        if (checkout.getShelf().equals("")) {
+            throw new Exception(SHELF_EXCEPTION);
+        }
     }
 
 

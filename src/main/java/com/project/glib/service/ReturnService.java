@@ -52,12 +52,12 @@ public class ReturnService {
             messageService.removeOneByUserID(checkout.getUserId(),
                     checkout.getDocPhysId(),
                     MessageService.RETURN_DOCUMENT);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        long docVirId = docPhysService.getDocIdByID(checkout.getDocPhysId());
-        String docType = docPhysService.getTypeByID(checkout.getDocPhysId());
+        long docVirId = docPhysService.getDocVirIdById(checkout.getDocPhysId());
+        String docType = docPhysService.getTypeById(checkout.getDocPhysId());
         Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
         boolean hasNotActiveBooking = bookingService.hasNotActiveBooking(checkout.getDocPhysId());
 
@@ -86,7 +86,7 @@ public class ReturnService {
             );
         } else {
             Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
-            bookingService.setBookingActiveToTrue(bookingWithMaxPriority);
+            bookingService.setBookingActiveToTrue(bookingWithMaxPriority, checkout.getDocPhysId(), checkout.getShelf());
 
             messageService.addMes(
                     bookingWithMaxPriority.getId(),
@@ -104,40 +104,37 @@ public class ReturnService {
      * @param checkout current check out
      * @return overdue
      */
-    public int getOverdue(Checkout checkout) throws Exception {
-        int overdue = 0;
-        long difference = checkout.getReturnTime() - System.nanoTime();
-        if (difference < 0) {
-            int days = convertToDays(difference);
-            int price;
-            switch (docPhysService.getTypeByID(checkout.getDocPhysId())) {
-                case Document.BOOK:
-                    long bookId = docPhysService.getDocIdByPhysDocument(checkout.getDocPhysId());
-                    price = bookService.getPriceById(bookId);
-                    break;
-                case Document.JOURNAL:
-                    long journalId = docPhysService.getDocIdByPhysDocument(checkout.getDocPhysId());
-                    price = journalService.getPriceById(journalId);
-                    break;
-                case Document.AV:
-                    long avId = docPhysService.getDocIdByPhysDocument(checkout.getDocPhysId());
-                    price = avService.getPriceById(avId);
-                    break;
-                default:
-                    return overdue;
-            }
-            overdue = Math.min(days * PENNY, price);
-        }
-        return overdue;
+    private int getOverdue(Checkout checkout) throws Exception {
+        int days = getOverdueDays(checkout);
+        String docType = docPhysService.getTypeById(checkout.getDocPhysId());
+        int price = getPriceByDocPhysIdAndDocType(checkout.getDocPhysId(), docType);
+
+        return Math.min(days * PENNY, price);
     }
 
-    public int getOverdueDays(Checkout checkout) {
+    private int getPriceByDocPhysIdAndDocType(long docPhysId, String docType) throws Exception {
+        switch (docType) {
+            case Document.BOOK:
+                long bookId = docPhysService.getDocVirIdById(docPhysId);
+                return bookService.getPriceById(bookId);
+            case Document.JOURNAL:
+                long journalId = docPhysService.getDocVirIdById(docPhysId);
+                return journalService.getPriceById(journalId);
+            case Document.AV:
+                long avId = docPhysService.getDocVirIdById(docPhysId);
+                return avService.getPriceById(avId);
+            default:
+                return 0;
+        }
+    }
+
+    private int getOverdueDays(Checkout checkout) {
         int days = 0;
         long difference = checkout.getReturnTime() - System.nanoTime();
         if (difference < 0) {
             days = convertToDays(difference);
         }
-        return days;
+        return Math.abs(days);
     }
 
     /**
@@ -162,9 +159,8 @@ public class ReturnService {
      */
     public List<Pair<User, Integer>> getListOfTotalOverdue() throws Exception {
         List<Pair<User, Integer>> listOverdue = new ArrayList<>();
-        List<Checkout> checkouts = checkoutService.getList();
 
-        for (Checkout checkout : checkouts) {
+        for (Checkout checkout : checkoutService.getList()) {
             long userId = checkout.getUserId();
             if (getTotalOverdueByUser(userId) > 0) {
                 listOverdue.add(new Pair<>(userService.getById(userId), getTotalOverdueByUser(userId)));
@@ -185,6 +181,6 @@ public class ReturnService {
      * @return integers days in nanoseconds
      */
     private int convertToDays(long nanoseconds) {
-        return (int) nanoseconds / 1000 / 1000 / 1000 / 60 / 60 / 24;
+        return (int) ((double) nanoseconds / 1000 / 1000 / 1000 / 60 / 24);
     }
 }

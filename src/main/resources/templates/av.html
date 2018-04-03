@@ -115,6 +115,26 @@
                             window.location.reload(false);
                         }
 
+                        function dCall() {
+                            // var imgElem = document.getElementById('img');
+                            var myJson = {
+                                "title": document.getElementById("title").text(),
+                                "editor": document.getElementById("editor").text(),
+                                "author": document.getElementById("author").text(),
+                                "journal": document.getElementById("journal").text(),
+                                "issue": document.getElementById("issue").text()
+                                //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                            };
+                            $.ajax({
+                                url: "idk",
+                                type: 'POST',
+                                data: JSON.stringify(myJson),
+                                success: alert('succ'),
+                                error: alert('fork')
+                            });
+                            window.location.reload(false);
+                        }
+
                         function previewFile() {
                             var preview = document.getElementById('img');
                             var file = document.querySelector('input[type=file]').files[0];
@@ -168,7 +188,7 @@
                             <div class="modal-footer">
                                 <a id="okbtn" class="btn btn-primary" onclick="bCall()">OK</a>
                                 <a id="editbtn" onclick="edit()" class="btn btn-primary">Edit</a>
-                                <button class="btn btn-primary" onclick="bCall()">Delete</button>
+                                <button class="btn btn-primary" onclick="dCall()">Delete</button>
                                 <button class="btn" data-dsismiss="modal" aria-hidden="true">Close</button>
                             </div>
                         </div>

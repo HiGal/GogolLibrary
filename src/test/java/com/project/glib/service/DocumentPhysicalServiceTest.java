@@ -175,7 +175,7 @@ public class DocumentPhysicalServiceTest {
                 docPhys.getDocType(), null));
 
 
-        docPhysService.removeAllByDocIdAndDocType(docPhys.getDocVirId(), docPhys.getDocType());
+        docPhysService.removeAllByDocVirIdAndDocType(docPhys.getDocVirId(), docPhys.getDocType());
 
         try {
             docPhysService.getValidPhysId(docPhys.getDocVirId(), docPhys.getDocType());
@@ -193,7 +193,7 @@ public class DocumentPhysicalServiceTest {
 
     private void removeByDocIdAndDocTypeReturnException(DocumentPhysical docPhys) {
         try {
-            docPhysService.removeAllByDocIdAndDocType(docPhys.getDocVirId(), docPhys.getDocType());
+            docPhysService.removeAllByDocVirIdAndDocType(docPhys.getDocVirId(), docPhys.getDocType());
         } catch (Exception e) {
             assertEquals(EXIST_EXCEPTION, e.getMessage());
         }
