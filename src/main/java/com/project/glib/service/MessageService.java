@@ -4,6 +4,7 @@ import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.dao.interfaces.MessagesRepository;
 import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,13 @@ public class MessageService {
     private final UserService userService;
 
     @Autowired
-    MessageService(MessageDaoImplementation messageDao, MessagesRepository messagesRepository, DocumentPhysicalService documentPhysicalService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, UserService userService) {
+    MessageService(MessageDaoImplementation messageDao,
+                   MessagesRepository messagesRepository,
+                   DocumentPhysicalService documentPhysicalService,
+                   BookService bookService,
+                   JournalService journalService,
+                   AudioVideoService audioVideoService,
+                   @Lazy UserService userService) {
         this.messageDao = messageDao;
         this.messagesRepository = messagesRepository;
         this.documentPhysicalService = documentPhysicalService;
