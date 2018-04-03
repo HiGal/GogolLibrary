@@ -372,6 +372,26 @@ public class DeliveryTests {
                 id_p4);
         bookingService.outstandingRequest(bookingService.getBookingsByUser(id_p4).get(0));
 
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(p1)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(p2)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(p3)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(st)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(vp)));
+        System.out.println("--------------------------------------------------");
+
+
+        assertEquals(1, messageService.getAllByUserID(userService.getId(p1)).size());
+        assertEquals(1, messageService.getAllByUserID(userService.getId(p2)).size());
+        assertEquals(1, messageService.getAllByUserID(userService.getId(p3)).size());
+        assertEquals(1, messageService.getAllByUserID(userService.getId(st)).size());
+        assertEquals(1, messageService.getAllByUserID(userService.getId(vp)).size());
+
+
         List<Booking> queue = bookingService.getPriorityQueueByDocVirIdAndDocType(audioVideoService.getId(av3), Document.AV);
         ArrayList<Long> usersQueue = new ArrayList<>();
 
@@ -386,12 +406,5 @@ public class DeliveryTests {
         quq.add(userService.getId(p4));
 
         assertEquals(quq, usersQueue);
-
-        System.out.println(messageService.getAllByUserID(userService.getId(p1)));
-        System.out.println("--------------------------------------------------");
-        System.out.println(messageService.getAllByUserID(userService.getId(p2)));
-        System.out.println(messageService.getAllByUserID(userService.getId(p3)));
-        System.out.println(messageService.getAllByUserID(userService.getId(st)));
-        System.out.println(messageService.getAllByUserID(userService.getId(vp)));
     }
 }
