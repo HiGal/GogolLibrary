@@ -135,20 +135,24 @@
 
             <script>
                 function regcall() {
+                    var str = document.getElementById("phone").value;
+                    str = str.replace("(", "");
+                    str = str.replace(")", "");
+                    str = str.replace("+", "");
+                    var selector = document.getElementById("sel1");
                     var myJson = {
-                        "sel1":document.getElementById("sell").value,
+                        "role":selector.options[selector.selectedIndex].text.toUpperCase(),
                         "name":document.getElementById("name").value,
                         "surname":document.getElementById("surname").value,
                         "address":document.getElementById("address").value,
-                        "phone":document.getElementById("phone").value,
-                        "username":document.getElementById("username").value,
+                        "phone":str,
+                        "login":document.getElementById("username").value,
                         "password":document.getElementById("password").value
                     };
-                    console.log(JSON.stringify(myJson));
                     $.ajax({
                         url: "/registration",
                         type: 'POST',
-                        data: myJson,
+                        data: JSON.stringify(myJson),
                         success:
                             alert('succ'),
                         error:
