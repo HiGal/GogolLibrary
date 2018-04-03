@@ -36,7 +36,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private static final String EXPECTED = "EXPECTED";
     private static final String EMPTY_SHELF = "EMPTY";
     private static final long EMPTY_ID = 0L;
-    private static final long DAY_IN_MILLISECONDS = 86400000000000L;
+    public static final long DAY_IN_MILLISECONDS = 86400000L;
     private static final HashMap<String, Integer> PRIORITY = new HashMap<>();
 
     static {
@@ -119,7 +119,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
         // add outstanding booking
         booking.setActive(true);
-        booking.setBookingDate(System.nanoTime());
+        booking.setBookingDate(System.currentTimeMillis());
         booking.setPriority(PRIORITY.get(OUTSTANDING));
         add(booking);
     }
@@ -189,7 +189,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
 
         recalculatePriority(docVirId, docType);
-        add(new Booking(userId, docVirId, docType, docPhysId, System.nanoTime(), isActive, priority, shelf));
+        add(new Booking(userId, docVirId, docType, docPhysId, System.currentTimeMillis(), isActive, priority, shelf));
     }
 
     /**
@@ -267,7 +267,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             throw new Exception(DOC_TYPE_EXCEPTION);
         }
 
-        if (booking.getBookingDate() > System.nanoTime()) {
+        if (booking.getBookingDate() > System.currentTimeMillis()) {
             throw new Exception(BOOKING_DATE_EXCEPTION);
         }
 
@@ -303,7 +303,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
             if (!booking.isActive()) {
-                int waitingDays = convertToDays(System.nanoTime() - booking.getBookingDate());
+                int waitingDays = convertToDays(System.currentTimeMillis() - booking.getBookingDate());
                 booking.setPriority(booking.getPriority() + waitingDays);
                 bookingDao.update(booking);
             }
@@ -323,7 +323,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private void recalculateAll() {
         for (Booking booking : getList()) {
             if (bookingInQueue(booking)) {
-                int waitingDays = convertToDays(System.nanoTime() - booking.getBookingDate());
+                int waitingDays = convertToDays(System.currentTimeMillis() - booking.getBookingDate());
                 booking.setPriority(booking.getPriority() + waitingDays);
                 bookingDao.update(booking);
             }
@@ -333,7 +333,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     @Scheduled(fixedDelay = DAY_IN_MILLISECONDS / 2)
     private void deleteLateBookings() throws Exception {
         for (Booking booking : getList()) {
-            boolean isLate = System.nanoTime() - booking.getBookingDate() > DAY_IN_MILLISECONDS;
+            boolean isLate = System.currentTimeMillis() - booking.getBookingDate() > DAY_IN_MILLISECONDS;
             if (bookingCanCheckout(booking) && isLate) {
                 messageService.addMes(booking.getUserId(),
                         booking.getDocPhysId(),
@@ -357,13 +357,13 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         booking.setDocPhysId(docPhysId);
         booking.setShelf(shelf);
         booking.setActive(true);
-        booking.setBookingDate(System.nanoTime());
+        booking.setBookingDate(System.currentTimeMillis());
         booking.setPriority(PRIORITY.get(EXPECTED));
         recalculatePriority(booking.getDocVirId(), booking.getDocType());
     }
 
     private int convertToDays(long milliseconds) {
-        return (int) (milliseconds / 1000 / 1000 / 1000 / 60 / 60 / 24);
+        return (int) ((double) milliseconds / 1000 / 60 / 60 / 24);
     }
 
     @Override

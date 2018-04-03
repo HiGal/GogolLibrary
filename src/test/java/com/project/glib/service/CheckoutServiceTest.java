@@ -56,12 +56,12 @@ public class CheckoutServiceTest {
         long docPhysId2 = docPhysService.getValidPhysId(journal.getId(), Document.JOURNAL);
         long docPhysId3 = docPhysService.getValidPhysId(av.getId(), Document.AV);
 
-        checkout1 = new Checkout(user.getId(), docPhysId1, System.nanoTime(),
-                System.nanoTime() + WEEK_IN_MILLISECONDS * 3, shelf1);
-        checkout2 = new Checkout(user.getId(), docPhysId2, System.nanoTime(),
-                System.nanoTime() + WEEK_IN_MILLISECONDS * 2, shelf1);
-        checkout3 = new Checkout(user.getId(), docPhysId3, System.nanoTime(),
-                System.nanoTime() + WEEK_IN_MILLISECONDS * 2, shelf1);
+        checkout1 = new Checkout(user.getId(), docPhysId1, System.currentTimeMillis(),
+                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 3, shelf1);
+        checkout2 = new Checkout(user.getId(), docPhysId2, System.currentTimeMillis(),
+                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 2, shelf1);
+        checkout3 = new Checkout(user.getId(), docPhysId3, System.currentTimeMillis(),
+                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 2, shelf1);
     }
 
     @After

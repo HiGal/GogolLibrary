@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.project.glib.service.BookingService.DAY_IN_MILLISECONDS;
+
 @Service
 public class MessageService {
     public static final String RETURN_DOCUMENT = "Please, return next document(s) to the library: ";
     public static final String CHECKOUT_DOCUMENT = "Please, visit a library and checkout a document:  ";
     public static final String DELETED_QUEUE = "Sorry, but you were deleted from the queue for the next document: ";
     public static final String LATE_DELETED = "Sorry, but you are late to checkout document: ";
-    private static final long DAY_IN_MILLISECONDS = 86400000000000L;
     private final MessageDaoImplementation messageDao;
     private final MessagesRepository messagesRepository;
     private final DocumentPhysicalService documentPhysicalService;

@@ -130,7 +130,7 @@ public class ReturnService {
 
     private int getOverdueDays(Checkout checkout) {
         int days = 0;
-        long difference = checkout.getReturnTime() - System.nanoTime();
+        long difference = checkout.getReturnTime() - System.currentTimeMillis();
         if (difference < 0) {
             days = convertToDays(difference);
         }
@@ -177,10 +177,10 @@ public class ReturnService {
     /**
      * convert nanoseconds to days in integer value
      *
-     * @param nanoseconds nanoseconds
+     * @param milliseconds nanoseconds
      * @return integers days in nanoseconds
      */
-    private int convertToDays(long nanoseconds) {
-        return (int) ((double) nanoseconds / 1000 / 1000 / 1000 / 60 / 24);
+    private int convertToDays(long milliseconds) {
+        return (int) ((double) milliseconds /1000 /60 /60 / 24);
     }
 }

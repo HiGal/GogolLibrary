@@ -66,11 +66,11 @@
 //        userDao.add(user);
 //
 //        booking1 = new Booking(user.getId(), book.getId(), Document.BOOK,
-//                shelf1, System.nanoTime(), false, 0, shelf);
+//                shelf1, System.currentTimeMillis(), false, 0, shelf);
 //        booking2 = new Booking(user.getId(), journal.getId(), Document.JOURNAL,
-//                shelf1, System.nanoTime(), false, 0, shelf);
+//                shelf1, System.currentTimeMillis(), false, 0, shelf);
 //        booking3 = new Booking(user.getId(), av.getId(), Document.AV,
-//                shelf1, System.nanoTime(), false, 0, shelf);
+//                shelf1, System.currentTimeMillis(), false, 0, shelf);
 //    }
 //
 //    @After
@@ -294,7 +294,7 @@
 //
 //    @BeforeClass
 //    public void setupClass() {
-//        currentTime = System.nanoTime();
+//        currentTime = System.currentTimeMillis();
 //        bookingService = new BookingService(bookDao,
 //                journalDao, avDao, bookingDao, usersDao,
 //                docPhysDao, checkoutDao);
