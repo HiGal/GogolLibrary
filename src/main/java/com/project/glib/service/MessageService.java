@@ -16,26 +16,27 @@ public class MessageService {
     public static final String CHECKOUT_DOCUMENT = "Please, visit a library and checkout a document:  ";
     public static final String DELETED_QUEUE = "Sorry, but you were deleted from the queue for the next document: ";
     public static final String LATE_DELETED = "Sorry, but you are late to checkout document: ";
-    private static final long DAY_IN_MILLISECONDS = 86400000000000L;
+    public static final String READ_MESSAGE = "User read the messages ";
     private final MessageDaoImplementation messageDao;
     private final MessagesRepository messagesRepository;
     private final DocumentPhysicalService documentPhysicalService;
     private final BookService bookService;
     private final JournalService journalService;
     private final AudioVideoService audioVideoService;
+    private final UserService userService;
 
     @Autowired
-    MessageService(MessageDaoImplementation messageDao, MessagesRepository messagesRepository, DocumentPhysicalService documentPhysicalService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService) {
+    MessageService(MessageDaoImplementation messageDao, MessagesRepository messagesRepository, DocumentPhysicalService documentPhysicalService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, UserService userService) {
         this.messageDao = messageDao;
-
         this.messagesRepository = messagesRepository;
         this.documentPhysicalService = documentPhysicalService;
         this.bookService = bookService;
         this.journalService = journalService;
         this.audioVideoService = audioVideoService;
+        this.userService = userService;
     }
 
-    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    @Scheduled(fixedDelay = BookingService.DAY_IN_MILLISECONDS)
     public void deleteReadMes() throws Exception {
         List<Messages> list = messageDao.getList();
         for (Messages mes : list) {
@@ -77,6 +78,14 @@ public class MessageService {
                 .collect(Collectors.toList());
     }
 
+    public List<Messages> getAllByUserIDNotRead(String login) throws Exception {
+        long userId = userService.getIdByLogin(login);
+        return messagesRepository.findAll().stream()
+                .filter(messages -> messages.getUserId() == userId)
+                .filter(messages -> !messages.getIsRead())
+                .collect(Collectors.toList());
+    }
+
     public void removeAllByUserID(long userId) throws Exception {
         List<Messages> list = messagesRepository.findAll().stream()
                 .filter(messages -> messages.getUserId() == userId)
@@ -89,6 +98,21 @@ public class MessageService {
             throw new Exception(e.getMessage());
         }
     }
+
+    public void removeAllByUserIDRead(long userId) throws Exception {
+        List<Messages> list = messagesRepository.findAll().stream()
+                .filter(messages -> messages.getUserId() == userId)
+                .filter(Messages::getIsRead)
+                .collect(Collectors.toList());
+        try {
+            for (Messages aList : list) {
+                messageDao.remove(aList.getId());
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
 
     public void removeOneByUserID(long userId, long doc_id, String mes) throws Exception {
         List<Messages> list = messagesRepository.findAll().stream()
