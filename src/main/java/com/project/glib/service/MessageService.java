@@ -113,7 +113,7 @@ public class MessageService {
         }
     }
 
-    public void sendMesToLib(String login) throws Exception {
+    public void sendMessagesToLib(String login) throws Exception {
         List<Messages> messages = getAllByUserID(userService.getIdByLogin(login));
         for (Messages message1 : messages) {
             String message = "User " + login +
