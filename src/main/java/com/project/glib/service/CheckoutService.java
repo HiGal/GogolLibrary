@@ -92,7 +92,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         bookingService.removeBecauseCheckout(booking.getId());
         try {
             messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -253,6 +253,20 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    public List<Checkout> getByDocVirIdAndDocType(long docVirId, String docType) {
+        List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(docVirId, docType);
+
+        List<Checkout> checkoutList = new ArrayList<>();
+        for (DocumentPhysical docPhys : docPhysList) {
+            try {
+                Checkout checkout = getByDocPhysId(docPhys.getId());
+                checkoutList.add(checkout);
+            } catch (Exception ignore) {
+            }
+        }
+        return checkoutList;
+    }
+
     public List<Checkout> getCheckoutsByUserId(long userId) {
         try {
             return getList().stream()
@@ -270,7 +284,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
-    public void update(Checkout checkout){
+    public void update(Checkout checkout) {
         checkoutDao.update(checkout);
     }
 }

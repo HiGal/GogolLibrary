@@ -23,8 +23,8 @@ import java.util.List;
 public class UserController {
     //    private final SecurityDaoImplementation securityDao;
     private final UserService userService;
-//    private final UserValidator userValidator;
-private final BookService bookService;
+    //    private final UserValidator userValidator;
+    private final BookService bookService;
     private final JournalService journalService;
     private final AudioVideoService avService;
 
