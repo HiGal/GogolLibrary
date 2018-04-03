@@ -97,8 +97,8 @@ public class UserServiceTest {
                 "edition", 2017, Document.DEFAULT_NOTE, 100, 2, "picture");
         bookService.add(book, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(book.getId(), Document.BOOK));
-        Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.nanoTime(),
-                System.nanoTime() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
+        Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
+                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
         checkoutService.add(checkout);
 
         try {
@@ -118,8 +118,8 @@ public class UserServiceTest {
                 "editor", Document.REFERENCE, 200, 3, "picture");
         journalService.add(journal, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(journal.getId(), Document.JOURNAL));
-        Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.nanoTime(),
-                System.nanoTime() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
+        Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
+                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
         checkoutService.add(checkout);
 
         try {
@@ -138,8 +138,8 @@ public class UserServiceTest {
         AudioVideo av = new AudioVideo("title", "author", 400, 2, "picture");
         avService.add(av, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(av.getId(), Document.AV));
-        Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.nanoTime(),
-                System.nanoTime() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
+        Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
+                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
         checkoutService.add(checkout);
 
         try {

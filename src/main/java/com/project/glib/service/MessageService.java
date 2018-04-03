@@ -4,9 +4,11 @@ import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.dao.interfaces.MessagesRepository;
 import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +18,6 @@ public class MessageService {
     public static final String CHECKOUT_DOCUMENT = "Please, visit a library and checkout a document:  ";
     public static final String DELETED_QUEUE = "Sorry, but you were deleted from the queue for the next document: ";
     public static final String LATE_DELETED = "Sorry, but you are late to checkout document: ";
-    public static final String READ_MESSAGE = "User read the messages ";
     private final MessageDaoImplementation messageDao;
     private final MessagesRepository messagesRepository;
     private final DocumentPhysicalService documentPhysicalService;
@@ -26,7 +27,13 @@ public class MessageService {
     private final UserService userService;
 
     @Autowired
-    MessageService(MessageDaoImplementation messageDao, MessagesRepository messagesRepository, DocumentPhysicalService documentPhysicalService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, UserService userService) {
+    MessageService(MessageDaoImplementation messageDao,
+                   MessagesRepository messagesRepository,
+                   DocumentPhysicalService documentPhysicalService,
+                   BookService bookService,
+                   JournalService journalService,
+                   AudioVideoService audioVideoService,
+                   @Lazy UserService userService) {
         this.messageDao = messageDao;
         this.messagesRepository = messagesRepository;
         this.documentPhysicalService = documentPhysicalService;
@@ -78,15 +85,9 @@ public class MessageService {
                 .collect(Collectors.toList());
     }
 
-    public List<Messages> getAllByUserIDNotRead(String login) throws Exception {
+
+    private void removeAllByUserID(String login) throws Exception {
         long userId = userService.getIdByLogin(login);
-        return messagesRepository.findAll().stream()
-                .filter(messages -> messages.getUserId() == userId)
-                .filter(messages -> !messages.getIsRead())
-                .collect(Collectors.toList());
-    }
-
-    public void removeAllByUserID(long userId) throws Exception {
         List<Messages> list = messagesRepository.findAll().stream()
                 .filter(messages -> messages.getUserId() == userId)
                 .collect(Collectors.toList());
@@ -99,18 +100,27 @@ public class MessageService {
         }
     }
 
-    public void removeAllByUserIDRead(long userId) throws Exception {
-        List<Messages> list = messagesRepository.findAll().stream()
-                .filter(messages -> messages.getUserId() == userId)
-                .filter(Messages::getIsRead)
-                .collect(Collectors.toList());
+    public List<String> getMessages(String login) {
         try {
-            for (Messages aList : list) {
-                messageDao.remove(aList.getId());
+            List<Messages> mes = getAllByUserID(userService.getIdByLogin(login));
+            ArrayList<String> result = new ArrayList<>();
+            for (int i = 0; i < mes.size(); i++) {
+                result.add(mes.get(i).getMessage() + createMessage(mes.get(i).getDocPhysId()));
             }
+            return result;
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            return new ArrayList<String>();
         }
+    }
+
+    public void sendMessagesToLib(String login) throws Exception {
+        List<Messages> messages = getAllByUserID(userService.getIdByLogin(login));
+        for (Messages message1 : messages) {
+            String message = "User " + login +
+                    " read the message: " + message1.getMessage() +
+                    createMessage(message1.getDocPhysId());
+        }
+
     }
 
 
@@ -138,7 +148,7 @@ public class MessageService {
         }
     }
 
-    public String createMessage(long idPhys) {
+    private String createMessage(long idPhys) {
         DocumentPhysical documentPhysical = documentPhysicalService.getById(idPhys);
         String result = "";
         long id = documentPhysical.getDocVirId();
