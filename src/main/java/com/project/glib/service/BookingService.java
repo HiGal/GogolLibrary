@@ -125,6 +125,74 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     }
 
     /**
+     * Booking a document user if it possible
+     *
+     * @param docVirId ID of this document
+     * @param docType  type of this document (valid types wrote in constants in superclass Document.java)
+     * @param userId   ID of user whom try to book document
+     * @throws Exception run-time exception
+     */
+    public void toBookDocument(long docVirId, String docType, long userId) throws Exception {
+        if (!userService.getIsAuthById(userId)) {
+            throw new Exception(AUTH_EXCEPTION);
+        }
+
+        if (alreadyHasThisBooking(docVirId, docType, userId)) {
+            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
+        }
+
+        checkValidToBook(docVirId, docType);
+
+        long docPhysId = EMPTY_ID;
+        String shelf = EMPTY_SHELF;
+        int priority = PRIORITY.get(userService.getTypeById(userId));
+        boolean isActive = false;
+        try {
+            docPhysId = docPhysService.getValidPhysId(docVirId, docType);
+
+            if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
+                throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
+            }
+
+            shelf = docPhysService.getShelfById(docPhysId);
+            priority = PRIORITY.get(ACTIVE);
+            isActive = true;
+            switch (docType) {
+                case Document.BOOK:
+                    bookService.decrementCountById(docVirId);
+                    docPhysService.inverseCanBooked(docPhysId);
+                    break;
+                case Document.JOURNAL:
+                    journalService.decrementCountById(docVirId);
+                    docPhysService.inverseCanBooked(docPhysId);
+                    break;
+                case Document.AV:
+                    avService.decrementCountById(docVirId);
+                    docPhysService.inverseCanBooked(docPhysId);
+                    break;
+                default:
+                    throw new Exception(TYPE_EXCEPTION);
+            }
+        } catch (Exception e) {
+            DocumentPhysical docPhys = getValidDocPhys(docVirId, docType);
+            if (docPhys != null) {
+                docPhysId = docPhys.getId();
+
+                if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
+                    throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
+                }
+
+                shelf = docPhys.getShelf();
+                priority = PRIORITY.get(EXPECTED);
+                isActive = true;
+            }
+        }
+
+        recalculatePriority(docVirId, docType);
+        add(new Booking(userId, docVirId, docType, docPhysId, System.nanoTime(), isActive, priority, shelf));
+    }
+
+    /**
      * Adds new booking record in the database
      *
      * @param booking booking to put in the DB
@@ -163,9 +231,14 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
         try {
-            if (bookingCanCheckout(booking)) {
-                setBookingActiveToTrue(getBookingWithMaxPriority(booking.getDocVirId(), booking.getDocType()));
+            try {
+                if (bookingCanCheckout(booking)) {
+                    Booking bookingWithMaxPriority = getBookingWithMaxPriority(booking.getDocVirId(), booking.getDocType());
+                    setBookingActiveToTrue(bookingWithMaxPriority, booking.getDocPhysId(), booking.getShelf());
+                }
+            } catch (NullPointerException ignore) {
             }
+
             recalculatePriority(booking.getDocVirId(), booking.getDocType());
             bookingDao.remove(bookingId);
         } catch (Exception e) {
@@ -207,68 +280,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    /**
-     * Booking a document user if it possible
-     *
-     * @param docVirId ID of this document
-     * @param docType  type of this document (valid types wrote in constants in superclass Document.java)
-     * @param userId   ID of user whom try to book document
-     * @throws Exception run-time exception
-     */
-    public void toBookDocument(long docVirId, String docType, long userId) throws Exception {
-        if (!userService.getIsAuthById(userId)) {
-            throw new Exception(AUTH_EXCEPTION);
-        }
-
-        if (alreadyHasThisBooking(docVirId, docType, userId)) {
-            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
-        }
-
-        checkValidToBook(docVirId, docType);
-
-        long docPhysId = EMPTY_ID;
-        String shelf = EMPTY_SHELF;
-        int priority = PRIORITY.get(userService.getTypeById(userId));
-        boolean isActive = false;
-        try {
-            docPhysId = docPhysService.getByDocVirIdAndDocType(docVirId, docType).get(0).getId();
-            shelf = docPhysService.getShelfById(docPhysId);
-            priority = PRIORITY.get(ACTIVE);
-            isActive = true;
-            switch (docType) {
-                case Document.BOOK:
-                    bookService.decrementCountById(docVirId);
-                    docPhysService.inverseCanBooked(docPhysId);
-                    break;
-                case Document.JOURNAL:
-                    journalService.decrementCountById(docVirId);
-                    docPhysService.inverseCanBooked(docPhysId);
-                    break;
-                case Document.AV:
-                    avService.decrementCountById(docVirId);
-                    docPhysService.inverseCanBooked(docPhysId);
-                    break;
-                default:
-                    throw new Exception(TYPE_EXCEPTION);
-            }
-        } catch (Exception e) {
-            DocumentPhysical docPhys = getValidDocPhys(docVirId, docType);
-            if (docPhys != null) {
-                docPhysId = docPhys.getId();
-                shelf = docPhys.getShelf();
-                priority = PRIORITY.get(EXPECTED);
-                isActive = true;
-            }
-        }
-
-        if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
-            throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
-        }
-
-        recalculatePriority(docVirId, docType);
-        add(new Booking(userId, docVirId, docType, docPhysId, System.nanoTime(), isActive, priority, shelf));
-    }
-
     private void checkValidToBook(long docVirId, String docType) throws Exception {
         switch (docType) {
             case Document.BOOK:
@@ -288,7 +299,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    public void recalculatePriority(long docVirId, String docType) {
+    private void recalculatePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
             if (!booking.isActive()) {
@@ -308,7 +319,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS / 2)
     private void recalculateAll() {
         for (Booking booking : getList()) {
             if (bookingInQueue(booking)) {
@@ -319,7 +330,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS)
+    @Scheduled(fixedDelay = DAY_IN_MILLISECONDS / 2)
     private void deleteLateBookings() throws Exception {
         for (Booking booking : getList()) {
             boolean isLate = System.nanoTime() - booking.getBookingDate() > DAY_IN_MILLISECONDS;
@@ -342,7 +353,9 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         return booking.getPriority() >= PRIORITY.get(EXPECTED);
     }
 
-    protected void setBookingActiveToTrue(Booking booking) {
+    void setBookingActiveToTrue(Booking booking, long docPhysId, String shelf) {
+        booking.setDocPhysId(docPhysId);
+        booking.setShelf(shelf);
         booking.setActive(true);
         booking.setBookingDate(System.nanoTime());
         booking.setPriority(PRIORITY.get(EXPECTED));
@@ -452,7 +465,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(docVirId, docType);
         for (DocumentPhysical docPhys : docPhysList) {
             long docPhysId = docPhys.getId();
-            if (docPhys.isCanBooked() || !hasActiveBooking(docPhysId)) {
+            if (!hasActiveBooking(docPhysId)) {
                 return docPhys;
             }
         }

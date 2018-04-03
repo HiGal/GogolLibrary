@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class JournalService implements DocumentServiceInterface<Journal> {
@@ -58,6 +59,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         try {
             Journal existedJournal = isAlreadyExist(journal);
             if (existedJournal != null && !existedJournal.equals(journal)) {
+                remove(journal.getId());
                 existedJournal.setCount(existedJournal.getCount() + journal.getCount());
                 existedJournal.setPrice(journal.getPrice());
                 journal = existedJournal;
@@ -71,7 +73,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     @Override
     public void remove(long journalId) throws Exception {
         try {
-            docPhysService.removeAllByDocIdAndDocType(journalId, Document.JOURNAL);
+            docPhysService.removeAllByDocVirIdAndDocType(journalId, Document.JOURNAL);
             journalDao.remove(journalId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -82,6 +84,16 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     public void removeCopy(long journalId, long copyId) throws Exception {
         docPhysService.remove(copyId);
         decrementCountById(journalId);
+    }
+
+    @Override
+    public void removeAllCopiesByShelf(long journalId, String shelf) throws Exception {
+        List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(journalId, Document.JOURNAL)
+                .stream()
+                .filter(doc -> doc.getShelf().equals(shelf))
+                .collect(Collectors.toList());
+
+        for (DocumentPhysical docPhys : docPhysList) removeCopy(journalId, docPhys.getId());
     }
 
     @Override
