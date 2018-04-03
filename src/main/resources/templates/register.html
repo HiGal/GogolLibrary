@@ -84,7 +84,7 @@
                 <div class="form-group">
                     <label for="phone" class="cols-sm-2 control-label">Phone Number</label>
                     <div class="cols-sm-10">
-                        <div class="input-group">
+                        <div0 class="input-group">
                             <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="phone" id="phone"
                                    placeholder="Enter your number" required/>
@@ -93,7 +93,7 @@
                                     $("#phone").mask("+7(999)999-9999");
                                 });
                             </script>
-                        </div>
+                        </div0>
                     </div>
                 </div>
 
@@ -136,12 +136,17 @@
             <script>
                 function regcall() {
                     var selector = document.getElementById("sel1");
+                    var str = document.getElementById("phone").value;
+                    str = str.replace("(", "");
+                    str = str.replace(")", "");
+                    str = str.replace("+", "");
+                    var selector = document.getElementById("sel1");
                     var myJson = {
                         "role":selector.options[selector.selectedIndex].text.toUpperCase(),
                         "name":document.getElementById("name").value,
                         "surname":document.getElementById("surname").value,
                         "address":document.getElementById("address").value,
-                        "phone":document.getElementById("phone").value,
+                        "phone":str,
                         "login":document.getElementById("username").value,
                         "password":document.getElementById("password").value
                     };
