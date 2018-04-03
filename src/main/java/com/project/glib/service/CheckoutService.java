@@ -92,7 +92,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         bookingService.removeBecauseCheckout(booking.getId());
         try {
             messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -270,7 +270,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
-    public void update(Checkout checkout){
+    public void update(Checkout checkout) {
         checkoutDao.update(checkout);
     }
 }

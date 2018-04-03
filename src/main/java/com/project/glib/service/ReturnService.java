@@ -181,6 +181,6 @@ public class ReturnService {
      * @return integers days in nanoseconds
      */
     private int convertToDays(long milliseconds) {
-        return (int) ((double) milliseconds /1000 /60 /60 / 24);
+        return (int) ((double) milliseconds / 1000 / 60 / 60 / 24);
     }
 }
