@@ -6,6 +6,7 @@ import com.project.glib.service.BookService;
 import com.project.glib.service.JournalService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -66,6 +67,23 @@ public class LoginController {
             e.printStackTrace();
         }
         return model;
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public ModelAndView registration(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("register");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String regForm(@RequestBody User user){
+        try {
+            userService.update(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "login";
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)

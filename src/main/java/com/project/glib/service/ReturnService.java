@@ -48,9 +48,13 @@ public class ReturnService {
     public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
         checkoutService.remove(checkout.getId());
 
-        messageService.removeOneByUserID(checkout.getUserId(),
-                checkout.getDocPhysId(),
-                MessageService.RETURN_DOCUMENT);
+        try {
+            messageService.removeOneByUserID(checkout.getUserId(),
+                    checkout.getDocPhysId(),
+                    MessageService.RETURN_DOCUMENT);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
         long docVirId = docPhysService.getDocVirIdById(checkout.getDocPhysId());
         String docType = docPhysService.getTypeById(checkout.getDocPhysId());

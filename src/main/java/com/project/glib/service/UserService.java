@@ -54,7 +54,8 @@ public class UserService implements ModifyByLibrarianService<User> {
         checkValidParameters(user);
         if (usersDao.findByLogin(user.getLogin()) != null) throw new Exception(LOGIN_ALREADY_EXIST_EXCEPTION);
         try {
-            user.setAuth(false);
+            //todo change to false
+            user.setAuth(true);
             usersDao.add(user);
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);

@@ -10,34 +10,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/css/patrons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   <!-- <script>
-        function make_json() {
-            var myJson = {
-                "id":document.getElementById("id").value
-            };
-            console.log(JSON.stringify(myJson));
-            $.ajax({
-                url: "",
-                type: 'POST',
-                data: myJson,
-                success:
-                        alert('succ'),
-                error:
-                        alert('fork')
-            });
 
-        }
-    </script> -->
-    <script>
-        (function ($) {
-            $(document).ready(function () {
-                $('.row-remove').click(function (e) {
-                    e.preventDefault();
-                    $(this).closest('tr').remove(); // или $(this).parent().parent().remove();
-                });
-            });
-        }(jQuery));
-    </script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -66,7 +39,7 @@
         <div class="output"></div>
         <div class="row centered">
             <div class="card card-container">
-                <p id="patrons"><a id="linker" href="Librarian.html">Dashboard</a> / <u>Patrons</u></p>
+                <p id="patrons"><a id="linker" href="/dashboard">Dashboard</a> / <u>Patrons</u></p>
                 <p class="header">Users that are already in the Gogol Library</p>
                 <div class="utable">
                     <table class="table table-hover table-striped">
@@ -93,12 +66,22 @@
                                 <td>{{phone}}</td>
                                 <td>{{role}}</td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block submit">
-                                        Edit
-                                    </button>
+                                    <input type="hidden" class="id" value="{{id}}">
+                                    <input type="hidden" class="name" value="{{name}}">
+                                    <input type="hidden" class="sname" value="{{surname}}">
+                                    <input type="hidden" class="addr" value="{{address}}">
+                                    <input type="hidden" class="ph" value="{{phone}}">
+                                    <input type="hidden" class="role" value="{{role}}">
+                                    <a href="#details" class="btn btn-primary btn-sm btn-block submit" data-toggle="modal">Edit</a>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove" onsubmit="return make_json(this)">
+                                    <input type="hidden" class="did" value="{{id}}">
+                                    <input type="hidden" class="dname" value="{{name}}">
+                                    <input type="hidden" class="dsname" value="{{surname}}">
+                                    <input type="hidden" class="daddress" value="{{address}}">
+                                    <input type="hidden" class="dphone" value="{{phone}}">
+                                    <input type="hidden" class="drole" value="{{role}}">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove">
                                         Delete
                                     </button>
                                 </td>
@@ -107,6 +90,108 @@
                         {{/allUsers}}
                         </tbody>
                     </table>
+
+                    <script>
+
+                        (function ($) {
+                            $(document).ready(function () {
+                                $('.row-remove').click(function (e) {
+                                    e.preventDefault();
+                                    var id = $(this).parent().find($('.did')).text();
+                                    var name = $(this).parent().find($('.dname')).text();
+                                    var sname = $(this).parent().find($('.dsname')).text();
+                                    var addr = $(this).parent().find($('.daddress')).text();
+                                    var ph = $(this).parent().find($('.dphone')).text();
+                                    var role = $(this).parent().find($('.drole')).text();
+
+                                    var myJson = {
+                                        "id": id,
+                                        "name": name,
+                                        "surname": sname,
+                                        "address": addr,
+                                        "phone": ph,
+                                        "role": role
+                                    };
+                                    $.ajax({
+                                        url: "idk",
+                                        type: 'POST',
+                                        data: JSON.stringify(myJson),
+                                        success: alert('succ'),
+                                        error: alert('fork')
+                                    });
+                                    $(this).closest('tr').remove(); // или $(this).parent().parent().remove();
+                                });
+                            });
+                        }(jQuery));
+
+                        (function ($) {
+                            $(document).ready(function () {
+                                $('.submit').click(function (e) {
+                                    e.preventDefault();
+                                    var id = $(this).parent().find($('.id')).val();
+                                    var name = $(this).parent().find($('.name')).val();
+                                    var sname = $(this).parent().find($('.sname')).val();
+                                    var addr = $(this).parent().find($('.addr')).val();
+                                    var ph = $(this).parent().find($('.phone')).val();
+                                    var role = $(this).parent().find($('.role')).val();
+                                    $('.title').text(id);
+                                    document.getElementById('fname').placeholder=name;
+                                    document.getElementById('fsname').placeholder=sname;
+                                    document.getElementById('faddr').placeholder=addr;
+                                    document.getElementById('fphone').placeholder=ph;
+                                    document.getElementById('frole').placeholder=role;
+                                });
+                            });
+                        }(jQuery));
+
+                        function bCall() {
+                            var myJson = {
+                                "id": document.getElementById("id").textContent,
+                                "name": document.getElementById("fname").value,
+                                "surname": document.getElementById("fsname").value,
+                                "address": document.getElementById("faddr").value,
+                                "phone": document.getElementById("fphone").value,
+                                "role": document.getElementById('frole').value
+
+                            };
+                            $.ajax({
+                                url: "idk",
+                                type: 'POST',
+                                data: JSON.stringify(myJson),
+                                success: alert('succ'),
+                                error: alert('fork')
+                            });
+
+                        }
+
+                    </script>
+
+                    <div class="modal" id="details" tabindex="-1" role="dialog" aria-labelledby="expansion"
+                         aria-hidden="true">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="expansion">Edit user</h3>
+                            </div>
+                            <div class="modal-body body">
+                                <div class="row">
+                                    <div class="col-lg-10 fields" id="container">
+                                        <h4 class="title" id="id"></h4>
+                                        <input class="fname" id="fname">
+                                        <input class="fsname" id="fsname">
+                                        <input class="faddr" id="faddr">
+                                        <input class="fphone" id="fphone">
+                                        <input class="frole" id="frole">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a id="okbtn" class="btn btn-primary" onclick="bCall()">OK</a>
+                                <button class="btn" data-dsismiss="modal" aria-hidden="true">Close</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
