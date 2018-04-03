@@ -52,7 +52,7 @@ public class ReturnService {
             messageService.removeOneByUserID(checkout.getUserId(),
                     checkout.getDocPhysId(),
                     MessageService.RETURN_DOCUMENT);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -181,6 +181,6 @@ public class ReturnService {
      * @return integers days in nanoseconds
      */
     private int convertToDays(long nanoseconds) {
-        return (int) nanoseconds / 1000 / 1000 / 1000 / 60 / 60 / 24;
+        return (int) ((double) nanoseconds / 1000 / 1000 / 1000 / 60 / 24);
     }
 }
