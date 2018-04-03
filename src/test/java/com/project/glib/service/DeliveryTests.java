@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,21 +40,7 @@ public class DeliveryTests {
     private ReturnService returnService;
 
     @Before
-    public void setup() {
-        b1 = new Book("Introduction to Algorithms",
-                "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein",
-                "MIT Press",
-                "Third edition",
-                2009,
-                Book.DEFAULT_NOTE, 5000, 1, "img");
-        b2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software",
-                "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm",
-                "Addison-Wesley Professional",
-                "First edition",
-                2003,
-                Book.BESTSELLER, 1700, 1, "img");
-        av3 = new AudioVideo("Null References: The Billion Dollar Mistake",
-                "Tony Hoare", 700, 1, "img");
+    public void setup() throws Exception {
         p1 = new User("s.afonso", "123",
                 "Sergey", "Afonso",
                 "Via Margutta, 3", "12345678900", User.PROFESSOR,
@@ -79,56 +66,59 @@ public class DeliveryTests {
                 "Kazan", "12345678900", User.LIBRARIAN,
                 true, "img");
 
-        try {
-            bookService.add(b1, "SH1");
-            bookService.add(b1, "SH2");
-            bookService.add(b1, "SH3");
-            bookService.add(b2, "SH1");
-            bookService.add(b2, "SH2");
-            bookService.add(b2, "SH3");
-            audioVideoService.add(av3, "SH4");
-            audioVideoService.add(av3, "SH5");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
 
-        try {
-            userService.add(p1);
-            userService.add(p2);
-            userService.add(p3);
-            userService.add(st);
-            userService.add(lib);
-            userService.add(vp);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        userService.add(p1);
+        userService.add(p2);
+        userService.add(p3);
+        userService.add(st);
+        userService.add(lib);
+        userService.add(vp);
+
+        b1 = new Book("Introduction to Algorithms",
+                "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein",
+                "MIT Press",
+                "Third edition",
+                2009,
+                Book.DEFAULT_NOTE, 5000, 1, "img");
+        b2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software",
+                "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm",
+                "Addison-Wesley Professional",
+                "First edition",
+                2003,
+                Book.BESTSELLER, 1700, 1, "img");
+        av3 = new AudioVideo("Null References: The Billion Dollar Mistake",
+                "Tony Hoare", 700, 1, "img");
+
+
+        bookService.add(b1, "SH1");
+        bookService.add(b1, "SH2");
+        bookService.add(b1, "SH3");
+        bookService.add(b2, "SH1");
+        bookService.add(b2, "SH2");
+        bookService.add(b2, "SH3");
+
+        audioVideoService.add(av3, "SH4");
+        audioVideoService.add(av3, "SH5");
+
+
     }
 
+
     @After
-    public void tearDown() {
-        try {
-            bookService.remove(bookService.getId(b1));
-            bookService.remove(bookService.getId(b2));
-            audioVideoService.remove(audioVideoService.getId(av3));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            userService.remove(userService.getId(p1));
-            userService.remove(userService.getId(p2));
-            userService.remove(userService.getId(p3));
-            userService.remove(userService.getId(st));
-            userService.remove(userService.getId(vp));
-            userService.remove(userService.getId(lib));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            bookingService.deleteAllBookings();
-            checkoutService.deleteAllCheckouts();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+    public void tearDown() throws Exception {
+        bookService.remove(bookService.getId(b1));
+        bookService.remove(bookService.getId(b2));
+        audioVideoService.remove(audioVideoService.getId(av3));
+
+        userService.remove(userService.getId(p1));
+        userService.remove(userService.getId(p2));
+        userService.remove(userService.getId(p3));
+        userService.remove(userService.getId(st));
+        userService.remove(userService.getId(vp));
+        userService.remove(userService.getId(lib));
+
+        bookingService.deleteAllBookings();
+        checkoutService.deleteAllCheckouts();
     }
 
     @Test
@@ -151,17 +141,23 @@ public class DeliveryTests {
         List<Checkout> checkouts = checkoutService.getCheckoutsByUser(id);
 
         for (Checkout checkout : checkouts) {
-            checkout.setReturnTime(checkout.getCheckoutTime()-11000000);
+            checkout.setReturnTime(new Date(2018, 3, 5).getTime());
             checkoutService.update(checkout);
         }
 
         List<Checkout> ch = checkoutService.getCheckoutsByUser(id);
 
         for (Checkout aCh : ch) {
+            System.out.println("-----------------------------------------");
+            System.out.println(aCh.toString());
+            System.out.println(System.currentTimeMillis());
             Pair<Checkout, Integer> pair = returnService.toReturnDocument(aCh);
+            System.out.println("-----------------------------------------");
+            System.out.println(pair.getValue() + " Overdue");
             j = j + pair.getValue();
+            System.out.println("-----------------------------------------");
         }
 
-        assertNotEquals(0, j);
+        assertEquals(0, j);
     }
 }

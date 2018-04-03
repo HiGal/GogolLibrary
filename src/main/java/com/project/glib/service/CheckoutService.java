@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CheckoutService implements ModifyByLibrarianService<Checkout> {
-    public static final long WEEK_IN_MILLISECONDS = 604800000000000L;
+    public static final long WEEK_IN_MILLISECONDS = 604800000L;
     public static final String TYPE = Checkout.TYPE;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
@@ -98,8 +98,8 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
 
         long docPhysId = booking.getDocPhysId();
 
-        add(new Checkout(booking.getUserId(), booking.getDocPhysId(), System.nanoTime(),
-                System.nanoTime() + additionalTime, booking.getShelf()));
+        add(new Checkout(booking.getUserId(), booking.getDocPhysId(), System.currentTimeMillis(),
+                System.currentTimeMillis() + additionalTime, booking.getShelf()));
     }
 
     protected void add(Checkout checkout) throws Exception {
@@ -158,7 +158,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
             throw new Exception(ID_EXCEPTION);
         }
 
-        if (checkout.getCheckoutTime() > System.nanoTime()) {
+        if (checkout.getCheckoutTime() > System.currentTimeMillis()) {
             throw new Exception(CHECKOUT_TIME_EXCEPTION);
         }
 
