@@ -36,7 +36,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private static final String EXPECTED = "EXPECTED";
     private static final String EMPTY_SHELF = "EMPTY";
     private static final long EMPTY_ID = 0L;
-    private static final long DAY_IN_MILLISECONDS = 86400000000000L;
+    public static final long DAY_IN_MILLISECONDS = 86400000000000L;
     private static final HashMap<String, Integer> PRIORITY = new HashMap<>();
 
     static {
