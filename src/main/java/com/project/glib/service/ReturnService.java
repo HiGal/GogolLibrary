@@ -134,7 +134,7 @@ public class ReturnService {
         if (difference < 0) {
             days = convertToDays(difference);
         }
-        return days;
+        return Math.abs(days);
     }
 
     /**
@@ -181,6 +181,6 @@ public class ReturnService {
      * @return integers days in nanoseconds
      */
     private int convertToDays(long nanoseconds) {
-        return (int) Math.abs(nanoseconds) / 1000 / 1000 / 1000 / 60 / 60 / 24;
+        return (int) nanoseconds / 1000 / 1000 / 1000 / 60 / 60 / 24;
     }
 }
