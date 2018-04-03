@@ -89,7 +89,7 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         }
     }
 
-    public void removeAllByDocIdAndDocType(long docVirId, String docType) throws Exception {
+    public void removeAllByDocVirIdAndDocType(long docVirId, String docType) throws Exception {
         try {
             List<DocumentPhysical> docPhysList = getList().stream()
                     .filter(doc -> doc.getDocVirId() == docVirId)
@@ -133,17 +133,7 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         }
     }
 
-    public long getDocIdByPhysDocument(long docPhysId) throws Exception {
-        try {
-            return getList().stream()
-                    .filter(doc -> doc.getId() == docPhysId)
-                    .findFirst().get().getDocVirId();
-        } catch (NullPointerException e) {
-            throw new Exception(EXIST_EXCEPTION);
-        }
-    }
-
-    public long getDocIdByID(long docPhysId) throws Exception {
+    public long getDocVirIdById(long docPhysId) throws Exception {
         try {
             return getById(docPhysId).getDocVirId();
         } catch (NullPointerException e) {
@@ -151,7 +141,7 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         }
     }
 
-    public String getTypeByID(long docPhysId) throws Exception {
+    public String getTypeById(long docPhysId) throws Exception {
         try {
             return getById(docPhysId).getDocType();
         } catch (NullPointerException e) {
