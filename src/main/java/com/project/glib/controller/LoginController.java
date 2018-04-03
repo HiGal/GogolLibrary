@@ -14,9 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.Response;
 import java.util.Arrays;
 
-@Controller
+@RestController
 @SessionAttributes("user")
 public class LoginController {
     private final UserService userService;
@@ -71,23 +72,29 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public ModelAndView registration(){
+    public ModelAndView registration() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("register");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public @ResponseBody ModelAndView regForm(@RequestBody User user){
-        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+    @RequestMapping(value = "/registration", method = RequestMethod.POST,
+            consumes = "application/json", produces = "application/json")
+    public User regForm(@RequestBody User user) {
         try {
-            System.out.println(user);
+
             userService.update(user);
-            modelAndView.addObject("user",user);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return modelAndView;
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(user);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        return user;
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
@@ -97,9 +104,9 @@ public class LoginController {
         try {
             User user1 = userService.findByLogin(user.getLogin());
             modelAndView.addObject("info", user1);
-            if(user1.getRole().equals(User.LIBRARIAN)){
+            if (user1.getRole().equals(User.LIBRARIAN)) {
                 modelAndView.setViewName("librarian");
-            }else {
+            } else {
                 modelAndView.setViewName("patron");
             }
         } catch (Exception e) {
