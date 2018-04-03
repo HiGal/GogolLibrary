@@ -105,7 +105,7 @@ public class DeliveryTests {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws Exception {
         try {
             bookService.remove(bookService.getId(b1));
             bookService.remove(bookService.getId(b2));
@@ -123,12 +123,10 @@ public class DeliveryTests {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        try {
-            bookingService.deleteAllBookings();
-            checkoutService.deleteAllCheckouts();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+
+        bookingService.deleteAllBookings();
+        checkoutService.deleteAllCheckouts();
+
     }
 
     @Test
@@ -151,15 +149,24 @@ public class DeliveryTests {
         List<Checkout> checkouts = checkoutService.getCheckoutsByUser(id);
 
         for (Checkout checkout : checkouts) {
-            checkout.setReturnTime(checkout.getCheckoutTime()-11000000);
+            checkout.setReturnTime((long) (checkout.getCheckoutTime() - 0.1 * checkout.getCheckoutTime()));
+            System.out.println("-----------------------------------------");
+            System.out.println(checkout.toString());
+            System.out.println(System.nanoTime());
+            System.out.println("-----------------------------------------");
             checkoutService.update(checkout);
         }
 
         List<Checkout> ch = checkoutService.getCheckoutsByUser(id);
 
         for (Checkout aCh : ch) {
+            System.out.println("-----------------------------------------");
+            System.out.println(aCh.toString());
+            System.out.println(System.nanoTime());
             Pair<Checkout, Integer> pair = returnService.toReturnDocument(aCh);
+            System.out.println(pair.getValue() + " Overdue");
             j = j + pair.getValue();
+            System.out.println("-----------------------------------------");
         }
 
         assertNotEquals(0, j);
