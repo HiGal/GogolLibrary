@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -77,13 +78,16 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String regForm(@RequestBody User user){
+    public @ResponseBody ModelAndView regForm(@RequestBody User user){
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
+            System.out.println(user);
             userService.update(user);
+            modelAndView.addObject("user",user);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "login";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)

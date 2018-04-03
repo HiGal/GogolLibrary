@@ -12,6 +12,24 @@
     <title>Dashboard </title>
 </head>
 <body>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            $('.dropdown-toggle').click(function (e) {
+                e.preventDefault();
+                var flag = true;
+                $.ajax({
+                    url: "/dashboard",
+                    type: 'POST',
+                    data: JSON.stringify(flag),
+                    success: alert('succ'),
+                    error: alert('fork')
+                });
+            });
+        });
+        return false;
+    }(jQuery));
+</script>
 <div class="navbar navbar-inverse navbar-fixed top">
     <div class="container">
         <div class="navbar-header">
@@ -40,13 +58,14 @@
                                 <hr>
                             </div>
                         </div>
-                       <!-- <div class="drop-content">
+                       <div class="drop-content">
+                           {{#listMessages}}
                             <li>
-                                <b>You need to bring </b>
-                                <a class="btn btn-primary ">Ok</a>
+                                <b>{{message}}</b>
                                 <hr>
                             </li>
-                        </div>-->
+                           {{/listMessages}}
+                        </div>
                     </ul>
 
                 </li>
