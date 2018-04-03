@@ -1,10 +1,7 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.BookingDaoImplementation;
-import com.project.glib.model.Booking;
-import com.project.glib.model.Document;
-import com.project.glib.model.DocumentPhysical;
-import com.project.glib.model.User;
+import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import static org.thymeleaf.util.ListUtils.sort;
 
 @Service
 public class BookingService implements ModifyByLibrarianService<Booking> {
@@ -46,6 +45,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         PRIORITY.put(User.STUDENT, 21);
         PRIORITY.put(User.INSTRUCTOR, 14);
         PRIORITY.put(User.TA, 7);
+        PRIORITY.put(User.PROFESSOR_VISITING, 3);
         PRIORITY.put(User.PROFESSOR, 1);
     }
 
@@ -95,10 +95,12 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             throw new Exception(AUTH_EXCEPTION);
         }
 
-        if (alreadyHasThisBooking(docVirId, docType, userId)) {
-            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
-        }
+        //TODO check it
+//        if (alreadyHasThisBooking(docVirId, docType, userId)) {
+//            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
+//        }
 
+        //todo change physical id to list of ids which user can have
         if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
             throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
         }
@@ -106,12 +108,30 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         checkValidParameters(booking);
 
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
+
         for (Booking b : bookings) {
-            messageService.addMes(b.getUserId(),
-                    b.getDocVirId(),
-                    b.getDocType(),
-                    MessageService.DELETED_QUEUE
-            );
+            if (b.getUserId() != booking.getUserId()) {
+                messageService.addMes(b.getUserId(),
+                        b.getDocVirId(),
+                        b.getDocType(),
+                        MessageService.DELETED_QUEUE
+                );
+            }
+        }
+
+        List<Checkout> checkouts = checkoutService;
+
+        for (Checkout c : checkouts) {
+            long virtId = docPhysService.getDocVirIdById(c.getDocPhysId());
+            String type = docPhysService.getTypeById(c.getDocPhysId());
+
+            if (c.getUserId() != booking.getUserId()) {
+                messageService.addMes(c.getUserId(),
+                        virtId,
+                        type,
+                        MessageService.RETURN_DOCUMENT
+                );
+            }
         }
 
         // TODO check the deletion of all priority
@@ -343,6 +363,10 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 remove(booking.getId());
             }
         }
+    }
+
+    public List<Booking> getPriorityQueueByDocVirIdAndDocType(long docVirId, String docType) {
+        return sort(getListBookingsByDocVirIdAndDocType(docVirId, docType), Booking::compareTo);
     }
 
     private boolean bookingInQueue(Booking booking) {

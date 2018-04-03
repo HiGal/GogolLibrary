@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "booking")
-public class Booking {
+public class Booking implements Comparable<Booking>{
     public static final String TYPE = "BOOKING";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -85,6 +85,11 @@ public class Booking {
                 ", docPhysId=" + docPhysId +
                 ", shelf='" + shelf + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Booking obj) {
+        return Integer.compare(obj.getPriority(), this.getPriority());
     }
 
     public long getId() {
