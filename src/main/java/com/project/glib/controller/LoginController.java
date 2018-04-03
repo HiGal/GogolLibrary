@@ -78,7 +78,13 @@ public class LoginController {
             consumes = "application/json", produces = "application/json")
     public User regForm(@RequestBody User user) {
         try {
-
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println(user);
+            System.out.println();
+            System.out.println();
+            System.out.println();
             userService.update(user);
         } catch (Exception e) {
             e.printStackTrace();
