@@ -60,8 +60,8 @@ public class MessageService {
      * Add message to user
      *
      * @param id_user user ID
-     * @param id_doc document ID
-     * @param type type of document
+     * @param id_doc  document ID
+     * @param type    type of document
      * @param message message to user
      * @throws Exception
      */
@@ -108,19 +108,20 @@ public class MessageService {
         }
     }
 
-    public List<String> getMessages(String login) {
-        try {
-            List<Messages> mes = getAllByUserID(userService.getIdByLogin(login));
-            ArrayList<String> result = new ArrayList<>();
-            for (Messages me : mes) {
-                result.add(me.getMessage() + createMessage(me.getDocPhysId()));
-            }
-            return result;
-        } catch (Exception e) {
-            ArrayList<String> arrayList = new ArrayList<>();
-            arrayList.add("We are there");
-            return arrayList;
+    public List<String> getMessages(String login) throws Exception {
+        List<Messages> mes = getAllByUserID(userService.getIdByLogin(login));
+        ArrayList<String> result = new ArrayList<>();
+
+        for (Messages me : mes) {
+            result.add(me.getMessage() + createMessage(me.getDocPhysId()));
         }
+
+        if (result.size() == 0){
+            return new ArrayList<>();
+        }else {
+            return result;
+        }
+
     }
 
     public void sendMessagesToLib(String login) throws Exception {
