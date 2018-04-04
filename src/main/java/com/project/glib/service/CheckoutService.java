@@ -221,15 +221,20 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                 .filter(doc -> doc.getDocType().equals(docPhys.getDocType()))
                 .collect(Collectors.toList());
 
-        List<Checkout> checkoutList = getList().stream()
-                .filter(checkout -> checkout.getUserId() == userId)
-                .collect(Collectors.toList());
+        try {
+            List<Checkout> checkoutList = getList().stream()
+                    .filter(checkout -> checkout.getUserId() == userId)
+                    .collect(Collectors.toList());
 
-        for (Checkout checkout : checkoutList) {
-            for (DocumentPhysical currentDocPhys : docPhysList) {
-                if (checkout.getDocPhysId() == currentDocPhys.getId()) return true;
+            for (Checkout checkout : checkoutList) {
+                for (DocumentPhysical currentDocPhys : docPhysList) {
+                    if (checkout.getDocPhysId() == currentDocPhys.getId()) return true;
+                }
             }
+        } catch (NullPointerException e) {
+            return false;
         }
+
 
         return false;
     }
