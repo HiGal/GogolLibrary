@@ -1,10 +1,8 @@
 package com.project.glib.controller;
 
+import com.project.glib.model.Messages;
 import com.project.glib.model.User;
-import com.project.glib.service.AudioVideoService;
-import com.project.glib.service.BookService;
-import com.project.glib.service.JournalService;
-import com.project.glib.service.UserService;
+import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -12,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @SessionAttributes("user")
@@ -20,13 +19,15 @@ public class LoginController {
     private final BookService bookService;
     private final JournalService journalService;
     private final AudioVideoService audioVideoService;
+    private final MessageService messageService;
 
     @Autowired
-    public LoginController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService) {
+    public LoginController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, MessageService messageService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
         this.audioVideoService = audioVideoService;
+        this.messageService = messageService;
     }
 
 //    @ModelAttribute("user")
@@ -50,6 +51,7 @@ public class LoginController {
 
             if (user.getPassword().equals(form.getPassword())) {
                 model.addObject("info", user);
+                model.addObject("listMessages", messageService.getMessages(user.getLogin()));
                 request.getSession().setAttribute("user", user);
                 if (role.equals(User.LIBRARIAN)) {
                     model.setViewName("librarian");
@@ -78,7 +80,13 @@ public class LoginController {
             consumes = "application/json", produces = "application/json")
     public User regForm(@RequestBody User user) {
         try {
-
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println(user);
+            System.out.println();
+            System.out.println();
+            System.out.println();
             userService.update(user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,12 +112,14 @@ public class LoginController {
                 modelAndView.setViewName("librarian");
             } else {
                 modelAndView.setViewName("patron");
+                modelAndView.addObject("listMessages", messageService.getMessages(user.getLogin()));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return modelAndView;
     }
+
 
     /*
          USER CONTROLLER

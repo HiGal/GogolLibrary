@@ -102,9 +102,10 @@ public class MessageService {
     public List<String> getMessages(String login) {
         try {
             List<Messages> mes = getAllByUserID(userService.getIdByLogin(login));
+            Messages messages = new Messages();
             ArrayList<String> result = new ArrayList<>();
             for (int i = 0; i < mes.size(); i++) {
-                result.add(mes.get(i).getMessage() + createMessage(mes.get(i).getDocPhysId()));
+                 result.add(mes.get(i).getMessage() + createMessage(mes.get(i).getDocPhysId()));
             }
             return result;
         } catch (Exception e) {
