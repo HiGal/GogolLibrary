@@ -21,9 +21,7 @@
                 $.ajax({
                     url: "/dashboard",
                     type: 'POST',
-                    data: JSON.stringify(flag),
-                    success: alert('succ'),
-                    error: alert('fork')
+                    data: JSON.stringify(flag)
                 });
             });
         });
@@ -64,10 +62,10 @@
                             {{#listMessages}}
                             <li>
                             <b>{{message}}</b>
-                            <hr>
                             </li>
                             {{/listMessages}}
                         </div>
+
                     </ul>
                 </li>
                 <li><a href="/login">Log Out</a></li>

@@ -58,6 +58,8 @@ public class ReturnService {
 
         long docVirId = docPhysService.getDocVirIdById(checkout.getDocPhysId());
         String docType = docPhysService.getTypeById(checkout.getDocPhysId());
+
+        //TODO change this type to victual IMMEDIATELY, URGENT PROBLEM !!!
         Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
         boolean hasNotActiveBooking = bookingService.hasNotActiveBooking(checkout.getDocPhysId());
 
@@ -77,6 +79,7 @@ public class ReturnService {
                     throw new Exception(DOC_TYPE_EXCEPTION);
             }
         } else if (bookingOnThisDocument != null) {
+
             // TODO Maybe change method parameters to (Booking booking, String message)
             messageService.addMes(
                     bookingOnThisDocument.getId(),
