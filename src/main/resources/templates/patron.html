@@ -21,7 +21,8 @@
                 $.ajax({
                     url: "/dashboard",
                     type: 'POST',
-                    data: JSON.stringify(myJson)
+                    data: {flag: true},
+                    success: alert('succ')
                 });
             });
         });

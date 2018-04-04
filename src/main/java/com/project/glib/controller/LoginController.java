@@ -1,7 +1,6 @@
 package com.project.glib.controller;
 
 import com.project.glib.model.Book;
-import com.project.glib.model.Messages;
 import com.project.glib.model.User;
 import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @SessionAttributes("user")
@@ -78,7 +76,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public @ResponseBody User regForm(@RequestBody User user) {
+    public @ResponseBody
+    User regForm(@RequestBody User user) {
         try {
             System.out.println();
             System.out.println();
@@ -118,6 +117,12 @@ public class LoginController {
             e.printStackTrace();
         }
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/dashboard", method = RequestMethod.POST)
+    public String mainPag( String json) {
+        System.out.println(json);
+        return json;
     }
 
 
@@ -220,7 +225,7 @@ public class LoginController {
         modelAndView.addObject("allAV", audioVideoService.getList());
         try {
             String role = userService.findByLogin(user.getLogin()).getRole();
-            if(role.equals(User.LIBRARIAN))
+            if (role.equals(User.LIBRARIAN))
                 modelAndView.setViewName("av");
             else
                 modelAndView.setViewName("orderAV");
@@ -284,10 +289,11 @@ public class LoginController {
             LIBRARIAN CONTROLLER
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public @ResponseBody String UserDelete( @RequestBody User user1){
+    public @ResponseBody
+    String UserDelete(@RequestBody User user1) {
         System.out.println(user1);
         try {
-                userService.remove(user1.getId());
+            userService.remove(user1.getId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -296,7 +302,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public @ResponseBody String UserEdit(@RequestBody User user){
+    public @ResponseBody
+    String UserEdit(@RequestBody User user) {
         try {
             System.out.println(user);
             userService.update(user);
@@ -307,7 +314,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public @ResponseBody String UserConfirm(@RequestBody  User user){
+    public @ResponseBody
+    String UserConfirm(@RequestBody User user) {
 
         try {
             User user1 = userService.getById(user.getId());
@@ -331,7 +339,8 @@ public class LoginController {
      */
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
-    public @ResponseBody String UserOrder(@RequestBody User user){
+    public @ResponseBody
+    String UserOrder(@RequestBody User user) {
         return "success";
     }
 
