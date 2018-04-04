@@ -26,6 +26,13 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         this.docPhysService = docPhysService;
     }
 
+    /**
+     * Adds physical AudioVideo instance
+     *
+     * @param audioVideo AV model
+     * @param shelf shelf of document in library
+     * @throws Exception
+     */
     @Override
     public void add(AudioVideo audioVideo, String shelf) throws Exception {
         if (shelf.equals("")) throw new Exception(SHELF_EXCEPTION);
@@ -36,6 +43,12 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Adds new virtual AV in library
+     *
+     * @param audioVideo AV model
+     * @throws Exception
+     */
     private void add(AudioVideo audioVideo) throws Exception {
         checkValidParameters(audioVideo);
         try {
@@ -52,6 +65,12 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Updates the AudioVideo instance in DB
+     *
+     * @param audioVideo AudioVideo model
+     * @throws Exception
+     */
     @Override
     public void update(AudioVideo audioVideo) throws Exception {
         checkValidParameters(audioVideo);
@@ -70,6 +89,12 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Removes AudioVideo instance from DB
+     *
+     * @param audioVideoId AudioVideo virtual id
+     * @throws Exception
+     */
     @Override
     public void remove(long audioVideoId) throws Exception {
         try {
@@ -80,12 +105,26 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Removes copy of AudioVideo instance from DB
+     *
+     * @param avId virtual ID
+     * @param copyId ID of AudioVideo copy
+     * @throws Exception
+     */
     @Override
     public void removeCopy(long avId, long copyId) throws Exception {
         docPhysService.remove(copyId);
         decrementCountById(avId);
     }
 
+    /**
+     * Removes all AudioVideo copies on the same shelf
+     *
+     * @param avId virtual ID
+     * @param shelf shelf of AV copies
+     * @throws Exception
+     */
     @Override
     public void removeAllCopiesByShelf(long avId, String shelf) throws Exception {
         List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(avId, Document.AV)
@@ -96,6 +135,12 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         for (DocumentPhysical docPhys : docPhysList) removeCopy(avId, docPhys.getId());
     }
 
+    /**
+     * Checks model for requirements
+     *
+     * @param audioVideo AV model
+     * @throws Exception
+     */
     @Override
     public void checkValidParameters(AudioVideo audioVideo) throws Exception {
         if (audioVideo.getPrice() <= 0) {
@@ -115,11 +160,23 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Checks the AV copy for being special
+     *
+     * @param note special case of AV model
+     * @return true if equals
+     */
     @Override
     public boolean isNote(String note) {
         return false;
     }
 
+    /**
+     * Checks the existence of AudioVideo instance in DB
+     *
+     * @param audioVideo AV model
+     * @return
+     */
     @Override
     public AudioVideo isAlreadyExist(AudioVideo audioVideo) {
         try {
@@ -129,11 +186,24 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Gets instance by virtual ID
+     *
+     * @param audioVideoId AV model
+     * @return
+     */
     @Override
     public AudioVideo getById(long audioVideoId) {
         return avDao.getById(audioVideoId);
     }
 
+    /**
+     * Gets count of copies of AV instance in DB
+     *
+     * @param audioVideoId AV model
+     * @return number of copies
+     * @throws Exception
+     */
     @Override
     public int getCountById(long audioVideoId) throws Exception {
         try {
@@ -143,6 +213,11 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Decrements number of copies of AV instance by one
+     *
+     * @param avId AV virtual id
+     */
     @Override
     public void decrementCountById(long avId) {
         AudioVideo audioVideo = getById(avId);
@@ -150,6 +225,11 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         avDao.update(audioVideo);
     }
 
+    /**
+     * Increments number of copies of AV instance by one
+     *
+     * @param avId AV virtual id
+     */
     @Override
     public void incrementCountById(long avId) {
         AudioVideo audioVideo = getById(avId);
@@ -157,6 +237,13 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         avDao.update(audioVideo);
     }
 
+    /**
+     * Gets the price of AV instance
+     *
+     * @param avId AV virtual id
+     * @return price
+     * @throws Exception
+     */
     @Override
     public int getPriceById(long avId) throws Exception {
         try {
@@ -166,6 +253,11 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Return List of all AV in DB
+     *
+     * @return list of AV
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<AudioVideo> getList() {
@@ -176,6 +268,13 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
     }
 
+    /**
+     * Gets ID of AV instance. Also, checks existance in DB
+     *
+     * @param audioVideo model AV
+     * @return ID in DB
+     * @throws Exception
+     */
     @Override
     public long getId(AudioVideo audioVideo) throws Exception {
         try {
