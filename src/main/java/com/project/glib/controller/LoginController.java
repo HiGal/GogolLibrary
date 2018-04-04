@@ -287,16 +287,12 @@ public class LoginController {
     public @ResponseBody String UserDelete( @RequestBody User user1){
         System.out.println(user1);
         try {
-
-                System.out.println(user1.getLogin());
-                System.out.println(userService.getIdByLogin(user1.getLogin()));
-                userService.remove(userService.getIdByLogin(user1.getLogin()));
-
+                userService.remove(user1.getId());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "success";
+        return "User deleted";
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -312,10 +308,31 @@ public class LoginController {
 
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
     public @ResponseBody String UserConfirm(@RequestBody  User user){
-        User user1 = userService.getById(user.getId());
-        user1.setAuth(user.getAuth());
-        return "success";
+
+        try {
+            User user1 = userService.getById(user.getId());
+            System.out.println();
+            System.out.println();
+            System.out.println(user);
+            System.out.println(user.getAuth());
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            user1.setAuth(user.getAuth());
+            userService.update(user1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "User's registration confirmed";
     }
 
+    /*
+        USER CONTROLLER
+     */
+
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    public @ResponseBody String UserOrder(@RequestBody User user){
+        return "success";
+    }
 
 }

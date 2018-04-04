@@ -91,7 +91,7 @@
                                 <td>
                                     <input type="hidden" class="cid" value="{{id}}">
                                     <input type="hidden" class="auth" value="{{auth}}">
-                                    <button type="submit" onclick="conf()" class="btn btn-primary btn-sm btn-block">
+                                    <button type="submit"  class="btn btn-primary btn-sm btn-block user-confirm">
                                         Confirm
                                     </button>
                                 </td>
@@ -167,14 +167,17 @@
                                     var id = ($(this).parent().find($('.cid')).val());
                                     var myJson = {
                                         "id": id,
-                                        "flag": true
+                                        "auth": true
                                     };
                                     $.ajax({
-                                        url: "idk",
+                                        url: "/confirm",
                                         type: 'POST',
+                                        contentType: 'application/json',
                                         data: JSON.stringify(myJson),
-                                        success: alert('succ'),
-                                        error: alert('fork')
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            alert(data)
+                                        }
                                     });
                                     window.location.reload(false);
                                 });
@@ -195,6 +198,7 @@
                                 "role": document.getElementById('frole').value.toUpperCase()
 
                             };
+                            alert(JSON.stringify(myJson));
                             $.ajax({
                                 url: "/edit",
                                 type: 'POST',
