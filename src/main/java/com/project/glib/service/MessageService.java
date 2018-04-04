@@ -56,6 +56,15 @@ public class MessageService {
         }
     }
 
+    /**
+     * Add message to user
+     *
+     * @param id_user user ID
+     * @param id_doc document ID
+     * @param type type of document
+     * @param message message to user
+     * @throws Exception
+     */
     public void addMes(long id_user, long id_doc, String type, String message) throws Exception {
         Messages messages = new Messages(id_user, message, id_doc, type, false);
         try {
@@ -102,14 +111,15 @@ public class MessageService {
     public List<String> getMessages(String login) {
         try {
             List<Messages> mes = getAllByUserID(userService.getIdByLogin(login));
-            Messages messages = new Messages();
             ArrayList<String> result = new ArrayList<>();
-            for (int i = 0; i < mes.size(); i++) {
-                 result.add(mes.get(i).getMessage() + createMessage(mes.get(i).getDocPhysId()));
+            for (Messages me : mes) {
+                result.add(me.getMessage() + createMessage(me.getDocPhysId()));
             }
             return result;
         } catch (Exception e) {
-            return new ArrayList<String>();
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add("We are there");
+            return arrayList;
         }
     }
 

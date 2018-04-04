@@ -515,12 +515,12 @@ public class DeliveryTests {
         List<Booking> queue = bookingService.getPriorityQueueByDocVirIdAndDocType(audioVideoService.getId(av3), Document.AV);
         ArrayList<Long> usersQueue = new ArrayList<>();
 
-        //   System.out.println("-----------------------");
+        System.out.println("-----------------------");
         for (Booking aQueue : queue) {
             //          System.out.println(aQueue);
             usersQueue.add(aQueue.getUserId());
         }
-//        System.out.println("-----------------------");
+        System.out.println("-----------------------");
 
         ArrayList<Long> quq = new ArrayList<>();
         quq.add(userService.getId(st));
