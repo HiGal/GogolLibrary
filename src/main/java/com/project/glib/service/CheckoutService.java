@@ -257,6 +257,13 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Checks if this user already has this checkout
+     *
+     * @param docPhysId physical ID of document
+     * @param userId ID of user
+     * @return
+     */
     public boolean alreadyHasThisCheckout(long docPhysId, long userId) {
         DocumentPhysical docPhys = docPhysService.getById(docPhysId);
 
@@ -283,6 +290,23 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         return false;
     }
 
+
+    /**
+     * Deletes all checkouts
+     *
+     * @throws Exception
+     */
+    public void deleteAllCheckouts() throws Exception {
+        List<Checkout> checkouts = getList();
+        for (Checkout checkout : checkouts) {
+            remove(checkout.getId());
+        }
+    }
+
+    public void update(Checkout checkout) {
+        checkoutDao.update(checkout);
+    }
+
     public long getUserIdByDocPhysId(long docPhysId) throws Exception {
         try {
             return getByDocPhysId(docPhysId).getUserId();
@@ -291,6 +315,13 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Gets checkout by physical ID
+     *
+     * @param docPhysId physical ID
+     * @return checkout
+     * @throws Exception
+     */
     public Checkout getByDocPhysId(long docPhysId) throws Exception {
         try {
             return getList().stream()
@@ -325,17 +356,6 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
-    public void deleteAllCheckouts() throws Exception {
-        List<Checkout> checkouts = getList();
-        for (Checkout checkout : checkouts) {
-            remove(checkout.getId());
-        }
-    }
-
-    public void update(Checkout checkout) {
-        checkoutDao.update(checkout);
-    }
-
     public void renew2April(Checkout checkout) throws Exception {
         String userType = userService.getTypeById(checkout.getUserId());
         boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
@@ -355,8 +375,8 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         checkout.setReturnTime(new Date(118, 3, 2).getTime() + checkout.getReturnTime() - checkout.getCheckoutTime());
-        update(checkout);
         checkout.setRenewed(true);
+        update(checkout);
     }
 
     public void renew29March(Checkout checkout) throws Exception {
@@ -375,10 +395,16 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         checkout.setReturnTime(new Date(118, 2, 29).getTime() + checkout.getReturnTime() - checkout.getCheckoutTime());
-        update(checkout);
         checkout.setRenewed(true);
+        update(checkout);
     }
 
+    /**
+     * Renew document
+     *
+     * @param checkout checkout model
+     * @throws Exception
+     */
     public void renew(Checkout checkout) throws Exception {
         String userType = userService.getTypeById(checkout.getUserId());
         boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
@@ -395,8 +421,8 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         checkout.setReturnTime(System.currentTimeMillis() + checkout.getReturnTime() - checkout.getCheckoutTime());
-        update(checkout);
         checkout.setRenewed(true);
+        update(checkout);
     }
 
 
