@@ -57,6 +57,7 @@
                         </thead>
                         <tbody>
                         {{#allUsers}}
+
                         <form method="post" action="javascript:void(null)">
                             <tr>
                                 <td>{{id}}</td>
@@ -91,7 +92,7 @@
                                 <td>
                                     <input type="hidden" class="cid" value="{{id}}">
                                     <input type="hidden" class="auth" value="{{auth}}">
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block user-confirm">
+                                    <button type="submit"  class="btn btn-primary btn-sm btn-block user-confirm">
                                         Confirm
                                     </button>
                                 </td>
@@ -103,7 +104,8 @@
 
                     <script>
 
-                      //  if ($('.auth').val() == 'true') $('.auth').parent().remove();
+
+                        //  if ($('.auth').val() == 'true') $('.auth').parent().remove();
 
                         (function ($) {
                             $(document).ready(function () {
@@ -160,27 +162,31 @@
                             });
                         }(jQuery));
 
+
                         (function ($) {
+
                             $(document).ready(function () {
                                 $('.user-confirm').click(function (e) {
                                     e.preventDefault();
                                     var id = ($(this).parent().find($('.cid')).val());
                                     var myJson = {
                                         "id": id,
-                                        "flag": true
+                                        "auth": true
                                     };
                                     $.ajax({
-                                        url: "idk",
+                                        url: "/confirm",
                                         type: 'POST',
+                                        contentType: 'application/json',
                                         data: JSON.stringify(myJson),
-                                        success: alert('succ'),
-                                        error: alert('fork')
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            alert(data)
+                                        }
                                     });
                                     window.location.reload(false);
                                 });
                             });
                         }(jQuery));
-
 
 
                         function bCall() {
@@ -192,15 +198,19 @@
                                 "surname": document.getElementById("fsname").value,
                                 "address": document.getElementById("faddr").value,
                                 "phone": document.getElementById("fphone").value,
-                                "role": document.getElementById('frole').value
+                                "role": document.getElementById('frole').value.toUpperCase()
 
                             };
+                            alert(JSON.stringify(myJson));
                             $.ajax({
-                                url: "idk",
+                                url: "/edit",
                                 type: 'POST',
+                                contentType: 'application/json',
                                 data: JSON.stringify(myJson),
-                                success: alert('succ'),
-                                error: alert('fork')
+                                dataType: 'json',
+                                success: function (data) {
+                                    alert(data)
+                                }
                             });
                             window.location.reload(false);
                         }
