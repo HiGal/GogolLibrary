@@ -343,6 +343,13 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Gets checkout by physical ID
+     *
+     * @param docPhysId physical ID
+     * @return checkout
+     * @throws Exception
+     */
     public Checkout getByDocPhysId(long docPhysId) throws Exception {
         try {
             return getList().stream()

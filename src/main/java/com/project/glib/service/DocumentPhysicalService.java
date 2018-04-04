@@ -50,6 +50,12 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         }
     }
 
+    /**
+     * Validator for physical documents
+     *
+     * @param documentPhysical model of physical documents
+     * @throws Exception
+     */
     @Override
     public void checkValidParameters(DocumentPhysical documentPhysical) throws Exception {
         if (documentPhysical.getDocVirId() <= 0) {

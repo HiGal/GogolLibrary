@@ -353,6 +353,11 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
+    /**
+     * Deletes the priority
+     * @param docVirId
+     * @param docType
+     */
     private void deletePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
