@@ -91,14 +91,12 @@ public class ReturnService {
             Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
             bookingService.setBookingActiveToTrue(bookingWithMaxPriority, checkout.getDocPhysId(), checkout.getShelf());
 
-            System.out.println("---------------------------------------");
             messageService.addMes(
                     bookingWithMaxPriority.getId(),
                     docVirId,
                     docType,
                     MessageService.CHECKOUT_DOCUMENT
             );
-            System.out.println("22222222222222222222222222222222222222222");
         }
         return new Pair<>(checkout, getOverdue(checkout));
     }

@@ -490,6 +490,12 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
+    /**
+     * Checks if someone in the queue on this document
+     *
+     * @param docPhysId document physical ID
+     * @return true if no one wait it
+     */
     public boolean hasNotActiveBooking(long docPhysId) {
         try {
             System.out.println("555555555555555555555555555");
@@ -501,10 +507,8 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                     .collect(Collectors.toList());
 
             if (bookings.size() != 0) {
-                System.out.println("6666666666666666666666666666666666666");
                 return false;
             } else {
-                System.out.println("77777777777777777777777777777777777777");
                 return true;
             }
         } catch (NoSuchElementException e) {
