@@ -96,8 +96,6 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
             System.out.println(e.getMessage());
         }
 
-        long docPhysId = booking.getDocPhysId();
-
         add(new Checkout(booking.getUserId(), booking.getDocPhysId(), System.currentTimeMillis(),
                 System.currentTimeMillis() + additionalTime, booking.getShelf(), false));
     }
@@ -113,6 +111,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    // TODO what about count?
     public void remove(long checkoutId) throws Exception {
         Checkout checkout = getById(checkoutId);
 //        String docType = docPhysService.getTypeById(checkout.getDocPhysId());
@@ -286,5 +285,24 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
 
     public void update(Checkout checkout) {
         checkoutDao.update(checkout);
+    }
+
+    public void renew(Checkout checkout) throws Exception {
+        String userType = userService.getTypeById(checkout.getUserId());
+        boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
+        boolean hasOutstandingRequest = false;
+
+        for (Booking booking : bookingService.getList()) {
+            if (booking.getPriority() == BookingService.PRIORITY.get(BookingService.OUTSTANDING)) {
+                hasOutstandingRequest = true;
+            }
+        }
+
+        if (checkout.isRenewed() && !canRenewedAgain || hasOutstandingRequest) {
+            throw new Exception("Sorry, you can't renew this checkout");
+        }
+
+        checkout.setReturnTime(2 * checkout.getReturnTime() - checkout.getCheckoutTime());
+        update(checkout);
     }
 }
