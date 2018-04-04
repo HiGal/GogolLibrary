@@ -277,6 +277,171 @@ public class DeliveryTests {
     }
 
     @Test
+    public void test3() throws Exception {
+        long id_p1 = userService.getId(p1);
+        long id_s = userService.getId(st);
+        long id_v = userService.getId(vp);
+
+        bookingService.toBookDocument(bookService.getId(b1),
+                Document.BOOK, id_p1);
+        bookingService.toBookDocument(bookService.getId(b2),
+                Document.BOOK, id_s);
+        bookingService.toBookDocument(bookService.getId(b2),
+                Document.BOOK, id_v);
+
+        List<Booking> bookings_p1 = bookingService.getBookingsByUser(id_p1);
+        List<Booking> bookings_s = bookingService.getBookingsByUser(id_s);
+        List<Booking> bookings_v = bookingService.getBookingsByUser(id_v);
+
+        for (Booking booking : bookings_p1) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+        for (Booking booking : bookings_s) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+        for (Booking booking : bookings_v) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+
+        List<Checkout> checkouts_p1 = checkoutService.getCheckoutsByUser(id_p1);
+        List<Checkout> checkouts_s = checkoutService.getCheckoutsByUser(id_s);
+        List<Checkout> checkouts_v = checkoutService.getCheckoutsByUser(id_v);
+
+        for (Checkout checkout : checkouts_p1) {
+            long time = new Date(118, 2, 31).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+        for (Checkout checkout : checkouts_s) {
+            long time = new Date(118, 2, 31).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+        for (Checkout checkout : checkouts_v) {
+            long time = new Date(118, 2, 31).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+        //todO RENEW should be not a week but a time that document was
+        //todo checkedout!! Example: professor - 4, student - 2 or 3, vp - 1 week
+        //todo But if the is outstanding request - no one can renew book.
+
+        //todo there users should renew documents
+
+        List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
+        List<Checkout> ch_s = checkoutService.getCheckoutsByUser(id_s);
+        List<Checkout> ch_v = checkoutService.getCheckoutsByUser(id_v);
+
+        for (Checkout checkout_p1 : ch_p1) {
+            System.out.println("--------------------");
+            System.out.println(checkout_p1.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        for (Checkout checkout_s : ch_s) {
+            System.out.println("--------------------");
+            System.out.println(checkout_s.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        for (Checkout checkout_v : ch_v) {
+            System.out.println("--------------------");
+            System.out.println(checkout_v.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        assertEquals(new Date(118, 3, 30), ch_p1.get(0).getReturnTime());
+        assertEquals(new Date(118, 3, 16), ch_s.get(0).getReturnTime());
+        assertEquals(new Date(118, 3, 9), ch_v.get(0).getReturnTime());
+    }
+
+    @Test
+    public void test4() throws Exception {
+        long id_p1 = userService.getId(p1);
+        long id_s = userService.getId(st);
+        long id_v = userService.getId(vp);
+        long id_p4 = userService.getId(p4);
+
+        bookingService.toBookDocument(bookService.getId(b1),
+                Document.BOOK, id_p1);
+        bookingService.toBookDocument(bookService.getId(b2),
+                Document.BOOK, id_s);
+        bookingService.toBookDocument(bookService.getId(b2),
+                Document.BOOK, id_v);
+
+        List<Booking> bookings_p1 = bookingService.getBookingsByUser(id_p1);
+        List<Booking> bookings_s = bookingService.getBookingsByUser(id_s);
+        List<Booking> bookings_v = bookingService.getBookingsByUser(id_v);
+
+        for (Booking booking : bookings_p1) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+        for (Booking booking : bookings_s) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+        for (Booking booking : bookings_v) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+
+        List<Checkout> checkouts_p1 = checkoutService.getCheckoutsByUser(id_p1);
+        List<Checkout> checkouts_s = checkoutService.getCheckoutsByUser(id_s);
+        List<Checkout> checkouts_v = checkoutService.getCheckoutsByUser(id_v);
+
+        for (Checkout checkout : checkouts_p1) {
+            long time = new Date(118, 2, 31).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+        for (Checkout checkout : checkouts_s) {
+            long time = new Date(118, 2, 31).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+        for (Checkout checkout : checkouts_v) {
+            long time = new Date(118, 2, 31).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+        bookingService.toBookDocument(bookService.getId(b2),
+                Document.BOOK, id_p4);
+        bookingService.outstandingRequest(bookingService.getBookingsByUser(id_p4).get(0));
+
+        //todo there users should renew documents
+
+        List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
+        List<Checkout> ch_s = checkoutService.getCheckoutsByUser(id_s);
+        List<Checkout> ch_v = checkoutService.getCheckoutsByUser(id_v);
+
+        for (Checkout checkout_p1 : ch_p1) {
+            System.out.println("--------------------");
+            System.out.println(checkout_p1.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        for (Checkout checkout_s : ch_s) {
+            System.out.println("--------------------");
+            System.out.println(checkout_s.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        for (Checkout checkout_v : ch_v) {
+            System.out.println("--------------------");
+            System.out.println(checkout_v.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        assertEquals(new Date(118, 3, 30), ch_p1.get(0).getReturnTime());
+        assertEquals(new Date(118, 2, 29), ch_s.get(0).getReturnTime());
+        assertEquals(new Date(118, 2, 29), ch_v.get(0).getReturnTime());
+    }
+
+    @Test
     public void test5() throws Exception {
 
         long id_p1 = userService.getId(p1);
@@ -347,12 +512,12 @@ public class DeliveryTests {
         List<Booking> queue = bookingService.getPriorityQueueByDocVirIdAndDocType(audioVideoService.getId(av3), Document.AV);
         ArrayList<Long> usersQueue = new ArrayList<>();
 
-        System.out.println("-----------------------");
+        //   System.out.println("-----------------------");
         for (Booking aQueue : queue) {
-            System.out.println(aQueue);
+            //          System.out.println(aQueue);
             usersQueue.add(aQueue.getUserId());
         }
-        System.out.println("-----------------------");
+//        System.out.println("-----------------------");
 
         ArrayList<Long> quq = new ArrayList<>();
         quq.add(userService.getId(st));
@@ -365,7 +530,6 @@ public class DeliveryTests {
     @Test
     public void test7() throws Exception {
         test6();
-        long id_lib = userService.getId(lib);
         long id_p4 = userService.getId(p4);
         bookingService.toBookDocument(audioVideoService.getId(av3),
                 Document.AV,
@@ -406,5 +570,146 @@ public class DeliveryTests {
         quq.add(userService.getId(p4));
 
         assertEquals(quq, usersQueue);
+    }
+
+    @Test
+    public void test8() throws Exception {
+        test6();
+        long id_p2 = userService.getId(p2);
+
+        System.out.println("------------------------------------------------------------");
+        System.out.println(checkoutService.getCheckoutsByUserId(id_p2));
+        System.out.println("------------------------------------------------------------");
+
+        Pair<Checkout, Integer> pair =
+                returnService.toReturnDocument(checkoutService.getCheckoutsByUser(id_p2).get(0));
+
+        System.out.println("------------------------------------------------------------");
+        System.out.println(checkoutService.getCheckoutsByUserId(id_p2));
+        System.out.println("------------------------------------------------------------");
+
+        assertEquals(0, (long) pair.getValue());
+
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(p1)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(p3)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(st)));
+        System.out.println("--------------------------------------------------");
+        System.out.println(messageService.getAllByUserID(userService.getId(vp)));
+        System.out.println("--------------------------------------------------");
+
+        List<Booking> queue = bookingService.getPriorityQueueByDocVirIdAndDocType(audioVideoService.getId(av3), Document.AV);
+        ArrayList<Long> usersQueue = new ArrayList<>();
+
+        System.out.println("-----------------------");
+        for (Booking aQueue : queue) {
+            System.out.println(aQueue);
+            usersQueue.add(aQueue.getUserId());
+        }
+        System.out.println("-----------------------");
+
+        ArrayList<Long> quq = new ArrayList<>();
+        quq.add(userService.getId(st));
+        quq.add(userService.getId(vp));
+        quq.add(userService.getId(p3));
+
+        assertEquals(quq, usersQueue);
+    }
+
+    @Test
+    public void test9() throws Exception {
+        test6();
+
+        long id_p1 = userService.getId(p1);
+
+        //todo p1 renews document d3
+
+        List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
+
+        for (Checkout checkout_p1 : ch_p1) {
+            System.out.println("--------------------");
+            System.out.println(checkout_p1.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        assertEquals(new Date(118, 3, 30), ch_p1.get(0).getReturnTime());
+
+
+        List<Booking> queue = bookingService.getPriorityQueueByDocVirIdAndDocType(audioVideoService.getId(av3), Document.AV);
+        ArrayList<Long> usersQueue = new ArrayList<>();
+
+        System.out.println("-----------------------");
+        for (Booking aQueue : queue) {
+            //          System.out.println(aQueue);
+            usersQueue.add(aQueue.getUserId());
+        }
+        System.out.println("-----------------------");
+
+        ArrayList<Long> quq = new ArrayList<>();
+        quq.add(userService.getId(st));
+        quq.add(userService.getId(vp));
+        quq.add(userService.getId(p3));
+
+        assertEquals(quq, usersQueue);
+    }
+
+    @Test
+    public void test10() throws Exception {
+        long id_p1 = userService.getId(p1);
+        long id_v = userService.getId(vp);
+
+        bookingService.toBookDocument(bookService.getId(b1),
+                Document.BOOK, id_p1);
+        bookingService.toBookDocument(bookService.getId(b1),
+                Document.BOOK, id_v);
+
+        List<Booking> bookings_p1 = bookingService.getBookingsByUser(id_p1);
+        List<Booking> bookings_v = bookingService.getBookingsByUser(id_v);
+
+        for (Booking booking : bookings_p1) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+        for (Booking booking : bookings_v) {
+            checkoutService.toCheckoutDocument(booking);
+        }
+
+        List<Checkout> checkouts_p1 = checkoutService.getCheckoutsByUser(id_p1);
+        List<Checkout> checkouts_v = checkoutService.getCheckoutsByUser(id_v);
+
+        for (Checkout checkout : checkouts_p1) {
+            long time = new Date(118, 2, 26).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+
+        for (Checkout checkout : checkouts_v) {
+            long time = new Date(118, 2, 26).getTime();
+            checkout.setReturnTime(time);
+            checkoutService.update(checkout);
+        }
+
+
+        //todo there users should renew documents
+
+        List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
+        List<Checkout> ch_v = checkoutService.getCheckoutsByUser(id_v);
+
+        for (Checkout checkout_p1 : ch_p1) {
+            System.out.println("--------------------");
+            System.out.println(checkout_p1.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        for (Checkout checkout_v : ch_v) {
+            System.out.println("--------------------");
+            System.out.println(checkout_v.getReturnTime());
+            System.out.println("--------------------");
+        }
+
+        assertEquals(new Date(118, 3, 26), ch_p1.get(0).getReturnTime());
+        assertEquals(new Date(118, 3, 5), ch_v.get(0).getReturnTime());
     }
 }
