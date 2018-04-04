@@ -300,6 +300,12 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
+    /**
+     * Checks the ability to book this document
+     * @param docVirId
+     * @param docType
+     * @throws Exception
+     */
     private void checkValidToBook(long docVirId, String docType) throws Exception {
         switch (docType) {
             case Document.BOOK:
@@ -319,6 +325,12 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
+    /**
+     * Recalculates all priority in DB on this document
+     *
+     * @param docVirId virtual ID of document
+     * @param docType type of document
+     */
     private void recalculatePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
@@ -496,6 +508,11 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         return null;
     }
 
+    /**
+     * Deletes all bookings from the DB
+     *
+     * @throws Exception
+     */
     public void deleteAllBookings() throws Exception {
         List<Booking> bookings = getList();
         for (Booking booking : bookings) {
