@@ -91,7 +91,14 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     public void outstandingRequest(Booking booking) throws Exception {
         long userId = booking.getUserId();
         long docVirId = booking.getDocVirId();
-        long docPhysId = booking.getDocPhysId();
+        // TODO rewrite this code
+        Checkout checkout = checkoutService.getList().get(0);
+        long docPhysId = checkout.getDocPhysId();
+        String shelf = checkout.getShelf();
+        booking.setDocPhysId(docPhysId);
+        booking.setShelf(shelf);
+        //
+
         String docType = booking.getDocType();
 
         if (!userService.getIsAuthById(userId)) {
