@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -310,31 +307,6 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         checkoutDao.update(checkout);
     }
 
-    /**
-     * Renew document
-     *
-     * @param checkout checkout model
-     * @throws Exception
-     */
-    public void renew(Checkout checkout) throws Exception {
-        String userType = userService.getTypeById(checkout.getUserId());
-        boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
-        boolean hasOutstandingRequest = false;
-
-        for (Booking booking : bookingService.getList()) {
-            if (booking.getPriority() == BookingService.PRIORITY.get(BookingService.OUTSTANDING)) {
-                hasOutstandingRequest = true;
-            }
-        }
-
-        if (checkout.isRenewed() && !canRenewedAgain || hasOutstandingRequest) {
-            throw new Exception("Sorry, you can't renew this checkout");
-        }
-
-        checkout.setReturnTime(2 * checkout.getReturnTime() - checkout.getCheckoutTime());
-        update(checkout);
-    }
-
     public long getUserIdByDocPhysId(long docPhysId) throws Exception {
         try {
             return getByDocPhysId(docPhysId).getUserId();
@@ -383,4 +355,75 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
             return new ArrayList<>();
         }
     }
+
+    public void renew2April(Checkout checkout) throws Exception {
+        String userType = userService.getTypeById(checkout.getUserId());
+        boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
+        boolean hasOutstandingRequest = false;
+
+        DocumentPhysical docPhys = docPhysService.getById(checkout.getDocPhysId());
+        long docVirId = docPhys.getDocVirId();
+        String docType = docPhys.getDocType();
+        for (Booking booking : bookingService.getListBookingsByDocVirIdAndDocType(docVirId, docType)) {
+            if (booking.getPriority() == BookingService.PRIORITY.get(BookingService.OUTSTANDING)) {
+                hasOutstandingRequest = true;
+            }
+        }
+
+        if (checkout.isRenewed() && !canRenewedAgain || hasOutstandingRequest) {
+            throw new Exception("Sorry, you can't renew this checkout (2 April)");
+        }
+
+        checkout.setReturnTime(new Date(118, 3, 2).getTime() + checkout.getReturnTime() - checkout.getCheckoutTime());
+        checkout.setRenewed(true);
+        update(checkout);
+    }
+
+    public void renew29March(Checkout checkout) throws Exception {
+        String userType = userService.getTypeById(checkout.getUserId());
+        boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
+        boolean hasOutstandingRequest = false;
+
+        for (Booking booking : bookingService.getList()) {
+            if (booking.getPriority() == BookingService.PRIORITY.get(BookingService.OUTSTANDING)) {
+                hasOutstandingRequest = true;
+            }
+        }
+
+        if (checkout.isRenewed() && !canRenewedAgain || hasOutstandingRequest) {
+            throw new Exception("Sorry, you can't renew this checkout (29 March)");
+        }
+
+        checkout.setReturnTime(new Date(118, 2, 29).getTime() + checkout.getReturnTime() - checkout.getCheckoutTime());
+        checkout.setRenewed(true);
+        update(checkout);
+    }
+
+    /**
+     * Renew document
+     *
+     * @param checkout checkout model
+     * @throws Exception
+     */
+    public void renew(Checkout checkout) throws Exception {
+        String userType = userService.getTypeById(checkout.getUserId());
+        boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
+        boolean hasOutstandingRequest = false;
+
+        for (Booking booking : bookingService.getList()) {
+            if (booking.getPriority() == BookingService.PRIORITY.get(BookingService.OUTSTANDING)) {
+                hasOutstandingRequest = true;
+            }
+        }
+
+        if (checkout.isRenewed() && !canRenewedAgain || hasOutstandingRequest) {
+            throw new Exception("Sorry, you can't renew this checkout");
+        }
+
+        checkout.setReturnTime(System.currentTimeMillis() + checkout.getReturnTime() - checkout.getCheckoutTime());
+        checkout.setRenewed(true);
+        update(checkout);
+    }
+
+
 }
