@@ -97,6 +97,12 @@ public class BookService implements DocumentServiceInterface<Book> {
         for (DocumentPhysical docPhys : docPhysList) removeCopy(bookId, docPhys.getId());
     }
 
+    /**
+     * Validator for book model
+     *
+     * @param book book model
+     * @throws Exception
+     */
     @Override
     public void checkValidParameters(Book book) throws Exception {
         if (book.getPrice() <= 0) {

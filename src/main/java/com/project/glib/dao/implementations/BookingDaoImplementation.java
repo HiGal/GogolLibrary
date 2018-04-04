@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
@@ -115,8 +116,9 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
      * @return
      */
     public Booking getBookingWithMaxPriority(long docVirId, String docType) {
-        return bookingRepository.findAll().stream()
+        List<Booking> bookings = bookingRepository.findAll().stream()
                 .filter(booking -> booking.getPriority() != BookingService.PRIORITY.get(BookingService.ACTIVE))
-                .sorted(Booking::compareTo).findFirst().get();
+                .sorted(Booking::compareTo).collect(Collectors.toList());
+        return bookings.get(bookings.size() - 1);
     }
 }
