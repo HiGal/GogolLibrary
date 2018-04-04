@@ -53,7 +53,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
     }
 
     /**
-     * check out current booking
+     * Check out document by user booking
      *
      * @param booking current booking
      */
@@ -100,6 +100,12 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                 System.currentTimeMillis() + additionalTime, booking.getShelf(), false));
     }
 
+    /**
+     * Adds new checkout to DB
+     *
+     * @param checkout Checkout model
+     * @throws Exception
+     */
     protected void add(Checkout checkout) throws Exception {
         checkValidParameters(checkout);
         if (alreadyHasThisCheckout(checkout.getDocPhysId(), checkout.getUserId()))
@@ -111,7 +117,12 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
-    // TODO what about count?
+    /**
+     * Removes checkout from DB
+     *
+     * @param checkoutId ID of checkout in DB
+     * @throws Exception
+     */
     public void remove(long checkoutId) throws Exception {
         Checkout checkout = getById(checkoutId);
 //        String docType = docPhysService.getTypeById(checkout.getDocPhysId());
@@ -147,6 +158,12 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Checks valid parameters for checkout
+     *
+     * @param checkout Checkout model
+     * @throws Exception
+     */
     @Override
     public void checkValidParameters(Checkout checkout) throws Exception {
         if (checkout.getDocPhysId() <= 0) {
@@ -170,12 +187,24 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
-
+    /**
+     * Gets checkout by checkout physical ID
+     *
+     * @param checkoutId checkout ID
+     * @return
+     */
     @Override
     public Checkout getById(long checkoutId) {
         return checkoutDao.getById(checkoutId);
     }
 
+    /**
+     *  Gets ID of checkout instance. Also, checks existence in DB
+     *
+     * @param checkout Checkout model
+     * @return ID of checkout instance
+     * @throws Exception
+     */
     @Override
     public long getId(Checkout checkout) throws Exception {
         try {
@@ -185,6 +214,11 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Gets list of all checkouts in DB
+     *
+     * @return list of checkouts
+     */
     @Override
     @SuppressWarnings("unchecked")
     public List<Checkout> getList() {
@@ -195,6 +229,13 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Gets number of checkout documents by the user
+     *
+     * @param userId user ID
+     * @return number of documents at user
+     * @throws Exception
+     */
     public int getNumberOfCheckoutDocumentsByUser(long userId) throws Exception {
         try {
             return getCheckoutsByUser(userId).size();
@@ -203,6 +244,12 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Gets list of all checkouts by user
+     *
+     * @param userId user ID
+     * @return list of checkouts
+     */
     public List<Checkout> getCheckoutsByUser(long userId) {
         try {
             return getList().stream()

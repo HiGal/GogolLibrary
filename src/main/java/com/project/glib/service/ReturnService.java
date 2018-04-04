@@ -92,12 +92,14 @@ public class ReturnService {
             Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
             bookingService.setBookingActiveToTrue(bookingWithMaxPriority, checkout.getDocPhysId(), checkout.getShelf());
 
+            System.out.println("---------------------------------------");
             messageService.addMes(
                     bookingWithMaxPriority.getId(),
                     docVirId,
                     docType,
                     MessageService.CHECKOUT_DOCUMENT
             );
+            System.out.println("22222222222222222222222222222222222222222");
         }
         return new Pair<>(checkout, getOverdue(checkout));
     }
@@ -116,6 +118,14 @@ public class ReturnService {
         return Math.min(days * PENNY, price);
     }
 
+    /**
+     * Gets price of document
+     *
+     * @param docPhysId physical ID of document
+     * @param docType type of document
+     * @return price
+     * @throws Exception
+     */
     private int getPriceByDocPhysIdAndDocType(long docPhysId, String docType) throws Exception {
         switch (docType) {
             case Document.BOOK:
@@ -132,6 +142,12 @@ public class ReturnService {
         }
     }
 
+    /**
+     * Gets number of overdue days by checkout
+     *
+     * @param checkout chekout model
+     * @return
+     */
     private int getOverdueDays(Checkout checkout) {
         int days = 0;
         long difference = checkout.getReturnTime() - System.currentTimeMillis();
@@ -157,7 +173,7 @@ public class ReturnService {
     }
 
     /**
-     * get list of pairs<User, Integer> with positive total overdue
+     * Get list of pairs<User, Integer> with positive total overdue
      *
      * @return list of pairs<User, Integer>
      */
@@ -179,7 +195,7 @@ public class ReturnService {
     }
 
     /**
-     * convert nanoseconds to days in integer value
+     * Convert nanoseconds to days in integer value
      *
      * @param milliseconds nanoseconds
      * @return integers days in nanoseconds

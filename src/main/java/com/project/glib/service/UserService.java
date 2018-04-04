@@ -87,6 +87,12 @@ public class UserService implements ModifyByLibrarianService<User> {
         }
     }
 
+    /**
+     * Validator for user model
+     *
+     * @param user user model
+     * @throws Exception
+     */
     @Override
     public void checkValidParameters(User user) throws Exception {
         if (!isRole(user.getRole())) {
