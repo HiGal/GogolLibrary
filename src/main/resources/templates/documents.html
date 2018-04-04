@@ -52,6 +52,7 @@
                             <h5 class="card-subtitle text-muted">{{author}}</h5>
                             <input type="hidden" class="edition_card" value="{{edition}}">
                             <input type="hidden" class="publisher_card" value="{{publisher}}">
+                            <input type="hidden" class="id_card" value="{{id}}">
                             <img class="image-book" src="../img/no_image.jpg">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
@@ -77,6 +78,7 @@
                                 document.getElementById("edition").style.display = "block";
                                 document.getElementById("publisher").style.display = "block";
                                 document.getElementById("author").style.display = "block";
+                                $('#id').val($(this).parent().find($('.id_card')).attr('value'));
                                 $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                 $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
@@ -120,6 +122,7 @@
                     function bCall() {
                         // var imgElem = document.getElementById('img');
                         var myJson = {
+                            "id": document.getElementById("id").value,
                             "title": document.getElementById("etitle").value,
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
@@ -130,8 +133,6 @@
                             url: "idk",
                             type: 'POST',
                             data: JSON.stringify(myJson),
-                            success: alert('succ'),
-                            error: alert('fork')
                         });
                         window.location.reload(false);
                     }
@@ -139,19 +140,18 @@
                     function dCall() {
                         // var imgElem = document.getElementById('img');
                         var myJson = {
-                            "title": document.getElementById("title").text(),
-                            "editor": document.getElementById("editor").text(),
-                            "author": document.getElementById("author").text(),
-                            "journal": document.getElementById("journal").text(),
-                            "issue": document.getElementById("issue").text()
+                            "id": document.getElementById("id").value,
+//                            "title": document.getElementById("title").text(),
+//                            "editor": document.getElementById("editor").text(),
+//                            "author": document.getElementById("author").text(),
+//                            "journal": document.getElementById("journal").text(),
+//                            "issue": document.getElementById("issue").text()
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
                             url: "idk",
                             type: 'POST',
                             data: JSON.stringify(myJson),
-                            success: alert('succ'),
-                            error: alert('fork')
                         });
                         window.location.reload(false);
                     }
@@ -200,6 +200,7 @@
                                     <input type="file" onchange="previewFile()" id="imgbtn">
                                 </div>
                                 <div class="col-lg-6 fields" id="container">
+                                    <input type="hidden" id="id">
                                     <h4 class="title" id="title"><b>Title: </b></h4>
                                     <input id="etitle">
                                     <h4 class="edition" id="edition"><b>Edition: </b></h4>
