@@ -57,6 +57,7 @@
                         </thead>
                         <tbody>
                         {{#allUsers}}
+
                         <form method="post" action="javascript:void(null)">
                             <tr>
                                 <td>{{id}}</td>
@@ -103,7 +104,8 @@
 
                     <script>
 
-                      //  if ($('.auth').val() == 'true') $('.auth').parent().remove();
+
+                        //  if ($('.auth').val() == 'true') $('.auth').parent().remove();
 
                         (function ($) {
                             $(document).ready(function () {
@@ -160,7 +162,9 @@
                             });
                         }(jQuery));
 
+
                         (function ($) {
+
                             $(document).ready(function () {
                                 $('.user-confirm').click(function (e) {
                                     e.preventDefault();
@@ -180,7 +184,6 @@
                                 });
                             });
                         }(jQuery));
-
 
 
                         function bCall() {
