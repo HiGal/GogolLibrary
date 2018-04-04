@@ -53,6 +53,7 @@
                             <input type="hidden" class="author_card" value="{{author}}">
                             <input type="hidden" class="issue_card" value="{{issue}}">
                             <input type="hidden" class="editor_card" value="{{editor}}">
+                            <input type="hidden" class="id_card" value="{{id}}">
                             <img class="image-journal" src="../img/no_image.jpg">
                             <p></p>
                             <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -76,6 +77,7 @@
                                 document.getElementById("journal").style.display = "block";
                                 document.getElementById("author").style.display = "block";
                                 document.getElementById("issue").style.display = "block";
+                                $('#id').html($(this).parent().find($('.id_card')).attr('value'));
                                 $('.journal').html('<b>Journal: </b>' + $(this).parent().find($('.card-title')).text());
                                 $('.issue').html('<b>Issue: </b>' + $(this).parent().find($('.issue_card')).attr('value'));
                                 $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-subtitle')).text());
@@ -125,6 +127,7 @@
                     function bCall() {
                         // var imgElem = document.getElementById('img');
                         var myJson = {
+                            "id": document.getElementById("id").value,
                             "title": document.getElementById("etitle").value,
                             "editor": document.getElementById("eeditor").value,
                             "author": document.getElementById("eauthor").value,
@@ -145,11 +148,12 @@
                     function dCall() {
                         // var imgElem = document.getElementById('img');
                         var myJson = {
-                            "title": document.getElementById("title").text(),
-                            "editor": document.getElementById("editor").text(),
-                            "author": document.getElementById("author").text(),
-                            "journal": document.getElementById("journal").text(),
-                            "issue": document.getElementById("issue").text()
+                            "id": document.getElementById("id").value,
+//                            "title": document.getElementById("title").text(),
+//                            "editor": document.getElementById("editor").text(),
+//                            "author": document.getElementById("author").text(),
+//                            "journal": document.getElementById("journal").text(),
+//                            "issue": document.getElementById("issue").text()
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
@@ -206,6 +210,7 @@
                                     <input type="file" onchange="previewFile()" id="imgbtn">
                                 </div>
                                 <div class="col-lg-6 fields">
+                                    <input type="hidden" id="id">
                                     <h4 class="journal" id="journal"><b>Journal: </b></h4>
                                     <input id="ejournal">
                                     <h4 class="title" id="title"><b>Title: </b></h4>

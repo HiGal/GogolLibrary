@@ -55,6 +55,7 @@
                                     <input type="hidden" class="author_card" value="{{author}}">
                                     <input type="hidden" class="issue_card" value="{{issue}}">
                                     <input type="hidden" class="editor_card" value="{{editor}}">
+                                    <input type="hidden" class="id_card" value="{{id}}">
                                     <img class="image-journal" src="../img/no_image.jpg">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -69,6 +70,7 @@
                                     $('.btn-lg').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
+                                        $('#id').val($(this).parent().find($('.id_card')).attr('value'));
                                         $('.journal').html('<b>Journal: </b>' + $(this).parent().find($('.card-title')).text());
                                         $('.issue').html('<b>Issue: </b>' + $(this).parent().find($('.issue_card')).attr('value'));
                                         $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
@@ -84,11 +86,12 @@
                             function oCall() {
                                 // var imgElem = document.getElementById('img');
                                 var myJson = {
-                                    "title": document.getElementById("title").value,
-                                    "editor": document.getElementById("editor").value,
-                                    "author": document.getElementById("author").value,
-                                    "journal": document.getElementById("journal").value,
-                                    "issue": document.getElementById("issue").value
+                                    "id": document.getElementById("id").value,
+//                                    "title": document.getElementById("title").value,
+//                                    "editor": document.getElementById("editor").value,
+//                                    "author": document.getElementById("author").value,
+//                                    "journal": document.getElementById("journal").value,
+//                                    "issue": document.getElementById("issue").value
                                     //   "imgData":JSON.stringify(getBase64Image(imgElem))
                                 };
                                 $.ajax({
@@ -110,6 +113,7 @@
                                     <div class="row">
                                         <img src="../img/time.jpg" id="img" class="col-lg-4 image">
                                         <div class="col-lg-6 fields">
+                                            <input type="hidden" id="id">
                                             <h4 class="journal" id="journal"><b>Journal: </b></h4>
                                             <h4 class="title" id="title"><b>Title: </b></h4>
                                             <h4 class="author" id="author"><b>Author: </b></h4>

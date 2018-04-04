@@ -50,6 +50,7 @@
                                 <!--put here other fields, make them hidden-->
                                 <h3 class="card-title">{{title}}</h3>
                                 <h5 class="card-subtitle text-muted">{{author}}</h5>
+                                <input type="hidden" class="id_card" value="{{id}}">
                                 <img class="image-av" src="../img/no_image.jpg">
                                 <p></p>
                                 <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -70,6 +71,7 @@
                                     e.preventDefault();
                                     document.getElementById("title").style.display = "block";
                                     document.getElementById("author").style.display = "block";
+                                    $('#id').html($(this).parent().find($('.id_card')).attr('value'));
                                     $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                     $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                     $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
@@ -101,6 +103,7 @@
                         function bCall() {
                             // var imgElem = document.getElementById('img');
                             var myJson = {
+                                "id": document.getElementById("id").value,
                                 "title": document.getElementById("etitle").value,
                                 "author": document.getElementById("eauthor").value,
                                 //   "imgData":JSON.stringify(getBase64Image(imgElem))
@@ -116,11 +119,12 @@
                         function dCall() {
                             // var imgElem = document.getElementById('img');
                             var myJson = {
-                                "title": document.getElementById("title").text(),
-                                "editor": document.getElementById("editor").text(),
-                                "author": document.getElementById("author").text(),
-                                "journal": document.getElementById("journal").text(),
-                                "issue": document.getElementById("issue").text()
+                                "id": document.getElementById("id").value,
+//                                "title": document.getElementById("title").text(),
+//                                "editor": document.getElementById("editor").text(),
+//                                "author": document.getElementById("author").text(),
+//                                "journal": document.getElementById("journal").text(),
+//                                "issue": document.getElementById("issue").text()
                                 //   "imgData":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
@@ -176,6 +180,7 @@
                                         <input type="file" onchange="previewFile()" id="imgbtn">
                                     </div>
                                     <div class="col-lg-6 fields">
+                                        <input type="hidden" id="id">
                                         <h4 class="title" id="title"><b>Title: </b></h4>
                                         <input id="etitle">
                                         <h4 class="author" id="author"><b>Author: </b></h4>

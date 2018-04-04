@@ -52,6 +52,7 @@
                                 <div class="card-body">
                                     <h3 class="card-title">{{title}}</h3>
                                     <h5 class="card-subtitle text-muted">{{author}}</h5>
+                                    <input type="hidden" class="id_card" value="{{id}}">
                                     <img class="image-av" src="../img/no_image.jpg">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -66,6 +67,7 @@
                                     $('.btn-primary').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
+                                        $('#id').val($(this).parent().find($('.id_card')).attr('value'));
                                         $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                         $("#img").attr("src", $(this).parent().find($('.image-av')).attr('src'));
@@ -78,8 +80,9 @@
                             function oCall() {
                                 // var imgElem = document.getElementById('img');
                                 var myJson = {
-                                    "title": document.getElementById("title").value,
-                                    "author": document.getElementById("author").value,
+                                    "id": document.getElementById("id").value,
+//                                    "title": document.getElementById("title").value,
+//                                    "author": document.getElementById("author").value,
                                     //   "imgData":JSON.stringify(getBase64Image(imgElem))
                                 };
                                 $.ajax({
@@ -101,6 +104,7 @@
                                     <div class="row">
                                         <img id="img" src="../img/no_image.jpg" class="col-lg-4 image">
                                         <div class="col-lg-6 fields">
+                                            <input type="hidden" id="id">
                                             <h4 class="title" id="title"><b>Title: </b></h4>
                                             <h4 class="author" id="author"><b>Author: </b></h4>
                                         </div>
