@@ -128,7 +128,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
 
-        List<Checkout> checkouts = checkoutService.getByDocVirIdAndDocType(docVirId,docType);
+        List<Checkout> checkouts = checkoutService.getByDocVirIdAndDocType(docVirId, docType);
 
         for (Checkout c : checkouts) {
             long virId = docPhysService.getDocVirIdById(c.getDocPhysId());
@@ -312,6 +312,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
     /**
      * Checks the ability to book this document
+     *
      * @param docVirId
      * @param docType
      * @throws Exception
@@ -339,7 +340,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
      * Recalculates all priority in DB on this document
      *
      * @param docVirId virtual ID of document
-     * @param docType type of document
+     * @param docType  type of document
      */
     private void recalculatePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
@@ -491,11 +492,26 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
     public boolean hasNotActiveBooking(long docPhysId) {
         try {
-            return getList().stream()
-                    .filter(booking -> booking.getDocPhysId() == docPhysId)
-                    .anyMatch(booking -> !booking.isActive());
+            System.out.println("555555555555555555555555555");
+            long id = docPhysService.getDocVirIdById(docPhysId);
+            String type = docPhysService.getTypeById(docPhysId);
+            List<Booking> bookings = getList().stream()
+                    .filter(booking -> booking.getDocType().equals(type))
+                    .filter(booking -> booking.getDocVirId() == id)
+                    .collect(Collectors.toList());
+
+            if (bookings.size() != 0) {
+                System.out.println("6666666666666666666666666666666666666");
+                return false;
+            } else {
+                System.out.println("77777777777777777777777777777777777777");
+                return true;
+            }
         } catch (NoSuchElementException e) {
-            return false;
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
         }
     }
 

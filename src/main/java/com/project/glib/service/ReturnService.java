@@ -59,12 +59,11 @@ public class ReturnService {
         long docVirId = docPhysService.getDocVirIdById(checkout.getDocPhysId());
         String docType = docPhysService.getTypeById(checkout.getDocPhysId());
 
-        //TODO change this type to victual IMMEDIATELY, URGENT PROBLEM !!!
 //        Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
         boolean hasNotActiveBooking = bookingService.hasNotActiveBooking(checkout.getDocPhysId());
 
 //        if (bookingOnThisDocument == null && !hasNotActiveBooking) {
-        if (!hasNotActiveBooking) {
+        if (hasNotActiveBooking) {
             docPhysService.inverseCanBooked(checkout.getDocPhysId());
             switch (docType) {
                 case Document.BOOK:

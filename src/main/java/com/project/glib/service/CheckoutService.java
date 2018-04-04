@@ -260,6 +260,13 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
     }
 
+    /**
+     * Checks if this user already has this checkout
+     *
+     * @param docPhysId physical ID of document
+     * @param userId ID of user
+     * @return
+     */
     public boolean alreadyHasThisCheckout(long docPhysId, long userId) {
         DocumentPhysical docPhys = docPhysService.getById(docPhysId);
 
@@ -284,6 +291,48 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
 
 
         return false;
+    }
+
+
+    /**
+     * Deletes all checkouts
+     *
+     * @throws Exception
+     */
+    public void deleteAllCheckouts() throws Exception {
+        List<Checkout> checkouts = getList();
+        for (Checkout checkout : checkouts) {
+            remove(checkout.getId());
+        }
+    }
+
+    public void update(Checkout checkout) {
+        checkoutDao.update(checkout);
+    }
+
+    /**
+     * Renew document
+     *
+     * @param checkout checkout model
+     * @throws Exception
+     */
+    public void renew(Checkout checkout) throws Exception {
+        String userType = userService.getTypeById(checkout.getUserId());
+        boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
+        boolean hasOutstandingRequest = false;
+
+        for (Booking booking : bookingService.getList()) {
+            if (booking.getPriority() == BookingService.PRIORITY.get(BookingService.OUTSTANDING)) {
+                hasOutstandingRequest = true;
+            }
+        }
+
+        if (checkout.isRenewed() && !canRenewedAgain || hasOutstandingRequest) {
+            throw new Exception("Sorry, you can't renew this checkout");
+        }
+
+        checkout.setReturnTime(2 * checkout.getReturnTime() - checkout.getCheckoutTime());
+        update(checkout);
     }
 
     public long getUserIdByDocPhysId(long docPhysId) throws Exception {
@@ -326,35 +375,5 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         } catch (NullPointerException | NoSuchElementException e) {
             return new ArrayList<>();
         }
-    }
-
-    public void deleteAllCheckouts() throws Exception {
-        List<Checkout> checkouts = getList();
-        for (Checkout checkout : checkouts) {
-            remove(checkout.getId());
-        }
-    }
-
-    public void update(Checkout checkout) {
-        checkoutDao.update(checkout);
-    }
-
-    public void renew(Checkout checkout) throws Exception {
-        String userType = userService.getTypeById(checkout.getUserId());
-        boolean canRenewedAgain = userType.equals(User.PROFESSOR_VISITING);
-        boolean hasOutstandingRequest = false;
-
-        for (Booking booking : bookingService.getList()) {
-            if (booking.getPriority() == BookingService.PRIORITY.get(BookingService.OUTSTANDING)) {
-                hasOutstandingRequest = true;
-            }
-        }
-
-        if (checkout.isRenewed() && !canRenewedAgain || hasOutstandingRequest) {
-            throw new Exception("Sorry, you can't renew this checkout");
-        }
-
-        checkout.setReturnTime(2 * checkout.getReturnTime() - checkout.getCheckoutTime());
-        update(checkout);
     }
 }
