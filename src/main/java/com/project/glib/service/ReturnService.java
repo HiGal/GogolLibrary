@@ -60,10 +60,11 @@ public class ReturnService {
         String docType = docPhysService.getTypeById(checkout.getDocPhysId());
 
         //TODO change this type to victual IMMEDIATELY, URGENT PROBLEM !!!
-        Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
+//        Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
         boolean hasNotActiveBooking = bookingService.hasNotActiveBooking(checkout.getDocPhysId());
 
-        if (bookingOnThisDocument == null && !hasNotActiveBooking) {
+//        if (bookingOnThisDocument == null && !hasNotActiveBooking) {
+        if (!hasNotActiveBooking) {
             docPhysService.inverseCanBooked(checkout.getDocPhysId());
             switch (docType) {
                 case Document.BOOK:
@@ -78,15 +79,15 @@ public class ReturnService {
                 default:
                     throw new Exception(DOC_TYPE_EXCEPTION);
             }
-        } else if (bookingOnThisDocument != null) {
-
-            // TODO Maybe change method parameters to (Booking booking, String message)
-            messageService.addMes(
-                    bookingOnThisDocument.getId(),
-                    docVirId,
-                    docType,
-                    MessageService.CHECKOUT_DOCUMENT
-            );
+//        } else if (bookingOnThisDocument != null) {
+//
+//            // TODO Maybe change method parameters to (Booking booking, String message)
+//            messageService.addMes(
+//                    bookingOnThisDocument.getId(),
+//                    docVirId,
+//                    docType,
+//                    MessageService.CHECKOUT_DOCUMENT
+//            );
         } else {
             Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
             bookingService.setBookingActiveToTrue(bookingWithMaxPriority, checkout.getDocPhysId(), checkout.getShelf());

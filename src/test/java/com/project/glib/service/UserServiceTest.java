@@ -98,7 +98,7 @@ public class UserServiceTest {
         bookService.add(book, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(book.getId(), Document.BOOK));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
-                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
+                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf(), false);
         checkoutService.add(checkout);
 
         try {
@@ -119,7 +119,7 @@ public class UserServiceTest {
         journalService.add(journal, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(journal.getId(), Document.JOURNAL));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
-                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
+                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf(), false);
         checkoutService.add(checkout);
 
         try {
@@ -139,7 +139,7 @@ public class UserServiceTest {
         avService.add(av, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(av.getId(), Document.AV));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
-                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf());
+                System.currentTimeMillis() + CheckoutService.WEEK_IN_MILLISECONDS * 3, docPhys.getShelf(), false);
         checkoutService.add(checkout);
 
         try {
