@@ -280,5 +280,29 @@ public class LoginController {
         return modelAndView;
     }
 
+    /*
+            LIBRARIAN CONTROLLER
+     */
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public @ResponseBody String UserDelete( @RequestBody User user1){
+        System.out.println(user1);
+        try {
+
+                System.out.println(user1.getLogin());
+                System.out.println(userService.getIdByLogin(user1.getLogin()));
+                userService.remove(userService.getIdByLogin(user1.getLogin()));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "success";
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public @ResponseBody String UserEdit(@RequestBody User user){
+        return "success";
+    }
+
 
 }

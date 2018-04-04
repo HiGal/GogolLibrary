@@ -57,7 +57,7 @@
                         </thead>
                         <tbody>
                         {{#allUsers}}
-
+                            <form method="post" action="javascript:void(null)">
                             <tr>
                                 <td>{{id}}</td>
                                 <td>{{name}}</td>
@@ -81,7 +81,7 @@
                                     <input type="hidden" class="daddress" value="{{address}}">
                                     <input type="hidden" class="dphone" value="{{phone}}">
                                     <input type="hidden" class="drole" value="{{role}}">
-                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove">
+                                    <button type="submit"  class="btn btn-primary btn-sm btn-block row-remove">
                                         Delete
                                     </button>
                                 </td>
@@ -93,7 +93,7 @@
                                     </button>
                                 </td>
                             </tr>
-
+                            </form>
                         {{/allUsers}}
                         </tbody>
                     </table>
@@ -122,11 +122,11 @@
                                         "role": role
                                     };
                                     $.ajax({
-                                        url: "idk",
+                                        url: "/delete",
                                         type: 'POST',
+                                        contentType: 'application/json',
                                         data: JSON.stringify(myJson),
-                                        success: alert('succ'),
-                                        error: alert('fork')
+                                        dataType:'json'
                                     });
                                     $(this).closest('tr').remove(); // или $(this).parent().parent().remove();
                                 });
