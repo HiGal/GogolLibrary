@@ -158,8 +158,12 @@
                         contentType: "application/json",
                         data: JSON.stringify(user),
                         dataType: 'json',
-                        success: function (data){
-                            alert('yes' + data)}
+                        success:
+                            function(data){
+                                var response="";
+                                response += "Success! Wait for confirmation from 1 to 3 days";
+                                $('.answer').html(response);
+                            },
                     });
 
                 }

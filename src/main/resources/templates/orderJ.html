@@ -25,12 +25,12 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="student.html">Dashboard</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="MyDocuments.html">My Documents</a></li>
-                <li class="active"><a href="#">Books</a></li>
-                <li><a href="/journals">Journals</a></li>
+                <li><a href="/books">Books</a></li>
+                <li class="active"><a href="orderJ.html">Journals</a></li>
                 <li><a href="/av">Audio/Video</a></li>
-                <li><a href="../librarian/LogIn.html">Log Out</a></li>
+                <li><a href="/login">Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -42,94 +42,69 @@
         <div class="output"></div>
         <div class="row centered">
             <div class="card card-container">
-                <p id="patrons"><a id="linker" href="/dashboard">Dashboard</a> / <u>Books</u></p>
-                <p class="header">Books that available to check out</p>
+                <p id="patrons"><a id="linker" href="/dashboard">Dashboard</a> / <u>Journals</u></p>
+                <p class="header">Journals that available to check out</p>
                 <div class="container-fluid">
                     <div class="card-group">
-                        {{#allBooks}}
+                        {{#allJournals}}
                         <div class="col-sm-4 deck">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <!--put here other fields, make them hidden-->
-                                    <h3 class="card-title">{{title}}</h3>
-                                    <h5 class="card-subtitle text-muted">{{author}}</h5>
-                                    <input type="hidden" class="edition_card" value="{{edition}}">
-                                    <input type="hidden" class="publisher_card" value="{{publisher}}">
-                                    <img class="image-book" src="../img/no_image.jpg">
+                                    <h3 class="card-title">God of the new Apple</h3>
+                                    <h5 class="card-subtitle text-muted">Time</h5>
+                                    <input type="hidden" id="edition_card" value="{{edition}}">
+                                    <input type="hidden" id="publisher_card" value="{{publisher}}">
+                                    <img src="../img/no_image.jpg">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                                 </div>
                             </div>
                         </div>
-
-
-                        {{/allBooks}}
+                        {{/allJournals}}
 
                         <script>
                             (function ($) {
                                 $(document).ready(function () {
-                                    $('.btn-lg').click(function (e) {
+                                    $('.btn-primary').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
                                         $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
-                                        $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
+                                        $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('#edition_card')).attr('value'));
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
-                                        $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
-                                        $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
-                                        $('#expansion').html($(this).parent().find($('.card.title')).text());
+                                        $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('#publisher_card')).attr('value'));
                                     });
                                 });
                                 return false;
                             }(jQuery));
-
-                            function oCall() {
-                                // var imgElem = document.getElementById('img');
-                                var myJson = {
-                                    "title": document.getElementById("title").value,
-                                    "edition": document.getElementById("edition").value,
-                                    "author": document.getElementById("author").value,
-                                    "publisher": document.getElementById("publisher").value
-                                    //   "imgData":JSON.stringify(getBase64Image(imgElem))
-                                };
-                                $.ajax({
-                                    url: "idk",
-                                    type: 'POST',
-                                    data: JSON.stringify(myJson),
-                                    success: alert('succ'),
-                                    error: alert('fork')
-                                });
-                                window.location.reload(false);
-                            }
-
                         </script>
 
-                        <!--Modal, need to be field using js-->
                         <div class="modal" id="details" tabindex="-1" role="dialog" aria-labelledby="expansion"
                              aria-hidden="true">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h3 id="expansion"></h3>
+                                    <h3 id="expansion">God of the new Apple</h3>
                                 </div>
                                 <div class="modal-body body">
                                     <div class="row">
-                                        <img src="../img/no_image.jpg" id="img" class="col-lg-4 image">
+                                        <img src="../img/time.jpg" class="col-lg-4 image">
                                         <div class="col-lg-6 fields">
-                                            <h4 class="title" id="title"><b>Title: </b></h4>
-                                            <h4 class="edition" id="edition"><b>Edition: </b></h4>
-                                            <h4 class="author" id="author"><b>Author: </b></h4>
-                                            <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
+                                            <h4 class="journal"><b>Journal: </b></h4>
+                                            <h4 class="title"><b>Title: </b></h4>
+                                            <h4 class="author"><b>Author: </b></h4>
+                                            <h4 class="publisher"><b>Publisher: </b></h4>
+                                            <h4 class="issue"><b>Issue: </b></h4>
+                                            <h4 class="editor"><b>Editor of issue: </b></h4>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#" class="btn btn-primary" onclick="oCall()" >Order</a>
+                                    <a href="#" class="btn btn-primary" >Order</a>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
