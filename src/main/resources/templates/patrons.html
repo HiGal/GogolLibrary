@@ -85,6 +85,13 @@
                                         Delete
                                     </button>
                                 </td>
+                                <td>
+                                    <input type="hidden" class="cid" value="{{id}}">
+                                    <input type="hidden" class="auth" value="{{auth}}">
+                                    <button type="submit" onclick="conf()" class="btn btn-primary btn-sm btn-block">
+                                        Confirm
+                                    </button>
+                                </td>
                             </tr>
 
                         {{/allUsers}}
@@ -92,17 +99,19 @@
                     </table>
 
                     <script>
+                        var check = $('.auth');
+                        if (check.val() == 1)  check.parent().remove();
 
                         (function ($) {
                             $(document).ready(function () {
                                 $('.row-remove').click(function (e) {
                                     e.preventDefault();
-                                    var id = $(this).parent().find($('.did')).text();
-                                    var name = $(this).parent().find($('.dname')).text();
-                                    var sname = $(this).parent().find($('.dsname')).text();
-                                    var addr = $(this).parent().find($('.daddress')).text();
-                                    var ph = $(this).parent().find($('.dphone')).text();
-                                    var role = $(this).parent().find($('.drole')).text();
+                                    var id = $(this).parent().find($('.did')).val();
+                                    var name = $(this).parent().find($('.dname')).val();
+                                    var sname = $(this).parent().find($('.dsname')).val();
+                                    var addr = $(this).parent().find($('.daddress')).val();
+                                    var ph = $(this).parent().find($('.dphone')).val();
+                                    var role = $(this).parent().find($('.drole')).val();
 
                                     var myJson = {
                                         "id": id,
@@ -143,6 +152,22 @@
                                 });
                             });
                         }(jQuery));
+
+
+                        function conf() {
+                            var myJson = {
+                                "id": document.getElementById("cid").value,
+                                "flag": true
+                            };
+                            $.ajax({
+                                url: "idk",
+                                type: 'POST',
+                                data: JSON.stringify(myJson),
+                                success: alert('succ'),
+                                error: alert('fork')
+                            });
+                            window.location.reload(false);
+                        }
 
                         function bCall() {
                             var myJson = {

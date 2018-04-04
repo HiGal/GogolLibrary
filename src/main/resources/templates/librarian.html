@@ -17,11 +17,11 @@
         $(document).ready(function () {
             $('.dropdown-toggle').click(function (e) {
                 e.preventDefault();
-                var flag = true;
+                var myJson = {"flag": true};
                 $.ajax({
                     url: "/dashboard",
                     type: 'POST',
-                    data: JSON.stringify(flag)
+                    data: JSON.stringify(myJson)
                 });
             });
         });
