@@ -57,7 +57,7 @@
                         </thead>
                         <tbody>
                         {{#allUsers}}
-                            <form method="post" action="javascript:void(null)">
+                        <form method="post" action="javascript:void(null)">
                             <tr>
                                 <td>{{id}}</td>
                                 <td>{{name}}</td>
@@ -67,22 +67,24 @@
                                 <td>{{role}}</td>
                                 <td>
                                     <input type="hidden" class="id" value="{{id}}">
+                                    <input type="hidden" class="log" value="{{login}}">
+                                    <input type="hidden" class="pass" value="{{password}}">
                                     <input type="hidden" class="name" value="{{name}}">
                                     <input type="hidden" class="sname" value="{{surname}}">
                                     <input type="hidden" class="addr" value="{{address}}">
                                     <input type="hidden" class="ph" value="{{phone}}">
                                     <input type="hidden" class="role" value="{{role}}">
-                                    <a href="#details" class="btn btn-primary btn-sm btn-block submit" data-toggle="modal">Edit</a>
+                                    <a href="#details" class="btn btn-primary btn-sm btn-block submit"
+                                       data-toggle="modal">Edit</a>
                                 </td>
                                 <td>
                                     <input type="hidden" class="did" value="{{id}}">
-                                    <input type="hidden" class="dlogin" value="{{login}}">
                                     <input type="hidden" class="dname" value="{{name}}">
                                     <input type="hidden" class="dsname" value="{{surname}}">
                                     <input type="hidden" class="daddress" value="{{address}}">
                                     <input type="hidden" class="dphone" value="{{phone}}">
                                     <input type="hidden" class="drole" value="{{role}}">
-                                    <button type="submit"  class="btn btn-primary btn-sm btn-block row-remove">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block row-remove">
                                         Delete
                                     </button>
                                 </td>
@@ -94,21 +96,20 @@
                                     </button>
                                 </td>
                             </tr>
-                            </form>
+                        </form>
                         {{/allUsers}}
                         </tbody>
                     </table>
 
                     <script>
-                        var check = $('.auth');
-                        if (check.val() == 1)  check.parent().remove();
+
+                      //  if ($('.auth').val() == 'true') $('.auth').parent().remove();
 
                         (function ($) {
                             $(document).ready(function () {
                                 $('.row-remove').click(function (e) {
                                     e.preventDefault();
                                     var id = $(this).parent().find($('.did')).val();
-                                    var login = $(this).parent().find($('.dlogin')).val();
                                     var name = $(this).parent().find($('.dname')).val();
                                     var sname = $(this).parent().find($('.dsname')).val();
                                     var addr = $(this).parent().find($('.daddress')).val();
@@ -117,7 +118,6 @@
 
                                     var myJson = {
                                         "id": id,
-                                        "login": login,
                                         "name": name,
                                         "surname": sname,
                                         "address": addr,
@@ -129,7 +129,7 @@
                                         type: 'POST',
                                         contentType: 'application/json',
                                         data: JSON.stringify(myJson),
-                                        dataType:'json'
+                                        dataType: 'json'
                                     });
                                     $(this).closest('tr').remove(); // или $(this).parent().parent().remove();
                                 });
@@ -140,6 +140,8 @@
                             $(document).ready(function () {
                                 $('.submit').click(function (e) {
                                     e.preventDefault();
+                                    var log = $(this).parent().find($('.log')).val();
+                                    var pass = $(this).parent().find($('.pass')).val();
                                     var id = $(this).parent().find($('.id')).val();
                                     var name = $(this).parent().find($('.name')).val();
                                     var sname = $(this).parent().find($('.sname')).val();
@@ -147,37 +149,45 @@
                                     var ph = $(this).parent().find($('.ph')).val();
                                     var role = $(this).parent().find($('.role')).val();
                                     $('.title').text(id);
-                                    document.getElementById('fname').placeholder=name;
-                                    document.getElementById('fsname').placeholder=sname;
-                                    document.getElementById('faddr').placeholder=addr;
-                                    document.getElementById('fphone').placeholder=ph;
-                                    document.getElementById('frole').placeholder=role;
+                                    document.getElementById('flog').placeholder = log;
+                                    document.getElementById('fpass').placeholder = pass;
+                                    document.getElementById('fname').placeholder = name;
+                                    document.getElementById('fsname').placeholder = sname;
+                                    document.getElementById('faddr').placeholder = addr;
+                                    document.getElementById('fphone').placeholder = ph;
+                                    document.getElementById('frole').placeholder = role;
+                                });
+                            });
+                        }(jQuery));
+
+                        (function ($) {
+                            $(document).ready(function () {
+                                $('.user-confirm').click(function (e) {
+                                    e.preventDefault();
+                                    var id = ($(this).parent().find($('.cid')).val());
+                                    var myJson = {
+                                        "id": id,
+                                        "flag": true
+                                    };
+                                    $.ajax({
+                                        url: "idk",
+                                        type: 'POST',
+                                        data: JSON.stringify(myJson),
+                                        success: alert('succ'),
+                                        error: alert('fork')
+                                    });
+                                    window.location.reload(false);
                                 });
                             });
                         }(jQuery));
 
 
-                        function conf() {
-                            var myJson = {
-                                "id": document.getElementById("cid"),
-                                "flag": true
-                            };
-                            $.ajax({
-                                url: "idk",
-                                type: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify(myJson),
-                                dataType: 'json',
-                                success:function (data) {
-                                    abort(data);
-                                }
-                            });
-                            window.location.reload(false);
-                        }
 
                         function bCall() {
                             var myJson = {
-                                "id": document.getElementById("id").text,
+                                "id": document.getElementById("id").textContent,
+                                "login": document.getElementById("flog").value,
+                                "password": document.getElementById("flog").value,
                                 "name": document.getElementById("fname").value,
                                 "surname": document.getElementById("fsname").value,
                                 "address": document.getElementById("faddr").value,
@@ -211,6 +221,8 @@
                                 <div class="row">
                                     <div class="col-lg-10 fields" id="container">
                                         <h4 class="title" id="id"></h4>
+                                        <input type="hidden" class="flog" id="flog">
+                                        <input type="hidden" class="fpass" id="fpass">
                                         <input class="fname" id="fname">
                                         <input class="fsname" id="fsname">
                                         <input class="faddr" id="faddr">
