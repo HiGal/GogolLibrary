@@ -35,7 +35,7 @@
         </div>
         <div class="card card-container"></div>
         <div class="main-login main-center">
-            <form class="form-horizontal"  method="post" id="registration-form" onsubmit="regcall()">
+            <form class="form-horizontal"  method="post" action="javascript:void(null)" id="registration-form" onsubmit="regcall()">
                 <div class="answer"></div>
                 <div class="form-group">
                     <label for="sel1">Select role</label>
@@ -162,7 +162,7 @@
                         success:
                             function(data){
                                 var response="";
-                                response += "Success";
+                                response += "Success! Wait for confirmation from 1 to 3 days";
                                 $('.answer').html(response);
                             },
                     });

@@ -1,5 +1,6 @@
 package com.project.glib.controller;
 
+import com.project.glib.model.Book;
 import com.project.glib.model.Messages;
 import com.project.glib.model.User;
 import com.project.glib.service.*;
@@ -135,13 +136,24 @@ public class LoginController {
     /*
         BOOK CONTROLLER
      */
-    @RequestMapping(value = "/librarian/books", method = RequestMethod.GET)
-    public ModelAndView books() {
+    @RequestMapping(value = "/books", method = RequestMethod.GET)
+    public ModelAndView books(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allBooks", bookService.getList());
-        modelAndView.setViewName("documents");
+        try {
+            User user1 = userService.findByLogin(user.getLogin());
+            String role = user1.getRole();
+            modelAndView.addObject("allBooks", bookService.getList());
+            if (role.equals(User.LIBRARIAN))
+                modelAndView.setViewName("documents");
+            else
+                modelAndView.setViewName("order");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return modelAndView;
     }
+
 
     //    @RequestMapping(value = "/edit/book")
 //    public ModelAndView editBook(@ModelAttribute Book book){
@@ -155,20 +167,29 @@ public class LoginController {
 //        return modelAndView;
 //    }
 //
-//    @RequestMapping(value = "/order/book")
-//    public ModelAndView orderBook(@ModelAttribute Book book){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
-//
+    @RequestMapping(value = "/order/book")
+    public ModelAndView orderBook(@ModelAttribute Book book) {
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
     /*
         JOURNAL CONTROLLER
      */
-    @RequestMapping(value = "/librarian/journals", method = RequestMethod.GET)
-    public ModelAndView journals() {
+    @RequestMapping(value = "/journals", method = RequestMethod.GET)
+    public ModelAndView journals(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allJournals", journalService.getList());
-        modelAndView.setViewName("journals");
+        try {
+            String role = userService.findByLogin(user.getLogin()).getRole();
+            if (role.equals(User.LIBRARIAN))
+                modelAndView.setViewName("journals");
+            else
+                modelAndView.setViewName("orderJ");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return modelAndView;
     }
 
@@ -194,11 +215,20 @@ public class LoginController {
     /*
         AV CONTROLLER
      */
-    @RequestMapping(value = "/librarian/av", method = RequestMethod.GET)
-    public ModelAndView av() {
+    @RequestMapping(value = "/av", method = RequestMethod.GET)
+    public ModelAndView av(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("allAV", audioVideoService.getList());
-        modelAndView.setViewName("av");
+        try {
+            String role = userService.findByLogin(user.getLogin()).getRole();
+            if(role.equals(User.LIBRARIAN))
+                modelAndView.setViewName("av");
+            else
+                modelAndView.setViewName("orderAV");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return modelAndView;
     }
 //    @RequestMapping(value = "/edit/AV")
