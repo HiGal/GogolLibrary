@@ -53,9 +53,9 @@
                                     <!--put here other fields, make them hidden-->
                                     <h3 class="card-title">{{title}}</h3>
                                     <h5 class="card-subtitle text-muted">{{author}}</h5>
-                                    <input type="hidden" id="edition_card" value="{{edition}}">
-                                    <input type="hidden" id="publisher_card" value="{{publisher}}">
-                                    <img src="../img/no_image.jpg">
+                                    <input type="hidden" class="edition_card" value="{{edition}}">
+                                    <input type="hidden" class="publisher_card" value="{{publisher}}">
+                                    <img class="image-book" src="../img/no_image.jpg">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                                 </div>
@@ -68,17 +68,39 @@
                         <script>
                             (function ($) {
                                 $(document).ready(function () {
-                                    $('.btn-primary').click(function (e) {
+                                    $('.btn-lg').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
                                         $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
-                                        $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('#edition_card')).attr('value'));
+                                        $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
-                                        $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('#publisher_card')).attr('value'));
+                                        $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
+                                        $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
+                                        $('#expansion').html($(this).parent().find($('.card.title')).text());
                                     });
                                 });
                                 return false;
                             }(jQuery));
+
+                            function oCall() {
+                                // var imgElem = document.getElementById('img');
+                                var myJson = {
+                                    "title": document.getElementById("title").value,
+                                    "edition": document.getElementById("edition").value,
+                                    "author": document.getElementById("author").value,
+                                    "publisher": document.getElementById("publisher").value
+                                    //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                                };
+                                $.ajax({
+                                    url: "idk",
+                                    type: 'POST',
+                                    data: JSON.stringify(myJson),
+                                    success: alert('succ'),
+                                    error: alert('fork')
+                                });
+                                window.location.reload(false);
+                            }
+
                         </script>
 
                         <!--Modal, need to be field using js-->
@@ -87,21 +109,21 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h3 id="expansion">Introduction to algorithms</h3>
+                                    <h3 id="expansion"></h3>
                                 </div>
                                 <div class="modal-body body">
                                     <div class="row">
-                                        <img src="../img/no_image.jpg" class="col-lg-4 image">
+                                        <img src="../img/no_image.jpg" id="img" class="col-lg-4 image">
                                         <div class="col-lg-6 fields">
-                                            <h4 class="title"><b>Title: </b></h4>
-                                            <h4 class="edition"><b>Edition: </b></h4>
-                                            <h4 class="author"><b>Author: </b></h4>
-                                            <h4 class="publisher"><b>Published by: </b></h4>
+                                            <h4 class="title" id="title"><b>Title: </b></h4>
+                                            <h4 class="edition" id="edition"><b>Edition: </b></h4>
+                                            <h4 class="author" id="author"><b>Author: </b></h4>
+                                            <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#" class="btn btn-primary" >Order</a>
+                                    <a href="#" class="btn btn-primary" onclick="oCall()" >Order</a>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
