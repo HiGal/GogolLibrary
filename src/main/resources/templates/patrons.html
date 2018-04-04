@@ -76,6 +76,7 @@
                                 </td>
                                 <td>
                                     <input type="hidden" class="did" value="{{id}}">
+                                    <input type="hidden" class="dlogin" value="{{login}}">
                                     <input type="hidden" class="dname" value="{{name}}">
                                     <input type="hidden" class="dsname" value="{{surname}}">
                                     <input type="hidden" class="daddress" value="{{address}}">
@@ -107,6 +108,7 @@
                                 $('.row-remove').click(function (e) {
                                     e.preventDefault();
                                     var id = $(this).parent().find($('.did')).val();
+                                    var login = $(this).parent().find($('.dlogin')).val();
                                     var name = $(this).parent().find($('.dname')).val();
                                     var sname = $(this).parent().find($('.dsname')).val();
                                     var addr = $(this).parent().find($('.daddress')).val();
@@ -115,6 +117,7 @@
 
                                     var myJson = {
                                         "id": id,
+                                        "login": login,
                                         "name": name,
                                         "surname": sname,
                                         "address": addr,
@@ -156,22 +159,25 @@
 
                         function conf() {
                             var myJson = {
-                                "id": document.getElementById("cid").value,
+                                "id": document.getElementById("cid"),
                                 "flag": true
                             };
                             $.ajax({
                                 url: "idk",
                                 type: 'POST',
+                                contentType: 'application/json',
                                 data: JSON.stringify(myJson),
-                                success: alert('succ'),
-                                error: alert('fork')
+                                dataType: 'json',
+                                success:function (data) {
+                                    abort(data);
+                                }
                             });
                             window.location.reload(false);
                         }
 
                         function bCall() {
                             var myJson = {
-                                "id": document.getElementById("id").textContent,
+                                "id": document.getElementById("id").text,
                                 "name": document.getElementById("fname").value,
                                 "surname": document.getElementById("fsname").value,
                                 "address": document.getElementById("faddr").value,

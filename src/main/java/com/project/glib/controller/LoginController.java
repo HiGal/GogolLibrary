@@ -302,10 +302,18 @@ public class LoginController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public @ResponseBody String UserEdit(@RequestBody User user){
         try {
+            System.out.println(user);
             userService.update(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "success";
+    }
+
+    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
+    public @ResponseBody String UserConfirm(@RequestBody  User user){
+        User user1 = userService.getById(user.getId());
+        user1.setAuth(user.getAuth());
         return "success";
     }
 
