@@ -93,6 +93,8 @@
                                 document.getElementById("okbtn").style.display = "none";
                                 document.getElementById("editbtn").style.display = "inline";
                                 document.getElementById("imgbtn").style.display = "none";
+                                document.getElementById("elogin").style.display = "none";
+                                document.getElementById("renewbtn").style.display = "none";
                             });
                         });
                         return false;
@@ -122,6 +124,26 @@
                         document.getElementById("editbtn").style.display = "none";
                         document.getElementById("okbtn").style.display = "inline";
                         document.getElementById("imgbtn").style.display = "inline";
+                    }
+
+                    function renew() {
+                        document.getElementById("elogin").style.display = "inline";
+                        document.getElementById("renewbtn").style.display = "block";
+                    }
+
+                    function renewConf() {
+                        document.getElementById("elogin").style.display = "none";
+                        var myJson = {
+                            "id": document.getElementById("id").value,
+                            "login": document.getElementById("elogin").value,
+                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                        };
+                        $.ajax({
+                            url: "idk",
+                            type: 'POST',
+                            data: JSON.stringify(myJson),
+                        });
+                        window.location.reload(false);
                     }
 
                     function bCall() {
@@ -221,10 +243,13 @@
                                     <input id="eissue">
                                     <h4 class="editor" id="editor"><b>Editor of issue: </b></h4>
                                     <input id="eeditor">
+                                    <input id="elogin">
+                                    <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <a onclick="renew()" class="btn btn-primary">Renew</a>
                             <a id="okbtn" class="btn btn-primary" onclick="bCall()">OK</a>
                             <a id="editbtn" onclick="edit()" class="btn btn-primary">Edit</a>
                             <button class="btn btn-primary" onclick="dCall()">Delete</button>
