@@ -99,7 +99,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         long docPhysId = booking.getDocPhysId();
 
         add(new Checkout(booking.getUserId(), booking.getDocPhysId(), System.currentTimeMillis(),
-                System.currentTimeMillis() + additionalTime, booking.getShelf()));
+                System.currentTimeMillis() + additionalTime, booking.getShelf(), false));
     }
 
     protected void add(Checkout checkout) throws Exception {

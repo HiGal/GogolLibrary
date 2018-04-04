@@ -57,11 +57,11 @@ public class CheckoutServiceTest {
         long docPhysId3 = docPhysService.getValidPhysId(av.getId(), Document.AV);
 
         checkout1 = new Checkout(user.getId(), docPhysId1, System.currentTimeMillis(),
-                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 3, shelf1);
+                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 3, shelf1, false);
         checkout2 = new Checkout(user.getId(), docPhysId2, System.currentTimeMillis(),
-                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 2, shelf1);
+                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 2, shelf1, false);
         checkout3 = new Checkout(user.getId(), docPhysId3, System.currentTimeMillis(),
-                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 2, shelf1);
+                System.currentTimeMillis() + WEEK_IN_MILLISECONDS * 2, shelf1, false);
     }
 
     @After

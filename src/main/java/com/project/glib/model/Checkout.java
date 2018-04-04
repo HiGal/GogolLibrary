@@ -27,15 +27,19 @@ public class Checkout {
     @Column(name = "shelf")
     private String shelf;
 
+    @Column(name = "is_renewed")
+    private boolean isRenewed;
+
     protected Checkout() {
     }
 
-    public Checkout(long userId, long docPhysId, long checkoutTime, long returnTime, String shelf) {
+    public Checkout(long userId, long docPhysId, long checkoutTime, long returnTime, String shelf, boolean isRenewed) {
         this.userId = userId;
         this.docPhysId = docPhysId;
         this.checkoutTime = checkoutTime;
         this.returnTime = returnTime;
         this.shelf = shelf;
+        this.isRenewed = isRenewed;
     }
 
     @Override
@@ -48,13 +52,14 @@ public class Checkout {
                 docPhysId == checkout.docPhysId &&
                 checkoutTime == checkout.checkoutTime &&
                 returnTime == checkout.returnTime &&
+                isRenewed == checkout.isRenewed &&
                 Objects.equals(shelf, checkout.shelf);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, userId, docPhysId, checkoutTime, returnTime, shelf);
+        return Objects.hash(id, userId, docPhysId, checkoutTime, returnTime, shelf, isRenewed);
     }
 
     @Override
@@ -66,6 +71,7 @@ public class Checkout {
                 ", checkoutTime=" + checkoutTime +
                 ", returnTime=" + returnTime +
                 ", shelf='" + shelf + '\'' +
+                ", isRenewed=" + isRenewed +
                 '}';
     }
 
@@ -115,5 +121,13 @@ public class Checkout {
 
     public void setShelf(String shelf) {
         this.shelf = shelf;
+    }
+
+    public boolean isRenewed() {
+        return isRenewed;
+    }
+
+    public void setRenewed(boolean renewed) {
+        isRenewed = renewed;
     }
 }

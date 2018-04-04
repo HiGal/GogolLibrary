@@ -1,7 +1,10 @@
 package com.project.glib.service;
 
 import com.project.glib.dao.implementations.BookingDaoImplementation;
-import com.project.glib.model.*;
+import com.project.glib.model.Booking;
+import com.project.glib.model.Checkout;
+import com.project.glib.model.Document;
+import com.project.glib.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -95,12 +98,11 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             throw new Exception(AUTH_EXCEPTION);
         }
 
-        //TODO check it
+        // TODO check it
 //        if (alreadyHasThisBooking(docVirId, docType, userId)) {
 //            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
 //        }
 
-        //todo change physical id to list of ids which user can have
         if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
             throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
         }
@@ -122,19 +124,19 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         List<Checkout> checkouts = checkoutService.getByDocVirIdAndDocType(docVirId,docType);
 
         for (Checkout c : checkouts) {
-            long virtId = docPhysService.getDocVirIdById(c.getDocPhysId());
+            long virId = docPhysService.getDocVirIdById(c.getDocPhysId());
             String type = docPhysService.getTypeById(c.getDocPhysId());
 
             if (c.getUserId() != booking.getUserId()) {
                 messageService.addMes(c.getUserId(),
-                        virtId,
+                        virId,
                         type,
                         MessageService.RETURN_DOCUMENT
                 );
             }
         }
 
-        // TODO check the deletion of all priority
+        // TODO check we really want delete of all priority queue?
         deletePriority(docVirId, docType);
 
         // add outstanding booking
@@ -194,18 +196,18 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                     throw new Exception(TYPE_EXCEPTION);
             }
         } catch (Exception e) {
-            DocumentPhysical docPhys = getValidDocPhys(docVirId, docType);
-            if (docPhys != null) {
-                docPhysId = docPhys.getId();
-
-                if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
-                    throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
-                }
-
-                shelf = docPhys.getShelf();
-                priority = PRIORITY.get(EXPECTED);
-                isActive = true;
-            }
+//            DocumentPhysical docPhys = getValidDocPhys(docVirId, docType);
+//            if (docPhys != null) {
+//                docPhysId = docPhys.getId();
+//
+//                if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
+//                    throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
+//                }
+//
+//                shelf = docPhys.getShelf();
+//                priority = PRIORITY.get(EXPECTED);
+//                isActive = true;
+//            }
         }
 
         recalculatePriority(docVirId, docType);
@@ -252,6 +254,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
         try {
             try {
+                // Priority more than Expected or equal
                 if (bookingCanCheckout(booking)) {
                     Booking bookingWithMaxPriority = getBookingWithMaxPriority(booking.getDocVirId(), booking.getDocType());
                     setBookingActiveToTrue(bookingWithMaxPriority, booking.getDocPhysId(), booking.getShelf());
@@ -333,6 +336,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private void deletePriority(long docVirId, String docType) {
         List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
         for (Booking booking : bookings) {
+            // Priority less than Expected
             if (bookingInQueue(booking)) {
                 bookingDao.remove(booking.getId());
             }
@@ -342,6 +346,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     @Scheduled(fixedDelay = DAY_IN_MILLISECONDS / 2)
     private void recalculateAll() {
         for (Booking booking : getList()) {
+            // Priority less than Expected
             if (bookingInQueue(booking)) {
                 int waitingDays = convertToDays(System.currentTimeMillis() - booking.getBookingDate());
                 booking.setPriority(booking.getPriority() + waitingDays);
@@ -354,6 +359,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private void deleteLateBookings() throws Exception {
         for (Booking booking : getList()) {
             boolean isLate = System.currentTimeMillis() - booking.getBookingDate() > DAY_IN_MILLISECONDS;
+            // Priority more than Expected or equal
             if (bookingCanCheckout(booking) && isLate) {
                 messageService.addMes(booking.getUserId(),
                         booking.getDocPhysId(),
@@ -484,17 +490,17 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
-    // TODO rename method
-    private DocumentPhysical getValidDocPhys(long docVirId, String docType) {
-        List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(docVirId, docType);
-        for (DocumentPhysical docPhys : docPhysList) {
-            long docPhysId = docPhys.getId();
-            if (!hasActiveBooking(docPhysId)) {
-                return docPhys;
-            }
-        }
-        return null;
-    }
+//    // TODO rename method
+//    private DocumentPhysical getValidDocPhys(long docVirId, String docType) {
+//        List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(docVirId, docType);
+//        for (DocumentPhysical docPhys : docPhysList) {
+//            long docPhysId = docPhys.getId();
+//            if (!hasActiveBooking(docPhysId)) {
+//                return docPhys;
+//            }
+//        }
+//        return null;
+//    }
 
     public void deleteAllBookings() throws Exception {
         List<Booking> bookings = getList();
