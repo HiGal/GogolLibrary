@@ -301,6 +301,11 @@ public class LoginController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public @ResponseBody String UserEdit(@RequestBody User user){
+        try {
+            userService.update(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "success";
     }
 

@@ -102,7 +102,7 @@
                                     var sname = $(this).parent().find($('.dsname')).text();
                                     var addr = $(this).parent().find($('.daddress')).text();
                                     var ph = $(this).parent().find($('.dphone')).text();
-                                    var role = $(this).parent().find($('.drole')).text();
+                                    var role = $(this).parent().find($('.drole')).text().toUpperCase();
 
                                     var myJson = {
                                         "id": id,
@@ -151,15 +151,18 @@
                                 "surname": document.getElementById("fsname").value,
                                 "address": document.getElementById("faddr").value,
                                 "phone": document.getElementById("fphone").value,
-                                "role": document.getElementById('frole').value
+                                "role": document.getElementById('frole').value.toUpperCase()
 
                             };
                             $.ajax({
-                                url: "idk",
+                                url: "/edit",
                                 type: 'POST',
+                                contentType: 'application/json',
                                 data: JSON.stringify(myJson),
-                                success: alert('succ'),
-                                error: alert('fork')
+                                dataType: 'json',
+                                success: function (data) {
+                                    alert(data)
+                                }
                             });
                             window.location.reload(false);
                         }
