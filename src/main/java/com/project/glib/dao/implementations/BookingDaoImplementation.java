@@ -3,6 +3,7 @@ package com.project.glib.dao.implementations;
 import com.project.glib.dao.interfaces.BookingRepository;
 import com.project.glib.dao.interfaces.ModifyByLibrarian;
 import com.project.glib.model.Booking;
+import com.project.glib.service.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,6 +115,8 @@ public class BookingDaoImplementation implements ModifyByLibrarian<Booking> {
      * @return
      */
     public Booking getBookingWithMaxPriority(long docVirId, String docType) {
-        return bookingRepository.findByDocVirIdAndDocTypeOrderByPriority(docVirId, docType);
+        return bookingRepository.findAll().stream()
+                .filter(booking -> booking.getPriority() != BookingService.PRIORITY.get(BookingService.ACTIVE))
+                .sorted(Booking::compareTo).findFirst().get();
     }
 }

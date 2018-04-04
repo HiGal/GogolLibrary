@@ -87,10 +87,10 @@ public class MessageService {
 
 
     public void removeAllByUserID(long userId) throws Exception {
-        List<Messages> list = messagesRepository.findAll().stream()
-                .filter(messages -> messages.getUserId() == userId)
-                .collect(Collectors.toList());
         try {
+            List<Messages> list = messagesRepository.findAll().stream()
+                    .filter(messages -> messages.getUserId() == userId)
+                    .collect(Collectors.toList());
             for (Messages aList : list) {
                 messageDao.remove(aList.getId());
             }

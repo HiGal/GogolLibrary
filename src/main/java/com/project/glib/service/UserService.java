@@ -74,20 +74,16 @@ public class UserService implements ModifyByLibrarianService<User> {
     }
 
     public void remove(long userId) throws Exception {
+        if (checkoutService.getCheckoutsByUser(userId).size() != 0) {
+            throw new Exception(REMOVE_USER_HAS_CHECKOUTS_EXCEPTION);
+        }
+
+        messageService.removeAllByUserID(userId);
         try {
-            if (checkoutService.getCheckoutsByUser(userId).size() == 0) {
-                messageService.removeAllByUserID(userId);
-                removeAllBookingsByUserId(userId);
-                usersDao.remove(userId);
-            } else {
-                throw new Exception(REMOVE_USER_HAS_CHECKOUTS_EXCEPTION);
-            }
+            removeAllBookingsByUserId(userId);
+            usersDao.remove(userId);
         } catch (Exception e) {
-            if (e.getMessage().equals(REMOVE_USER_HAS_CHECKOUTS_EXCEPTION)) {
-                throw e;
-            } else {
-                throw new Exception(REMOVE_EXCEPTION);
-            }
+            throw new Exception(REMOVE_EXCEPTION);
         }
     }
 
