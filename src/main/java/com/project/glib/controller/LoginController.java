@@ -76,9 +76,8 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST,
-            consumes = "application/json", produces = "application/json")
-    public User regForm(@RequestBody User user) {
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public @ResponseBody User regForm(@RequestBody User user) {
         try {
             System.out.println();
             System.out.println();
