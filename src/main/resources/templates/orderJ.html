@@ -50,11 +50,12 @@
                         <div class="col-sm-4 deck">
                             <div class="card text-center">
                                 <div class="card-body">
-                                    <h3 class="card-title">God of the new Apple</h3>
-                                    <h5 class="card-subtitle text-muted">Time</h5>
-                                    <input type="hidden" id="edition_card" value="{{edition}}">
-                                    <input type="hidden" id="publisher_card" value="{{publisher}}">
-                                    <img src="../img/no_image.jpg">
+                                    <h3 class="card-title">{{title}}</h3>
+                                    <h5 class="card-subtitle text-muted">{{name}}</h5>
+                                    <input type="hidden" class="author_card" value="{{author}}">
+                                    <input type="hidden" class="issue_card" value="{{issue}}">
+                                    <input type="hidden" class="editor_card" value="{{editor}}">
+                                    <img class="image-journal" src="../img/no_image.jpg">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                                 </div>
@@ -65,17 +66,37 @@
                         <script>
                             (function ($) {
                                 $(document).ready(function () {
-                                    $('.btn-primary').click(function (e) {
+                                    $('.btn-lg').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
+                                        $('.journal').html('<b>Journal: </b>' + $(this).parent().find($('.card-title')).text());
+                                        $('.issue').html('<b>Issue: </b>' + $(this).parent().find($('.issue_card')).attr('value'));
                                         $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
-                                        $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('#edition_card')).attr('value'));
+                                        $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
-                                        $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('#publisher_card')).attr('value'));
+                                        $("#img").attr("src", $(this).parent().find($('.image-journal')).attr('src'));
+                                        $('#expansion').html($(this).parent().find($('.card.title')).text());
                                     });
                                 });
                                 return false;
                             }(jQuery));
+
+                            function oCall() {
+                                // var imgElem = document.getElementById('img');
+                                var myJson = {
+                                    "title": document.getElementById("title").value,
+                                    "editor": document.getElementById("editor").value,
+                                    "author": document.getElementById("author").value,
+                                    "journal": document.getElementById("journal").value,
+                                    "issue": document.getElementById("issue").value
+                                    //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                                };
+                                $.ajax({
+                                    url: "idk",
+                                    type: 'POST',
+                                    data: JSON.stringify(myJson)
+                                });
+                            }
                         </script>
 
                         <div class="modal" id="details" tabindex="-1" role="dialog" aria-labelledby="expansion"
@@ -83,23 +104,22 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h3 id="expansion">God of the new Apple</h3>
+                                    <h3 id="expansion"></h3>
                                 </div>
                                 <div class="modal-body body">
                                     <div class="row">
-                                        <img src="../img/time.jpg" class="col-lg-4 image">
+                                        <img src="../img/time.jpg" id="img" class="col-lg-4 image">
                                         <div class="col-lg-6 fields">
-                                            <h4 class="journal"><b>Journal: </b></h4>
-                                            <h4 class="title"><b>Title: </b></h4>
-                                            <h4 class="author"><b>Author: </b></h4>
-                                            <h4 class="publisher"><b>Publisher: </b></h4>
-                                            <h4 class="issue"><b>Issue: </b></h4>
-                                            <h4 class="editor"><b>Editor of issue: </b></h4>
+                                            <h4 class="journal" id="journal"><b>Journal: </b></h4>
+                                            <h4 class="title" id="title"><b>Title: </b></h4>
+                                            <h4 class="author" id="author"><b>Author: </b></h4>
+                                            <h4 class="editor" id="editor"><b>Editor of issue: </b></h4>
+                                            <h4 class="issue" id="issue"><b>Issue: </b></h4>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#" class="btn btn-primary" >Order</a>
+                                    <a href="#" class="btn btn-primary" onclick="oCall()" >Order</a>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
