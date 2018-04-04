@@ -10,10 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.thymeleaf.util.ListUtils.sort;
@@ -141,6 +138,8 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                         MessageService.RETURN_DOCUMENT
                 );
             }
+            c.setReturnTime(new Date(118, 3, 2).getTime());
+            checkoutService.update(c);
         }
 
         // TODO check we really want delete of all priority queue?

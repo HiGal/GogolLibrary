@@ -4,7 +4,6 @@ import com.project.glib.model.*;
 import javafx.util.Pair;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -278,7 +277,6 @@ public class DeliveryTests {
     }
 
     @Test
-    @Ignore
     public void test3() throws Exception {
         long id_p1 = userService.getId(p1);
         long id_s = userService.getId(st);
@@ -310,58 +308,65 @@ public class DeliveryTests {
         List<Checkout> checkouts_v = checkoutService.getCheckoutsByUser(id_v);
 
         for (Checkout checkout : checkouts_p1) {
-            long time = new Date(118, 2, 31).getTime();
-            checkout.setReturnTime(time);
+            long time = new Date(118, 2, 29).getTime();
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(checkout.getCheckoutTime() + 4 * WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
         for (Checkout checkout : checkouts_s) {
-            long time = new Date(118, 2, 31).getTime();
-            checkout.setReturnTime(time);
+            long time = new Date(118, 2, 29).getTime();
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(checkout.getCheckoutTime() + 2 * WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
         for (Checkout checkout : checkouts_v) {
-            long time = new Date(118, 2, 31).getTime();
-            checkout.setReturnTime(time);
+            long time = new Date(118, 2, 29).getTime();
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(checkout.getCheckoutTime() + WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
-        //todO RENEW should be not a week but a time that document was
-        //todo checkedout!! Example: professor - 4, student - 2 or 3, vp - 1 week
-        //todo But if the is outstanding request - no one can renew book.
 
-        //todo there users should renew documents
+        //todo there users should renew2April documents
+        checkoutService.renew2April(checkoutService.getCheckoutsByUserId(id_p1).get(0));
+        checkoutService.renew2April(checkoutService.getCheckoutsByUserId(id_s).get(0));
+        checkoutService.renew2April(checkoutService.getCheckoutsByUserId(id_v).get(0));
 
         List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
         List<Checkout> ch_s = checkoutService.getCheckoutsByUser(id_s);
         List<Checkout> ch_v = checkoutService.getCheckoutsByUser(id_v);
 
+        System.out.println("------------------------");
+        System.out.println("29 of May :" + new Date(118, 2, 29).getTime());
+        System.out.println("------------------------");
+
         for (Checkout checkout_p1 : ch_p1) {
             System.out.println("--------------------");
-            System.out.println(checkout_p1.getReturnTime());
+            System.out.println(checkout_p1.getReturnTime() + " " + new Date(checkout_p1.getReturnTime()));
             System.out.println("--------------------");
         }
 
         for (Checkout checkout_s : ch_s) {
             System.out.println("--------------------");
-            System.out.println(checkout_s.getReturnTime());
+            System.out.println(checkout_s.getReturnTime() + " " + new Date(checkout_s.getReturnTime()));
             System.out.println("--------------------");
         }
 
         for (Checkout checkout_v : ch_v) {
             System.out.println("--------------------");
-            System.out.println(checkout_v.getReturnTime());
+            System.out.println(checkout_v.getReturnTime() + " " + new Date(checkout_v.getReturnTime()));
             System.out.println("--------------------");
         }
 
-        assertEquals(new Date(118, 3, 30).getTime(), ch_p1.get(0).getReturnTime());
-        assertEquals(new Date(118, 3, 16).getTime(), ch_s.get(0).getReturnTime());
-        assertEquals(new Date(118, 3, 9).getTime(), ch_v.get(0).getReturnTime());
+        // Because today not 2th of April
+        assertEquals(new Date(118, 3, 30), new Date(ch_p1.get(0).getReturnTime()));
+        assertEquals(new Date(118, 3, 16), new Date(ch_s.get(0).getReturnTime()));
+        assertEquals(new Date(118, 3, 9), new Date(ch_v.get(0).getReturnTime()));
     }
 
     @Test
-    @Ignore
     public void test4() throws Exception {
         long id_p1 = userService.getId(p1);
         long id_s = userService.getId(st);
@@ -394,20 +399,23 @@ public class DeliveryTests {
         List<Checkout> checkouts_v = checkoutService.getCheckoutsByUser(id_v);
 
         for (Checkout checkout : checkouts_p1) {
-            long time = new Date(118, 2, 31).getTime();
-            checkout.setReturnTime(time);
+            long time = new Date(118, 2, 29).getTime();
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(time + 4 * WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
         for (Checkout checkout : checkouts_s) {
-            long time = new Date(118, 2, 31).getTime();
-            checkout.setReturnTime(time);
+            long time = new Date(118, 2, 29).getTime();
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(time + 2 * WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
         for (Checkout checkout : checkouts_v) {
-            long time = new Date(118, 2, 31).getTime();
-            checkout.setReturnTime(time);
+            long time = new Date(118, 2, 29).getTime();
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(time + WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
@@ -415,7 +423,20 @@ public class DeliveryTests {
                 Document.BOOK, id_p4);
         bookingService.outstandingRequest(bookingService.getBookingsByUser(id_p4).get(0));
 
-        //todo there users should renew documents
+        //todo there users should renew2April documents
+        checkoutService.renew2April(checkoutService.getCheckoutsByUserId(id_p1).get(0));
+
+        try {
+            checkoutService.renew2April(checkoutService.getCheckoutsByUserId(id_s).get(0));
+        } catch (Exception e) {
+            assertEquals("Sorry, you can't renew this checkout (2 April)", e.getMessage());
+        }
+
+        try {
+            checkoutService.renew2April(checkoutService.getCheckoutsByUserId(id_v).get(0));
+        } catch (Exception e) {
+            assertEquals("Sorry, you can't renew this checkout (2 April)", e.getMessage());
+        }
 
         List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
         List<Checkout> ch_s = checkoutService.getCheckoutsByUser(id_s);
@@ -423,25 +444,25 @@ public class DeliveryTests {
 
         for (Checkout checkout_p1 : ch_p1) {
             System.out.println("--------------------");
-            System.out.println(checkout_p1.getReturnTime());
+            System.out.println(checkout_p1.getReturnTime() + " " + new Date(checkout_p1.getReturnTime()));
             System.out.println("--------------------");
         }
 
         for (Checkout checkout_s : ch_s) {
             System.out.println("--------------------");
-            System.out.println(checkout_s.getReturnTime());
+            System.out.println(checkout_s.getReturnTime() + " " + new Date(checkout_s.getReturnTime()));
             System.out.println("--------------------");
         }
 
         for (Checkout checkout_v : ch_v) {
             System.out.println("--------------------");
-            System.out.println(checkout_v.getReturnTime());
+            System.out.println(checkout_v.getReturnTime() + " " + new Date(checkout_v.getReturnTime()));
             System.out.println("--------------------");
         }
 
         assertEquals(new Date(118, 3, 30).getTime(), ch_p1.get(0).getReturnTime());
-        assertEquals(new Date(118, 2, 29).getTime(), ch_s.get(0).getReturnTime());
-        assertEquals(new Date(118, 2, 29).getTime(), ch_v.get(0).getReturnTime());
+        assertEquals(new Date(118, 3, 2).getTime(), ch_s.get(0).getReturnTime());
+        assertEquals(new Date(118, 3, 2).getTime(), ch_v.get(0).getReturnTime());
     }
 
     @Test
@@ -471,9 +492,9 @@ public class DeliveryTests {
         ArrayList<Long> usersQueue = new ArrayList<>();
 
         System.out.println("-----------------------");
-        for (int i = 0; i < queue.size(); i++) {
-            System.out.println(queue.get(i));
-            usersQueue.add(queue.get(i).getUserId());
+        for (Booking aQueue : queue) {
+            System.out.println(aQueue);
+            usersQueue.add(aQueue.getUserId());
         }
         System.out.println("-----------------------");
         ArrayList<Long> quq = new ArrayList<>();
@@ -484,7 +505,6 @@ public class DeliveryTests {
 
     @Test
     public void test6() throws Exception {
-
         long id_p1 = userService.getId(p1);
         long id_p2 = userService.getId(p2);
         long id_s = userService.getId(st);
@@ -510,6 +530,12 @@ public class DeliveryTests {
         }
         for (Booking booking : bookings_p2) {
             checkoutService.toCheckoutDocument(booking);
+        }
+
+        for (Checkout checkout : checkoutService.getList()) {
+            checkout.setReturnTime(checkout.getReturnTime() - checkout.getCheckoutTime()
+                    - new Date(118, 3, 2).getTime());
+            checkout.setCheckoutTime(new Date(118, 3, 2).getTime());
         }
 
         List<Booking> queue = bookingService.getPriorityQueueByDocVirIdAndDocType(audioVideoService.getId(av3), Document.AV);
@@ -622,13 +648,42 @@ public class DeliveryTests {
     }
 
     @Test
-    @Ignore
     public void test9() throws Exception {
-        test6();
 
         long id_p1 = userService.getId(p1);
+        test6();
+
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println();
+        System.out.println();
+        System.out.println(new Date(checkoutService.getCheckoutsByUserId(id_p1).get(0).getReturnTime()));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+
 
         //todo p1 renews document d3
+        checkoutService.renew2April(checkoutService.getCheckoutsByUserId(id_p1).get(0));
+
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println();
+        System.out.println();
+        System.out.println(new Date(checkoutService.getCheckoutsByUserId(id_p1).get(0).getReturnTime()));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------");
 
         List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
 
@@ -638,7 +693,7 @@ public class DeliveryTests {
             System.out.println("--------------------");
         }
 
-        assertEquals(new Date(118, 3, 30).getTime(), ch_p1.get(0).getReturnTime());
+        assertEquals(new Date(118, 3, 16).getTime(), ch_p1.get(0).getReturnTime());
 
 
         List<Booking> queue = bookingService.getPriorityQueueByDocVirIdAndDocType(audioVideoService.getId(av3), Document.AV);
@@ -660,7 +715,6 @@ public class DeliveryTests {
     }
 
     @Test
-    @Ignore
     public void test10() throws Exception {
         long id_p1 = userService.getId(p1);
         long id_v = userService.getId(vp);
@@ -685,19 +739,46 @@ public class DeliveryTests {
 
         for (Checkout checkout : checkouts_p1) {
             long time = new Date(118, 2, 26).getTime();
-            checkout.setReturnTime(time);
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(time + 4 * WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
 
         for (Checkout checkout : checkouts_v) {
             long time = new Date(118, 2, 26).getTime();
-            checkout.setReturnTime(time);
+            checkout.setCheckoutTime(time);
+            checkout.setReturnTime(time + WEEK_IN_MILLISECONDS);
             checkoutService.update(checkout);
         }
 
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println(new Date(checkoutService.getCheckoutsByUserId(id_p1).get(0).getReturnTime()));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(new Date(checkoutService.getCheckoutsByUserId(id_v).get(0).getReturnTime()));
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
 
-        //todo there users should renew documents
+        //todo there users should renew2April documents
+        checkoutService.renew29March(checkoutService.getCheckoutsByUserId(id_p1).get(0));
+        checkoutService.renew29March(checkoutService.getCheckoutsByUserId(id_v).get(0));
+
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println(new Date(checkoutService.getCheckoutsByUserId(id_p1).get(0).getReturnTime()));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(new Date(checkoutService.getCheckoutsByUserId(id_v).get(0).getReturnTime()));
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
+        System.out.println("--------------------------------");
 
         List<Checkout> ch_p1 = checkoutService.getCheckoutsByUser(id_p1);
         List<Checkout> ch_v = checkoutService.getCheckoutsByUser(id_v);
