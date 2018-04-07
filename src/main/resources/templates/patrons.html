@@ -127,7 +127,7 @@
                                         "role": role
                                     };
                                     $.ajax({
-                                        url: "/delete",
+                                        url: "/user/delete",
                                         type: 'POST',
                                         contentType: 'application/json',
                                         data: JSON.stringify(myJson),
@@ -174,7 +174,7 @@
                                         "auth": true
                                     };
                                     $.ajax({
-                                        url: "/confirm",
+                                        url: "/user/confirm",
                                         type: 'POST',
                                         contentType: 'application/json',
                                         data: JSON.stringify(myJson),
@@ -203,7 +203,7 @@
                             };
                             alert(JSON.stringify(myJson));
                             $.ajax({
-                                url: "/edit",
+                                url: "/user/edit",
                                 type: 'POST',
                                 contentType: 'application/json',
                                 data: JSON.stringify(myJson),

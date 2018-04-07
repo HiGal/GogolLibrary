@@ -26,8 +26,8 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="#">Books</a></li>
-                <li><a href="/librarian/journals">Journals</a></li>
-                <li><a href="/librarian/av">Auidio/Video</a></li>
+                <li><a href="/journals">Journals</a></li>
+                <li><a href="/av">Auidio/Video</a></li>
                 <li><a href="/login">Log Out</a></li>
             </ul>
         </div>
@@ -153,7 +153,7 @@
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
-                            url: "idk",
+                            url: "/edit/book",
                             type: 'POST',
                             data: JSON.stringify(myJson),
                         });
@@ -172,7 +172,7 @@
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
-                            url: "idk",
+                            url: "/edit/journal",
                             type: 'POST',
                             data: JSON.stringify(myJson),
                         });

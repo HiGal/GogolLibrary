@@ -1,6 +1,7 @@
 package com.project.glib.controller;
 
 import com.project.glib.model.Book;
+import com.project.glib.model.Journal;
 import com.project.glib.model.User;
 import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 @RestController
-@SessionAttributes("user")
 public class LoginController {
     private final UserService userService;
-    private final BookService bookService;
     private final JournalService journalService;
     private final AudioVideoService audioVideoService;
     private final MessageService messageService;
 
     @Autowired
-    public LoginController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, MessageService messageService) {
+    public LoginController(UserService userService, JournalService journalService, AudioVideoService audioVideoService, MessageService messageService) {
         this.userService = userService;
-        this.bookService = bookService;
         this.journalService = journalService;
         this.audioVideoService = audioVideoService;
         this.messageService = messageService;
@@ -41,11 +39,11 @@ public class LoginController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(User form, HttpServletRequest request, SessionStatus status) {
+    public ModelAndView login(User form, HttpServletRequest request) {
         ModelAndView model = new ModelAndView();
         try {
-            User user = userService.findByLogin(form.getLogin());
 
+            User user = userService.findByLogin(form.getLogin());
             String role = user.getRole();
 
             if (user.getPassword().equals(form.getPassword())) {
@@ -79,35 +77,20 @@ public class LoginController {
     public @ResponseBody
     User regForm(@RequestBody User user) {
         try {
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(user);
-            System.out.println();
-            System.out.println();
-            System.out.println();
             userService.update(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println(user);
-        System.out.println();
-        System.out.println();
-        System.out.println();
         return user;
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public ModelAndView mainPage(@ModelAttribute("user") User user) {
+    public ModelAndView mainPage(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
-
         try {
-            User user1 = userService.findByLogin(user.getLogin());
-            modelAndView.addObject("info", user1);
-            if (user1.getRole().equals(User.LIBRARIAN)) {
+            User user = (User) request.getSession().getAttribute("user");
+            modelAndView.addObject("info", user);
+            if (user.getRole().equals(User.LIBRARIAN)) {
                 modelAndView.setViewName("librarian");
             } else {
                 modelAndView.setViewName("patron");
@@ -119,138 +102,6 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/dashboard", method = RequestMethod.POST)
-    public String mainPag( String json) {
-        System.out.println(json);
-        return json;
-    }
-
-
-    /*
-         USER CONTROLLER
-     */
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ModelAndView users() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers", userService.getList());
-        modelAndView.setViewName("patrons");
-        return modelAndView;
-    }
-
-    /*
-        BOOK CONTROLLER
-     */
-    @RequestMapping(value = "/books", method = RequestMethod.GET)
-    public ModelAndView books(@ModelAttribute("user") User user) {
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            User user1 = userService.findByLogin(user.getLogin());
-            String role = user1.getRole();
-            modelAndView.addObject("allBooks", bookService.getList());
-            if (role.equals(User.LIBRARIAN))
-                modelAndView.setViewName("documents");
-            else
-                modelAndView.setViewName("order");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return modelAndView;
-    }
-
-
-    //    @RequestMapping(value = "/edit/book")
-//    public ModelAndView editBook(@ModelAttribute Book book){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return  modelAndView;
-//    }
-//
-//    @RequestMapping(value = "/add/book")
-//    public ModelAndView addBook(@ModelAttribute Book book){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
-//
-    @RequestMapping(value = "/order/book")
-    public ModelAndView orderBook(@ModelAttribute Book book) {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    /*
-        JOURNAL CONTROLLER
-     */
-    @RequestMapping(value = "/journals", method = RequestMethod.GET)
-    public ModelAndView journals(@ModelAttribute("user") User user) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allJournals", journalService.getList());
-        try {
-            String role = userService.findByLogin(user.getLogin()).getRole();
-            if (role.equals(User.LIBRARIAN))
-                modelAndView.setViewName("journals");
-            else
-                modelAndView.setViewName("orderJ");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return modelAndView;
-    }
-
-    //
-//    @RequestMapping(value = "/edit/journal")
-//    public ModelAndView editJournal(@ModelAttribute Journal journal){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return  modelAndView;
-//    }
-//
-//    @RequestMapping(value = "/add/journal")
-//    public ModelAndView addJournal(@ModelAttribute Journal journal){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
-//
-//    @RequestMapping(value = "/order/journal")
-//    public ModelAndView orderBook(@ModelAttribute Journal journal){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
-//
-    /*
-        AV CONTROLLER
-     */
-    @RequestMapping(value = "/av", method = RequestMethod.GET)
-    public ModelAndView av(@ModelAttribute("user") User user) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allAV", audioVideoService.getList());
-        try {
-            String role = userService.findByLogin(user.getLogin()).getRole();
-            if (role.equals(User.LIBRARIAN))
-                modelAndView.setViewName("av");
-            else
-                modelAndView.setViewName("orderAV");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return modelAndView;
-    }
-//    @RequestMapping(value = "/edit/AV")
-//    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return  modelAndView;
-//    }
-//
-//    @RequestMapping(value = "/add/AV")
-//    public ModelAndView addJournal(@ModelAttribute AudioVideo audioVideo){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
-//    @RequestMapping(value = "/order/AV")
-//    public ModelAndView orderBook(@ModelAttribute AudioVideo audioVideo){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
 //
 //    /*
 //        CHECKOUT CONTROLLER
@@ -278,70 +129,4 @@ public class LoginController {
 //
 //        return "unsuccess";
 //    }
-
-    @RequestMapping(value = "/librarian/taken_doc", method = RequestMethod.GET)
-    public ModelAndView takenDoc() {
-        ModelAndView modelAndView = new ModelAndView("taken_documents");
-        return modelAndView;
-    }
-
-    /*
-            LIBRARIAN CONTROLLER
-     */
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public @ResponseBody
-    String UserDelete(@RequestBody User user1) {
-        System.out.println(user1);
-        try {
-            userService.remove(user1.getId());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "User deleted";
-    }
-
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public @ResponseBody
-    String UserEdit(@RequestBody User user) {
-        try {
-            System.out.println(user);
-            userService.update(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "success";
-    }
-
-    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public @ResponseBody
-    String UserConfirm(@RequestBody User user) {
-
-        try {
-            User user1 = userService.getById(user.getId());
-            System.out.println();
-            System.out.println();
-            System.out.println(user);
-            System.out.println(user.getAuth());
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            user1.setAuth(user.getAuth());
-            userService.update(user1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "User's registration confirmed";
-    }
-
-    /*
-        USER CONTROLLER
-     */
-
-    @RequestMapping(value = "/order", method = RequestMethod.POST)
-    public @ResponseBody
-    String UserOrder(@RequestBody User user) {
-        return "success";
-    }
-
 }

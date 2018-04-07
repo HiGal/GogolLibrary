@@ -26,9 +26,9 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/librarian/books">Books</a></li>
+                <li><a href="/books">Books</a></li>
                 <li class="active"><a href="#">Journals</a></li>
-                <li><a href="/librarian/av">Auidio/Video</a></li>
+                <li><a href="/av">Auidio/Video</a></li>
                 <li><a href="/login">Log Out</a></li>
             </ul>
         </div>
@@ -179,7 +179,7 @@
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
-                            url: "idk",
+                            url: "/edit/journal",
                             type: 'POST',
                             data: JSON.stringify(myJson),
                             success: alert('succ'),
