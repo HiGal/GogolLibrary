@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/patrons.css">
+
+
+    <title>Additional User Page</title>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gogol Library</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/users">Patrons</a></li>
+                <li class="active"><a href="#">Add User</a></li>
+                <li><a href="/login">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<section>
+    <div class="container users">
+        <div class="row centered">
+            <div class="card card-container">
+                <p id="patrons"><a id="linker" href="/dashboard">Dashboard</a>/<u>Add User</u></p>
+                <p class="header">Users that are waiting their registration</p>
+                <div class="utable">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Address</th>
+                            <th>Phone number</th>
+                            <th>Accept</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {{#notAuth}}
+                        <form method="post" action="javascript:void(null)">
+                            <tr>
+                                <td>{{id}}</td>
+                                <td>{{name}}</td>
+                                <td>{{surname}}</td>
+                                <td>{{address}}</td>
+                                <td>{{phone}}</td>
+                                <td>{{role}}</td>
+                                <td>
+                                    <input type="hidden" class="cid" value="{{id}}">
+                                    <input type="hidden" class="auth" value="{{auth}}">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block user-confirm">
+                                        Confirm
+                                    </button>
+                                </td>
+                            </tr>
+
+
+                            <script type="application/javascript">
+                                (function ($) {
+
+                                    $(document).ready(function () {
+                                        $('.user-confirm').click(function (e) {
+                                            e.preventDefault();
+                                            var id = ($(this).parent().find($('.cid')).val());
+                                            var myJson = {
+                                                "id": id,
+                                                "auth": true
+                                            };
+                                            $.ajax({
+                                                url: "/user/confirm",
+                                                type: 'POST',
+                                                contentType: 'application/json',
+                                                data: JSON.stringify(myJson),
+                                                dataType: 'json'
+                                            });
+                                            $(this).closest('tr').remove();
+                                            alert("User successfuly confirmed");
+                                        });
+                                    });
+                                }(jQuery));
+                            </script>
+                        </form>
+
+                        {{/notAuth}}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

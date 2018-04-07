@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html >
+<html>
 <head>
     <meta charset="UTF-8">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -35,7 +35,8 @@
         </div>
         <div class="card card-container"></div>
         <div class="main-login main-center">
-            <form class="form-horizontal"  method="post" action="javascript:void(null);" id="registration-form" onsubmit="regcall()">
+            <form class="form-horizontal" method="post" action="javascript:void(null);" id="registration-form"
+                  onsubmit="regcall()">
                 <div class="answer"></div>
                 <div class="form-group">
                     <label for="sel1">Select role</label>
@@ -55,7 +56,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="name" id="name"
-                                   placeholder="Enter your Name" required autofocus />
+                                   placeholder="Enter your Name" required autofocus/>
                         </div>
                     </div>
                 </div>
@@ -66,7 +67,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="surname" id="surname"
-                                   placeholder="Enter your Surname" required />
+                                   placeholder="Enter your Surname" required/>
                         </div>
                     </div>
                 </div>
@@ -78,7 +79,7 @@
                             <span class="input-group-addon"><i class="fa fa-location-arrow"
                                                                aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="address" id="address"
-                                   placeholder="Enter your Address" required />
+                                   placeholder="Enter your Address" required/>
                         </div>
                     </div>
                 </div>
@@ -106,7 +107,7 @@
                             <span class="input-group-addon"><i class="fa fa-first-order"
                                                                aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="username" id="username"
-                                   placeholder="Enter your Username" required />
+                                   placeholder="Enter your Username" required/>
                         </div>
                     </div>
                 </div>
@@ -117,7 +118,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="password" id="password"
-                                   placeholder="Enter your Password" required />
+                                   placeholder="Enter your Password" required/>
                         </div>
                     </div>
                 </div>
@@ -141,16 +142,16 @@
                     str = str.replace("(", "");
                     str = str.replace(")", "");
                     str = str.replace("+", "");
-                    str = str.replace("-","");
+                    str = str.replace("-", "");
                     var selector = document.getElementById("sel1");
                     var user = {
-                        "role":selector.options[selector.selectedIndex].text.toUpperCase(),
-                        "name":document.getElementById("name").value,
-                        "surname":document.getElementById("surname").value,
-                        "address":document.getElementById("address").value,
-                        "phone":str,
-                        "login":document.getElementById("username").value,
-                        "password":document.getElementById("password").value
+                        "role": selector.options[selector.selectedIndex].text.toUpperCase(),
+                        "name": document.getElementById("name").value,
+                        "surname": document.getElementById("surname").value,
+                        "address": document.getElementById("address").value,
+                        "phone": str,
+                        "login": document.getElementById("username").value,
+                        "password": document.getElementById("password").value
                     };
                     $.ajax({
                         url: "/registration",
@@ -159,11 +160,11 @@
                         data: JSON.stringify(user),
                         dataType: 'json',
                         success:
-                            function(data){
-                                var response="";
+                            function () {
+                                var response = "";
                                 response += "Success! Wait for confirmation from 1 to 3 days";
                                 $('.answer').html(response);
-                            },
+                            }
                     });
 
                 }

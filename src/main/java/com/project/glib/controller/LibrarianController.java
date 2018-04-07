@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class LibrarianController {
@@ -24,55 +25,82 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ModelAndView users(HttpServletRequest request) {
+    public ModelAndView AuthUsers(HttpServletRequest request) {
+
         User user = (User) request.getSession().getAttribute("user");
-        System.out.println(user);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("allUsers", userService.getList());
-        modelAndView.setViewName("patrons");
+
+        if (user.getRole().equals(User.LIBRARIAN)) {
+            try {
+                modelAndView.addObject("allUsers", userService.getListAuthUsersLib());
+                modelAndView.setViewName("patrons");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/add/user", method = RequestMethod.GET)
+    public ModelAndView NotAuthUsers(HttpServletRequest request) {
+
+        User user = (User) request.getSession().getAttribute("user");
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (user.getRole().equals(User.LIBRARIAN)) {
+            try {
+                modelAndView.addObject("notAuth", userService.getListNotAuthUsersLib());
+                modelAndView.setViewName("addUser");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return modelAndView;
     }
 
     @RequestMapping(value = "/edit/book")
-    public ModelAndView editBook(@ModelAttribute Book book){
+    public ModelAndView editBook(@ModelAttribute Book book) {
         ModelAndView modelAndView = new ModelAndView();
-        return  modelAndView;
+        return modelAndView;
     }
 
     @RequestMapping(value = "/add/book")
-    public ModelAndView addBook(@ModelAttribute Book book){
+    public ModelAndView addBook(@ModelAttribute Book book) {
         ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
 
     @RequestMapping(value = "/edit/journal")
-    public ModelAndView editJournal(@ModelAttribute Journal journal){
+    public ModelAndView editJournal(@ModelAttribute Journal journal) {
         ModelAndView modelAndView = new ModelAndView();
-        return  modelAndView;
+        return modelAndView;
     }
 
     @RequestMapping(value = "/add/journal")
-    public ModelAndView addJournal(@ModelAttribute Journal journal){
+    public ModelAndView addJournal(@ModelAttribute Journal journal) {
         ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
 
     @RequestMapping(value = "/edit/AV")
-    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo){
-        ModelAndView modelAndView = new ModelAndView();
-        return  modelAndView;
-    }
-
-    @RequestMapping(value = "/add/AV")
-    public ModelAndView addJournal(@ModelAttribute AudioVideo audioVideo){
+    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo) {
         ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
+
+    @RequestMapping(value = "/add/AV")
+    public ModelAndView addJournal(@ModelAttribute AudioVideo audioVideo) {
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/librarian/taken_doc", method = RequestMethod.GET)
     public ModelAndView takenDoc() {
         ModelAndView modelAndView = new ModelAndView("taken_documents");
         return modelAndView;
     }
+
     @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     public @ResponseBody
     String UserDelete(@RequestBody User user1) {

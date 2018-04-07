@@ -197,6 +197,25 @@ public class UserService implements ModifyByLibrarianService<User> {
         }
     }
 
+    public List<User> getListAuthUsersLib() throws Exception {
+        try {
+            return getList().stream()
+                    .filter(user -> user.getAuth() && !user.getRole().equals(User.LIBRARIAN))
+                    .collect(Collectors.toList());
+        }catch (NullPointerException | NoSuchElementException e){
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+    public List<User> getListNotAuthUsersLib() throws Exception {
+        try {
+            return getList().stream()
+                    .filter(user -> !user.getAuth() && !user.getRole().equals(User.LIBRARIAN))
+                    .collect(Collectors.toList());
+        }catch (NullPointerException | NoSuchElementException e){
+            throw new Exception(EXIST_EXCEPTION);
+        }
+    }
+
     public boolean getIsAuthById(long userId) throws Exception {
         try {
             return getById(userId).getAuth();
