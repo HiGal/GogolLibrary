@@ -2,14 +2,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
     <script src="../js/jquery.maskedinput.js"></script>
-    <script type="text/javascript" src="../js/bootstrap.js"></script>
-    <script type="text/javascript" src="../js/registration_form.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
     <!-- Website CSS style -->
     <link rel="stylesheet" type="text/css" href="../css/regstyle.css">
@@ -161,9 +162,24 @@
                         dataType: 'json',
                         success:
                             function () {
-                                var response = "";
-                                response += "Success! Wait for confirmation from 1 to 3 days";
-                                $('.answer').html(response);
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-top-full-width",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "2000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr["success"]("You have been successfully registered in the system. Wait for confirmation!");
                             }
                     });
 

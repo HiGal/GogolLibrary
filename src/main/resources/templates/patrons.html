@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
     <title>Patrons</title>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/css/patrons.css">
     <link rel="stylesheet" href="/css/dialog.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
@@ -128,7 +136,24 @@
                                         dataType: 'json'
                                     });
                                     $(this).closest('tr').remove();
-                                    alert("User successfully deleted"); // или $(this).parent().parent().remove();
+                                    toastr.options = {
+                                        "closeButton": true,
+                                        "debug": false,
+                                        "newestOnTop": false,
+                                        "progressBar": false,
+                                        "positionClass": "toast-bottom-right",
+                                        "preventDuplicates": false,
+                                        "onclick": null,
+                                        "showDuration": "300",
+                                        "hideDuration": "1000",
+                                        "timeOut": "2000",
+                                        "extendedTimeOut": "1000",
+                                        "showEasing": "swing",
+                                        "hideEasing": "linear",
+                                        "showMethod": "fadeIn",
+                                        "hideMethod": "fadeOut"
+                                    };
+                                    toastr["success"]("User has successfully deleted!");
                                 });
                             });
                         }(jQuery));
@@ -148,11 +173,11 @@
                                     $('.title').text(id);
                                     document.getElementById('flog').value = log;
                                     document.getElementById('fpass').value= pass;
-                                    document.getElementById('fname').placeholder = name;
-                                    document.getElementById('fsname').placeholder = sname;
-                                    document.getElementById('faddr').placeholder = addr;
-                                    document.getElementById('fphone').placeholder = ph;
-                                    document.getElementById('frole').placeholder = role;
+                                    document.getElementById('fname').value = name;
+                                    document.getElementById('fsname').value = sname;
+                                    document.getElementById('faddr').value = addr;
+                                    document.getElementById('fphone').value = ph;
+                                    document.getElementById('frole').value = role;
                                 });
                             });
                         }(jQuery));
@@ -170,7 +195,8 @@
                                 "surname": document.getElementById("fsname").value,
                                 "address": document.getElementById("faddr").value,
                                 "phone": document.getElementById("fphone").value,
-                                "role": document.getElementById('frole').value.toUpperCase()
+                                "role": document.getElementById('frole').value.toUpperCase(),
+                                "auth":true
 
                             };
                             $.ajax({
@@ -183,7 +209,24 @@
                                     alert(data)
                                 }
                             });
-                            alert("User successfully updated");
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "2000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("User has successfully updated!");
                         }
 
                     </script>
@@ -201,11 +244,11 @@
                                         <h4 class="title" id="id"></h4>
                                         <input type="hidden" class="flog" id="flog">
                                         <input type="hidden" class="fpass" id="fpass">
-                                        <input class="fname" id="fname">
-                                        <input class="fsname" id="fsname">
-                                        <input class="faddr" id="faddr">
-                                        <input class="fphone" id="fphone">
-                                        <input class="frole" id="frole">
+                                        <input type="text" class="form-control fname" id="fname">
+                                        <input type="text" class="form-control fsname" id="fsname">
+                                        <input type="text" class="form-control faddr" id="faddr">
+                                        <input type="text" class="form-control fphone" id="fphone">
+                                        <input type="text" class="form-control frole" id="frole">
                                     </div>
                                 </div>
                             </div>
