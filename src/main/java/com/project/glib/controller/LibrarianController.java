@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class LibrarianController {
@@ -22,6 +24,16 @@ public class LibrarianController {
     @Autowired
     public LibrarianController(UserService userService) {
         this.userService = userService;
+    }
+
+
+    @RequestMapping(value = "/librarian")
+    public ModelAndView librarianPage(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("info",user);
+        modelAndView.setViewName("librarian");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -32,37 +33,42 @@ public class LoginController {
 //        return new User();
 //    }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView login() {
-        return new ModelAndView("login");
+        return new ModelAndView("login","data","");
     }
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(User form, HttpServletRequest request) {
-        ModelAndView model = new ModelAndView();
+    @ResponseBody
+    public ModelAndView login(@RequestBody User form, HttpServletRequest request) {
+        ModelAndView model = new ModelAndView(new MappingJackson2JsonView());
         try {
 
             User user = userService.findByLogin(form.getLogin());
             String role = user.getRole();
 
-            if (user.getPassword().equals(form.getPassword())) {
+            if (user.getPassword().equals(form.getPassword()) && user.getAuth()) {
                 model.addObject("info", user);
-                model.addObject("listMessages", messageService.getMessages(user.getLogin()));
                 request.getSession().setAttribute("user", user);
                 if (role.equals(User.LIBRARIAN)) {
-                    model.setViewName("librarian");
+                    model.addObject("data","/librarian");
                 } else if (Arrays.asList(User.PATRONS).contains(role)) {
-                    model.setViewName("patron");
+                    model.addObject("data","/patron");
                 } else {
+                    model.addObject("data", "Something goes wrong");
                     throw new Exception("WRONG ROLE");
                 }
-
-                return model;
-            }
+                System.out.println(user);
+                System.out.println(model);
+            } else if (!user.getPassword().equals(form.getPassword()))
+                model.addObject("data", "Login or password is incorrect");
+            else if(!user.getAuth())
+                model.addObject("data","You are not confirmed yet");
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return model;
     }
 

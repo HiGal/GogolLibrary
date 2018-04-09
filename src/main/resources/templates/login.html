@@ -26,7 +26,7 @@
 
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
             <p id="profile-name" class="profile-name-card"></p>
-            <form class="form-signin" method="post" action="/login"  onsubmit="logcall()">
+            <form class="form-signin" method="post" action="javascript:void(null)"  onsubmit="logcall()">
                 <input type="text" id="inputEmail" name="login" class="form-control" placeholder="Email address" required autofocus>
                 <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
@@ -44,16 +44,22 @@
                         "login": $("#inputEmail").val(),
                         "password": $("#inputPassword").val()
                     };
-                    var send = JSON.stringify(myJson);
-                    return false;
 
-                    // $.ajax({
-                    //     url: '/login',
-                    //
-                    //     type: 'POST',
-                    //     data: JSON.stringify(myJson),
-                    //     contentType: 'application/json',
-                    // });
+                    $.ajax({
+                        url: '/login',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(myJson),
+                        dataType: 'json',
+                        success: function (data) {
+                            data = data.data;
+                            if(data === "/patron" || data === "/librarian"){
+                                window.location.replace(data);
+                            }else {
+                                alert("else");
+                            }
+                        }
+                    });
 
                 }
             </script>

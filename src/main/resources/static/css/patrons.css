@@ -67,4 +67,7 @@ img{
 .utable{
     padding: 15px;
 }
+#toast-container > div{
+    width: 300px;
+}
 
