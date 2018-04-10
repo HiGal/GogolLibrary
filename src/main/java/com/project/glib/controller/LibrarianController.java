@@ -78,7 +78,7 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/add/book")
-    public ModelAndView addBook(@ModelAttribute Book book) {
+    public ModelAndView addBook(@RequestBody Book book) {
         ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
