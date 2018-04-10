@@ -18,12 +18,9 @@
             $('.dropdown-toggle').click(function (e) {
                 e.preventDefault();
                 $.ajax({
-                    contentType: "application/json",
                     url: "/dashboard",
                     type: 'POST',
-                    data: {flag: true},
-                    dataType: 'json',
-                    success: alert('succ')
+                    data: {flag: true}
                 });
             });
         });

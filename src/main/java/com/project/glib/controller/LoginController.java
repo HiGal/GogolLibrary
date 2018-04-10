@@ -35,7 +35,7 @@ public class LoginController {
 //    }
 
     @RequestMapping(value = "/")
-    public String redirect(){
+    public String redirect() {
         return "redirect:/login";
     }
 
@@ -72,7 +72,7 @@ public class LoginController {
             else if (!user.getAuth())
                 model.addObject("data", "You are not confirmed yet");
         } catch (Exception e) {
-            model.addObject("data","You aren't registered in the system");
+            model.addObject("data", "You aren't registered in the system");
             e.printStackTrace();
         }
 
@@ -89,7 +89,8 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     User regForm(@RequestBody User user) {
         try {
             userService.update(user);
@@ -116,7 +117,6 @@ public class LoginController {
         }
         return modelAndView;
     }
-
 //
 //    /*
 //        CHECKOUT CONTROLLER
