@@ -27,7 +27,6 @@ public class Messages {
     private boolean isRead;
 
     public Messages() {
-
     }
 
     public Messages(long userId, String message, long docPhysId, String docType, boolean isRead) {
