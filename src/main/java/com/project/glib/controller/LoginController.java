@@ -5,6 +5,7 @@ import com.project.glib.model.Journal;
 import com.project.glib.model.User;
 import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-@RestController
+@Controller
 public class LoginController {
     private final UserService userService;
     private final JournalService journalService;
@@ -33,7 +34,12 @@ public class LoginController {
 //        return new User();
 //    }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/")
+    public String redirect(){
+        return "redirect:/login";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         return new ModelAndView("login", "data", "");
@@ -44,13 +50,13 @@ public class LoginController {
     @ResponseBody
     public ModelAndView login(@RequestBody User form, HttpServletRequest request) {
         ModelAndView model = new ModelAndView(new MappingJackson2JsonView());
+        request.getSession().removeAttribute("user");
         try {
 
             User user = userService.findByLogin(form.getLogin());
             String role = user.getRole();
 
             if (user.getPassword().equals(form.getPassword()) && user.getAuth()) {
-                model.addObject("info", user);
                 request.getSession().setAttribute("user", user);
                 if (role.equals(User.LIBRARIAN)) {
                     model.addObject("data", "/librarian");
@@ -66,6 +72,7 @@ public class LoginController {
             else if (!user.getAuth())
                 model.addObject("data", "You are not confirmed yet");
         } catch (Exception e) {
+            model.addObject("data","You aren't registered in the system");
             e.printStackTrace();
         }
 
