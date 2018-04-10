@@ -67,7 +67,6 @@ public class MessageDaoImplementation implements ModifyByLibrarian<Messages> {
 
     @Override
     public List<Messages> getList() {
-        List<Messages> mes = messagesRepository.findAll();
-        return mes;
+        return messagesRepository.findAll();
     }
 }
