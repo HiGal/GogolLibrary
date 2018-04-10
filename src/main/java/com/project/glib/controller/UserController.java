@@ -18,10 +18,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 public class UserController {
+
+    @RequestMapping(value = "/patron")
+    public ModelAndView UserPage(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        ModelAndView  modelAndView = new ModelAndView();
+        modelAndView.addObject("info",user);
+        modelAndView.setViewName("patron");
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/order/book")
     public ModelAndView orderBook(@ModelAttribute Book book) {

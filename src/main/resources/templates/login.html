@@ -8,7 +8,8 @@
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <title>LogIn</title>
 </head>
 <body>
@@ -52,11 +53,28 @@
                         data: JSON.stringify(myJson),
                         dataType: 'json',
                         success: function (data) {
-                            data = data.data;
-                            if(data === "/patron" || data === "/librarian"){
-                                window.location.replace(data);
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-top-full-width",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            var data1 = data.data;
+                            if(data1 === "/patron" || data1 === "/librarian"){
+                                window.location.replace(data1);
                             }else {
-                                alert("else");
+                                toastr["error"](data1);
                             }
                         }
                     });

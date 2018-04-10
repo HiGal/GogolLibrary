@@ -34,8 +34,9 @@ public class LoginController {
 //    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView login() {
-        return new ModelAndView("login","data","");
+    public ModelAndView login(HttpServletRequest request) {
+        request.getSession().removeAttribute("user");
+        return new ModelAndView("login", "data", "");
     }
 
 
@@ -52,22 +53,23 @@ public class LoginController {
                 model.addObject("info", user);
                 request.getSession().setAttribute("user", user);
                 if (role.equals(User.LIBRARIAN)) {
-                    model.addObject("data","/librarian");
+                    model.addObject("data", "/librarian");
                 } else if (Arrays.asList(User.PATRONS).contains(role)) {
-                    model.addObject("data","/patron");
+                    model.addObject("data", "/patron");
                 } else {
                     model.addObject("data", "Something goes wrong");
                     throw new Exception("WRONG ROLE");
                 }
-                System.out.println(user);
-                System.out.println(model);
+
             } else if (!user.getPassword().equals(form.getPassword()))
                 model.addObject("data", "Login or password is incorrect");
-            else if(!user.getAuth())
-                model.addObject("data","You are not confirmed yet");
+            else if (!user.getAuth())
+                model.addObject("data", "You are not confirmed yet");
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        System.out.println(model);
 
         return model;
     }
