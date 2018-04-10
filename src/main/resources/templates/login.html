@@ -72,7 +72,8 @@
                             };
                             var data1 = data.data;
                             if(data1 === "/patron" || data1 === "/librarian"){
-                                window.location.replace(data1);
+                                //you can replace "replace" with "assign", then you'll be able to return to login page with back button
+                                window.location.assign(data1);
                             }else {
                                 toastr["error"](data1);
                             }
