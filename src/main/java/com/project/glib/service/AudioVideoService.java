@@ -30,16 +30,19 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
      * Adds physical AudioVideo instance
      *
      * @param audioVideo AV model
-     * @param shelf shelf of document in library
+     * @param shelf      shelf of document in library
      * @throws Exception
      */
     @Override
     public void add(AudioVideo audioVideo, String shelf) throws Exception {
-        if (shelf.equals("")) throw new Exception(SHELF_EXCEPTION);
+        if (shelf.equals("")) {
+            throw new Exception(SHELF_EXCEPTION);
+        }
         add(audioVideo);
         for (int i = 0; i < audioVideo.getCount(); i++) {
             // TODO add keywords options
-            docPhysService.add(new DocumentPhysical(shelf, true, audioVideo.getId(), Document.AV, null));
+            docPhysService.add(new DocumentPhysical(shelf,
+                    true, audioVideo.getId(), Document.AV, null));
         }
     }
 
@@ -108,7 +111,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     /**
      * Removes copy of AudioVideo instance from DB
      *
-     * @param avId virtual ID
+     * @param avId   virtual ID
      * @param copyId ID of AudioVideo copy
      * @throws Exception
      */
@@ -121,7 +124,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     /**
      * Removes all AudioVideo copies on the same shelf
      *
-     * @param avId virtual ID
+     * @param avId  virtual ID
      * @param shelf shelf of AV copies
      * @throws Exception
      */
