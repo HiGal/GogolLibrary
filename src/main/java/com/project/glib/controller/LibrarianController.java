@@ -27,6 +27,7 @@ public class LibrarianController {
     }
 
 
+
     @RequestMapping(value = "/librarian")
     public ModelAndView librarianPage(HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("user");
@@ -83,20 +84,22 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/add/book", method = RequestMethod.GET)
-    public String addBookPage(){
-        return "addBook";
+    public ModelAndView addBookPage(){
+        return new ModelAndView("addBook");
     }
 
-    @RequestMapping(value = "/add/book", method = RequestMethod.POST)
-    public @ResponseBody String addBook(@RequestBody Book book) {
+    @RequestMapping(value = "/add/book", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody ModelAndView addBook(@RequestBody Book book) {
         System.out.println(book);
         ModelAndView modelAndView = new ModelAndView();
         try {
             bookService.update(book);
         } catch (Exception e) {
+            String exc = e.toString().replace("java.lang.Exception:  ","");
             e.printStackTrace();
+
         }
-        return "d]succ";
+        return new ModelAndView();
     }
 
     @RequestMapping(value = "/edit/journal")

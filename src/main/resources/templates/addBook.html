@@ -49,7 +49,7 @@
 
 
                     <div class="form-group">
-                        <label for="booktitle" class="cols-sm-2 control-label">book title</label>
+                        <label for="booktitle" class="cols-sm-2 control-label">Book title</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="author" class="cols-sm-2 control-label">author</label>
+                        <label for="author" class="cols-sm-2 control-label">Author</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="edition" class="cols-sm-2 control-label">edition</label>
+                        <label for="edition" class="cols-sm-2 control-label">Edition</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-location-arrow"
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="publisher" class="cols-sm-2 control-label">publisher</label>
+                        <label for="publisher" class="cols-sm-2 control-label">Publisher</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="year" class="cols-sm-2 control-label">year</label>
+                        <label for="year" class="cols-sm-2 control-label">Year</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
@@ -106,12 +106,34 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="price" class="cols-sm-2 control-label">price</label>
+                        <label for="price" class="cols-sm-2 control-label">Price</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
                                 <input type="text" class="form-control" name="price" id="price"
                                        placeholder="Enter price" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Count</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="count" id="count"
+                                       placeholder="Enter count" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Shelf</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="shelf" id="shelf"
+                                       placeholder="Enter shelf" required/>
                             </div>
                         </div>
                     </div>
@@ -185,16 +207,10 @@
                                     return $(this).val();
                                 }).get(),
                                 "note": selector.options[selector.selectedIndex].text.toUpperCase(),
+                                "count": document.getElementById("count").value,
+                                "shelf": document.getElementById("shelf").value,
                                 "ingData": JSON.stringify(getBase64Image(imgElem))
                             };
-
-                            $.ajax({
-                                url: "/add/book",
-                                type: 'POST',
-                                contentType: 'application/json',
-                                data: JSON.stringify(myJson),
-                                dataType: 'json'
-                            });
                             toastr.options = {
                                 "closeButton": true,
                                 "debug": false,
@@ -212,7 +228,23 @@
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            toastr["success"]("Book has successfully added");
+                            $.ajax({
+                                url: "/add/book",
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(myJson),
+                                dataType: 'json',
+                                success: function (data) {
+                                    alert(data);
+                                    if(data["response"] === "succ"){
+                                        toastr["success"]("Book has successfully added");
+                                    }else {
+                                        toastr["warning"](data["response"]);
+                                    }
+                                }
+                            });
+
+
                         }
                     </script>
 
