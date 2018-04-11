@@ -155,7 +155,9 @@
                         $.ajax({
                             url: "/edit/book",
                             type: 'POST',
-                            data: JSON.stringify(myJson)
+                            contentType: 'application/json',
+                            data: JSON.stringify(myJson),
+                            dataType: 'json'
                         });
                         window.location.reload(false);
                     }
@@ -174,7 +176,9 @@
                         $.ajax({
                             url: "/edit/journal",
                             type: 'POST',
-                            data: JSON.stringify(myJson)
+                            contentType: 'application/json',
+                            data: JSON.stringify(myJson),
+                            dataType: 'json'
                         });
                         window.location.reload(false);
                     }

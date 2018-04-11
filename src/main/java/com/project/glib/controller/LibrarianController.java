@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 public class LibrarianController {
 
     private final UserService userService;
@@ -72,9 +72,14 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/edit/book")
-    public ModelAndView editBook(@ModelAttribute Book book) {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
+    public String editBook(@RequestBody Book book) {
+        System.out.println(book);
+        try {
+            bookService.update(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
     }
 
     @RequestMapping(value = "/add/book", method = RequestMethod.GET)
