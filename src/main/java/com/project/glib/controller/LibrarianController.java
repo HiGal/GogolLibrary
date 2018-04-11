@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -91,15 +92,17 @@ public class LibrarianController {
     @RequestMapping(value = "/add/book", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody ModelAndView addBook(@RequestBody Book book) {
         System.out.println(book);
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             bookService.update(book);
         } catch (Exception e) {
             String exc = e.toString().replace("java.lang.Exception:  ","");
+            modelAndView.addObject("message",exc);
             e.printStackTrace();
-
+            return modelAndView;
         }
-        return new ModelAndView();
+        modelAndView.addObject("message", "succ");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/edit/journal")

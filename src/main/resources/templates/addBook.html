@@ -236,10 +236,10 @@
                                 dataType: 'json',
                                 success: function (data) {
                                     alert(data);
-                                    if(data["response"] === "succ"){
+                                    if(data["message"] === "succ"){
                                         toastr["success"]("Book has successfully added");
                                     }else {
-                                        toastr["warning"](data["response"]);
+                                        toastr["warning"](data["message"]);
                                     }
                                 }
                             });
