@@ -23,16 +23,20 @@ public class Logger {
     @Column(name = "action")
     private String action;
 
+    @Column(name = "date")
+    private long date;
+
 
     public Logger() {
 
     }
 
-    public Logger(long userId, long virtDocId, long physDocId, String action) {
+    public Logger(long userId, long virtDocId, long physDocId, String action, long date) {
         this.userId = userId;
         this.virtDocId = virtDocId;
         this.physDocId = physDocId;
         this.action = action;
+        this.date = date;
     }
 
     @Override
@@ -43,6 +47,7 @@ public class Logger {
                 ", physDocId =" + physDocId +
                 ", virtDocId =" + virtDocId +
                 ", action =" + action +
+                ", date =" + date +
                 '}';
     }
 
@@ -84,5 +89,13 @@ public class Logger {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
     }
 }
