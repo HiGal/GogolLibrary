@@ -137,7 +137,7 @@
                         $.ajax({
                             url: "idk",
                             type: 'POST',
-                            data: JSON.stringify(myJson),
+                            data: JSON.stringify(myJson)
                         });
                         window.location.reload(false);
                     }
@@ -155,7 +155,7 @@
                         $.ajax({
                             url: "/edit/book",
                             type: 'POST',
-                            data: JSON.stringify(myJson),
+                            data: JSON.stringify(myJson)
                         });
                         window.location.reload(false);
                     }
@@ -163,7 +163,7 @@
                     function dCall() {
                         // var imgElem = document.getElementById('img');
                         var myJson = {
-                            "id": document.getElementById("id").value,
+                            "id": document.getElementById("id").value
 //                            "title": document.getElementById("title").text(),
 //                            "editor": document.getElementById("editor").text(),
 //                            "author": document.getElementById("author").text(),
@@ -174,7 +174,7 @@
                         $.ajax({
                             url: "/edit/journal",
                             type: 'POST',
-                            data: JSON.stringify(myJson),
+                            data: JSON.stringify(myJson)
                         });
                         window.location.reload(false);
                     }

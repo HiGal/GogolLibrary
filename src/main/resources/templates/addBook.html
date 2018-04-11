@@ -2,12 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../css/editU.css">
+
+    <link rel="stylesheet" href="/css/editU.css">
+    <link rel="stylesheet" href="/css/style.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
     <title>Add Book</title>
 </head>
@@ -25,9 +33,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="#">Add Book</a></li>
-                <li><a href="addJournal.html">Add Journal</a></li>
-                <li><a href="addAV.html">Add AV</a></li>
-                <li><a href="login.html">Log Out</a></li>
+                <li><a href="/add/journal">Add Journal</a></li>
+                <li><a href="/add/AV">Add AV</a></li>
+                <li><a href="/">Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -37,7 +45,7 @@
         <div class="row main">
 
             <div class="main-login main-center">
-                <form class="form-horizontal" method="post" action="/edit/book" onsubmit="addBCall()">
+                <form class="form-horizontal" method="post" action="javascript:void(null)" onsubmit="addBCall()">
 
 
                     <div class="form-group">
@@ -45,7 +53,8 @@
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="booktitle" id="booktitle" placeholder="Enter book title"
+                                <input type="text" class="form-control" name="booktitle" id="booktitle"
+                                       placeholder="Enter book title"
                                        required autofocus/>
                             </div>
                         </div>
@@ -109,13 +118,14 @@
 
                     <div class="form-group">
 
-                        <div class="cols-sm-10">
-                            <div class="input-group">
+                        <label for="sel">Select type</label>
+                        <select class="form-control" id="sel">
+                            <option class="opt">NA</option>
+                            <option class="opt">Reference</option>
+                            <option class="opt">Bestseller</option>
+                        </select>
 
-                                <label class="checkbox-inline"><input type="checkbox" placeholder=""><b>bestseller</b></label>                            </div>
-                        </div>
                     </div>
-
 
 
                     <div class="form-group">
@@ -129,14 +139,14 @@
                     </div>
 
                     <script>
-                        function previewFile(){
+                        function previewFile() {
                             var preview = document.querySelector('img');
-                            var file    = document.querySelector('input[type=file]').files[0];
-                            var reader  = new FileReader();
+                            var file = document.querySelector('input[type=file]').files[0];
+                            var reader = new FileReader();
 
                             reader.onloadend = function () {
                                 preview.src = reader.result;
-                            }
+                            };
 
                             if (file) {
                                 reader.readAsDataURL(file);
@@ -159,39 +169,57 @@
                     </script>
 
                     <script type="text/javascript" language="javascript">
+
                         function addBCall() {
                             var imgElem = document.getElementById('img');
-                           <!-- var imgData = JSON.stringify(getBase64Image(imgElem)); -->
+                            var selector = document.getElementById("sel");
+                            <!-- var imgData = JSON.stringify(getBase64Image(imgElem)); -->
                             var myJson = {
-                                "booktitle":document.getElementById("booktitle").value,
-                                "author":document.getElementById("author").value,
-                                "edition":document.getElementById("edition").value,
-                                "publisher":document.getElementById("publisher").value,
-                                "year":document.getElementById("year").value,
-                                "price":document.getElementById("price").value,
-                                "bestseller": $( "#bestseller:checked" ).map(function () {
+                                "title": document.getElementById("booktitle").value,
+                                "author": document.getElementById("author").value,
+                                "edition": document.getElementById("edition").value,
+                                "publisher": document.getElementById("publisher").value,
+                                "year": document.getElementById("year").value,
+                                "price": document.getElementById("price").value,
+                                "bestseller": $("#bestseller:checked").map(function () {
                                     return $(this).val();
                                 }).get(),
-                                "ingData":JSON.stringify(getBase64Image(imgElem))
+                                "note": selector.options[selector.selectedIndex].text.toUpperCase(),
+                                "ingData": JSON.stringify(getBase64Image(imgElem))
                             };
-                            console.log(JSON.stringify(myJson));
-                            $.ajax({
-                                url: "/login",
-                                type: 'POST',
-                                data: myJson,
-                                success:
-                                        alert('succ'),
-                                error:
-                                        alert('fork')
-                            });
 
+                            $.ajax({
+                                url: "/add/book",
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(myJson),
+                                dataType: 'json'
+                            });
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "2000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("Book has successfully added");
                         }
                     </script>
 
 
                     <div class="form-group ">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button" formmethod="post" onsubmit="return make_json(this)">
-                            confirm
+                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button">
+                            Confirm
                         </button>
                         <span class="clearfix"></span>
                     </div>
