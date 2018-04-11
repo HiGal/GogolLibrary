@@ -53,6 +53,8 @@
                             <input type="hidden" class="edition_card" value="{{edition}}">
                             <input type="hidden" class="publisher_card" value="{{publisher}}">
                             <input type="hidden" class="id_card" value="{{id}}">
+                            <input type="hidden" class="price_card" value="{{price}}">
+                            <input type="hidden" class="count_card" value="{{count}}">
                             <img class="image-book" src="../img/no_image.jpg">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
@@ -79,6 +81,8 @@
                                 document.getElementById("publisher").style.display = "block";
                                 document.getElementById("author").style.display = "block";
                                 $('#id').val($(this).parent().find($('.id_card')).attr('value'));
+                                $('#price').val($(this).parent().find($('.price_card')).attr('value'));
+                                $('#count').val($(this).parent().find($('.count_card')).attr('value'));
                                 $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                 $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
@@ -146,6 +150,8 @@
                         // var imgElem = document.getElementById('img');
                         var myJson = {
                             "id": document.getElementById("id").value,
+                            "price": document.getElementById("price").value,
+                            "count": document.getElementById("count").value,
                             "title": document.getElementById("etitle").value,
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
@@ -174,7 +180,7 @@
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
-                            url: "/edit/journal",
+                            url: "/delete/book",
                             type: 'POST',
                             contentType: 'application/json',
                             data: JSON.stringify(myJson),
@@ -228,6 +234,8 @@
                                 </div>
                                 <div class="col-lg-6 fields" id="container">
                                     <input type="hidden" id="id">
+                                    <input type="hidden" id="price">
+                                    <input type="hidden" id="count">
                                     <h4 class="title" id="title"><b>Title: </b></h4>
                                     <input id="etitle">
                                     <h4 class="edition" id="edition"><b>Edition: </b></h4>
