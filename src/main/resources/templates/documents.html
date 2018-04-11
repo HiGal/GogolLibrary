@@ -67,7 +67,7 @@
                 {{/allBooks}}
 
                 <script>
-
+//TODO: selector value
                     //                    var image = $('#image-book');
                     //                    image.src = 'data:image/png;base64,iVBORw0K...';
                     //                    document.body.appendChild(image);
@@ -98,6 +98,7 @@
                                 document.getElementById("imgbtn").style.display = "none";
                                 document.getElementById("elogin").style.display = "none";
                                 document.getElementById("renewbtn").style.display = "none";
+                                document.getElementById("sel").style.display = "none"
                             });
                         });
                         return false;
@@ -123,6 +124,7 @@
                         document.getElementById("editbtn").style.display = "none";
                         document.getElementById("okbtn").style.display = "inline";
                         document.getElementById("imgbtn").style.display = "inline";
+                        document.getElementById("sel").style.display = "inline"
 
                     }
 
@@ -155,7 +157,8 @@
                             "title": document.getElementById("etitle").value,
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
-                            "publisher": document.getElementById("epublisher").value
+                            "publisher": document.getElementById("epublisher").value,
+                            "note": selector.options[selector.selectedIndex].text.toUpperCase()
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
@@ -244,6 +247,11 @@
                                     <input id="eauthor">
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
+                                    <select class= id="sel">
+                                        <option class="opt">NA</option>
+                                        <option class="opt">Reference</option>
+                                        <option class="opt">Bestseller</option>
+                                    </select>
                                     <input id="elogin">
                                     <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
                                 </div>

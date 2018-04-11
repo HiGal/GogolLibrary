@@ -87,6 +87,7 @@
                                     document.getElementById("imgbtn").style.display = "none";
                                     document.getElementById("elogin").style.display = "none";
                                     document.getElementById("renewbtn").style.display = "none";
+                                    document.getElementById("sel").style.display = "none"
                                 });
                             });
                             return false;
@@ -104,6 +105,7 @@
                             document.getElementById("editbtn").style.display = "none";
                             document.getElementById("okbtn").style.display = "inline";
                             document.getElementById("imgbtn").style.display = "inline";
+                            document.getElementById("sel").style.display = "inline"
                         }
 
                         function renew() {
@@ -134,6 +136,7 @@
                                 "count": document.getElementById("count").value,
                                 "title": document.getElementById("etitle").value,
                                 "author": document.getElementById("eauthor").value,
+                                "note": selector.options[selector.selectedIndex].text.toUpperCase()
                                 //   "imgData":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
@@ -213,6 +216,11 @@
                                         <input id="etitle">
                                         <h4 class="author" id="author"><b>Author: </b></h4>
                                         <input id="eauthor">
+                                        <select class= id="sel">
+                                            <option class="opt">NA</option>
+                                            <option class="opt">Reference</option>
+                                            <option class="opt">Bestseller</option>
+                                        </select>
                                         <input id="elogin">
                                         <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
                                     </div>
