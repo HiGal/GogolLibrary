@@ -51,6 +51,8 @@
                                 <h3 class="card-title">{{title}}</h3>
                                 <h5 class="card-subtitle text-muted">{{author}}</h5>
                                 <input type="hidden" class="id_card" value="{{id}}">
+                                <input type="hidden" class="price_card" value="{{price}}">
+                                <input type="hidden" class="count_card" value="{{count}}">
                                 <img class="image-av" src="../img/no_image.jpg">
                                 <p></p>
                                 <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -72,6 +74,8 @@
                                     document.getElementById("title").style.display = "block";
                                     document.getElementById("author").style.display = "block";
                                     $('#id').html($(this).parent().find($('.id_card')).attr('value'));
+                                    $('#price').val($(this).parent().find($('.price_card')).attr('value'));
+                                    $('#count').val($(this).parent().find($('.count_card')).attr('value'));
                                     $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                     $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                     $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
@@ -83,6 +87,7 @@
                                     document.getElementById("imgbtn").style.display = "none";
                                     document.getElementById("elogin").style.display = "none";
                                     document.getElementById("renewbtn").style.display = "none";
+                                    document.getElementById("sel").style.display = "none"
                                 });
                             });
                             return false;
@@ -100,6 +105,7 @@
                             document.getElementById("editbtn").style.display = "none";
                             document.getElementById("okbtn").style.display = "inline";
                             document.getElementById("imgbtn").style.display = "inline";
+                            document.getElementById("sel").style.display = "inline"
                         }
 
                         function renew() {
@@ -126,12 +132,15 @@
                             // var imgElem = document.getElementById('img');
                             var myJson = {
                                 "id": document.getElementById("id").value,
+                                "price": document.getElementById("price").value,
+                                "count": document.getElementById("count").value,
                                 "title": document.getElementById("etitle").value,
                                 "author": document.getElementById("eauthor").value,
+                                "note": selector.options[selector.selectedIndex].text.toUpperCase()
                                 //   "imgData":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
-                                url: "idk",
+                                url: "/edit/av",
                                 type: 'POST',
                                 data: JSON.stringify(myJson)
                             });
@@ -150,7 +159,7 @@
                                 //   "imgData":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
-                                url: "idk",
+                                url: "/delete/av",
                                 type: 'POST',
                                 data: JSON.stringify(myJson),
                                 success: alert('succ'),
@@ -207,6 +216,11 @@
                                         <input id="etitle">
                                         <h4 class="author" id="author"><b>Author: </b></h4>
                                         <input id="eauthor">
+                                        <select class= id="sel">
+                                            <option class="opt">NA</option>
+                                            <option class="opt">Reference</option>
+                                            <option class="opt">Bestseller</option>
+                                        </select>
                                         <input id="elogin">
                                         <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
                                     </div>

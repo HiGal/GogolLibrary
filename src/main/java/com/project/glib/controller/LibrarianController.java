@@ -5,26 +5,28 @@ import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
 import com.project.glib.model.Journal;
 import com.project.glib.model.User;
+import com.project.glib.service.BookService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
 
-@Controller
+@RestController
 public class LibrarianController {
 
     private final UserService userService;
+    private final BookService bookService;
 
     @Autowired
-    public LibrarianController(UserService userService) {
+    public LibrarianController(UserService userService, BookService bookService) {
         this.userService = userService;
+        this.bookService = bookService;
     }
+
 
 
     @RequestMapping(value = "/librarian")
@@ -72,14 +74,34 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/edit/book")
-    public ModelAndView editBook(@ModelAttribute Book book) {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
+    public String editBook(@RequestBody Book book) {
+        System.out.println(book);
+        try {
+            bookService.update(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
     }
 
-    @RequestMapping(value = "/add/book")
-    public ModelAndView addBook(@ModelAttribute Book book) {
-        ModelAndView modelAndView = new ModelAndView();
+    @RequestMapping(value = "/add/book", method = RequestMethod.GET)
+    public ModelAndView addBookPage(){
+        return new ModelAndView("addBook");
+    }
+
+    @RequestMapping(value = "/add/book", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody ModelAndView addBook(@RequestBody Book book) {
+        System.out.println(book);
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            bookService.update(book);
+        } catch (Exception e) {
+            String exc = e.toString().replace("java.lang.Exception:  ","");
+            modelAndView.addObject("message",exc);
+            e.printStackTrace();
+            return modelAndView;
+        }
+        modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 
@@ -130,11 +152,11 @@ public class LibrarianController {
     public @ResponseBody
     String UserEdit(@RequestBody User user) {
         try {
-            System.out.println(user);
             userService.update(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return "success";
     }
 

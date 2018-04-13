@@ -53,6 +53,8 @@
                             <input type="hidden" class="edition_card" value="{{edition}}">
                             <input type="hidden" class="publisher_card" value="{{publisher}}">
                             <input type="hidden" class="id_card" value="{{id}}">
+                            <input type="hidden" class="price_card" value="{{price}}">
+                            <input type="hidden" class="count_card" value="{{count}}">
                             <img class="image-book" src="../img/no_image.jpg">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
@@ -65,7 +67,7 @@
                 {{/allBooks}}
 
                 <script>
-
+//TODO: selector value
                     //                    var image = $('#image-book');
                     //                    image.src = 'data:image/png;base64,iVBORw0K...';
                     //                    document.body.appendChild(image);
@@ -79,6 +81,8 @@
                                 document.getElementById("publisher").style.display = "block";
                                 document.getElementById("author").style.display = "block";
                                 $('#id').val($(this).parent().find($('.id_card')).attr('value'));
+                                $('#price').val($(this).parent().find($('.price_card')).attr('value'));
+                                $('#count').val($(this).parent().find($('.count_card')).attr('value'));
                                 $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                 $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
@@ -94,6 +98,7 @@
                                 document.getElementById("imgbtn").style.display = "none";
                                 document.getElementById("elogin").style.display = "none";
                                 document.getElementById("renewbtn").style.display = "none";
+                                document.getElementById("sel").style.display = "none"
                             });
                         });
                         return false;
@@ -119,6 +124,7 @@
                         document.getElementById("editbtn").style.display = "none";
                         document.getElementById("okbtn").style.display = "inline";
                         document.getElementById("imgbtn").style.display = "inline";
+                        document.getElementById("sel").style.display = "inline"
 
                     }
 
@@ -137,7 +143,7 @@
                         $.ajax({
                             url: "idk",
                             type: 'POST',
-                            data: JSON.stringify(myJson),
+                            data: JSON.stringify(myJson)
                         });
                         window.location.reload(false);
                     }
@@ -146,16 +152,21 @@
                         // var imgElem = document.getElementById('img');
                         var myJson = {
                             "id": document.getElementById("id").value,
+                            "price": document.getElementById("price").value,
+                            "count": document.getElementById("count").value,
                             "title": document.getElementById("etitle").value,
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
-                            "publisher": document.getElementById("epublisher").value
+                            "publisher": document.getElementById("epublisher").value,
+                            "note": selector.options[selector.selectedIndex].text.toUpperCase()
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
                             url: "/edit/book",
                             type: 'POST',
+                            contentType: 'application/json',
                             data: JSON.stringify(myJson),
+                            dataType: 'json'
                         });
                         window.location.reload(false);
                     }
@@ -163,7 +174,7 @@
                     function dCall() {
                         // var imgElem = document.getElementById('img');
                         var myJson = {
-                            "id": document.getElementById("id").value,
+                            "id": document.getElementById("id").value
 //                            "title": document.getElementById("title").text(),
 //                            "editor": document.getElementById("editor").text(),
 //                            "author": document.getElementById("author").text(),
@@ -172,9 +183,11 @@
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
-                            url: "/edit/journal",
+                            url: "/delete/book",
                             type: 'POST',
+                            contentType: 'application/json',
                             data: JSON.stringify(myJson),
+                            dataType: 'json'
                         });
                         window.location.reload(false);
                     }
@@ -224,6 +237,8 @@
                                 </div>
                                 <div class="col-lg-6 fields" id="container">
                                     <input type="hidden" id="id">
+                                    <input type="hidden" id="price">
+                                    <input type="hidden" id="count">
                                     <h4 class="title" id="title"><b>Title: </b></h4>
                                     <input id="etitle">
                                     <h4 class="edition" id="edition"><b>Edition: </b></h4>
@@ -232,6 +247,11 @@
                                     <input id="eauthor">
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
+                                    <select class= id="sel">
+                                        <option class="opt">NA</option>
+                                        <option class="opt">Reference</option>
+                                        <option class="opt">Bestseller</option>
+                                    </select>
                                     <input id="elogin">
                                     <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
                                 </div>
