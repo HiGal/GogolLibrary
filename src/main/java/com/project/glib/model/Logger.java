@@ -14,7 +14,7 @@ public class Logger {
     @Column(name = "id_user")
     private long userId;
 
-    @Column(name = "virt_id_doc")
+    @Column(name = "doc_vir_id")
     private long virtDocId;
 
     @Column(name = "phys_id_doc")
