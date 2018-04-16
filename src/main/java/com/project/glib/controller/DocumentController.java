@@ -5,13 +5,13 @@ import com.project.glib.service.AudioVideoService;
 import com.project.glib.service.BookService;
 import com.project.glib.service.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 
 @RestController
@@ -37,7 +37,7 @@ public class DocumentController {
             User user = (User) request.getSession().getAttribute("user");
             String role = user.getRole();
             modelAndView.addObject("allBooks", bookService.getList());
-            if (role.equals(User.LIBRARIAN))
+            if (Arrays.asList(User.LIBRARIANS).contains(role))
                 modelAndView.setViewName("documents");
             else
                 modelAndView.setViewName("order");
@@ -54,7 +54,7 @@ public class DocumentController {
         modelAndView.addObject("allJournals", journalService.getList());
         try {
             String role = ((User) request.getSession().getAttribute("user")).getRole();
-            if (role.equals(User.LIBRARIAN))
+            if (Arrays.asList(User.LIBRARIANS).contains(role))
                 modelAndView.setViewName("journals");
             else
                 modelAndView.setViewName("orderJ");
@@ -71,7 +71,7 @@ public class DocumentController {
         modelAndView.addObject("allAV", audioVideoService.getList());
         try {
             String role = ((User) request.getSession().getAttribute("user")).getRole();
-            if (role.equals(User.LIBRARIAN))
+            if (Arrays.asList(User.LIBRARIANS).contains(role))
                 modelAndView.setViewName("av");
             else
                 modelAndView.setViewName("orderAV");

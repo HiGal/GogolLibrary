@@ -6,6 +6,7 @@ import com.project.glib.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -224,7 +225,7 @@ public class UserService implements ModifyByLibrarianService<User> {
     public List<User> getListAuthUsersLib() throws Exception {
         try {
             return getList().stream()
-                    .filter(user -> user.getAuth() && !user.getRole().equals(User.LIBRARIAN))
+                    .filter(user -> user.getAuth() && !Arrays.asList(User.LIBRARIANS).contains(user.getRole()))
                     .collect(Collectors.toList());
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
@@ -234,7 +235,7 @@ public class UserService implements ModifyByLibrarianService<User> {
     public List<User> getListNotAuthUsersLib() throws Exception {
         try {
             return getList().stream()
-                    .filter(user -> !user.getAuth() && !user.getRole().equals(User.LIBRARIAN))
+                    .filter(user -> !user.getAuth() && !Arrays.asList(User.LIBRARIANS).contains(user.getRole()))
                     .collect(Collectors.toList());
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
@@ -264,6 +265,4 @@ public class UserService implements ModifyByLibrarianService<User> {
             throw new Exception(EXIST_EXCEPTION);
         }
     }
-
-
 }
