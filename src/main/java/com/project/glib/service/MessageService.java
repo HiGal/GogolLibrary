@@ -124,13 +124,19 @@ public class MessageService {
 
     }
 
+    //todo finish ths method
+    //todo srochno
     public void sendMessagesToLib(String login) throws Exception {
         List<Messages> messages = getAllByUserID(userService.getIdByLogin(login));
+        List<User> librarians = userService.getList().stream()
+                .filter(User -> User.getRole().equals(User.LIBRARIAN))
+                .collect(Collectors.toList());
         for (Messages message1 : messages) {
             String message = "User " + login +
                     " read the message: " + message1.getMessage() +
                     createMessage(message1.getDocPhysId());
         }
+
 
     }
 

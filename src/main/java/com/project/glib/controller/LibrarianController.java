@@ -8,6 +8,7 @@ import com.project.glib.model.User;
 import com.project.glib.service.BookService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +23,7 @@ public class LibrarianController {
     private final BookService bookService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService) {
+    public LibrarianController( UserService userService, BookService bookService) {
         this.userService = userService;
         this.bookService = bookService;
     }
