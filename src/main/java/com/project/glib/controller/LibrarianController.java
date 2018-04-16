@@ -5,26 +5,35 @@ import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
 import com.project.glib.model.Journal;
 import com.project.glib.model.User;
+import com.project.glib.service.AudioVideoService;
 import com.project.glib.service.BookService;
+import com.project.glib.service.JournalService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+
+import static com.project.glib.model.User.ACCESS;
+import static com.project.glib.model.User.ADD_MOD;
 
 @RestController
 public class LibrarianController {
 
     private final UserService userService;
     private final BookService bookService;
+    private final JournalService journalService;
+    private final AudioVideoService avService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService) {
+    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService avService) {
         this.userService = userService;
         this.bookService = bookService;
+        this.journalService = journalService;
+        this.avService = avService;
     }
 
 
@@ -44,7 +53,7 @@ public class LibrarianController {
         User user = (User) request.getSession().getAttribute("user");
         ModelAndView modelAndView = new ModelAndView();
 
-        if (user.getRole().equals(User.LIBRARIAN)) {
+        if (Arrays.asList(User.LIBRARIANS).contains(user.getRole())) {
             try {
                 modelAndView.addObject("allUsers", userService.getListAuthUsersLib());
                 modelAndView.setViewName("patrons");
@@ -62,7 +71,7 @@ public class LibrarianController {
         User user = (User) request.getSession().getAttribute("user");
         ModelAndView modelAndView = new ModelAndView();
 
-        if (user.getRole().equals(User.LIBRARIAN)) {
+        if (Arrays.asList(User.LIBRARIANS).contains(user.getRole())) {
             try {
                 modelAndView.addObject("notAuth", userService.getListNotAuthUsersLib());
                 modelAndView.setViewName("addUser");
@@ -90,17 +99,21 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/add/book", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody ModelAndView addBook(@RequestBody Book book) {
-        System.out.println(book);
+    public @ResponseBody
+    ModelAndView addBook(@RequestBody Book book,
+                         @RequestParam(value = "shelf") String shelf,
+                         HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
-            bookService.update(book);
+            User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            bookService.add(book, shelf);
         } catch (Exception e) {
-            String exc = e.toString().replace("java.lang.Exception:  ","");
-            modelAndView.addObject("message",exc);
+            modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
             return modelAndView;
         }
+
         modelAndView.addObject("message", "succ");
         return modelAndView;
     }
@@ -111,9 +124,27 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add/journal")
-    public ModelAndView addJournal(@ModelAttribute Journal journal) {
-        ModelAndView modelAndView = new ModelAndView();
+    @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
+    public ModelAndView addJournalPage() {
+        return new ModelAndView("addJournal");
+    }
+
+    @RequestMapping(value = "/librarian/add/Journal", method = RequestMethod.POST, produces = "application/json")
+    public ModelAndView addJournal(@RequestBody Journal journal,
+                                   @RequestParam(value = "shelf") String shelf,
+                                   HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            journalService.add(journal, shelf);
+        } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
+            e.printStackTrace();
+            return modelAndView;
+        }
+
+        modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 
@@ -123,9 +154,27 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/add/AV", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView addAVPage() {
+        return new ModelAndView("addAV");
+    }
+
     @RequestMapping(value = "/add/AV")
-    public ModelAndView addJournal(@ModelAttribute AudioVideo audioVideo) {
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView addAV(@ModelAttribute AudioVideo audioVideo,
+                              @RequestParam(value = "shelf") String shelf,
+                              HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            avService.add(audioVideo, shelf);
+        } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
+            e.printStackTrace();
+            return modelAndView;
+        }
+
+        modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 
@@ -162,22 +211,23 @@ public class LibrarianController {
 
     @RequestMapping(value = "/user/confirm", method = RequestMethod.POST)
     public @ResponseBody
-    String UserConfirm(@RequestBody User user) {
+    ModelAndView UserConfirm(@RequestBody User user, HttpServletRequest request) {
+
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
 
         try {
-            User user1 = userService.getById(user.getId());
-            System.out.println();
-            System.out.println();
-            System.out.println(user);
-            System.out.println(user.getAuth());
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            user1.setAuth(user.getAuth());
-            userService.update(user1);
+            User userInSession = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            User userInDao = userService.getById(user.getId());
+            userInDao.setAuth(user.getAuth());
+            userService.update(userInDao);
         } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
+            return modelAndView;
         }
-        return "User's registration confirmed";
+
+        modelAndView.addObject("message", "succ");
+        return modelAndView;
     }
 }
