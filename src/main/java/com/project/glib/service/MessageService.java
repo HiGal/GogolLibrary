@@ -9,8 +9,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.project.glib.model.User.LIBRARIANS;
 
 @Service
 public class MessageService {
@@ -129,7 +132,7 @@ public class MessageService {
     public void sendMessagesToLib(String login) throws Exception {
         List<Messages> messages = getAllByUserID(userService.getIdByLogin(login));
         List<User> librarians = userService.getList().stream()
-                .filter(User -> User.getRole().equals(User.LIBRARIAN))
+                .filter(user -> Arrays.asList(LIBRARIANS).contains(user.getRole()))
                 .collect(Collectors.toList());
         for (Messages message1 : messages) {
             String message = "User " + login +
