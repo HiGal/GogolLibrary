@@ -1,13 +1,16 @@
 package com.project.glib.controller;
 
-import com.project.glib.model.Book;
-import com.project.glib.model.Journal;
 import com.project.glib.model.User;
-import com.project.glib.service.*;
+import com.project.glib.service.AudioVideoService;
+import com.project.glib.service.JournalService;
+import com.project.glib.service.MessageService;
+import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -45,7 +48,6 @@ public class LoginController {
         return new ModelAndView("login", "data", "");
     }
 
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView login(@RequestBody User form, HttpServletRequest request) {
@@ -58,10 +60,11 @@ public class LoginController {
 
             if (user.getPassword().equals(form.getPassword()) && user.getAuth()) {
                 request.getSession().setAttribute("user", user);
-                if (role.equals(User.LIBRARIAN)) {
+                if (Arrays.asList(User.LIBRARIANS).contains(role)) {
                     model.addObject("data", "/librarian");
                 } else if (Arrays.asList(User.PATRONS).contains(role)) {
                     model.addObject("data", "/patron");
+                    System.out.println(model);
                 } else {
                     model.addObject("data", "Something goes wrong");
                     throw new Exception("WRONG ROLE");
@@ -101,21 +104,35 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public ModelAndView mainPage(HttpServletRequest request) {
+    public ModelAndView mainPage( HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
         try {
             User user = (User) request.getSession().getAttribute("user");
             modelAndView.addObject("info", user);
-            if (user.getRole().equals(User.LIBRARIAN)) {
+
+            if (Arrays.asList(User.LIBRARIANS).contains(user.getRole())) {
                 modelAndView.setViewName("librarian");
             } else {
                 modelAndView.setViewName("patron");
-                modelAndView.addObject("listMessages", messageService.getMessages(user.getLogin()));
+                System.out.println(modelAndView);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/checked", method = RequestMethod.POST)
+    public void read_messages(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        try {
+            messageService.sendMessagesToLib(user.getLogin());
+            messageService.removeAllByUserID(user.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 //
 //    /*

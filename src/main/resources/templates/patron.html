@@ -18,9 +18,8 @@
             $('.dropdown-toggle').click(function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "/dashboard",
+                    url: "/checked",
                     type: 'POST',
-                    data: {flag: true}
                 });
             });
         });
@@ -43,7 +42,7 @@
                 <li><a href="#">My Documents</a></li>
                 <li><a href="/books">Order a Document</a></li>
                 <li class="dropdown">
-                    <a href="/notifications" class="dropdown-toggle" data-toggle="dropdown"
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                        role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-envelope"> </i>
                         <!--shows only if user has notifications-->
@@ -57,11 +56,11 @@
                             </div>
                         </div>
                        <div class="drop-content">
-                           {{#listMessages}}
+                           {{#message}}
                             <li>
                                 <b>{{.}}</b>
                             </li>
-                           {{/listMessages}}
+                           {{/message}}
                         </div>
                     </ul>
 
