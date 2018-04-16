@@ -21,10 +21,12 @@ public class BookService implements DocumentServiceInterface<Book> {
     public static final String EXIST_EXCEPTION = INFORMATION_NOT_AVAILABLE + TYPE + DOES_NOT_EXIST;
     private final BookDaoImplementation bookDao;
     private final DocumentPhysicalService docPhysService;
+    private final LoggerService loggerService;
 
-    public BookService(BookDaoImplementation bookDao, DocumentPhysicalService docPhysService) {
+    public BookService(BookDaoImplementation bookDao, DocumentPhysicalService docPhysService, LoggerService loggerService) {
         this.bookDao = bookDao;
         this.docPhysService = docPhysService;
+        this.loggerService = loggerService;
     }
 
     @Override

@@ -35,5 +35,6 @@ public interface LoggerActions {
 
     String READ_ALL_MESSAGES = "";
     String LOGGED_IN_LIBRARY = "";
+    String OUTSTANDING_REQUEST = "";
 
 }
