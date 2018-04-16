@@ -56,6 +56,7 @@
                                     <input type="hidden" class="issue_card" value="{{issue}}">
                                     <input type="hidden" class="editor_card" value="{{editor}}">
                                     <input type="hidden" class="id_card" value="{{id}}">
+                                    <input type="hidden" class="note_card" value="{{note}}">
                                     <img class="image-journal" src="../img/no_image.jpg">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -78,6 +79,14 @@
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                         $("#img").attr("src", $(this).parent().find($('.image-journal')).attr('src'));
                                         $('#expansion').html($(this).parent().find($('.card.title')).text());
+                                        if ($(this).parent().find($('.note_card')).attr('value') === "reference") {
+                                            $("#orderbtn").css("background-color", "red");
+                                            $('#orderbtn').click(function (g) {
+                                                toastr["error"]("You can't order a reference material")
+                                            })
+                                        } else {
+                                            $("#orderbtn").css("background-color", "blue");
+                                        }
                                     });
                                 });
                                 return false;
@@ -123,7 +132,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#" class="btn btn-primary" onclick="oCall()" >Order</a>
+                                    <a href="#" class="btn btn-primary" id="orderbtn" onclick="oCall()" >Order</a>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
