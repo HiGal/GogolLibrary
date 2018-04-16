@@ -34,15 +34,18 @@ public class UserService implements ModifyByLibrarianService<User> {
     private final CheckoutService checkoutService;
     private final UserDaoImplementation usersDao;
     private final MessageService messageService;
+    private final LoggerService loggerService;
 
     public UserService(UserDaoImplementation usersDao,
                        BookingService bookingService,
                        CheckoutService checkoutService,
-                       MessageService messageService) {
+                       MessageService messageService,
+                       LoggerService loggerService) {
         this.usersDao = usersDao;
         this.bookingService = bookingService;
         this.checkoutService = checkoutService;
         this.messageService = messageService;
+        this.loggerService = loggerService;
     }
 
     public void add(User user) throws Exception {
@@ -58,6 +61,13 @@ public class UserService implements ModifyByLibrarianService<User> {
             //todo change to false
             user.setAuth(true);
             usersDao.add(user);
+            if (user.getRole().equals(User.LIBRARIAN)) {
+                loggerService.addLog(findByLogin(user.getLogin()).getId(),
+                        0, LoggerService.ADDED_NEW_LIBRARIAN, System.currentTimeMillis());
+            } else {
+                loggerService.addLog(findByLogin(user.getLogin()).getId(),
+                        0, LoggerService.ADDED_NEW_USER, System.currentTimeMillis());
+            }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
         }
@@ -69,6 +79,13 @@ public class UserService implements ModifyByLibrarianService<User> {
         checkValidParameters(user);
         try {
             usersDao.update(user);
+            if (user.getRole().equals(User.LIBRARIAN)) {
+                loggerService.addLog(findByLogin(user.getLogin()).getId(),
+                        0, LoggerService.MODIFIED_LIBRARAN, System.currentTimeMillis());
+            } else {
+                loggerService.addLog(findByLogin(user.getLogin()).getId(),
+                        0, LoggerService.MODIFIED_USER, System.currentTimeMillis());
+            }
         } catch (Exception e) {
             throw new Exception(UPDATE_EXCEPTION);
         }
@@ -83,6 +100,13 @@ public class UserService implements ModifyByLibrarianService<User> {
         try {
             removeAllBookingsByUserId(userId);
             usersDao.remove(userId);
+            if (getById(userId).getRole().equals(User.LIBRARIAN)) {
+                loggerService.addLog(userId,
+                        0, LoggerService.DELETED_LIBRARIAN, System.currentTimeMillis());
+            } else {
+                loggerService.addLog(userId,
+                        0, LoggerService.DELETED_USER, System.currentTimeMillis());
+            }
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
         }

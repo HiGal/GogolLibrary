@@ -11,13 +11,10 @@ public class Logger {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "id_user")
+    @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "virt_id_doc")
-    private long virtDocId;
-
-    @Column(name = "phys_id_doc")
+    @Column(name = "phys_doc_id")
     private long physDocId;
 
     @Column(name = "action")
@@ -31,9 +28,8 @@ public class Logger {
 
     }
 
-    public Logger(long userId, long virtDocId, long physDocId, String action, long date) {
+    public Logger(long userId, long physDocId, String action, long date) {
         this.userId = userId;
-        this.virtDocId = virtDocId;
         this.physDocId = physDocId;
         this.action = action;
         this.date = date;
@@ -45,7 +41,6 @@ public class Logger {
                 "id =" + id +
                 ", userId =" + userId +
                 ", physDocId =" + physDocId +
-                ", virtDocId =" + virtDocId +
                 ", action =" + action +
                 ", date =" + date +
                 '}';
@@ -65,14 +60,6 @@ public class Logger {
 
     public void setUserId(long userId) {
         this.userId = userId;
-    }
-
-    public long getVirtDocId() {
-        return virtDocId;
-    }
-
-    public void setVirtDocId(long virtDocId) {
-        this.virtDocId = virtDocId;
     }
 
     public long getPhysDocId() {

@@ -29,6 +29,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
     // TODO modify to service
     private final MessageService messageService;
     private final CheckoutDaoImplementation checkoutDao;
+    private final LoggerService loggerService;
 
     @Autowired
     public CheckoutService(BookService bookService,
@@ -38,7 +39,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                            @Lazy BookingService bookingService,
                            @Lazy UserService userService,
                            MessageService messageService,
-                           CheckoutDaoImplementation checkoutDao) {
+                           CheckoutDaoImplementation checkoutDao, LoggerService loggerService) {
         this.bookService = bookService;
         this.journalService = journalService;
         this.avService = avService;
@@ -47,6 +48,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         this.checkoutDao = checkoutDao;
         this.userService = userService;
         this.messageService = messageService;
+        this.loggerService = loggerService;
     }
 
     /**
@@ -71,9 +73,15 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                 } else {
                     throw new Exception(TYPE_EXCEPTION);
                 }
+                loggerService.addLog(booking.getUserId(), booking.getDocPhysId(), LoggerService.CHECKEDOUT_BOOK, System.currentTimeMillis());
                 break;
             case Document.JOURNAL:
             case Document.AV:
+                if (booking.getDocType().equals(Document.AV)) {
+                    loggerService.addLog(booking.getUserId(), booking.getDocPhysId(), LoggerService.CHECKEDOUT_AV, System.currentTimeMillis());
+                } else {
+                    loggerService.addLog(booking.getUserId(), booking.getDocPhysId(), LoggerService.CHECKEDOUT_JOURNAL, System.currentTimeMillis());
+                }
                 if (userType.equals(User.STUDENT) || Arrays.asList(User.FACULTY).contains(userType)) {
                     additionalTime = 2 * WEEK_IN_MILLISECONDS;
                 } else if (userType.equals(User.PROFESSOR_VISITING)) {
@@ -87,6 +95,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         }
 
         bookingService.removeBecauseCheckout(booking.getId());
+
         try {
             messageService.removeOneByUserID(booking.getUserId(), booking.getDocPhysId(), MessageService.CHECKOUT_DOCUMENT);
         } catch (Exception e) {
@@ -196,7 +205,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
     }
 
     /**
-     *  Gets ID of checkout instance. Also, checks existence in DB
+     * Gets ID of checkout instance. Also, checks existence in DB
      *
      * @param checkout Checkout model
      * @return ID of checkout instance
@@ -261,7 +270,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
      * Checks if this user already has this checkout
      *
      * @param docPhysId physical ID of document
-     * @param userId ID of user
+     * @param userId    ID of user
      * @return
      */
     public boolean alreadyHasThisCheckout(long docPhysId, long userId) {

@@ -109,10 +109,10 @@
                         var edition = document.getElementById("eedition");
                         var author = document.getElementById("eauthor");
                         var publisher = document.getElementById("epublisher");
-                        title.placeholder = $('.title').text();
-                        edition.placeholder = $('.edition').text();
-                        author.placeholder = $('.author').text();
-                        publisher.placeholder = $('.publisher').text();
+                        title.value = $('.title').text();
+                        edition.value = $('.edition').text();
+                        author.value = $('.author').text();
+                        publisher.value = $('.publisher').text();
                         document.getElementById("title").style.display = "none";
                         title.style.display = "block";
                         document.getElementById("edition").style.display = "none";
@@ -149,7 +149,7 @@
                     }
 
                     function bCall() {
-                        // var imgElem = document.getElementById('img');
+                         var imgElem = document.getElementById('img');
                         var myJson = {
                             "id": document.getElementById("id").value,
                             "price": document.getElementById("price").value,
@@ -158,8 +158,8 @@
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
                             "publisher": document.getElementById("epublisher").value,
-                            "note": selector.options[selector.selectedIndex].text.toUpperCase()
-                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                            "note": selector.options[selector.selectedIndex].text.toUpperCase(),
+                               "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
                             url: "/edit/book",

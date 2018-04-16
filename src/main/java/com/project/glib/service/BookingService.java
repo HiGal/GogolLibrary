@@ -58,6 +58,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     // TODO modify to Service
     private final MessageService messageService;
     private final BookingDaoImplementation bookingDao;
+    private final LoggerService loggerService;
 
     @Autowired
     public BookingService(BookService bookService,
@@ -67,7 +68,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                           @Lazy UserService userService,
                           @Lazy CheckoutService checkoutService,
                           MessageService messageService,
-                          BookingDaoImplementation bookingDao) {
+                          BookingDaoImplementation bookingDao, LoggerService loggerService) {
         this.bookService = bookService;
         this.journalService = journalService;
         this.avService = avService;
@@ -76,6 +77,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         this.checkoutService = checkoutService;
         this.messageService = messageService;
         this.bookingDao = bookingDao;
+        this.loggerService = loggerService;
     }
 
     /**
@@ -189,14 +191,17 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 case Document.BOOK:
                     bookService.decrementCountById(docVirId);
                     docPhysService.inverseCanBooked(docPhysId);
+                    loggerService.addLog(userId, docPhysId, LoggerService.BOOKED_BOOK, System.currentTimeMillis());
                     break;
                 case Document.JOURNAL:
                     journalService.decrementCountById(docVirId);
                     docPhysService.inverseCanBooked(docPhysId);
+                    loggerService.addLog(userId, docPhysId, LoggerService.BOOKED_JOURNAL, System.currentTimeMillis());
                     break;
                 case Document.AV:
                     avService.decrementCountById(docVirId);
                     docPhysService.inverseCanBooked(docPhysId);
+                    loggerService.addLog(userId, docPhysId, LoggerService.BOOKED_AV, System.currentTimeMillis());
                     break;
                 default:
                     throw new Exception(TYPE_EXCEPTION);
@@ -215,7 +220,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 //                isActive = true;
 //            }
         }
-
         recalculatePriority(docVirId, docType);
         add(new Booking(userId, docVirId, docType, docPhysId, System.currentTimeMillis(), isActive, priority, shelf));
     }
@@ -354,6 +358,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
     /**
      * Deletes the priority
+     *
      * @param docVirId
      * @param docType
      */
@@ -510,11 +515,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                     .filter(booking -> booking.getDocVirId() == id)
                     .collect(Collectors.toList());
 
-            if (bookings.size() != 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return bookings.size() == 0;
         } catch (NoSuchElementException e) {
             return true;
         } catch (Exception e) {

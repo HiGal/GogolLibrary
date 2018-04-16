@@ -25,6 +25,7 @@ public class ReturnService {
     private final BookingService bookingService;
     // TODO modify to service
     private final MessageService messageService;
+    private final LoggerService loggerService;
 
     @Autowired
     public ReturnService(BookService bookService,
@@ -34,7 +35,8 @@ public class ReturnService {
                          CheckoutService checkoutService,
                          UserService userService,
                          BookingService bookingService,
-                         MessageService messageService) {
+                         MessageService messageService,
+                         LoggerService loggerService) {
         this.bookService = bookService;
         this.journalService = journalService;
         this.avService = avService;
@@ -43,6 +45,7 @@ public class ReturnService {
         this.userService = userService;
         this.bookingService = bookingService;
         this.messageService = messageService;
+        this.loggerService = loggerService;
     }
 
     public Pair<Checkout, Integer> toReturnDocument(Checkout checkout) throws Exception {
@@ -68,12 +71,18 @@ public class ReturnService {
             switch (docType) {
                 case Document.BOOK:
                     bookService.incrementCountById(docVirId);
+                    loggerService.addLog(checkout.getUserId(), checkout.getDocPhysId(),
+                            LoggerService.RETURNED_BOOK, System.currentTimeMillis());
                     break;
                 case Document.JOURNAL:
                     journalService.incrementCountById(docVirId);
+                    loggerService.addLog(checkout.getUserId(), checkout.getDocPhysId(),
+                            LoggerService.RETURNED_JOURNAL, System.currentTimeMillis());
                     break;
                 case Document.AV:
                     avService.incrementCountById(docVirId);
+                    loggerService.addLog(checkout.getUserId(), checkout.getDocPhysId(),
+                            LoggerService.RETURNED_AV, System.currentTimeMillis());
                     break;
                 default:
                     throw new Exception(DOC_TYPE_EXCEPTION);
@@ -119,7 +128,7 @@ public class ReturnService {
      * Gets price of document
      *
      * @param docPhysId physical ID of document
-     * @param docType type of document
+     * @param docType   type of document
      * @return price
      * @throws Exception
      */
