@@ -1,22 +1,37 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-
 public class User {
     public static final String TYPE = "USER";
-    public static final String LIBRARIAN = "LIBRARIAN";
+    public static final String ONLY_MOD = "CAN MODIFY";
+    public static final String ADD_MOD = "CAN ADD AND MODIFY";
+    public static final String DEL_ADD_MOD = "CAN DELETE, ADD, MODIFY";
     public static final String STUDENT = "STUDENT";
     public static final String INSTRUCTOR = "INSTRUCTOR";
     public static final String TA = "TEACHER_ASSISTANT";
     public static final String PROFESSOR = "PROFESSOR";
     public static final String PROFESSOR_VISITING = "VISITING_PROFESSOR";
+    public static final String ADMIN = "ADMIN";
     public static final String[] FACULTY = {INSTRUCTOR, TA, PROFESSOR};
     public static final String[] PATRONS = {STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
-    public static final String[] ROLES = {LIBRARIAN, STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
+    public static final String[] LIBRARIANS = {ONLY_MOD, ADD_MOD, DEL_ADD_MOD};
+    public static final String[] ROLES = {ONLY_MOD, ADD_MOD, DEL_ADD_MOD, STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
+    public static final HashMap<String, Integer> ACCESS = new HashMap<>();
+
+    static {
+        ACCESS.put(ADMIN, 100);
+        ACCESS.put(DEL_ADD_MOD, 30);
+        ACCESS.put(ADD_MOD, 20);
+        ACCESS.put(ONLY_MOD, 10);
+        for (String patron : PATRONS) {
+            ACCESS.put(patron, 0);
+        }
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
