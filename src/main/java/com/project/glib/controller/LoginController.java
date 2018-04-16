@@ -1,13 +1,16 @@
 package com.project.glib.controller;
 
-import com.project.glib.model.Book;
-import com.project.glib.model.Journal;
 import com.project.glib.model.User;
-import com.project.glib.service.*;
+import com.project.glib.service.AudioVideoService;
+import com.project.glib.service.JournalService;
+import com.project.glib.service.MessageService;
+import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -58,7 +61,7 @@ public class LoginController {
 
             if (user.getPassword().equals(form.getPassword()) && user.getAuth()) {
                 request.getSession().setAttribute("user", user);
-                if (role.equals(User.LIBRARIAN)) {
+                if (Arrays.asList(User.LIBRARIANS).contains(role)) {
                     model.addObject("data", "/librarian");
                 } else if (Arrays.asList(User.PATRONS).contains(role)) {
                     model.addObject("data", "/patron");
@@ -106,7 +109,8 @@ public class LoginController {
         try {
             User user = (User) request.getSession().getAttribute("user");
             modelAndView.addObject("info", user);
-            if (user.getRole().equals(User.LIBRARIAN)) {
+
+            if (Arrays.asList(User.LIBRARIANS).contains(user.getRole())) {
                 modelAndView.setViewName("librarian");
             } else {
                 modelAndView.setViewName("patron");
