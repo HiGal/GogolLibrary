@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/css/patrons.css">
     <link rel="stylesheet" href="/css/dialog.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--//this needs to make checkboxes cooler[1]-->
     <link rel="stylesheet" href="../css/line/blue.css">
     <script src="../js/icheck.js"></script>
 </head>
@@ -91,6 +92,7 @@
                 {{/allBooks}}
 
                 <script>
+                    //this needs to make checkboxes cooler[2]
                     $(document).ready(function () {
                         $('.chk').each(function () {
                             var self = $(this),
@@ -114,8 +116,10 @@
 
                     (function ($) {
                         $(document).ready(function () {
+                            //scrtipt to open book info
                             $('.btn-lg').click(function (e) {
                                 e.preventDefault();
+                                //I make description fields and buttons visible and edit fields and buttons unvisible
                                 document.getElementById("title").style.display = "block";
                                 document.getElementById("edition").style.display = "block";
                                 document.getElementById("publisher").style.display = "block";
@@ -143,8 +147,9 @@
                         });
                         return false;
                     }(jQuery));
-
+//ajax with search values
 function sCall() {
+    //string wih tags
     var str = "";
     var boxes = $("input:checkbox");
     for (var i = 0; i < boxes.length; i++) {
@@ -169,6 +174,7 @@ function sCall() {
 }
 
                     function edit() {
+                        //make edit fields visible, push values from desc. fields to edit fields
                         var title = document.getElementById("etitle");
                         var edition = document.getElementById("eedition");
                         var author = document.getElementById("eauthor");
@@ -193,11 +199,13 @@ function sCall() {
                     }
 
                     function renew() {
+                        //make login field and instant request button visible
                         document.getElementById("elogin").style.display = "inline";
                         document.getElementById("renewbtn").style.display = "block";
                     }
 
                     function renewConf() {
+                        //instant request ajax
                         document.getElementById("elogin").style.display = "none";
                         var myJson = {
                             "id": document.getElementById("id").value,
@@ -212,6 +220,7 @@ function sCall() {
                     }
 
                     function bCall() {
+                        //edit ajax
                         var imgElem = document.getElementById('img');
                         var myJson = {
                             "id": document.getElementById("id").value,
@@ -235,6 +244,7 @@ function sCall() {
                     }
 
                     function dCall() {
+                        //delete ajax
                         var myJson = {"id": document.getElementById("id").value};
                         $.ajax({
                             url: "/delete/book",
