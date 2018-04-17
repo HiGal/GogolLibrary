@@ -10,8 +10,6 @@ import com.project.glib.service.BookService;
 import com.project.glib.service.JournalService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -20,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 import static com.project.glib.model.User.ACCESS;
-import static com.project.glib.model.User.ADD_MOD;
+import static com.project.glib.model.User.LIBSECOND;
 
 @RestController
 public class LibrarianController {
@@ -108,7 +106,7 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             bookService.add(book, shelf);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
@@ -138,7 +136,7 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             journalService.add(journal, shelf);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
@@ -168,7 +166,7 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             avService.add(audioVideo, shelf);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
@@ -219,7 +217,7 @@ public class LibrarianController {
 
         try {
             User userInSession = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             User userInDao = userService.getById(user.getId());
             userInDao.setAuth(user.getAuth());
             userService.update(userInDao);
