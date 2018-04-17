@@ -1,17 +1,12 @@
 package com.project.glib.controller;
 
 
-import com.project.glib.model.AudioVideo;
-import com.project.glib.model.Book;
-import com.project.glib.model.Journal;
-import com.project.glib.model.User;
+import com.project.glib.model.*;
 import com.project.glib.service.AudioVideoService;
 import com.project.glib.service.BookService;
 import com.project.glib.service.JournalService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -20,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 import static com.project.glib.model.User.ACCESS;
-import static com.project.glib.model.User.ADD_MOD;
+import static com.project.glib.model.User.LIBSECOND;
 
 @RestController
 public class LibrarianController {
@@ -39,12 +34,11 @@ public class LibrarianController {
     }
 
 
-
     @RequestMapping(value = "/librarian")
-    public ModelAndView librarianPage(HttpServletRequest request){
+    public ModelAndView librarianPage(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("info",user);
+        modelAndView.addObject("info", user);
         modelAndView.setViewName("librarian");
         return modelAndView;
     }
@@ -84,6 +78,33 @@ public class LibrarianController {
         return modelAndView;
     }
 
+
+    @RequestMapping(value = "/add/book", method = RequestMethod.GET)
+    public ModelAndView addBookPage() {
+        return new ModelAndView("addBook");
+    }
+
+    @RequestMapping(value = "/add/book", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    ModelAndView addBook(@RequestBody Book book,
+                         @RequestParam(value = "shelf") String shelf,
+                         HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        System.out.println(book);
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
+            bookService.add(book, shelf);
+        } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
+            e.printStackTrace();
+            return modelAndView;
+        }
+
+        modelAndView.addObject("message", "succ");
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/edit/book")
     public String editBook(@RequestBody Book book) {
         System.out.println(book);
@@ -95,21 +116,35 @@ public class LibrarianController {
         return "succ";
     }
 
-    @RequestMapping(value = "/add/book", method = RequestMethod.GET)
-    public ModelAndView addBookPage(){
-        return new ModelAndView("addBook");
+    @RequestMapping(value = "/delete/book")
+    public ModelAndView delete_book_all(@RequestBody Book book){
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            bookService.remove(book.getId());
+            modelAndView.addObject("success", "Book has successfully deleted");
+        } catch (Exception e) {
+            modelAndView.addObject("error", e.getMessage());
+            e.printStackTrace();
+        }
+
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/add/book", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody
-    ModelAndView addBook(@RequestBody Book book,
-                         @RequestParam(value = "shelf") String shelf,
-                         HttpServletRequest request) {
+
+    @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
+    public ModelAndView addJournalPage() {
+        return new ModelAndView("addJournal");
+    }
+
+    @RequestMapping(value = "/add/journal", method = RequestMethod.POST, produces = "application/json")
+    public ModelAndView addJournal(@RequestBody Journal journal,
+                                   @RequestParam(value = "shelf") String shelf,
+                                   HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
-            bookService.add(book, shelf);
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
+            journalService.add(journal, shelf);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
@@ -123,30 +158,6 @@ public class LibrarianController {
     @RequestMapping(value = "/edit/journal")
     public ModelAndView editJournal(@ModelAttribute Journal journal) {
         ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
-    public ModelAndView addJournalPage() {
-        return new ModelAndView("addJournal");
-    }
-
-    @RequestMapping(value = "/librarian/add/Journal", method = RequestMethod.POST, produces = "application/json")
-    public ModelAndView addJournal(@RequestBody Journal journal,
-                                   @RequestParam(value = "shelf") String shelf,
-                                   HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        try {
-            User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
-            journalService.add(journal, shelf);
-        } catch (Exception e) {
-            modelAndView.addObject("message", e.getMessage());
-            e.printStackTrace();
-            return modelAndView;
-        }
-
-        modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 
@@ -168,7 +179,7 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             avService.add(audioVideo, shelf);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
@@ -219,7 +230,7 @@ public class LibrarianController {
 
         try {
             User userInSession = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             User userInDao = userService.getById(user.getId());
             userInDao.setAuth(user.getAuth());
             userService.update(userInDao);

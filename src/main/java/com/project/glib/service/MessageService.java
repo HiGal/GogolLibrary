@@ -9,11 +9,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.project.glib.model.User.LIBRARIANS;
 
 @Service
 public class MessageService {
@@ -119,28 +116,29 @@ public class MessageService {
             result.add(me.getMessage() + createMessage(me.getDocPhysId()));
         }
 
-        if (result.size() == 0){
+        if (result.size() == 0) {
             return new ArrayList<>();
-        }else {
+        } else {
             return result;
         }
 
     }
 
-    //todo finish ths method
-    //todo srochno
     public void sendMessagesToLib(String login) throws Exception {
         List<Messages> messages = getAllByUserID(userService.getIdByLogin(login));
+
         List<User> librarians = userService.getList().stream()
-                .filter(user -> Arrays.asList(LIBRARIANS).contains(user.getRole()))
+                .filter(User -> User.getRole().equals(com.project.glib.model.User.LIBRARIANS))
                 .collect(Collectors.toList());
+
         for (Messages message1 : messages) {
             String message = "User " + login +
                     " read the message: " + message1.getMessage() +
                     createMessage(message1.getDocPhysId());
+            for (int i = 0; i < librarians.size(); i++) {
+                addMes(librarians.get(i).getId(), -1, "NULL", message);
+            }
         }
-
-
     }
 
 
@@ -171,22 +169,24 @@ public class MessageService {
     private String createMessage(long idPhys) {
         DocumentPhysical documentPhysical = documentPhysicalService.getById(idPhys);
         String result = "";
-        long id = documentPhysical.getDocVirId();
-        String type = documentPhysical.getDocType();
+        if (idPhys > 0) {
+            long id = documentPhysical.getDocVirId();
+            String type = documentPhysical.getDocType();
 
-        switch (type) {
-            case Document.BOOK:
-                Book book = bookService.getById(id);
-                result = book.getTitle() + book.getAuthor();
-                break;
-            case Document.JOURNAL:
-                Journal journal = journalService.getById(id);
-                result = journal.getTitle() + journal.getAuthor();
-                break;
-            case Document.AV:
-                AudioVideo av = audioVideoService.getById(id);
-                result = av.getTitle() + av.getAuthor();
-                break;
+            switch (type) {
+                case Document.BOOK:
+                    Book book = bookService.getById(id);
+                    result = book.getTitle() + book.getAuthor();
+                    break;
+                case Document.JOURNAL:
+                    Journal journal = journalService.getById(id);
+                    result = journal.getTitle() + journal.getAuthor();
+                    break;
+                case Document.AV:
+                    AudioVideo av = audioVideoService.getById(id);
+                    result = av.getTitle() + av.getAuthor();
+                    break;
+            }
         }
 
         return result;
