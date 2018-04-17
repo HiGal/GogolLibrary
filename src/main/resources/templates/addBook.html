@@ -172,6 +172,7 @@
                     </div>
 
                     <script>
+                        //preview uploaded image
                         function previewFile() {
                             var preview = document.querySelector('img');
                             var file = document.querySelector('input[type=file]').files[0];
@@ -187,7 +188,7 @@
                                 preview.src = "";
                             }
                         }
-
+                        //convert image in b64
                         function getBase64Image(imgElem) {
                             var canvas = document.createElement("canvas");
                             canvas.width = imgElem.clientWidth;
@@ -202,7 +203,7 @@
                     </script>
 
                     <script type="text/javascript" language="javascript">
-
+                        //add book
                         function addBCall() {
                             var imgElem = document.getElementById('img');
                             var selector = document.getElementById("sel");
