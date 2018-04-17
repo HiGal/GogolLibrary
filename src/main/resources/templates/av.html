@@ -97,8 +97,8 @@
                         function edit() {
                             var title = document.getElementById("etitle");
                             var author = document.getElementById("eauthor");
-                            title.value = $('.title').text();
-                            author.value = $('.author').text();
+                            title.value = $('.title').text().split(': ')[1];
+                            author.value = $('.author').text().split(': ')[1];
                             document.getElementById("title").style.display = "none";
                             title.style.display = "block";
                             document.getElementById("author").style.display = "none";
@@ -131,7 +131,7 @@
                         }
 
                         function bCall() {
-                            // var imgElem = document.getElementById('img');
+                            var imgElem = document.getElementById('img');
                             var myJson = {
                                 "id": document.getElementById("id").value,
                                 "price": document.getElementById("price").value,
@@ -140,14 +140,14 @@
                                 "author": document.getElementById("eauthor").value,
                                 "tags": document.getElementById("etags").value,
                                 "note": selector.options[selector.selectedIndex].text.toUpperCase()
-                                //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                                "picture":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
                                 url: "/edit/av",
                                 type: 'POST',
                                 data: JSON.stringify(myJson)
                             });
-                            window.location.reload(false);
+                            setTimeout(reload, 1500);
                         }
 
                         function dCall() {
@@ -168,6 +168,10 @@
                                 success: alert('succ'),
                                 error: alert('fork')
                             });
+                            setTimeout(reload, 1500);
+                        }
+
+                        function reload() {
                             window.location.reload(false);
                         }
 
@@ -178,12 +182,12 @@
 
                             reader.onloadend = function () {
                                 preview.src = reader.result;
-                            }
+                            };
 
                             if (file) {
                                 reader.readAsDataURL(file);
                             } else {
-                                preview.src = "";
+                                preview.src = "../img/no_image.jpg";
                             }
                         }
 

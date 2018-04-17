@@ -185,16 +185,33 @@
                             if (file) {
                                 reader.readAsDataURL(file);
                             } else {
-                                preview.src = "";
+                                preview.src = "../img/no_image.jpg";
                             }
                         }
                         //convert image in b64
                         function getBase64Image(imgElem) {
                             var canvas = document.createElement("canvas");
-                            canvas.width = imgElem.clientWidth;
-                            canvas.height = imgElem.clientHeight;
+
+                            var MAX_WIDTH = 400;
+                            var MAX_HEIGHT = 200;
+                            var width = imgElem.width;
+                            var height = imgElem.height;
+
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
                             var ctx = canvas.getContext("2d");
-                            ctx.drawImage(imgElem, 0, 0);
+                            ctx.drawImage(imgElem, 0, 0, width, height);
                             var dataURL = canvas.toDataURL("image/png");
                             return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                         }
@@ -216,9 +233,10 @@
                                 "year": document.getElementById("year").value,
                                 "price": document.getElementById("price").value,
                                 "tags": document.getElementById("tags").value,
+                                "shelf": document.getElementById("shelf").value,
                                 "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                                 "count": document.getElementById("count").value,
-                                "imgData": JSON.stringify(getBase64Image(imgElem))
+                                "picture": getBase64Image(imgElem)
                             };
                             toastr.options = {
                                 "closeButton": true,

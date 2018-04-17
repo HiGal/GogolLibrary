@@ -170,11 +170,11 @@
                         var author = document.getElementById("eauthor");
                         var journal = document.getElementById("ejournal");
                         var issue = document.getElementById("eissue");
-                        title.value = $('.title').text();
-                        editor.value = $('.editor').text();
-                        author.value = $('.author').text();
-                        journal.value = $('.journal').text();
-                        issue.value = $('.issue').text();
+                        title.value = $('.title').text().split(': ')[1];
+                        editor.value = $('.editor').text().split(': ')[1];
+                        author.value = $('.author').text().split(': ')[1];
+                        journal.value = $('.journal').text().split(': ')[1];
+                        issue.value = $('.issue').text().split(': ')[1];
                         document.getElementById("title").style.display = "none";
                         title.style.display = "block";
                         document.getElementById("editor").style.display = "none";
@@ -213,7 +213,7 @@
                     }
 
                     function bCall() {
-                        // var imgElem = document.getElementById('img');
+                         var imgElem = document.getElementById('img');
                         var myJson = {
                             "id": document.getElementById("id").value,
                             "price": document.getElementById("price").value,
@@ -225,7 +225,7 @@
                             "issue": document.getElementById("eissue").value,
                             "tags": document.getElementById("etags").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
-                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                            "picture":getBase64Image(imgElem)
                         };
                         $.ajax({
                             url: "/edit/journal",
@@ -234,6 +234,10 @@
                             success: alert('succ'),
                             error: alert('fork')
                         });
+                        setTimeout(reload, 1500);
+                    }
+
+                    function reload() {
                         window.location.reload(false);
                     }
 
@@ -255,7 +259,7 @@
                             success: alert('succ'),
                             error: alert('fork')
                         });
-                        window.location.reload(false);
+                        setTimeout(reload, 1500);
                     }
 
 
@@ -271,16 +275,33 @@
                         if (file) {
                             reader.readAsDataURL(file);
                         } else {
-                            preview.src = "";
+                            preview.src = "../img/no_image.jpg";
                         }
                     }
 
                     function getBase64Image(imgElem) {
                         var canvas = document.createElement("canvas");
-                        canvas.width = imgElem.clientWidth;
-                        canvas.height = imgElem.clientHeight;
+
+                        var MAX_WIDTH = 400;
+                        var MAX_HEIGHT = 200;
+                        var width = imgElem.width;
+                        var height = imgElem.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
                         var ctx = canvas.getContext("2d");
-                        ctx.drawImage(imgElem, 0, 0);
+                        ctx.drawImage(imgElem, 0, 0, width, height);
                         var dataURL = canvas.toDataURL("image/png");
                         return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                     }
