@@ -137,8 +137,8 @@
                                 }
                                 var myJson = {
                                     "title": document.getElementById("stitle").value,
-                                    "title": document.getElementById("sname").value,
-                                    "title": document.getElementById("sissue").value,
+                                    "name": document.getElementById("sname").value,
+                                    "issue": Math.min(parseInt(document.getElementById("sissue").value), 0),
                                     "edition": document.getElementById("editor").value,
                                     "author": document.getElementById("sauthor").value,
                                     "publisher": document.getElementById("spublisher").value,

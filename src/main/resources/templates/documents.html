@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="/css/patrons.css">
     <link rel="stylesheet" href="/css/dialog.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/line/blue.css">
+    <script src="../js/icheck.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -40,6 +42,20 @@
         <div class="output"></div>
 
         <p id="patrons"><a id="linker" href="/librarian/taken_doc">Documents</a> / <u>Books</u></p>
+        <div>
+            <input placeholder="title" id="stitle">
+            <input placeholder="author" id="sauthor">
+            <input placeholder="edition" id="sedition">
+            <input placeholder="publisher" id="spublisher">
+            <input placeholder="year" id="syear">
+        </div>
+        <div class = "buttons">
+            <input type="checkbox" class="chk" name="detective" value="detective">
+            <label>Detective</label>
+            <input type="checkbox" class="chk" name="romance" value="romance">
+            <label>Romance</label>
+        </div>
+        <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
         <p class="header">Books</p>
         <div class="container-fluid">
             <div class="card-group">
@@ -65,6 +81,22 @@
 
 
                 {{/allBooks}}
+
+                <script>
+                    $(document).ready(function () {
+                        $('.chk').each(function () {
+                            var self = $(this),
+                                    label = self.next(),
+                                    label_text = label.text();
+                            label.remove();
+                            self.iCheck({
+                                checkboxClass: 'icheckbox_line-blue',
+                                radioClass: 'iradio_line-blue',
+                                insert: '<div class="icheck_line-icon"></div>' + label_text
+                            });
+                        });
+                    });
+                </script>
 
                 <script>
 //TODO: selector value
@@ -103,6 +135,30 @@
                         });
                         return false;
                     }(jQuery));
+
+function sCall() {
+    var str = "";
+    var boxes = $("input:checkbox");
+    for (var i = 0; i < boxes.length; i++) {
+        var box = boxes[i];
+        if ($(box).prop('checked')) {
+            str += $(box).attr('value')+ ",";
+        }
+    }
+    var myJson = {
+        "title": document.getElementById("stitle").value,
+        "edition": document.getElementById("sedition").value,
+        "author": document.getElementById("sauthor").value,
+        "publisher": document.getElementById("spublisher").value,
+        "year": Math.min(parseInt(document.getElementById("syear").value), 0),
+        "tags": str
+    };
+    $.ajax({
+        url: "idk",
+        type: 'POST',
+        data: JSON.stringify(myJson)
+    });
+}
 
                     function edit() {
                         var title = document.getElementById("etitle");

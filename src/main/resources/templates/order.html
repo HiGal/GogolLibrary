@@ -53,6 +53,7 @@
                     <input placeholder="author" id="sauthor">
                     <input placeholder="edition" id="sedition">
                     <input placeholder="publisher" id="spublisher">
+                    <input placeholder="year" id="syear">
                 </div>
                 <div class = "buttons">
                     <input type="checkbox" class="chk" name="detective" value="detective">
@@ -143,6 +144,7 @@
                                     "edition": document.getElementById("sedition").value,
                                     "author": document.getElementById("sauthor").value,
                                     "publisher": document.getElementById("spublisher").value,
+                                    "year": Math.min(parseInt(document.getElementById("syear").value), 0),
                                     "tags": str
                                 };
                                 $.ajax({
