@@ -1,10 +1,7 @@
 package com.project.glib.controller;
 
 
-import com.project.glib.model.AudioVideo;
-import com.project.glib.model.Book;
-import com.project.glib.model.Journal;
-import com.project.glib.model.User;
+import com.project.glib.model.*;
 import com.project.glib.service.AudioVideoService;
 import com.project.glib.service.BookService;
 import com.project.glib.service.JournalService;
@@ -39,12 +36,11 @@ public class LibrarianController {
     }
 
 
-
     @RequestMapping(value = "/librarian")
-    public ModelAndView librarianPage(HttpServletRequest request){
+    public ModelAndView librarianPage(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("info",user);
+        modelAndView.addObject("info", user);
         modelAndView.setViewName("librarian");
         return modelAndView;
     }
@@ -84,19 +80,9 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit/book")
-    public String editBook(@RequestBody Book book) {
-        System.out.println(book);
-        try {
-            bookService.update(book);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "succ";
-    }
 
     @RequestMapping(value = "/add/book", method = RequestMethod.GET)
-    public ModelAndView addBookPage(){
+    public ModelAndView addBookPage() {
         return new ModelAndView("addBook");
     }
 
@@ -106,6 +92,7 @@ public class LibrarianController {
                          @RequestParam(value = "shelf") String shelf,
                          HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        System.out.println(book);
         try {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
@@ -120,18 +107,38 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit/journal")
-    public ModelAndView editJournal(@ModelAttribute Journal journal) {
-        ModelAndView modelAndView = new ModelAndView();
+    @RequestMapping(value = "/edit/book")
+    public String editBook(@RequestBody Book book) {
+        System.out.println(book);
+        try {
+            bookService.update(book);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
+    }
+
+    @RequestMapping(value = "/delete/book")
+    public ModelAndView delete_book_all(@RequestBody Book book){
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            bookService.remove(book.getId());
+            modelAndView.addObject("success", "Book has successfully deleted");
+        } catch (Exception e) {
+            modelAndView.addObject("error", e.getMessage());
+            e.printStackTrace();
+        }
+
         return modelAndView;
     }
+
 
     @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
     public ModelAndView addJournalPage() {
         return new ModelAndView("addJournal");
     }
 
-    @RequestMapping(value = "/librarian/add/Journal", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/add/journal", method = RequestMethod.POST, produces = "application/json")
     public ModelAndView addJournal(@RequestBody Journal journal,
                                    @RequestParam(value = "shelf") String shelf,
                                    HttpServletRequest request) {
@@ -147,6 +154,12 @@ public class LibrarianController {
         }
 
         modelAndView.addObject("message", "succ");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/edit/journal")
+    public ModelAndView editJournal(@ModelAttribute Journal journal) {
+        ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
 

@@ -196,21 +196,18 @@
                             var imgElem = document.getElementById('img');
                             var selector = document.getElementById("sel");
                             <!-- var imgData = JSON.stringify(getBase64Image(imgElem)); -->
-                            var myJson = {
+                            var book = {
                                 "title": document.getElementById("booktitle").value,
                                 "author": document.getElementById("author").value,
                                 "edition": document.getElementById("edition").value,
                                 "publisher": document.getElementById("publisher").value,
                                 "year": document.getElementById("year").value,
                                 "price": document.getElementById("price").value,
-                                "bestseller": $("#bestseller:checked").map(function () {
-                                    return $(this).val();
-                                }).get(),
                                 "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                                 "count": document.getElementById("count").value,
-                                "shelf": document.getElementById("shelf").value,
-                                "ingData": JSON.stringify(getBase64Image(imgElem))
+                                "imgData": JSON.stringify(getBase64Image(imgElem))
                             };
+                            var shelf = document.getElementById("shelf").value;
                             toastr.options = {
                                 "closeButton": true,
                                 "debug": false,
@@ -228,11 +225,12 @@
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
+
                             $.ajax({
-                                url: "/add/book",
+                                url: "/add/book?shelf="+shelf,
                                 type: 'POST',
                                 contentType: 'application/json',
-                                data: JSON.stringify(myJson),
+                                data: JSON.stringify(book),
                                 dataType: 'json',
                                 success: function (data) {
                                     alert(data);
@@ -243,6 +241,7 @@
                                     }
                                 }
                             });
+
 
 
                         }

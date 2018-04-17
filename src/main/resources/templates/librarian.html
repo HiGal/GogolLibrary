@@ -12,21 +12,20 @@
     <title>Dashboard </title>
 </head>
 <body>
-<!--<script>
+<script>
     (function ($) {
         $(document).ready(function () {
             $('.dropdown-toggle').click(function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "/dashboard",
-                    type: 'POST',
-                    data: {"flag": true}
+                    url: "/checked",
+                    type: 'POST'
                 });
             });
         });
         return false;
     }(jQuery));
-</script>-->
+</script>
 <div class="navbar navbar-inverse navbar-fixed top">
     <div class="container">
         <div class="navbar-header">
@@ -120,6 +119,15 @@
                             <td>
                                 <!--need to add name from DB-->
                                 <h3>{{phone}}</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h3 class="fields">Privilege</h3>
+                            </td>
+                            <td>
+                                <!--need to add name from DB-->
+                                <h3 style="color: red">{{role}}</h3>
                             </td>
                         </tr>
                         </tbody>
