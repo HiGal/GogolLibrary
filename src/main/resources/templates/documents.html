@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
     <title>Books</title>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <script type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"></script>
+
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
     <link rel="stylesheet" href="/css/patrons.css">
     <link rel="stylesheet" href="/css/dialog.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--//this needs to make checkboxes cooler[1]-->
+    <link rel="stylesheet" href="../css/line/blue.css">
+    <script src="../js/icheck.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -21,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Gogol Library</a>
+            <a class="navbar-brand" href="/dashboard">Gogol Library</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -40,6 +52,20 @@
         <div class="output"></div>
 
         <p id="patrons"><a id="linker" href="/librarian/taken_doc">Documents</a> / <u>Books</u></p>
+        <div>
+            <input placeholder="title" id="stitle">
+            <input placeholder="author" id="sauthor">
+            <input placeholder="edition" id="sedition">
+            <input placeholder="publisher" id="spublisher">
+            <input placeholder="year" id="syear">
+        </div>
+        <div class="buttons">
+            <input type="checkbox" class="chk" name="detective" value="detective">
+            <label>Detective</label>
+            <input type="checkbox" class="chk" name="romance" value="romance">
+            <label>Romance</label>
+        </div>
+        <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
         <p class="header">Books</p>
         <div class="container-fluid">
             <div class="card-group">
@@ -55,7 +81,7 @@
                             <input type="hidden" class="id_card" value="{{id}}">
                             <input type="hidden" class="price_card" value="{{price}}">
                             <input type="hidden" class="count_card" value="{{count}}">
-                            <img class="image-book" src="../img/no_image.jpg">
+                            <img class="image-book" src="data:image/png;base64, {{picture}}">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
                             <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -67,15 +93,34 @@
                 {{/allBooks}}
 
                 <script>
-//TODO: selector value
+                    //this needs to make checkboxes cooler[2]
+                    $(document).ready(function () {
+                        $('.chk').each(function () {
+                            var self = $(this),
+                                    label = self.next(),
+                                    label_text = label.text();
+                            label.remove();
+                            self.iCheck({
+                                checkboxClass: 'icheckbox_line-blue',
+                                radioClass: 'iradio_line-blue',
+                                insert: '<div class="icheck_line-icon"></div>' + label_text
+                            });
+                        });
+                    });
+                </script>
+
+                <script>
+                    //TODO: selector value
                     //                    var image = $('#image-book');
                     //                    image.src = 'data:image/png;base64,iVBORw0K...';
                     //                    document.body.appendChild(image);
 
                     (function ($) {
                         $(document).ready(function () {
+                            //scrtipt to open book info
                             $('.btn-lg').click(function (e) {
                                 e.preventDefault();
+                                //I make description fields and buttons visible and edit fields and buttons unvisible
                                 document.getElementById("title").style.display = "block";
                                 document.getElementById("edition").style.display = "block";
                                 document.getElementById("publisher").style.display = "block";
@@ -98,21 +143,48 @@
                                 document.getElementById("imgbtn").style.display = "none";
                                 document.getElementById("elogin").style.display = "none";
                                 document.getElementById("renewbtn").style.display = "none";
+                                document.getElementById("etags").style.display = "none";
                                 document.getElementById("sel").style.display = "none"
                             });
                         });
                         return false;
                     }(jQuery));
+                    //ajax with search values
+                    function sCall() {
+                        //string wih tags
+                        var str = "";
+                        var boxes = $("input:checkbox");
+                        for (var i = 0; i < boxes.length; i++) {
+                            var box = boxes[i];
+                            if ($(box).prop('checked')) {
+                                str += $(box).attr('value') + ",";
+                            }
+                        }
+                        var myJson = {
+                            "title": document.getElementById("stitle").value,
+                            "edition": document.getElementById("sedition").value,
+                            "author": document.getElementById("sauthor").value,
+                            "publisher": document.getElementById("spublisher").value,
+                            "year": Math.min(parseInt(document.getElementById("syear").value), 0),
+                            "tags": str
+                        };
+                        $.ajax({
+                            url: "idk",
+                            type: 'POST',
+                            data: JSON.stringify(myJson)
+                        });
+                    }
 
                     function edit() {
+                        //make edit fields visible, push values from desc. fields to edit fields
                         var title = document.getElementById("etitle");
                         var edition = document.getElementById("eedition");
                         var author = document.getElementById("eauthor");
                         var publisher = document.getElementById("epublisher");
-                        title.value = $('.title').text();
-                        edition.value = $('.edition').text();
-                        author.value = $('.author').text();
-                        publisher.value = $('.publisher').text();
+                        title.value = $('.title').text().split(': ')[1];
+                        edition.value = $('.edition').text().split(': ')[1];
+                        author.value = $('.author').text().split(': ')[1];
+                        publisher.value = $('.publisher').text().split(': ')[1];
                         document.getElementById("title").style.display = "none";
                         title.style.display = "block";
                         document.getElementById("edition").style.display = "none";
@@ -124,32 +196,36 @@
                         document.getElementById("editbtn").style.display = "none";
                         document.getElementById("okbtn").style.display = "inline";
                         document.getElementById("imgbtn").style.display = "inline";
+                        document.getElementById("etags").style.display = "inline";
                         document.getElementById("sel").style.display = "inline"
 
                     }
 
                     function renew() {
+                        //make login field and instant request button visible
                         document.getElementById("elogin").style.display = "inline";
                         document.getElementById("renewbtn").style.display = "block";
                     }
 
                     function renewConf() {
+                        //instant request ajax
                         document.getElementById("elogin").style.display = "none";
                         var myJson = {
                             "id": document.getElementById("id").value,
                             "login": document.getElementById("elogin").value
-                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
                             url: "idk",
                             type: 'POST',
                             data: JSON.stringify(myJson)
                         });
-                        window.location.reload(false);
+                        setTimeout(reload, 1500);
                     }
 
                     function bCall() {
-                         var imgElem = document.getElementById('img');
+                        //edit ajax
+                        var imgElem = document.getElementById('img');
+                        var selector = document.getElementById('sel');
                         var myJson = {
                             "id": document.getElementById("id").value,
                             "price": document.getElementById("price").value,
@@ -158,8 +234,9 @@
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
                             "publisher": document.getElementById("epublisher").value,
+                            "tags": document.getElementById("etags").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
-                               "picture":JSON.stringify(getBase64Image(imgElem))
+                            "picture": getBase64Image(imgElem)
                         };
                         $.ajax({
                             url: "/edit/book",
@@ -168,20 +245,12 @@
                             data: JSON.stringify(myJson),
                             dataType: 'json'
                         });
-                        window.location.reload(false);
+                        setTimeout(reload, 1500);
                     }
 
                     function dCall() {
-                        // var imgElem = document.getElementById('img');
-                        var myJson = {
-                            "id": document.getElementById("id").value
-//                            "title": document.getElementById("title").text(),
-//                            "editor": document.getElementById("editor").text(),
-//                            "author": document.getElementById("author").text(),
-//                            "journal": document.getElementById("journal").text(),
-//                            "issue": document.getElementById("issue").text()
-                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
-                        };
+                        //delete ajax
+                        var myJson = {"id": document.getElementById("id").value};
                         $.ajax({
                             url: "/delete/book",
                             type: 'POST',
@@ -189,7 +258,12 @@
                             data: JSON.stringify(myJson),
                             dataType: 'json'
                         });
-                        window.location.reload(false);
+
+                        setTimeout(reload, 1500);
+                    }
+
+                    function reload() {
+                        window.location.reload(false)
                     }
 
                     function previewFile() {
@@ -204,16 +278,33 @@
                         if (file) {
                             reader.readAsDataURL(file);
                         } else {
-                            preview.src = "";
+                            preview.src = "../img/no_image.jpg";
                         }
                     }
 
                     function getBase64Image(imgElem) {
                         var canvas = document.createElement("canvas");
-                        canvas.width = imgElem.clientWidth;
-                        canvas.height = imgElem.clientHeight;
+
+                        var MAX_WIDTH = 400;
+                        var MAX_HEIGHT = 200;
+                        var width = imgElem.width;
+                        var height = imgElem.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
                         var ctx = canvas.getContext("2d");
-                        ctx.drawImage(imgElem, 0, 0);
+                        ctx.drawImage(imgElem, 0, 0, width, height);
                         var dataURL = canvas.toDataURL("image/png");
                         return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                     }
@@ -231,7 +322,7 @@
                         </div>
                         <div class="modal-body body">
                             <div class="row">
-                                <div class = "col-lg-4 fields">
+                                <div class="col-lg-4 fields">
                                     <img src="../img/no_image.jpg" id="img"><br>
                                     <input type="file" onchange="previewFile()" id="imgbtn">
                                 </div>
@@ -247,6 +338,7 @@
                                     <input id="eauthor">
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
+                                    <input id="etags" placeholder="tags">
                                     <select id="sel">
                                         <option class="opt">NA</option>
                                         <option class="opt">Reference</option>
