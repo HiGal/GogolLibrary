@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static com.project.glib.dao.implementations.UserDaoImplementation.REMOVE_USER_HAS_CHECKOUTS_EXCEPTION;
+import static com.project.glib.model.User.LIBRARIANS;
 
 @Service
 public class UserService implements ModifyByLibrarianService<User> {
@@ -61,7 +62,7 @@ public class UserService implements ModifyByLibrarianService<User> {
             //todo change to false
             user.setAuth(true);
             usersDao.add(user);
-            if (user.getRole().equals(User.LIBRARIAN)) {
+            if (Arrays.asList(LIBRARIANS).contains(user.getRole())) {
                 loggerService.addLog(findByLogin(user.getLogin()).getId(),
                         0, LoggerService.ADDED_NEW_LIBRARIAN, System.currentTimeMillis());
             } else {
@@ -79,7 +80,7 @@ public class UserService implements ModifyByLibrarianService<User> {
         checkValidParameters(user);
         try {
             usersDao.update(user);
-            if (user.getRole().equals(User.LIBRARIAN)) {
+            if (Arrays.asList(LIBRARIANS).contains(user.getRole())) {
                 loggerService.addLog(findByLogin(user.getLogin()).getId(),
                         0, LoggerService.MODIFIED_LIBRARAN, System.currentTimeMillis());
             } else {
@@ -100,7 +101,7 @@ public class UserService implements ModifyByLibrarianService<User> {
         try {
             removeAllBookingsByUserId(userId);
             usersDao.remove(userId);
-            if (getById(userId).getRole().equals(User.LIBRARIAN)) {
+            if (Arrays.asList(LIBRARIANS).contains(getById(userId).getRole())) {
                 loggerService.addLog(userId,
                         0, LoggerService.DELETED_LIBRARIAN, System.currentTimeMillis());
             } else {
@@ -225,7 +226,7 @@ public class UserService implements ModifyByLibrarianService<User> {
     public List<User> getListAuthUsersLib() throws Exception {
         try {
             return getList().stream()
-                    .filter(user -> user.getAuth() && !Arrays.asList(User.LIBRARIANS).contains(user.getRole()))
+                    .filter(user -> user.getAuth() && !Arrays.asList(LIBRARIANS).contains(user.getRole()))
                     .collect(Collectors.toList());
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
@@ -235,7 +236,7 @@ public class UserService implements ModifyByLibrarianService<User> {
     public List<User> getListNotAuthUsersLib() throws Exception {
         try {
             return getList().stream()
-                    .filter(user -> !user.getAuth() && !Arrays.asList(User.LIBRARIANS).contains(user.getRole()))
+                    .filter(user -> !user.getAuth() && !Arrays.asList(LIBRARIANS).contains(user.getRole()))
                     .collect(Collectors.toList());
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);

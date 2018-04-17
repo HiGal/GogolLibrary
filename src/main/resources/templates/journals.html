@@ -111,11 +111,11 @@
                         var author = document.getElementById("eauthor");
                         var journal = document.getElementById("ejournal");
                         var issue = document.getElementById("eissue");
-                        title.placeholder = $('.title').text();
-                        editor.placeholder = $('.editor').text();
-                        author.placeholder = $('.author').text();
-                        journal.placeholder = $('.journal').text();
-                        issue.placeholder = $('.issue').text();
+                        title.value = $('.title').text();
+                        editor.value = $('.editor').text();
+                        author.value = $('.author').text();
+                        journal.value = $('.journal').text();
+                        issue.value = $('.issue').text();
                         document.getElementById("title").style.display = "none";
                         title.style.display = "block";
                         document.getElementById("editor").style.display = "none";
@@ -205,7 +205,7 @@
 
                         reader.onloadend = function () {
                             preview.src = reader.result;
-                        }
+                        };
 
                         if (file) {
                             reader.readAsDataURL(file);

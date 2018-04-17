@@ -3,6 +3,7 @@ package com.project.glib.service;
 import com.project.glib.dao.implementations.LoggerDaoImplementation;
 import com.project.glib.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ public class LoggerService implements LoggerActions {
     private final AudioVideoService audioVideoService;
 
     @Autowired
-    public LoggerService(LoggerDaoImplementation loggerDao, UserService userService, DocumentPhysicalService documentPhysicalService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService) {
+    public LoggerService(LoggerDaoImplementation loggerDao, @Lazy UserService userService,
+                         DocumentPhysicalService documentPhysicalService, @Lazy BookService bookService,
+                         JournalService journalService, AudioVideoService audioVideoService) {
         this.loggerDao = loggerDao;
         this.userService = userService;
         this.documentPhysicalService = documentPhysicalService;

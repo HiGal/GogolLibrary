@@ -48,7 +48,6 @@ public class LoginController {
         return new ModelAndView("login", "data", "");
     }
 
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView login(@RequestBody User form, HttpServletRequest request) {
@@ -65,6 +64,7 @@ public class LoginController {
                     model.addObject("data", "/librarian");
                 } else if (Arrays.asList(User.PATRONS).contains(role)) {
                     model.addObject("data", "/patron");
+                    System.out.println(model);
                 } else {
                     model.addObject("data", "Something goes wrong");
                     throw new Exception("WRONG ROLE");
@@ -104,7 +104,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public ModelAndView mainPage(HttpServletRequest request) {
+    public ModelAndView mainPage( HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
         try {
             User user = (User) request.getSession().getAttribute("user");
@@ -114,12 +114,25 @@ public class LoginController {
                 modelAndView.setViewName("librarian");
             } else {
                 modelAndView.setViewName("patron");
-                modelAndView.addObject("listMessages", messageService.getMessages(user.getLogin()));
+                System.out.println(modelAndView);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/checked", method = RequestMethod.POST)
+    public void read_messages(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        try {
+            messageService.sendMessagesToLib(user.getLogin());
+            messageService.removeAllByUserID(user.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 //
 //    /*

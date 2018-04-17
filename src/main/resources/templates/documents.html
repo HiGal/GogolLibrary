@@ -137,7 +137,7 @@
                         document.getElementById("elogin").style.display = "none";
                         var myJson = {
                             "id": document.getElementById("id").value,
-                            "login": document.getElementById("elogin").value,
+                            "login": document.getElementById("elogin").value
                             //   "imgData":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
@@ -159,7 +159,7 @@
                             "author": document.getElementById("eauthor").value,
                             "publisher": document.getElementById("epublisher").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
-                               "imgData":JSON.stringify(getBase64Image(imgElem))
+                               "picture":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
                             url: "/edit/book",
@@ -199,7 +199,7 @@
 
                         reader.onloadend = function () {
                             preview.src = reader.result;
-                        }
+                        };
 
                         if (file) {
                             reader.readAsDataURL(file);

@@ -96,8 +96,8 @@
                         function edit() {
                             var title = document.getElementById("etitle");
                             var author = document.getElementById("eauthor");
-                            title.placeholder = $('.title').text();
-                            author.placeholder = $('.author').text();
+                            title.value = $('.title').text();
+                            author.value = $('.author').text();
                             document.getElementById("title").style.display = "none";
                             title.style.display = "block";
                             document.getElementById("author").style.display = "none";
