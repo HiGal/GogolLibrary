@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.project.glib.model.User.ACCESS;
-import static com.project.glib.model.User.ADD_MOD;
+import static com.project.glib.model.User.LIBSECOND;
 
 @Controller
 public class JournalController {
@@ -29,7 +29,7 @@ public class JournalController {
                              HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(ADD_MOD) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             journalService.add(journal, shelf);
         } catch (Exception e) {
             e.printStackTrace();

@@ -139,6 +139,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Shelf</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="tags" id="tags"
+                                       placeholder="Enter tags" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
 
                         <label for="sel">Select type</label>
                         <select class="form-control" id="sel">
@@ -196,18 +207,18 @@
                             var imgElem = document.getElementById('img');
                             var selector = document.getElementById("sel");
                             <!-- var imgData = JSON.stringify(getBase64Image(imgElem)); -->
-                            var book = {
+                            var myJson = {
                                 "title": document.getElementById("booktitle").value,
                                 "author": document.getElementById("author").value,
                                 "edition": document.getElementById("edition").value,
                                 "publisher": document.getElementById("publisher").value,
                                 "year": document.getElementById("year").value,
                                 "price": document.getElementById("price").value,
+                                "tags": document.getElementById("tags").value,
                                 "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                                 "count": document.getElementById("count").value,
                                 "imgData": JSON.stringify(getBase64Image(imgElem))
                             };
-                            var shelf = document.getElementById("shelf").value;
                             toastr.options = {
                                 "closeButton": true,
                                 "debug": false,
@@ -225,12 +236,11 @@
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-
                             $.ajax({
                                 url: "/add/book?shelf="+shelf,
                                 type: 'POST',
                                 contentType: 'application/json',
-                                data: JSON.stringify(book),
+                                data: JSON.stringify(myJson),
                                 dataType: 'json',
                                 success: function (data) {
                                     alert(data);
@@ -241,7 +251,6 @@
                                     }
                                 }
                             });
-
 
 
                         }

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../css/patrons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/dialog.css">
+    <link rel="stylesheet" href="../css/line/blue.css">
+    <script src="../js/icheck.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -43,6 +45,21 @@
         <div class="row centered">
             <div class="card card-container">
                 <p id="patrons"><a id="linker" href="/dashboard">Dashboard</a> / <u>Journals</u></p>
+                <div>
+                    <input placeholder="title" id="stitle">
+                    <input placeholder="name" id="sname">
+                    <input placeholder="author" id="sauthor">
+                    <input placeholder="title" id="sissue">
+                    <input placeholder="editor" id="seditor">
+                    <input placeholder="publisher" id="spublisher">
+                </div>
+                <div class = "buttons">
+                    <input type="checkbox" class="chk" name="detective" value="detective">
+                    <label>Detective</label>
+                    <input type="checkbox" class="chk" name="romance" value="romance">
+                    <label>Romance</label>
+                </div>
+                <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
                 <p class="header">Journals that available to check out</p>
                 <div class="container-fluid">
                     <div class="card-group">
@@ -56,6 +73,7 @@
                                     <input type="hidden" class="issue_card" value="{{issue}}">
                                     <input type="hidden" class="editor_card" value="{{editor}}">
                                     <input type="hidden" class="id_card" value="{{id}}">
+                                    <input type="hidden" class="note_card" value="{{note}}">
                                     <img class="image-journal" src="../img/no_image.jpg">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -65,8 +83,25 @@
                         {{/allJournals}}
 
                         <script>
+                            $(document).ready(function () {
+                                $('.chk').each(function () {
+                                    var self = $(this),
+                                            label = self.next(),
+                                            label_text = label.text();
+                                    label.remove();
+                                    self.iCheck({
+                                        checkboxClass: 'icheckbox_line-blue',
+                                        radioClass: 'iradio_line-blue',
+                                        insert: '<div class="icheck_line-icon"></div>' + label_text
+                                    });
+                                });
+                            });
+                        </script>
+
+                        <script>
                             (function ($) {
                                 $(document).ready(function () {
+                                    var clr = $("#orderbtn").css("background-color");
                                     $('.btn-lg').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
@@ -78,10 +113,43 @@
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                         $("#img").attr("src", $(this).parent().find($('.image-journal')).attr('src'));
                                         $('#expansion').html($(this).parent().find($('.card.title')).text());
+                                        if ($(this).parent().find($('.note_card')).attr('value') === "reference") {
+                                            $("#orderbtn").css("background-color", "red");
+                                            $('#orderbtn').click(function (g) {
+                                                toastr["error"]("You can't order a reference material")
+                                            })
+                                        } else {
+                                            $("#orderbtn").css("background-color", clr);
+                                        }
                                     });
                                 });
                                 return false;
                             }(jQuery));
+
+                            function sCall() {
+                                var str = "";
+                                var boxes = $("input:checkbox");
+                                for (var i = 0; i < boxes.length; i++) {
+                                    var box = boxes[i];
+                                    if ($(box).prop('checked')) {
+                                        str += $(box).attr('value') + ",";
+                                    }
+                                }
+                                var myJson = {
+                                    "title": document.getElementById("stitle").value,
+                                    "title": document.getElementById("sname").value,
+                                    "title": document.getElementById("sissue").value,
+                                    "edition": document.getElementById("editor").value,
+                                    "author": document.getElementById("sauthor").value,
+                                    "publisher": document.getElementById("spublisher").value,
+                                    "tags": str
+                                };
+                                $.ajax({
+                                    url: "idk",
+                                    type: 'POST',
+                                    data: JSON.stringify(myJson)
+                                });
+                            }
 
                             function oCall() {
                                 // var imgElem = document.getElementById('img');
@@ -123,7 +191,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#" class="btn btn-primary" onclick="oCall()" >Order</a>
+                                    <a href="#" class="btn btn-primary" id="orderbtn" onclick="oCall()" >Order</a>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>

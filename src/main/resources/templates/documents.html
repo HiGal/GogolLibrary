@@ -18,6 +18,7 @@
 
     <link rel="stylesheet" href="/css/patrons.css">
     <link rel="stylesheet" href="/css/dialog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -74,7 +75,7 @@
                 {{/allBooks}}
 
                 <script>
-                    //TODO: selector value
+//TODO: selector value
                     //                    var image = $('#image-book');
                     //                    image.src = 'data:image/png;base64,iVBORw0K...';
                     //                    document.body.appendChild(image);
@@ -165,7 +166,7 @@
                             "author": document.getElementById("eauthor").value,
                             "publisher": document.getElementById("epublisher").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
-                            "imgData": JSON.stringify(getBase64Image(imgElem))
+                            "picture":JSON.stringify(getBase64Image(imgElem))
                         };
                         $.ajax({
                             url: "/edit/book",
@@ -245,7 +246,7 @@
                                     <input id="eauthor">
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
-                                    <select class=id="sel">
+                                    <select class= id="sel">
                                         <option class="opt">NA</option>
                                         <option class="opt">Reference</option>
                                         <option class="opt">Bestseller</option>

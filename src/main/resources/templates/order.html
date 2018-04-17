@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="../css/patrons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/dialog.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/line/blue.css">
+    <script src="../js/icheck.js"></script>
+
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -43,6 +48,19 @@
         <div class="row centered">
             <div class="card card-container">
                 <p id="patrons"><a id="linker" href="/dashboard">Dashboard</a> / <u>Books</u></p>
+                <div>
+                    <input placeholder="title" id="stitle">
+                    <input placeholder="author" id="sauthor">
+                    <input placeholder="edition" id="sedition">
+                    <input placeholder="publisher" id="spublisher">
+                </div>
+                <div class = "buttons">
+                    <input type="checkbox" class="chk" name="detective" value="detective">
+                    <label>Detective</label>
+                    <input type="checkbox" class="chk" name="romance" value="romance">
+                    <label>Romance</label>
+                </div>
+                <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
                 <p class="header">Books that available to check out</p>
                 <div class="container-fluid">
                     <div class="card-group">
@@ -56,9 +74,11 @@
                                     <input type="hidden" class="edition_card" value="{{edition}}">
                                     <input type="hidden" class="publisher_card" value="{{publisher}}">
                                     <input type="hidden" class="id_card" value="{{id}}">
+                                    <input type="hidden" class="note_card" value="{{note}}">
                                     <img class="image-book" src="../img/no_image.jpg">
                                     <p></p>
-                                    <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
+                                    <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show
+                                        details</a>
                                 </div>
                             </div>
                         </div>
@@ -67,8 +87,25 @@
                         {{/allBooks}}
 
                         <script>
+                            $(document).ready(function () {
+                                $('.chk').each(function () {
+                                    var self = $(this),
+                                            label = self.next(),
+                                            label_text = label.text();
+                                    label.remove();
+                                    self.iCheck({
+                                        checkboxClass: 'icheckbox_line-blue',
+                                        radioClass: 'iradio_line-blue',
+                                        insert: '<div class="icheck_line-icon"></div>' + label_text
+                                    });
+                                });
+                            });
+                        </script>
+
+                        <script>
                             (function ($) {
                                 $(document).ready(function () {
+                                    var clr = $("#orderbtn").css("background-color");
                                     $('.btn-lg').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
@@ -79,10 +116,41 @@
                                         $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
                                         $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
                                         $('#expansion').html($(this).parent().find($('.card.title')).text());
+                                        if ($(this).parent().find($('.note_card')).attr('value') === "reference") {
+                                            $("#orderbtn").css("background-color", "red");
+                                            $('#orderbtn').click(function (g) {
+                                                toastr["error"]("You can't order a reference material")
+                                            })
+                                        } else {
+                                            $("#orderbtn").css("background-color", clr);
+                                        }
                                     });
                                 });
                                 return false;
                             }(jQuery));
+
+                            function sCall() {
+                                var str = "";
+                                var boxes = $("input:checkbox");
+                                for (var i = 0; i < boxes.length; i++) {
+                                    var box = boxes[i];
+                                    if ($(box).prop('checked')) {
+                                        str += $(box).attr('value')+ ",";
+                                    }
+                                }
+                                var myJson = {
+                                    "title": document.getElementById("stitle").value,
+                                    "edition": document.getElementById("sedition").value,
+                                    "author": document.getElementById("sauthor").value,
+                                    "publisher": document.getElementById("spublisher").value,
+                                    "tags": str
+                                };
+                                $.ajax({
+                                    url: "idk",
+                                    type: 'POST',
+                                    data: JSON.stringify(myJson)
+                                });
+                            }
 
                             function oCall() {
                                 // var imgElem = document.getElementById('img');
@@ -97,7 +165,7 @@
                                 $.ajax({
                                     url: "idk",
                                     type: 'POST',
-                                    data: JSON.stringify(myJson),
+                                    data: JSON.stringify(myJson)
                                 });
                             }
 
@@ -108,7 +176,8 @@
                              aria-hidden="true">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                    </button>
                                     <h3 id="expansion"></h3>
                                 </div>
                                 <div class="modal-body body">
@@ -124,7 +193,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#" class="btn btn-primary" onclick="oCall()" >Order</a>
+                                    <a href="#" class="btn btn-primary" id="orderbtn" onclick="oCall()">Order</a>
                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                 </div>
                             </div>
