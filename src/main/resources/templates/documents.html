@@ -142,6 +142,7 @@
                                 document.getElementById("imgbtn").style.display = "none";
                                 document.getElementById("elogin").style.display = "none";
                                 document.getElementById("renewbtn").style.display = "none";
+                                document.getElementById("etags").style.display = "none";
                                 document.getElementById("sel").style.display = "none"
                             });
                         });
@@ -194,6 +195,7 @@ function sCall() {
                         document.getElementById("editbtn").style.display = "none";
                         document.getElementById("okbtn").style.display = "inline";
                         document.getElementById("imgbtn").style.display = "inline";
+                        document.getElementById("etags").style.display = "inline";
                         document.getElementById("sel").style.display = "inline"
 
                     }
@@ -230,6 +232,7 @@ function sCall() {
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
                             "publisher": document.getElementById("epublisher").value,
+                            "tags": document.getElementById("etags").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                             "picture":JSON.stringify(getBase64Image(imgElem))
                         };
@@ -312,6 +315,7 @@ function sCall() {
                                     <input id="eauthor">
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
+                                    <input id="etags" placeholder="tags">
                                     <select class= id="sel">
                                         <option class="opt">NA</option>
                                         <option class="opt">Reference</option>
