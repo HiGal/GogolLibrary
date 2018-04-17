@@ -26,7 +26,7 @@ public class AudioVideoServiceTest {
 
     @Before
     public void setup() {
-        av = new AudioVideo("title", "author", 400, 2, "picture");
+        av = new AudioVideo("title", "author", 400, 2, "picture", null);
         shelf1 = "Shelf1";
         shelf2 = "Shelf2";
         count1 = 2;
@@ -102,7 +102,7 @@ public class AudioVideoServiceTest {
         try {
             av.setTitle("");
             avService.checkValidParameters(av);
-        } catch (Exception e){
+        } catch (Exception e) {
             assertEquals(TITLE_EXCEPTION, e.getMessage());
         }
     }
@@ -112,7 +112,7 @@ public class AudioVideoServiceTest {
         try {
             av.setAuthor("");
             avService.checkValidParameters(av);
-        } catch (Exception e){
+        } catch (Exception e) {
             assertEquals(AUTHOR_EXCEPTION, e.getMessage());
         }
     }
@@ -122,7 +122,7 @@ public class AudioVideoServiceTest {
         try {
             av.setPrice(-1);
             avService.checkValidParameters(av);
-        } catch (Exception e){
+        } catch (Exception e) {
             assertEquals(PRICE_EXCEPTION, e.getMessage());
         }
     }
@@ -132,7 +132,7 @@ public class AudioVideoServiceTest {
         try {
             av.setCount(-10);
             avService.checkValidParameters(av);
-        } catch (Exception e){
+        } catch (Exception e) {
             assertEquals(COUNT_EXCEPTION, e.getMessage());
         }
     }
@@ -154,10 +154,10 @@ public class AudioVideoServiceTest {
     }
 
     @Test
-    public void getIdReturnException(){
+    public void getIdReturnException() {
         try {
             avService.getId(av);
-        } catch (Exception e){
+        } catch (Exception e) {
             assertEquals(EXIST_EXCEPTION, e.getMessage());
         }
     }

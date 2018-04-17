@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -38,10 +39,9 @@ public class Journal extends Document {
     @Column(name = "picture")
     private String picture;
 
-    protected Journal() {
-    }
+    private HashSet<Keyword> keywords;
 
-    public Journal(String title, String author, String name, int issue, String editor, String note, int price, int count, String picture) {
+    public Journal(String title, String author, String name, int issue, String editor, String note, int price, int count, String picture, HashSet<Keyword> keywords) {
         this.title = title;
         this.author = author;
         this.name = name;
@@ -51,6 +51,7 @@ public class Journal extends Document {
         this.price = price;
         this.count = count;
         this.picture = picture;
+        this.keywords = keywords;
     }
 
     @Override
@@ -66,13 +67,15 @@ public class Journal extends Document {
                 Objects.equals(author, journal.author) &&
                 Objects.equals(name, journal.name) &&
                 Objects.equals(editor, journal.editor) &&
-                Objects.equals(note, journal.note);
+                Objects.equals(note, journal.note) &&
+                Objects.equals(picture, journal.picture) &&
+                Objects.equals(keywords, journal.keywords);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, title, author, name, issue, editor, note, price, count);
+        return Objects.hash(id, title, author, name, issue, editor, note, price, count, picture, keywords);
     }
 
     @Override
@@ -84,9 +87,11 @@ public class Journal extends Document {
                 ", name='" + name + '\'' +
                 ", issue=" + issue +
                 ", editor='" + editor + '\'' +
-                ", note=" + note +
+                ", note='" + note + '\'' +
                 ", price=" + price +
                 ", count=" + count +
+                ", picture='" + picture + '\'' +
+                ", keywords=" + keywords +
                 '}';
     }
 
@@ -168,5 +173,17 @@ public class Journal extends Document {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "documents_keywords",
+            joinColumns = @JoinColumn(name = "doc_vir_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "keyword_id"))
+    public HashSet<Keyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(HashSet<Keyword> keywords) {
+        this.keywords = keywords;
     }
 }

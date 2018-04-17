@@ -94,7 +94,7 @@ public class UserServiceTest {
     public void removeHasCheckout1() throws Exception {
         userService.add(user);
         Book book = new Book("title", "author", "publisher",
-                "edition", 2017, Document.DEFAULT_NOTE, 100, 2, "picture");
+                "edition", 2017, Document.DEFAULT_NOTE, 100, 2, "picture", null);
         bookService.add(book, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(book.getId(), Document.BOOK));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
@@ -115,7 +115,7 @@ public class UserServiceTest {
     public void removeHasCheckout2() throws Exception {
         userService.add(user);
         Journal journal = new Journal("title", "author", "name", 2,
-                "editor", Document.REFERENCE, 200, 3, "picture");
+                "editor", Document.REFERENCE, 200, 3, "picture", null);
         journalService.add(journal, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(journal.getId(), Document.JOURNAL));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),
@@ -135,7 +135,7 @@ public class UserServiceTest {
     @Test
     public void removeHasCheckout3() throws Exception {
         userService.add(user);
-        AudioVideo av = new AudioVideo("title", "author", 400, 2, "picture");
+        AudioVideo av = new AudioVideo("title", "author", 400, 2, "picture", null);
         avService.add(av, shelf);
         DocumentPhysical docPhys = docPhysService.getById(docPhysService.getValidPhysId(av.getId(), Document.AV));
         Checkout checkout = new Checkout(user.getId(), docPhys.getId(), System.currentTimeMillis(),

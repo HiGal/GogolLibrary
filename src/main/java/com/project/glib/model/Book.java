@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -37,10 +38,9 @@ public class Book extends Document {
     @Column(name = "picture")
     private String picture;
 
-    protected Book() {
-    }
+    private HashSet<Keyword> keywords;
 
-    public Book(String title, String author, String publisher, String edition, int year, String note, int price, int count, String picture) {
+    public Book(String title, String author, String publisher, String edition, int year, String note, int price, int count, String picture, HashSet<Keyword> keywords) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -50,30 +50,7 @@ public class Book extends Document {
         this.price = price;
         this.count = count;
         this.picture = picture;
-    }
-
-    public Book(Book book) {
-        this.title = book.title;
-        this.author = book.author;
-        this.publisher = book.publisher;
-        this.edition = book.edition;
-        this.year = book.year;
-        this.note = book.note;
-        this.price = book.price;
-        this.count = book.count;
-        this.picture = book.picture;
-    }
-
-    public Book(Book book, int count) {
-        this.title = book.title;
-        this.author = book.author;
-        this.publisher = book.publisher;
-        this.edition = book.edition;
-        this.year = book.year;
-        this.note = book.note;
-        this.price = book.price;
-        this.picture = book.picture;
-        this.count = count;
+        this.keywords = keywords;
     }
 
     @Override
@@ -89,13 +66,15 @@ public class Book extends Document {
                 Objects.equals(author, book.author) &&
                 Objects.equals(publisher, book.publisher) &&
                 Objects.equals(edition, book.edition) &&
-                Objects.equals(note, book.note);
+                Objects.equals(note, book.note) &&
+                Objects.equals(picture, book.picture) &&
+                Objects.equals(keywords, book.keywords);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, title, author, publisher, edition, year, note, price, count);
+        return Objects.hash(id, title, author, publisher, edition, year, note, price, count, picture, keywords);
     }
 
     @Override
@@ -107,9 +86,11 @@ public class Book extends Document {
                 ", publisher='" + publisher + '\'' +
                 ", edition='" + edition + '\'' +
                 ", year=" + year +
-                ", note=" + note +
+                ", note='" + note + '\'' +
                 ", price=" + price +
                 ", count=" + count +
+                ", picture='" + picture + '\'' +
+                ", keywords=" + keywords +
                 '}';
     }
 
@@ -191,5 +172,17 @@ public class Book extends Document {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "documents_keywords",
+            joinColumns = @JoinColumn(name = "doc_vir_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "keyword_id"))
+    public HashSet<Keyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(HashSet<Keyword> keywords) {
+        this.keywords = keywords;
     }
 }

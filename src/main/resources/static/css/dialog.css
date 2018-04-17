@@ -1,16 +1,19 @@
-.modal-content{
-   max-width: 600px;
-   max-height: 800px;
-   margin: 300px auto ;
+.modal-content {
+    max-width: 600px;
+    max-height: 800px;
+    margin: 300px auto;
 }
-.fields{
+
+.fields {
     margin-left: 20px;
 }
-.image{
+
+.image {
     margin-left: 40px;
     box-shadow: 0 0 0;
 }
-.form-control{
+
+.form-control {
     margin-bottom: 20px;
 }
 .buttons {

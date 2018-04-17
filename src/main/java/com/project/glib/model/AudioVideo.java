@@ -1,6 +1,7 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -25,15 +26,15 @@ public class AudioVideo extends Document {
     @Column(name = "picture")
     private String picture;
 
-    protected AudioVideo() {
-    }
+    private HashSet<Keyword> keywords;
 
-    public AudioVideo(String title, String author, int price, int count, String picture) {
+    public AudioVideo(String title, String author, int price, int count, String picture, HashSet<Keyword> keywords) {
         this.title = title;
         this.author = author;
         this.price = price;
         this.count = count;
         this.picture = picture;
+        this.keywords = keywords;
     }
 
     @Override
@@ -45,13 +46,15 @@ public class AudioVideo extends Document {
                 price == that.price &&
                 count == that.count &&
                 Objects.equals(title, that.title) &&
-                Objects.equals(author, that.author);
+                Objects.equals(author, that.author) &&
+                Objects.equals(picture, that.picture) &&
+                Objects.equals(keywords, that.keywords);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, title, author, price, count);
+        return Objects.hash(id, title, author, price, count, picture, keywords);
     }
 
     @Override
@@ -60,8 +63,10 @@ public class AudioVideo extends Document {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
-                ", price=" + price + '\'' +
+                ", price=" + price +
                 ", count=" + count +
+                ", picture='" + picture + '\'' +
+                ", keywords=" + keywords +
                 '}';
     }
 
@@ -111,5 +116,17 @@ public class AudioVideo extends Document {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "documents_keywords",
+            joinColumns = @JoinColumn(name = "doc_vir_id"),
+            inverseJoinColumns = @JoinColumn(name = "keyword_id"))
+    public HashSet<Keyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(HashSet<Keyword> keywords) {
+        this.keywords = keywords;
     }
 }

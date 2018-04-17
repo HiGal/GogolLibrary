@@ -172,7 +172,7 @@
                                     var role = $(this).parent().find($('.role')).val();
                                     $('.title').text(id);
                                     document.getElementById('flog').value = log;
-                                    document.getElementById('fpass').value= pass;
+                                    document.getElementById('fpass').value = pass;
                                     document.getElementById('fname').value = name;
                                     document.getElementById('fsname').value = sname;
                                     document.getElementById('faddr').value = addr;
@@ -181,9 +181,6 @@
                                 });
                             });
                         }(jQuery));
-
-
-
 
 
                         function bCall() {
@@ -196,7 +193,7 @@
                                 "address": document.getElementById("faddr").value,
                                 "phone": document.getElementById("fphone").value,
                                 "role": document.getElementById('frole').value.toUpperCase(),
-                                "auth":true
+                                "auth": true
 
                             };
                             $.ajax({

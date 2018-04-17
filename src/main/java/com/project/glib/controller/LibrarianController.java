@@ -37,12 +37,11 @@ public class LibrarianController {
     }
 
 
-
     @RequestMapping(value = "/librarian")
-    public ModelAndView librarianPage(HttpServletRequest request){
+    public ModelAndView librarianPage(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("info",user);
+        modelAndView.addObject("info", user);
         modelAndView.setViewName("librarian");
         return modelAndView;
     }
@@ -94,7 +93,7 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/add/book", method = RequestMethod.GET)
-    public ModelAndView addBookPage(){
+    public ModelAndView addBookPage() {
         return new ModelAndView("addBook");
     }
 
