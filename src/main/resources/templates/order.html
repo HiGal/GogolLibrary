@@ -54,13 +54,13 @@
                     <input placeholder="edition" id="sedition">
                     <input placeholder="publisher" id="spublisher">
                 </div>
-                <div >
+                <div class = "buttons">
                     <input type="checkbox" class="chk" name="detective" value="detective">
                     <label>Detective</label>
                     <input type="checkbox" class="chk" name="romance" value="romance">
                     <label>Romance</label>
                 </div>
-                <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>x
+                <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
                 <p class="header">Books that available to check out</p>
                 <div class="container-fluid">
                     <div class="card-group">
@@ -105,6 +105,7 @@
                         <script>
                             (function ($) {
                                 $(document).ready(function () {
+                                    var clr = $("#orderbtn").css("background-color");
                                     $('.btn-lg').click(function (e) {
                                         e.preventDefault();
                                         //other fields the same way. If you want to make bold text you need another field.
@@ -121,7 +122,7 @@
                                                 toastr["error"]("You can't order a reference material")
                                             })
                                         } else {
-                                            $("#orderbtn").css("background-color", "blue");
+                                            $("#orderbtn").css("background-color", clr);
                                         }
                                     });
                                 });
@@ -134,7 +135,7 @@
                                 for (var i = 0; i < boxes.length; i++) {
                                     var box = boxes[i];
                                     if ($(box).prop('checked')) {
-                                        str += $(box).attr('value') + " ";
+                                        str += $(box).attr('value')+ ",";
                                     }
                                 }
                                 var myJson = {
@@ -164,7 +165,7 @@
                                 $.ajax({
                                     url: "idk",
                                     type: 'POST',
-                                    data: JSON.stringify(myJson),
+                                    data: JSON.stringify(myJson)
                                 });
                             }
 
