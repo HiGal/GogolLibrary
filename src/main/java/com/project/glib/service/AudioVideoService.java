@@ -301,4 +301,18 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         return shelfCount.keySet().stream().map(shelf ->
                 new Pair<>(shelf, shelfCount.get(shelf))).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Pair<String, Integer>> getListOfShelvesAndCounts(long avId) {
+        HashMap<String, Integer> shelfCount = new HashMap<>();
+        HashSet<String> shelves = new HashSet<>();
+        for (DocumentPhysical docPhys : docPhysService.getByDocVirIdAndDocType(avId, Document.AV)) {
+            String shelf = docPhys.getShelf();
+            int count = shelves.add(shelf) ? 0 : shelfCount.get(shelf) + 1;
+            shelfCount.put(shelf, count);
+        }
+
+        return shelfCount.keySet().stream().map(shelf ->
+                new Pair<>(shelf, shelfCount.get(shelf))).collect(Collectors.toList());
+    }
 }

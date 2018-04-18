@@ -1,7 +1,10 @@
 package com.project.glib.controller;
 
 
-import com.project.glib.model.*;
+import com.project.glib.model.AudioVideo;
+import com.project.glib.model.Book;
+import com.project.glib.model.Journal;
+import com.project.glib.model.User;
 import com.project.glib.service.AudioVideoService;
 import com.project.glib.service.BookService;
 import com.project.glib.service.JournalService;
@@ -130,6 +133,13 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/copies/book", method = RequestMethod.GET)
+    public ModelAndView getListOfBookCopies(@RequestBody long bookId, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+
+        return modelAndView.addObject(bookService.getListOfShelvesAndCounts(bookId));
+    }
+
 
     @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
     public ModelAndView addJournalPage() {
@@ -161,6 +171,13 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/copies/journal", method = RequestMethod.GET)
+    public ModelAndView getListOfJournalCopies(@RequestBody long journalId, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+
+        return modelAndView.addObject(journalService.getListOfShelvesAndCounts(journalId));
+    }
+
     @RequestMapping(value = "/edit/AV")
     public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo) {
         ModelAndView modelAndView = new ModelAndView();
@@ -189,6 +206,13 @@ public class LibrarianController {
 
         modelAndView.addObject("message", "succ");
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/copies/av", method = RequestMethod.GET)
+    public ModelAndView getListOfAVCopies(@RequestBody long avId, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+
+        return modelAndView.addObject(avService.getListOfShelvesAndCounts(avId));
     }
 
     @RequestMapping(value = "/librarian/taken_doc", method = RequestMethod.GET)
