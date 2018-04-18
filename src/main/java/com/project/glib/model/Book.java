@@ -8,7 +8,7 @@ import java.util.Objects;
 @Table(name = "book")
 public class Book extends Document {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "title")
@@ -174,7 +174,7 @@ public class Book extends Document {
         this.picture = picture;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "documents_keywords",
             joinColumns = @JoinColumn(name = "doc_vir_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "keyword_id"))
