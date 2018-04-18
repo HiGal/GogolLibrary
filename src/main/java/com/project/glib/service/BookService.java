@@ -4,12 +4,10 @@ import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.model.Book;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
+import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -245,5 +243,21 @@ public class BookService implements DocumentServiceInterface<Book> {
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
+    }
+
+    @Override
+    public List<Pair<String, Integer>> getListOfShelvesAndCounts() {
+        HashMap<String, Integer> shelfCount = new HashMap<>();
+        for (Book book : getList()) {
+            HashSet<String> shelves = new HashSet<>();
+            for (DocumentPhysical docPhys : docPhysService.getByDocVirIdAndDocType(book.getId(), Document.BOOK)) {
+                String shelf = docPhys.getShelf();
+                int count = shelves.add(shelf) ? 0 : shelfCount.get(shelf) + 1;
+                shelfCount.put(shelf, count);
+            }
+        }
+
+        return shelfCount.keySet().stream().map(shelf ->
+                new Pair<>(shelf, shelfCount.get(shelf))).collect(Collectors.toList());
     }
 }

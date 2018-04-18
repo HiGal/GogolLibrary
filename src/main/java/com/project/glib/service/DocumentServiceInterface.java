@@ -1,6 +1,9 @@
 package com.project.glib.service;
 
 import com.project.glib.model.Document;
+import javafx.util.Pair;
+
+import java.util.List;
 
 public interface DocumentServiceInterface<T extends Document> extends ModifyByLibrarianService<T> {
     String PRICE_EXCEPTION = " price must be positive ";
@@ -37,4 +40,5 @@ public interface DocumentServiceInterface<T extends Document> extends ModifyByLi
 
     T isAlreadyExist(T t);
 
+    List<Pair<String, Integer>> getListOfShelvesAndCounts();
 }

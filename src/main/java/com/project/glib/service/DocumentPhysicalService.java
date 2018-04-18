@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
-public class DocumentPhysicalService implements ModifyByLibrarianService<DocumentPhysical> {
+class DocumentPhysicalService implements ModifyByLibrarianService<DocumentPhysical> {
     public static final String TYPE = DocumentPhysical.TYPE;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String UPDATE_EXCEPTION = ModifyByLibrarianService.UPDATE_EXCEPTION + TYPE + SMTH_WRONG;

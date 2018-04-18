@@ -4,11 +4,10 @@ import com.project.glib.dao.implementations.AudioVideoDaoImplementation;
 import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
+import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -285,5 +284,21 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
+    }
+
+    @Override
+    public List<Pair<String, Integer>> getListOfShelvesAndCounts() {
+        HashMap<String, Integer> shelfCount = new HashMap<>();
+        for (AudioVideo av : getList()) {
+            HashSet<String> shelves = new HashSet<>();
+            for (DocumentPhysical docPhys : docPhysService.getByDocVirIdAndDocType(av.getId(), Document.AV)) {
+                String shelf = docPhys.getShelf();
+                int count = shelves.add(shelf) ? 0 : shelfCount.get(shelf) + 1;
+                shelfCount.put(shelf, count);
+            }
+        }
+
+        return shelfCount.keySet().stream().map(shelf ->
+                new Pair<>(shelf, shelfCount.get(shelf))).collect(Collectors.toList());
     }
 }
