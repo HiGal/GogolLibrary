@@ -89,6 +89,15 @@
                                     document.getElementById("renewbtn").style.display = "none";
                                     document.getElementById("etags").style.display = "none";
                                     document.getElementById("sel").style.display = "none"
+
+                                    $.ajax({
+                                        url: "idk",
+                                        type: 'POST',
+                                        data: JSON.stringify({"id": document.getElementById("id").value}),
+                                        success: function (data) {
+
+                                        }
+                                    });
                                 });
                             });
                             return false;
@@ -139,7 +148,7 @@
                                 "title": document.getElementById("etitle").value,
                                 "author": document.getElementById("eauthor").value,
                                 "tags": document.getElementById("etags").value,
-                                "note": selector.options[selector.selectedIndex].text.toUpperCase()
+                                "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                                 "picture":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
@@ -153,7 +162,7 @@
                         function dCall() {
                             // var imgElem = document.getElementById('img');
                             var myJson = {
-                                "id": document.getElementById("id").value,
+                                "id": document.getElementById("id").value
 //                                "title": document.getElementById("title").text(),
 //                                "editor": document.getElementById("editor").text(),
 //                                "author": document.getElementById("author").text(),
