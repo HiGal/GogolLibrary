@@ -99,9 +99,10 @@ public class UserService implements ModifyByLibrarianService<User> {
 
         messageService.removeAllByUserID(userId);
         try {
+            boolean isLibrarian = Arrays.asList(LIBRARIANS).contains(getById(userId).getRole());
             removeAllBookingsByUserId(userId);
             usersDao.remove(userId);
-            if (Arrays.asList(LIBRARIANS).contains(getById(userId).getRole())) {
+            if (isLibrarian) {
                 loggerService.addLog(userId,
                         0, LoggerService.DELETED_LIBRARIAN, System.currentTimeMillis());
             } else {
