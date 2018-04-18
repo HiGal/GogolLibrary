@@ -2,7 +2,6 @@ package com.project.glib.model;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "documents_physical")
@@ -26,20 +25,14 @@ public class DocumentPhysical {
     @Column(name = "doc_type")
     private String docType;
 
-
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "keyword_id")
-//    private Set<Keyword> keywords;
-
     protected DocumentPhysical() {
     }
 
-    public DocumentPhysical(String shelf, boolean canBooked, long docVirId, String docType, Set<Keyword> keywords) {
+    public DocumentPhysical(String shelf, boolean canBooked, long docVirId, String docType) {
         this.shelf = shelf;
         this.canBooked = canBooked;
         this.docVirId = docVirId;
         this.docType = docType;
-//        this.keywords = keywords;
     }
 
     @Override

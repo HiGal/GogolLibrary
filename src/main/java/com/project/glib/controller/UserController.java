@@ -6,7 +6,8 @@ import com.project.glib.model.AudioVideo;
 import com.project.glib.model.Book;
 import com.project.glib.model.Journal;
 import com.project.glib.model.User;
-import com.project.glib.service.*;
+import com.project.glib.service.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class UserController {
 
     private final MessageService messageService;
 
+    @Autowired
     public UserController(MessageService messageService) {
         this.messageService = messageService;
     }
@@ -26,9 +28,9 @@ public class UserController {
     @RequestMapping(value = "/patron")
     public ModelAndView UserPage(HttpServletRequest request) throws Exception {
         User user = (User) request.getSession().getAttribute("user");
-        ModelAndView  modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", messageService.getMessages(user.getLogin()));
-        modelAndView.addObject("info",user);
+        modelAndView.addObject("info", user);
         modelAndView.setViewName("patron");
         return modelAndView;
     }
@@ -38,13 +40,15 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
+
     @RequestMapping(value = "/order/journal")
-    public ModelAndView orderBook(@ModelAttribute Journal journal){
+    public ModelAndView orderBook(@ModelAttribute Journal journal) {
         ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
+
     @RequestMapping(value = "/order/AV")
-    public ModelAndView orderBook(@ModelAttribute AudioVideo audioVideo){
+    public ModelAndView orderBook(@ModelAttribute AudioVideo audioVideo) {
         ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }

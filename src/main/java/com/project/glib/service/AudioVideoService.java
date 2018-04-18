@@ -42,7 +42,7 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         for (int i = 0; i < audioVideo.getCount(); i++) {
             // TODO add keywords options
             docPhysService.add(new DocumentPhysical(shelf,
-                    true, audioVideo.getId(), Document.AV, null));
+                    true, audioVideo.getId(), Document.AV));
         }
     }
 

@@ -263,9 +263,9 @@
                                 dataType: 'json',
                                 success: function (data) {
                                     alert(data);
-                                    if(data["message"] === "succ"){
+                                    if (data["message"] === "succ") {
                                         toastr["success"]("Book has successfully added");
-                                    }else {
+                                    } else {
                                         toastr["warning"](data["message"]);
                                     }
                                 }

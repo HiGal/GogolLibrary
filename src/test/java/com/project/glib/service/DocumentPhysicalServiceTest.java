@@ -34,18 +34,18 @@ public class DocumentPhysicalServiceTest {
     public void setup() throws Exception {
         String shelf = "SHELF";
         book = new Book("title", "author", "publisher",
-                "edition", 2017, Document.DEFAULT_NOTE, 100, 0, "picture");
+                "edition", 2017, Document.DEFAULT_NOTE, 100, 0, "picture", null);
         journal = new Journal("title", "author", "name", 2,
-                "editor", Document.REFERENCE, 200, 0, "picture");
-        av = new AudioVideo("title", "author", 400, 0, "picture");
+                "editor", Document.REFERENCE, 200, 0, "picture", null);
+        av = new AudioVideo("title", "author", 400, 0, "picture", null);
 
         bookService.add(book, shelf);
         journalService.add(journal, shelf);
         avService.add(av, shelf);
 
-        docPhys1 = new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null);
-        docPhys2 = new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL, null);
-        docPhys3 = new DocumentPhysical(shelf, true, av.getId(), Document.AV, null);
+        docPhys1 = new DocumentPhysical(shelf, true, book.getId(), Document.BOOK);
+        docPhys2 = new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL);
+        docPhys3 = new DocumentPhysical(shelf, true, av.getId(), Document.AV);
     }
 
     @After
@@ -168,11 +168,11 @@ public class DocumentPhysicalServiceTest {
 
     private void removeByDocIdAndDocTypeSuccessful(DocumentPhysical docPhys) throws Exception {
         docPhysService.add(new DocumentPhysical("shelf1", true, docPhys.getDocVirId(),
-                docPhys.getDocType(), null));
+                docPhys.getDocType()));
         docPhysService.add(new DocumentPhysical("shelf2", true, docPhys.getDocVirId(),
-                docPhys.getDocType(), null));
+                docPhys.getDocType()));
         docPhysService.add(new DocumentPhysical("shelf3", true, docPhys.getDocVirId(),
-                docPhys.getDocType(), null));
+                docPhys.getDocType()));
 
 
         docPhysService.removeAllByDocVirIdAndDocType(docPhys.getDocVirId(), docPhys.getDocType());

@@ -88,15 +88,15 @@ public class DeliveryTests {
                 "MIT Press",
                 "Third edition",
                 2009,
-                Book.DEFAULT_NOTE, 5000, 1, "img");
+                Book.DEFAULT_NOTE, 5000, 1, "img", null);
         b2 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software",
                 "Erich Gamma, Ralph Johnson, John Vlissides, Richard Helm",
                 "Addison-Wesley Professional",
                 "First edition",
                 2003,
-                Book.BESTSELLER, 1700, 1, "img");
+                Book.BESTSELLER, 1700, 1, "img", null);
         av3 = new AudioVideo("Null References: The Billion Dollar Mistake",
-                "Tony Hoare", 700, 1, "img");
+                "Tony Hoare", 700, 1, "img", null);
 
 
         bookService.add(b1, "SH1");

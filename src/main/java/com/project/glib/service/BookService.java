@@ -35,7 +35,7 @@ public class BookService implements DocumentServiceInterface<Book> {
         add(book);
         for (int i = 0; i < book.getCount(); i++) {
             // TODO add keywords options
-            docPhysService.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK, null));
+            docPhysService.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK));
         }
     }
 

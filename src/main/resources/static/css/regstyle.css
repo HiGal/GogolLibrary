@@ -61,11 +61,11 @@ input::-webkit-input-placeholder {
 
 .login-button {
     margin-top: 3px;
-    background-color: #8391C4  ;
+    background-color: #8391C4;
 }
 
-.login-button:hover{
-    background-color:#292262 ;
+.login-button:hover {
+    background-color: #292262;
 }
 
 .login-register {

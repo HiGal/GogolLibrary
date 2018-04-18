@@ -32,7 +32,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         add(journal);
         for (int i = 0; i < journal.getCount(); i++) {
             // TODO add keywords options
-            docPhysService.add(new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL, null));
+            docPhysService.add(new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL));
         }
     }
 

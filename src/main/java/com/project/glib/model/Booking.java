@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "booking")
-public class Booking implements Comparable<Booking>{
+public class Booking implements Comparable<Booking> {
     public static final String TYPE = "BOOKING";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

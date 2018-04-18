@@ -40,10 +40,10 @@ public class CheckoutServiceTest {
         String shelf1 = "SH010";
 
         book = new Book("title", "author", "publisher",
-                "edition", 2017, Document.DEFAULT_NOTE, 100, 2, "picture");
+                "edition", 2017, Document.DEFAULT_NOTE, 100, 2, "picture", null);
         journal = new Journal("title", "author", "name", 2,
-                "editor", Document.REFERENCE, 200, 3, "picture");
-        av = new AudioVideo("title", "author", 400, 2, "picture");
+                "editor", Document.REFERENCE, 200, 3, "picture", null);
+        av = new AudioVideo("title", "author", 400, 2, "picture", null);
         user = new User("login", "password",
                 "name", "surname", "address", "79134562845", User.STUDENT, true, "picture");
 
