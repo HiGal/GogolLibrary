@@ -136,7 +136,7 @@ public class LibrarianController {
     @RequestMapping(value = "/copies/book")
     public ModelAndView getListOfBookCopies(@RequestBody Book book) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        modelAndView.addObject(bookService.getListOfShelvesAndCounts(book.getId()));
+        modelAndView.addObject("copies", bookService.getListOfShelvesAndCounts(book.getId()));
      //   modelAndView.setViewName("documents");
         return modelAndView;
     }

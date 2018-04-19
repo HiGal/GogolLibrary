@@ -152,7 +152,7 @@
                                     type: 'POST',
                                     data: JSON.stringify(myJson),
                                     success: function(data) {
-                                        var shelf_table = JSON.parse(data);
+                                        var shelf_table = data["copies"];
                                         var html = "";
                                         shelf_table.forEach(function (value) {
                                             html =+ "<tr><td>" + value.Key + "</td><td>" + value.Value + "</td></tr>";
