@@ -144,15 +144,22 @@
                                 document.getElementById("elogin").style.display = "none";
                                 document.getElementById("renewbtn").style.display = "none";
                                 document.getElementById("etags").style.display = "none";
-                                document.getElementById("sel").style.display = "none"
-                                
+                                document.getElementById("sel").style.display = "none";
+                                $('tbody').empty();
+                                var myJson = {"id": document.getElementById("id").value};
                                 $.ajax({
-                                    url: "idk",
+                                    url: "/copies/book",
                                     type: 'POST',
-                                    data: JSON.stringify({"id": document.getElementById("id").value}),
-                                    success: function (data) {
-                                        
+                                    data: JSON.stringify(myJson),
+                                    success: function(data) {
+                                        var shelf_table = JSON.parse(data);
+                                        var html = "";
+                                        shelf_table.forEach(function (value) {
+                                            html =+ "<tr><td>" + value.Key + "</td><td>" + value.Value + "</td></tr>";
+                                        });
+                                        $('tbody').append(html);
                                     }
+
                                 });
                             });
                         });
@@ -334,6 +341,24 @@
                                 <div class="col-lg-4 fields">
                                     <img src="../img/no_image.jpg" id="img"><br>
                                     <input type="file" onchange="previewFile()" id="imgbtn">
+
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Shelf</th>
+                                            <th>Copies</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!--{{#copies}}-->
+                                        <!--<tr>-->
+                                            <!--<td>{{Key}}</td>-->
+                                            <!--<td>{{Value}}</td>-->
+                                        <!--</tr>-->
+                                        <!--{{/copies}}-->
+                                        </tbody>
+                                    </table>
+
                                 </div>
                                 <div class="col-lg-6 fields" id="container">
                                     <input type="hidden" id="id">

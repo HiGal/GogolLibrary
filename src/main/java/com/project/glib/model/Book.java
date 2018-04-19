@@ -53,6 +53,9 @@ public class Book extends Document {
         this.keywords = keywords;
     }
 
+    public Book() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

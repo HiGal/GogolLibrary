@@ -133,12 +133,20 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/copies/book", method = RequestMethod.GET)
-    public ModelAndView getListOfBookCopies(@RequestBody long bookId, HttpServletRequest request) {
+    @RequestMapping(value = "/copies/book")
+    public ModelAndView getListOfBookCopies(@RequestBody Book book) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-
-        return modelAndView.addObject(bookService.getListOfShelvesAndCounts(bookId));
+        modelAndView.addObject(bookService.getListOfShelvesAndCounts(book.getId()));
+     //   modelAndView.setViewName("documents");
+        return modelAndView;
     }
+
+//    @RequestMapping(value = "/copies/book", method = RequestMethod.GET)
+//    public Model getListOfBookCopies(@RequestBody long bookId, HttpServletRequest request) {
+//        Model model = new Model(new MappingJackson2JsonView());
+//        model.addObject("copies", bookService.getListOfShelvesAndCounts(bookId));
+//        return model;
+//    }
 
 
     @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
