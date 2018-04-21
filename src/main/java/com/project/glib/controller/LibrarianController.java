@@ -93,7 +93,6 @@ public class LibrarianController {
                          @RequestParam(value = "shelf") String shelf,
                          HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        System.out.println(book);
         try {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
@@ -110,7 +109,6 @@ public class LibrarianController {
 
     @RequestMapping(value = "/edit/book")
     public String editBook(@RequestBody Book book) {
-        System.out.println(book);
         try {
             bookService.update(book);
         } catch (Exception e) {
@@ -119,7 +117,7 @@ public class LibrarianController {
         return "succ";
     }
 
-    @RequestMapping(value = "/delete/book")
+    @RequestMapping(value = "/delete/all/book")
     public ModelAndView delete_book_all(@RequestBody Book book){
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
@@ -174,9 +172,24 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/edit/journal")
-    public ModelAndView editJournal(@ModelAttribute Journal journal) {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
+    public String editJournal(@RequestBody Journal journal) {
+        System.out.println(journal);
+        try {
+            journalService.update(journal);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
+    }
+
+    @RequestMapping(value = "/delete/all/journals")
+    public String delete_all_journals(@RequestBody Journal journal){
+        try {
+            journalService.remove(journal.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
     }
 
     @RequestMapping(value = "/copies/journal", method = RequestMethod.GET)
@@ -232,7 +245,6 @@ public class LibrarianController {
     @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     public @ResponseBody
     String UserDelete(@RequestBody User user1) {
-        System.out.println(user1);
         try {
             userService.remove(user1.getId());
 

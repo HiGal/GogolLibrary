@@ -54,6 +54,8 @@ public class Journal extends Document {
         this.keywords = keywords;
     }
 
+    public Journal(){}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

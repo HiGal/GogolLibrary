@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../css/editU.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
     <title>Add Journal</title>
 </head>
 <body>
@@ -20,14 +23,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Gogol Library</a>
+            <a class="navbar-brand" href="/dashboard">Gogol Library</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="addBook.html">Add Book</a></li>
-                <li class="active"><a href="addJournal">Add Journal</a></li>
-                <li><a href="addAV.html">Add AV</a></li>
-                <li><a href="login.html">Log Out</a></li>
+                <li><a href="/add/book">Add Book</a></li>
+                <li class="active"><a href="#">Add Journal</a></li>
+                <li><a href="/add/AV">Add AV</a></li>
+                <li><a href="/">Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -37,7 +40,7 @@
         <div class="row main">
 
             <div class="main-login main-center">
-                <form class="form-horizontal" method="post" action="/edit/journal">
+                <form class="form-horizontal" method="post" action="javascript:void(null)" onsubmit="addJCall()">
 
                     <div class="form-group">
                         <label for="jname" class="cols-sm-2 control-label">Journal Name</label>
@@ -106,16 +109,173 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Count</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="count" id="count"
+                                       placeholder="Enter count" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="sel">Select type</label>
+                        <select class="form-control" id="sel">
+                            <option class="opt">NA</option>
+                            <option class="opt">Reference</option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Shelf</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="shelf" id="shelf"
+                                       placeholder="Enter shelf" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Tags</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="tags" id="tags"
+                                       placeholder="Enter tags" required/>
+                            </div>
+                        </div>
+                    </div>
 
 
-                    <div class="form-group ">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button" formmethod="post" onsubmit="return make_json(this)">
+                    <div class="form-group">
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <input type="file" onchange="previewFile()"><br>
+                                <img src="" height="200"  alt="Image preview..." id="img">
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        //preview uploaded image
+                        function previewFile() {
+                            var preview = document.querySelector('img');
+                            var file = document.querySelector('input[type=file]').files[0];
+                            var reader = new FileReader();
+
+                            reader.onloadend = function () {
+                                preview.src = reader.result;
+                            };
+
+                            if (file) {
+                                reader.readAsDataURL(file);
+                            } else {
+                                preview.src = "../img/no_image.jpg";
+                            }
+                        }
+                        //convert image in b64
+                        function getBase64Image(imgElem) {
+                            var canvas = document.createElement("canvas");
+
+                            var MAX_WIDTH = 400;
+                            var MAX_HEIGHT = 200;
+                            var width = imgElem.width;
+                            var height = imgElem.height;
+
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            var ctx = canvas.getContext("2d");
+                            ctx.drawImage(imgElem, 0, 0, width, height);
+                            var dataURL = canvas.toDataURL("image/png");
+                            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                        }
+
+                        previewFile();
+                    </script>
+
+                    <script type="text/javascript" language="javascript">
+                        //add book
+                        function addJCall() {
+                            var imgElem = document.getElementById('img');
+                            var selector = document.getElementById("sel");
+                            var shelf = document.getElementById("shelf").value;
+                            <!-- var imgData = JSON.stringify(getBase64Image(imgElem)); -->
+                            var myJson = {
+                                "title": document.getElementById("title").value,
+                                "author": document.getElementById("author").value,
+                                "issue": document.getElementById("issue").value,
+                                "name": document.getElementById("jname").value,
+                                "editor": document.getElementById("editor").value,
+                                "price": document.getElementById("price").value,
+                                "tags": document.getElementById("tags").value,
+                                "note": selector.options[selector.selectedIndex].text.toUpperCase(),
+                                "shelf": shelf,
+                                "count": document.getElementById("count").value,
+                                "picture": getBase64Image(imgElem)
+                            };
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "2000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            JSON.stringify(myJson);
+                            $.ajax({
+                                url: "/add/journal?shelf="+shelf,
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(myJson),
+                                dataType: 'json',
+                                success: function (data) {
+                                    alert(data);
+                                    if (data["message"] === "succ") {
+                                        toastr["success"]("Journal has successfully added");
+                                    } else {
+                                        toastr["warning"](data["message"]);
+                                    }
+                                }
+                            });
+
+
+                        }
+                    </script>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button">
                             Confirm
                         </button>
                         <span class="clearfix"></span>
                     </div>
                     <div class="login-register">
-                        <a href="journals.html">Cancel</a>
+                        <a href="/dashboard">Cancel</a>
                     </div>
 
                 </form>
