@@ -53,7 +53,7 @@
                                 <input type="hidden" class="id_card" value="{{id}}">
                                 <input type="hidden" class="price_card" value="{{price}}">
                                 <input type="hidden" class="count_card" value="{{count}}">
-                                <img class="image-av" src="../img/no_image.jpg">
+                                <img  class="image-av" src="../img/no_image.jpg">
                                 <p></p>
                                 <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                             </div>
@@ -73,12 +73,12 @@
                                     e.preventDefault();
                                     document.getElementById("title").style.display = "block";
                                     document.getElementById("author").style.display = "block";
-                                    $('#id').html($(this).parent().find($('.id_card')).attr('value'));
+                                    $('#id').val($(this).parent().find($('.id_card')).attr('value'));
                                     $('#price').val($(this).parent().find($('.price_card')).attr('value'));
                                     $('#count').val($(this).parent().find($('.count_card')).attr('value'));
                                     $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                     $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
-                                    $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
+                                    $("#img").attr("src", $(this).parent().find($('.image-av')).attr('src'));
                                     $('#expansion').html($(this).parent().find($('.card.title')).text());
                                     document.getElementById("etitle").style.display = "none";
                                     document.getElementById("eauthor").style.display = "none";
@@ -88,7 +88,6 @@
                                     document.getElementById("elogin").style.display = "none";
                                     document.getElementById("renewbtn").style.display = "none";
                                     document.getElementById("etags").style.display = "none";
-                                    document.getElementById("sel").style.display = "none"
 
                                     $.ajax({
                                         url: "idk",
@@ -116,7 +115,6 @@
                             document.getElementById("okbtn").style.display = "inline";
                             document.getElementById("imgbtn").style.display = "inline";
                             document.getElementById("etags").style.display = "none";
-                            document.getElementById("sel").style.display = "inline"
                         }
 
                         function renew() {
@@ -128,13 +126,13 @@
                             document.getElementById("elogin").style.display = "none";
                             var myJson = {
                                 "id": document.getElementById("id").value,
-                                "login": document.getElementById("elogin").value,
+                                "login": document.getElementById("elogin").value
                                 //   "imgData":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
                                 url: "idk",
                                 type: 'POST',
-                                data: JSON.stringify(myJson),
+                                data: JSON.stringify(myJson)
                             });
                             window.location.reload(false);
                         }
@@ -148,14 +146,15 @@
                                 "title": document.getElementById("etitle").value,
                                 "author": document.getElementById("eauthor").value,
                                 "tags": document.getElementById("etags").value,
-                                "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                                 "picture":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
                                 url: "/edit/av",
                                 type: 'POST',
+                                contentType: 'application/json',
                                 data: JSON.stringify(myJson)
                             });
+
                             setTimeout(reload, 1500);
                         }
 
@@ -163,12 +162,6 @@
                             // var imgElem = document.getElementById('img');
                             var myJson = {
                                 "id": document.getElementById("id").value
-//                                "title": document.getElementById("title").text(),
-//                                "editor": document.getElementById("editor").text(),
-//                                "author": document.getElementById("author").text(),
-//                                "journal": document.getElementById("journal").text(),
-//                                "issue": document.getElementById("issue").text()
-                                //   "imgData":JSON.stringify(getBase64Image(imgElem))
                             };
                             $.ajax({
                                 url: "/delete/av",
@@ -228,16 +221,13 @@
                                     </div>
                                     <div class="col-lg-6 fields">
                                         <input type="hidden" id="id">
+                                        <input type="hidden" id="price">
+                                        <input type="hidden" id="count">
                                         <h4 class="title" id="title"><b>Title: </b></h4>
                                         <input id="etitle">
                                         <h4 class="author" id="author"><b>Author: </b></h4>
                                         <input id="eauthor">
                                         <input id="etags" placeholder="tags">
-                                        <select id="sel">
-                                            <option class="opt">NA</option>
-                                            <option class="opt">Reference</option>
-                                            <option class="opt">Bestseller</option>
-                                        </select>
                                         <input id="elogin">
                                         <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
                                     </div>

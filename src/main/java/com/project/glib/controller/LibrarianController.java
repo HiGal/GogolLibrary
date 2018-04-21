@@ -173,7 +173,6 @@ public class LibrarianController {
 
     @RequestMapping(value = "/edit/journal")
     public String editJournal(@RequestBody Journal journal) {
-        System.out.println(journal);
         try {
             journalService.update(journal);
         } catch (Exception e) {
@@ -200,9 +199,13 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/edit/AV")
-    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo) {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
+    public String editAV(@RequestBody AudioVideo audioVideo) {
+        try {
+            avService.update(audioVideo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
     }
 
     @RequestMapping(value = "/add/AV", method = RequestMethod.GET)

@@ -245,7 +245,6 @@
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                             "picture":getBase64Image(imgElem)
                         };
-                        alert(JSON.stringify(myJson));
                         $.ajax({
                             url: "/edit/journal",
                             type: 'POST',
