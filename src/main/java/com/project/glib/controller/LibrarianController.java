@@ -93,7 +93,6 @@ public class LibrarianController {
                          @RequestParam(value = "shelf") String shelf,
                          HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        System.out.println(book);
         try {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
@@ -110,7 +109,6 @@ public class LibrarianController {
 
     @RequestMapping(value = "/edit/book")
     public String editBook(@RequestBody Book book) {
-        System.out.println(book);
         try {
             bookService.update(book);
         } catch (Exception e) {
@@ -119,7 +117,7 @@ public class LibrarianController {
         return "succ";
     }
 
-    @RequestMapping(value = "/delete/book")
+    @RequestMapping(value = "/delete/all/book")
     public ModelAndView delete_book_all(@RequestBody Book book){
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
@@ -133,12 +131,20 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/copies/book", method = RequestMethod.GET)
-    public ModelAndView getListOfBookCopies(@RequestBody long bookId, HttpServletRequest request) {
+    @RequestMapping(value = "/copies/book")
+    public ModelAndView getListOfBookCopies(@RequestBody Book book) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-
-        return modelAndView.addObject(bookService.getListOfShelvesAndCounts(bookId));
+        modelAndView.addObject("copies", bookService.getListOfShelvesAndCounts(book.getId()));
+     //   modelAndView.setViewName("documents");
+        return modelAndView;
     }
+
+//    @RequestMapping(value = "/copies/book", method = RequestMethod.GET)
+//    public Model getListOfBookCopies(@RequestBody long bookId, HttpServletRequest request) {
+//        Model model = new Model(new MappingJackson2JsonView());
+//        model.addObject("copies", bookService.getListOfShelvesAndCounts(bookId));
+//        return model;
+//    }
 
 
     @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
@@ -166,9 +172,23 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/edit/journal")
-    public ModelAndView editJournal(@ModelAttribute Journal journal) {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
+    public String editJournal(@RequestBody Journal journal) {
+        try {
+            journalService.update(journal);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
+    }
+
+    @RequestMapping(value = "/delete/all/journals")
+    public String delete_all_journals(@RequestBody Journal journal){
+        try {
+            journalService.remove(journal.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
     }
 
     @RequestMapping(value = "/copies/journal", method = RequestMethod.GET)
@@ -179,18 +199,22 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/edit/AV")
-    public ModelAndView editAV(@ModelAttribute AudioVideo audioVideo) {
-        ModelAndView modelAndView = new ModelAndView();
-        return modelAndView;
+    public String editAV(@RequestBody AudioVideo audioVideo) {
+        try {
+            avService.update(audioVideo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
     }
 
-    @RequestMapping(value = "/add/AV", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/add/AV", method = RequestMethod.GET)
     public ModelAndView addAVPage() {
         return new ModelAndView("addAV");
     }
 
     @RequestMapping(value = "/add/AV")
-    public ModelAndView addAV(@ModelAttribute AudioVideo audioVideo,
+    public ModelAndView addAV(@RequestBody AudioVideo audioVideo,
                               @RequestParam(value = "shelf") String shelf,
                               HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
@@ -224,7 +248,6 @@ public class LibrarianController {
     @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     public @ResponseBody
     String UserDelete(@RequestBody User user1) {
-        System.out.println(user1);
         try {
             userService.remove(user1.getId());
 

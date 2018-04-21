@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Journals</title>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="../css/patrons.css">
     <link rel="stylesheet" href="../css/dialog.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="../css/line/blue.css">
     <script src="../js/icheck.js"></script>
 </head>
@@ -111,12 +120,12 @@
                                 document.getElementById("journal").style.display = "block";
                                 document.getElementById("author").style.display = "block";
                                 document.getElementById("issue").style.display = "block";
-                                $('#id').html($(this).parent().find($('.id_card')).attr('value'));
+                                $('#id').val($(this).parent().find($('.id_card')).attr('value'));
                                 $('#price').val($(this).parent().find($('.price_card')).attr('value'));
                                 $('#count').val($(this).parent().find($('.count_card')).attr('value'));
-                                $('.journal').html('<b>Journal: </b>' + $(this).parent().find($('.card-title')).text());
+                                $('.journal').html('<b>Journal: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                 $('.issue').html('<b>Issue: </b>' + $(this).parent().find($('.issue_card')).attr('value'));
-                                $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-subtitle')).text());
+                                $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                 $('.editor').html('<b>Editor: </b>' + $(this).parent().find($('.editor_card')).attr('value'));
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.author_card')).attr('value'));
                                 $("#img").attr("src", $(this).parent().find($('.image-journal')).attr('src'));
@@ -132,7 +141,7 @@
                                 document.getElementById("elogin").style.display = "none";
                                 document.getElementById("renewbtn").style.display = "none";
                                 document.getElementById("etags").style.display = "none";
-                                document.getElementById("sel").style.display = "none"
+                                document.getElementById("sel").style.display = "none";
 
                                 $.ajax({
                                     url: "idk",
@@ -210,19 +219,19 @@
                         document.getElementById("elogin").style.display = "none";
                         var myJson = {
                             "id": document.getElementById("id").value,
-                            "login": document.getElementById("elogin").value,
-                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                            "login": document.getElementById("elogin").value
                         };
                         $.ajax({
                             url: "idk",
                             type: 'POST',
-                            data: JSON.stringify(myJson),
+                            data: JSON.stringify(myJson)
                         });
                         window.location.reload(false);
                     }
 
                     function bCall() {
                          var imgElem = document.getElementById('img');
+                        var selector = document.getElementById('sel');
                         var myJson = {
                             "id": document.getElementById("id").value,
                             "price": document.getElementById("price").value,
@@ -230,7 +239,7 @@
                             "title": document.getElementById("etitle").value,
                             "editor": document.getElementById("eeditor").value,
                             "author": document.getElementById("eauthor").value,
-                            "journal": document.getElementById("ejournal").value,
+                            "name": document.getElementById("ejournal").value,
                             "issue": document.getElementById("eissue").value,
                             "tags": document.getElementById("etags").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
@@ -239,10 +248,27 @@
                         $.ajax({
                             url: "/edit/journal",
                             type: 'POST',
-                            data: JSON.stringify(myJson),
-                            success: alert('succ'),
-                            error: alert('fork')
+                            contentType: 'application/json',
+                            data: JSON.stringify(myJson)
                         });
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-bottom-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr["success"]("Journal has successfully updated!");
                         setTimeout(reload, 1500);
                     }
 
@@ -251,23 +277,16 @@
                     }
 
                     function dCall() {
-                        // var imgElem = document.getElementById('img');
                         var myJson = {
-                            "id": document.getElementById("id").value,
-//                            "title": document.getElementById("title").text(),
-//                            "editor": document.getElementById("editor").text(),
-//                            "author": document.getElementById("author").text(),
-//                            "journal": document.getElementById("journal").text(),
-//                            "issue": document.getElementById("issue").text()
-                            //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                            "id": document.getElementById("id").value
                         };
                         $.ajax({
-                            url: "/delete/journal",
+                            url: "/delete/all/journals",
                             type: 'POST',
-                            data: JSON.stringify(myJson),
-                            success: alert('succ'),
-                            error: alert('fork')
+                            contentType: "application/json",
+                            data: JSON.stringify(myJson)
                         });
+                        toastr["success"]("Journal and all of its copies have successfully deleted");
                         setTimeout(reload, 1500);
                     }
 
@@ -349,7 +368,6 @@
                                     <select id="sel">
                                         <option class="opt">NA</option>
                                         <option class="opt">Reference</option>
-                                        <option class="opt">Bestseller</option>
                                     </select>
                                     <input id="elogin">
                                     <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>

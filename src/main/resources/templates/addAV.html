@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="../css/editU.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
-    <title>Add Journal</title>
+    <title>Add AV</title>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -28,8 +32,8 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/add/book">Add Book</a></li>
-                <li class="active"><a href="#">Add Journal</a></li>
-                <li><a href="/add/AV">Add AV</a></li>
+                <li><a href="/add/journal">Add Journal</a></li>
+                <li class="active"><a href="#">Add AV</a></li>
                 <li><a href="/">Log Out</a></li>
             </ul>
         </div>
@@ -40,19 +44,8 @@
         <div class="row main">
 
             <div class="main-login main-center">
-                <form class="form-horizontal" method="post" action="javascript:void(null)" onsubmit="addJCall()">
-
-                    <div class="form-group">
-                        <label for="jname" class="cols-sm-2 control-label">Journal Name</label>
-                        <div class="cols-sm-10">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="jname" id="jname" placeholder="Journal name"
-                                       required autofocus/>
-                            </div>
-                        </div>
-                    </div>
-
+                <form class="form-horizontal" method="post" action="javascript:void(null)" onsubmit="addAVCall()">
+                    
                     <div class="form-group">
                         <label for="title" class="cols-sm-2 control-label">Title</label>
                         <div class="cols-sm-10">
@@ -77,23 +70,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="issue" class="cols-sm-2 control-label">Issue</label>
+                        <label for="price" class="cols-sm-2 control-label">Count</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="issue" id="issue"
-                                       placeholder="issue" required/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editor" class="cols-sm-2 control-label">Editor</label>
-                        <div class="cols-sm-10">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="editor" id="editor"
-                                       placeholder="editor" required/>
+                                <input type="text" class="form-control" name="count" id="count"
+                                       placeholder="Enter count" required/>
                             </div>
                         </div>
                     </div>
@@ -107,27 +89,6 @@
                                        placeholder="price" required/>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="price" class="cols-sm-2 control-label">Count</label>
-                        <div class="cols-sm-10">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="count" id="count"
-                                       placeholder="Enter count" required/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-
-                        <label for="sel">Select type</label>
-                        <select class="form-control" id="sel">
-                            <option class="opt">NA</option>
-                            <option class="opt">Reference</option>
-                        </select>
-
                     </div>
 
                     <div class="form-group">
@@ -212,21 +173,15 @@
 
                     <script type="text/javascript" language="javascript">
                         //add book
-                        function addJCall() {
+                        function addAVCall() {
                             var imgElem = document.getElementById('img');
-                            var selector = document.getElementById("sel");
                             var shelf = document.getElementById("shelf").value;
                             <!-- var imgData = JSON.stringify(getBase64Image(imgElem)); -->
                             var myJson = {
                                 "title": document.getElementById("title").value,
                                 "author": document.getElementById("author").value,
-                                "issue": document.getElementById("issue").value,
-                                "name": document.getElementById("jname").value,
-                                "editor": document.getElementById("editor").value,
                                 "price": document.getElementById("price").value,
                                 "tags": document.getElementById("tags").value,
-                                "note": selector.options[selector.selectedIndex].text.toUpperCase(),
-                                "shelf": shelf,
                                 "count": document.getElementById("count").value,
                                 "picture": getBase64Image(imgElem)
                             };
@@ -249,7 +204,7 @@
                             };
                             JSON.stringify(myJson);
                             $.ajax({
-                                url: "/add/journal?shelf="+shelf,
+                                url: "/add/AV?shelf="+shelf,
                                 type: 'POST',
                                 contentType: 'application/json',
                                 data: JSON.stringify(myJson),
@@ -257,7 +212,7 @@
                                 success: function (data) {
                                     alert(data);
                                     if (data["message"] === "succ") {
-                                        toastr["success"]("Journal has successfully added");
+                                        toastr["success"]("AV has successfully added");
                                     } else {
                                         toastr["warning"](data["message"]);
                                     }
@@ -268,7 +223,8 @@
                         }
                     </script>
 
-                    <div class="form-group">
+
+                    <div class="form-group ">
                         <button type="submit" class="btn btn-primary btn-lg btn-block login-button">
                             Confirm
                         </button>

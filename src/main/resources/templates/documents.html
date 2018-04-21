@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/css/patrons.css">
     <link rel="stylesheet" href="/css/dialog.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -144,15 +147,22 @@
                                 document.getElementById("elogin").style.display = "none";
                                 document.getElementById("renewbtn").style.display = "none";
                                 document.getElementById("etags").style.display = "none";
-                                document.getElementById("sel").style.display = "none"
-                                
+                                document.getElementById("sel").style.display = "none";
+                                $('tbody').empty();
+                                var myJson = {"id": document.getElementById("id").value};
                                 $.ajax({
-                                    url: "idk",
+                                    url: "/copies/book",
                                     type: 'POST',
-                                    data: JSON.stringify({"id": document.getElementById("id").value}),
-                                    success: function (data) {
-                                        
+                                    data: JSON.stringify(myJson),
+                                    success: function(data) {
+                                        var shelf_table = data["copies"];
+                                        var html = "";
+                                        shelf_table.forEach(function (value) {
+                                            html =+ "<tr><td>" + value.Key + "</td><td>" + value.Value + "</td></tr>";
+                                        });
+                                        $('tbody').append(html);
                                     }
+
                                 });
                             });
                         });
@@ -247,6 +257,7 @@
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                             "picture": getBase64Image(imgElem)
                         };
+                        alert(JSON.stringify(myJson));
                         $.ajax({
                             url: "/edit/book",
                             type: 'POST',
@@ -254,6 +265,24 @@
                             data: JSON.stringify(myJson),
                             dataType: 'json'
                         });
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": false,
+                            "positionClass": "toast-bottom-right",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "2000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr["success"]("Book has successfully updated!");
                         setTimeout(reload, 1500);
                     }
 
@@ -261,13 +290,13 @@
                         //delete ajax
                         var myJson = {"id": document.getElementById("id").value};
                         $.ajax({
-                            url: "/delete/book",
+                            url: "/delete/all/book",
                             type: 'POST',
                             contentType: 'application/json',
                             data: JSON.stringify(myJson),
                             dataType: 'json'
                         });
-
+                        toastr["success"]("Book and all of its copies have successfully deleted");
                         setTimeout(reload, 1500);
                     }
 
@@ -334,6 +363,24 @@
                                 <div class="col-lg-4 fields">
                                     <img src="../img/no_image.jpg" id="img"><br>
                                     <input type="file" onchange="previewFile()" id="imgbtn">
+
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Shelf</th>
+                                            <th>Copies</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!--{{#copies}}-->
+                                        <!--<tr>-->
+                                            <!--<td>{{Key}}</td>-->
+                                            <!--<td>{{Value}}</td>-->
+                                        <!--</tr>-->
+                                        <!--{{/copies}}-->
+                                        </tbody>
+                                    </table>
+
                                 </div>
                                 <div class="col-lg-6 fields" id="container">
                                     <input type="hidden" id="id">
