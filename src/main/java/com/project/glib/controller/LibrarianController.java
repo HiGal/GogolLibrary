@@ -205,13 +205,13 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add/AV", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/add/AV", method = RequestMethod.GET)
     public ModelAndView addAVPage() {
         return new ModelAndView("addAV");
     }
 
     @RequestMapping(value = "/add/AV")
-    public ModelAndView addAV(@ModelAttribute AudioVideo audioVideo,
+    public ModelAndView addAV(@RequestBody AudioVideo audioVideo,
                               @RequestParam(value = "shelf") String shelf,
                               HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());

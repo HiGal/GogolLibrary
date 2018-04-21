@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="../css/editU.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+    <title>Add AV</title>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/dashboard">Gogol Library</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/add/book">Add Book</a></li>
+                <li><a href="/add/journal">Add Journal</a></li>
+                <li class="active"><a href="#">Add AV</a></li>
+                <li><a href="/">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<section>
+    <div class="container users">
+        <div class="row main">
+
+            <div class="main-login main-center">
+                <form class="form-horizontal" method="post" action="javascript:void(null)" onsubmit="addAVCall()">
+                    
+                    <div class="form-group">
+                        <label for="title" class="cols-sm-2 control-label">Title</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="title" id="title"
+                                       placeholder="title" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author" class="cols-sm-2 control-label">Author</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-location-arrow"
+                                                               aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="author" id="author"
+                                       placeholder="author" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Count</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="count" id="count"
+                                       placeholder="Enter count" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Price</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="price" id="price"
+                                       placeholder="price" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Shelf</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="shelf" id="shelf"
+                                       placeholder="Enter shelf" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="cols-sm-2 control-label">Tags</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" name="tags" id="tags"
+                                       placeholder="Enter tags" required/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <input type="file" onchange="previewFile()"><br>
+                                <img src="" height="200"  alt="Image preview..." id="img">
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        //preview uploaded image
+                        function previewFile() {
+                            var preview = document.querySelector('img');
+                            var file = document.querySelector('input[type=file]').files[0];
+                            var reader = new FileReader();
+
+                            reader.onloadend = function () {
+                                preview.src = reader.result;
+                            };
+
+                            if (file) {
+                                reader.readAsDataURL(file);
+                            } else {
+                                preview.src = "../img/no_image.jpg";
+                            }
+                        }
+                        //convert image in b64
+                        function getBase64Image(imgElem) {
+                            var canvas = document.createElement("canvas");
+
+                            var MAX_WIDTH = 400;
+                            var MAX_HEIGHT = 200;
+                            var width = imgElem.width;
+                            var height = imgElem.height;
+
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            var ctx = canvas.getContext("2d");
+                            ctx.drawImage(imgElem, 0, 0, width, height);
+                            var dataURL = canvas.toDataURL("image/png");
+                            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                        }
+
+                        previewFile();
+                    </script>
+
+                    <script type="text/javascript" language="javascript">
+                        //add book
+                        function addAVCall() {
+                            var imgElem = document.getElementById('img');
+                            var shelf = document.getElementById("shelf").value;
+                            <!-- var imgData = JSON.stringify(getBase64Image(imgElem)); -->
+                            var myJson = {
+                                "title": document.getElementById("title").value,
+                                "author": document.getElementById("author").value,
+                                "price": document.getElementById("price").value,
+                                "tags": document.getElementById("tags").value,
+                                "count": document.getElementById("count").value,
+                                "picture": getBase64Image(imgElem)
+                            };
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "2000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            JSON.stringify(myJson);
+                            $.ajax({
+                                url: "/add/AV?shelf="+shelf,
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(myJson),
+                                dataType: 'json',
+                                success: function (data) {
+                                    alert(data);
+                                    if (data["message"] === "succ") {
+                                        toastr["success"]("AV has successfully added");
+                                    } else {
+                                        toastr["warning"](data["message"]);
+                                    }
+                                }
+                            });
+
+
+                        }
+                    </script>
+
+
+                    <div class="form-group ">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button">
+                            Confirm
+                        </button>
+                        <span class="clearfix"></span>
+                    </div>
+                    <div class="login-register">
+                        <a href="/dashboard">Cancel</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
