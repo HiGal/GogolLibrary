@@ -101,8 +101,8 @@
                     $(document).ready(function () {
                         $('.chk').each(function () {
                             var self = $(this),
-                                    label = self.next(),
-                                    label_text = label.text();
+                                label = self.next(),
+                                label_text = label.text();
                             label.remove();
                             self.iCheck({
                                 checkboxClass: 'icheckbox_line-blue',
@@ -169,29 +169,33 @@
                                 });
                             });
 
-                                //buttons to increase and dectease copies count
-                                $('.shlfbtn').click(function (e) {
-                                    e.preventDefault();
-                                    var myJson = {"shelf": $(this).parent().find($('.shelf-name')).text(),
-                                        "count": $(this).attr("value")};
+                            //buttons to increase and dectease copies count
+                            $('.shlfbtn').click(function (e) {
+                                e.preventDefault();
+                                var myJson = {
+                                    "id": $(this).parent().find($('#id')).text(),
+                                    "count": $(this).attr("value")
+                                };
+                                alert(JSON.stringify(myJson));
+                                var shelf = $(this).parent().find($('.shelf-name')).text();
+                                $.ajax({
+                                    url: "/update/phys/book?shelf="+shelf,
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(myJson),
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        var val = parseInt($(this).parent().find($('.shelf-value')).text(), 10);
+                                        var btnval = parseInt($(this).attr("value"), 10);
+                                        $(this).parent().find($('.shelf-value')).text(val + btnval);
+                                    }
 
-                                    $.ajax({
-                                        url: "",
-                                        type: 'POST',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify(myJson),
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            var val = parseInt($(this).parent().find($('.shelf-value')).text(), 10);
-                                            var btnval = parseInt($(this).attr("value"),10);
-                                            $(this).parent().find($('.shelf-value')).text(val+btnval);
-                                        }
-
-                                    });
                                 });
+                            });
                         });
                         return false;
                     }(jQuery));
+
                     //ajax with search values
                     function sCall() {
                         $('.card-group').empty();

@@ -138,21 +138,37 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/copies/book")
-    public @ResponseBody  ModelAndView getListOfBookCopies(@RequestBody Book book) {
-        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        modelAndView.addObject("copies", bookService.getListOfShelvesAndCounts(book.getId()));
-        System.out.println(modelAndView);
-     //   modelAndView.setViewName("documents");
+    @RequestMapping(value = "/update/phys/book")
+    public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
+                                         @RequestParam(value = "shelf") String shelf) {
+        Book book = bookService.getById(data.getId());
+        int count = data.getCount();
+        try {
+            if (count == -1) {
+                documentPhysicalService.removeAllByDocVirIdAndDocType(book.getId(), Document.BOOK);
+                book.setCount(book.getCount() - count);
+                bookService.add(book, shelf);
+            } else {
+                book.setCount(book.getCount() + count);
+                bookService.add(book, shelf);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("succ");
         return modelAndView;
     }
 
-//    @RequestMapping(value = "/copies/book", method = RequestMethod.GET)
-//    public Model getListOfBookCopies(@RequestBody long bookId, HttpServletRequest request) {
-//        Model model = new Model(new MappingJackson2JsonView());
-//        model.addObject("copies", bookService.getListOfShelvesAndCounts(bookId));
-//        return model;
-//    }
+    @RequestMapping(value = "/copies/book")
+    public @ResponseBody
+    ModelAndView getListOfBookCopies(@RequestBody Book book) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        modelAndView.addObject("copies", bookService.getListOfShelvesAndCounts(book.getId()));
+        System.out.println(modelAndView);
+        //   modelAndView.setViewName("documents");
+        return modelAndView;
+    }
 
 
     @RequestMapping(value = "/add/journal", method = RequestMethod.GET)
@@ -253,7 +269,7 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value="/delete/all/av")
+    @RequestMapping(value = "/delete/all/av")
     public String delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute("user");
