@@ -138,7 +138,7 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/update/phys/book")
+    @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
                                          @RequestParam(value = "shelf") String shelf) {
         Book book = bookService.getById(data.getId());
