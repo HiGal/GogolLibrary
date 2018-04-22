@@ -188,13 +188,10 @@ public class ReturnService {
 
         for (Checkout checkout : checkoutService.getList()) {
             long userId = checkout.getUserId();
-            if (getTotalOverdueByUser(userId) > 0) {
-                listOverdue.add(new Pair<>(userService.getById(userId), getTotalOverdueByUser(userId)));
+            int overdue = getTotalOverdueByUser(userId);
+            if (overdue > 0) {
+                listOverdue.add(new Pair<>(userService.getById(userId), overdue));
             }
-        }
-
-        for (Pair<User, Integer> pair : listOverdue) {
-            System.out.println("User : " + pair.getKey() + " has overdue : " + pair.getValue());
         }
 
         return listOverdue;
