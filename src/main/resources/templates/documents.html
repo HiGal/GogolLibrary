@@ -158,23 +158,43 @@
                                     contentType: 'application/json',
                                     data: JSON.stringify(myJson),
                                     dataType: 'json',
-                                    success: function(data) {
+                                    success: function (data) {
                                         var shelf_table = data["copies"];
-                                        var plButton = $('<button class ="btn btn-primary">'+'+'+'</button>');
-                                        var mButton = $('<button class ="btn btn-primary">'+'-'+'</button>');
                                         shelf_table.forEach(function (value) {
-                                           var html = $('<tr><td>' + value.key + '</td><td>'+value.value+'</td><td><button class ="btn btn-primary">'+'+'+'</button></td><td><button class ="btn btn-primary">'+'-'+'</button></td></tr>');
+                                            var html = $('<tr><td class="shelf-name">' + value.key + '</td><td class="shelf-value">' + value.value + '</td><td><button class ="btn btn-primary shlfbtn" value="1">' + '+' + '</button></td><td><button class ="btn btn-primary shlfbtn" value="-1">' + '-' + '</button></td></tr>');
                                             $('tbody').append(html);
                                         });
                                     }
 
                                 });
                             });
+
+                                //buttons to increase and dectease copies count
+                                $('.shlfbtn').click(function (e) {
+                                    e.preventDefault();
+                                    var myJson = {"shelf": $(this).parent().find($('.shelf-name')).text(),
+                                        "count": $(this).attr("value")};
+
+                                    $.ajax({
+                                        url: "",
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(myJson),
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            var val = parseInt($(this).parent().find($('.shelf-value')).text(), 10);
+                                            var btnval = parseInt($(this).attr("value"),10);
+                                            $(this).parent().find($('.shelf-value')).text(val+btnval);
+                                        }
+
+                                    });
+                                });
                         });
                         return false;
                     }(jQuery));
                     //ajax with search values
                     function sCall() {
+                        $('.card-group').empty();
                         //string wih tags
                         var str = "";
                         var boxes = $("input:checkbox");
@@ -195,7 +215,16 @@
                         $.ajax({
                             url: "idk",
                             type: 'POST',
-                            data: JSON.stringify(myJson)
+                            contentType: 'application/json',
+                            data: JSON.stringify(myJson),
+                            dataType: 'json',
+                            success: function (data) {
+                                var result_table = data["search"];
+                                result_table.forEach(function (value) {
+                                    var html = $('<div class="col-sm-4 deck"> <div class="card text-center"> <div class="card-body"> <h3 class="card-title">' + value.title + '</h3> <h5 class="card-subtitle text-muted">' + value.author + '</h5> <input type="hidden" class="edition_card" value="' + value.edition + '"> <input type="hidden" class="publisher_card" value="' + value.publisher + '"> <input type="hidden" class="id_card" value="' + value.id + '"> <input type="hidden" class="price_card" value="' + value.price + '"> <input type="hidden" class="count_card" value="' + value.count + '"> <input type="hidden" class="note_card" value="' + value.note + '"> <img class="image-book" src="data:image/png;base64, ' + value.picture + '"> <p></p> <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a> </div> </div> </div>');
+                                    $('tbody').append(html);
+                                });
+                            }
                         });
                     }
 
@@ -377,13 +406,7 @@
                                             <th></th>
                                         </tr>
                                         </thead>
-                                       <tbody>
-                                       <!-- {{#copies}}
-                                        <tr>
-                                            <td>{{Key}}</td>
-                                            <td>{{Value}}</td>
-                                        </tr>
-                                        {{/copies}}-->
+                                        <tbody>
                                         </tbody>
                                     </table>
 
