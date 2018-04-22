@@ -73,14 +73,14 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                 } else {
                     throw new Exception(TYPE_EXCEPTION);
                 }
-                loggerService.addLog(booking.getUserId(), booking.getDocPhysId(), LoggerService.CHECKEDOUT_BOOK, System.currentTimeMillis());
+                loggerService.addLog(booking.getUserId(), docPhysService.getDocVirIdById(booking.getDocPhysId()), LoggerService.CHECKEDOUT_BOOK, System.currentTimeMillis(), Document.BOOK);
                 break;
             case Document.JOURNAL:
             case Document.AV:
                 if (booking.getDocType().equals(Document.AV)) {
-                    loggerService.addLog(booking.getUserId(), booking.getDocPhysId(), LoggerService.CHECKEDOUT_AV, System.currentTimeMillis());
+                    loggerService.addLog(booking.getUserId(), docPhysService.getDocVirIdById(booking.getDocPhysId()), LoggerService.CHECKEDOUT_AV, System.currentTimeMillis(), Document.AV);
                 } else {
-                    loggerService.addLog(booking.getUserId(), booking.getDocPhysId(), LoggerService.CHECKEDOUT_JOURNAL, System.currentTimeMillis());
+                    loggerService.addLog(booking.getUserId(), docPhysService.getDocVirIdById(booking.getDocPhysId()), LoggerService.CHECKEDOUT_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
                 }
                 if (userType.equals(User.STUDENT) || Arrays.asList(User.FACULTY).contains(userType)) {
                     additionalTime = 2 * WEEK_IN_MILLISECONDS;
