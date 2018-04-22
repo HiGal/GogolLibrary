@@ -101,8 +101,8 @@
                     $(document).ready(function () {
                         $('.chk').each(function () {
                             var self = $(this),
-                                label = self.next(),
-                                label_text = label.text();
+                                    label = self.next(),
+                                    label_text = label.text();
                             label.remove();
                             self.iCheck({
                                 checkboxClass: 'icheckbox_line-blue',
@@ -190,12 +190,11 @@
                                         $(this).parent().find($('.shelf-value')).text(val + btnval);
                                     }
 
+                                    });
                                 });
-                            });
                         });
                         return false;
                     }(jQuery));
-
                     //ajax with search values
                     function sCall() {
                         $('.card-group').empty();
