@@ -155,13 +155,14 @@
                                 "tags": document.getElementById("etags").value,
                                 "picture":JSON.stringify(getBase64Image(imgElem))
                             };
+                            alert(JSON.stringify(myJson));
                             $.ajax({
-                                url: "/edit/av",
+                                url: "/edit/AV",
                                 type: 'POST',
                                 contentType: 'application/json',
                                 data: JSON.stringify(myJson)
                             });
-
+                            toastr["success"]("AV has successfully edited");
                             setTimeout(reload, 1500);
                         }
 
