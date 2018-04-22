@@ -14,8 +14,11 @@ public class Logger {
     @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "phys_doc_id")
-    private long physDocId;
+    @Column(name = "doc_virt_id")
+    private long docVirtid;
+
+    @Column(name = "type")
+    private String type;
 
     @Column(name = "action")
     private String action;
@@ -28,11 +31,12 @@ public class Logger {
 
     }
 
-    public Logger(long userId, long physDocId, String action, long date) {
+    public Logger(long userId, long docVirtid, String action, long date, String type) {
         this.userId = userId;
-        this.physDocId = physDocId;
+        this.docVirtid = docVirtid;
         this.action = action;
         this.date = date;
+        this.type = type;
     }
 
     @Override
@@ -40,7 +44,8 @@ public class Logger {
         return "Messages{" +
                 "id =" + id +
                 ", userId =" + userId +
-                ", physDocId =" + physDocId +
+                ", docVirtid =" + docVirtid +
+                ", type = " + type +
                 ", action =" + action +
                 ", date =" + date +
                 '}';
@@ -62,12 +67,12 @@ public class Logger {
         this.userId = userId;
     }
 
-    public long getPhysDocId() {
-        return physDocId;
+    public long getDocVirtid() {
+        return docVirtid;
     }
 
-    public void setPhysDocId(long physDocId) {
-        this.physDocId = physDocId;
+    public void setDocVirtid(long docVirtid) {
+        this.docVirtid = docVirtid;
     }
 
     public String getAction() {
@@ -84,5 +89,13 @@ public class Logger {
 
     public void setDate(long date) {
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

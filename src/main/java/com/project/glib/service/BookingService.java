@@ -191,17 +191,17 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 case Document.BOOK:
                     bookService.decrementCountById(docVirId);
                     docPhysService.inverseCanBooked(docPhysId);
-                    loggerService.addLog(userId, docPhysId, LoggerService.BOOKED_BOOK, System.currentTimeMillis());
+                    loggerService.addLog(userId, docPhysService.getDocVirIdById(docPhysId), LoggerService.BOOKED_BOOK, System.currentTimeMillis(), Document.BOOK);
                     break;
                 case Document.JOURNAL:
                     journalService.decrementCountById(docVirId);
                     docPhysService.inverseCanBooked(docPhysId);
-                    loggerService.addLog(userId, docPhysId, LoggerService.BOOKED_JOURNAL, System.currentTimeMillis());
+                    loggerService.addLog(userId, docPhysService.getDocVirIdById(docPhysId), LoggerService.BOOKED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
                     break;
                 case Document.AV:
                     avService.decrementCountById(docVirId);
                     docPhysService.inverseCanBooked(docPhysId);
-                    loggerService.addLog(userId, docPhysId, LoggerService.BOOKED_AV, System.currentTimeMillis());
+                    loggerService.addLog(userId, docPhysService.getDocVirIdById(docPhysId), LoggerService.BOOKED_AV, System.currentTimeMillis(), Document.AV);
                     break;
                 default:
                     throw new Exception(TYPE_EXCEPTION);

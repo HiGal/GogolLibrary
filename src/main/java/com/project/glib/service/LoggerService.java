@@ -35,8 +35,8 @@ public class LoggerService implements LoggerActions {
         loggerDao.add(logger);
     }
 
-    public void addLog(long id_user, long phys_doc_id, String action, long date) throws Exception {
-        Logger logger = new Logger(id_user, phys_doc_id, action, date);
+    public void addLog(long id_user, long doc_virt_id, String action, long date, String type) throws Exception {
+        Logger logger = new Logger(id_user, doc_virt_id, action, date, type);
         loggerDao.add(logger);
     }
 
@@ -53,7 +53,7 @@ public class LoggerService implements LoggerActions {
         return loggerList;
     }
 
-    public List<String> showLoggerForaWeekString() throws Exception {
+    public List<String> showLoggerForaWeekString() {
         List<Logger> loggerList = showLoggerForaWeek();
         ArrayList<String> stringList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
@@ -67,30 +67,32 @@ public class LoggerService implements LoggerActions {
             int mMonth = calendar.get(Calendar.MONTH);
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-            s += mDay + " " + mMonth + " " + mYear;
+            s += mDay + "." + mMonth + "." + mYear + " ";
 
             // TODO how to check for null this part ->
             if (aLoggerList.getUserId() > 0) {
                 User user = userService.getById(aLoggerList.getUserId());
-                s += " " + user.getRole() + " " + user.getSurname() + " " + user.getName();
+                s += " " + user.getSurname() + " " + user.getName() + " ( " + user.getRole() + " ) ";
             }
 
-            s += " " + aLoggerList.getAction();
+            s += " " + aLoggerList.getAction() + " ";
 
             // TODO how to check for null this part ->
-            if (aLoggerList.getPhysDocId() > 0) {
-                String type = documentPhysicalService.getTypeById(aLoggerList.getPhysDocId());
-                long id = documentPhysicalService.getDocVirIdById(aLoggerList.getPhysDocId());
-                switch (type) {
+            if (aLoggerList.getDocVirtid() > 0) {
+                long id = aLoggerList.getDocVirtid();
+                switch (aLoggerList.getType()) {
                     case Document.BOOK:
                         Book book = bookService.getById(id);
-                        s += " " + book.getTitle() + " " + book.getAuthor();
+                        s += " \" " + book.getTitle() + "\"  by " + book.getAuthor();
+                        break;
                     case Document.JOURNAL:
                         Journal journal = journalService.getById(id);
-                        s += " " + journal.getTitle() + " " + journal.getAuthor();
+                        s += " \" " + journal.getTitle() + "\" by " + journal.getAuthor();
+                        break;
                     case Document.AV:
                         AudioVideo audioVideo = audioVideoService.getById(id);
-                        s += " " + audioVideo.getTitle() + " " + audioVideo.getAuthor();
+                        s += " \" " + audioVideo.getTitle() + "\" by " + audioVideo.getAuthor();
+                        break;
                 }
             }
 

@@ -64,10 +64,10 @@ public class UserService implements ModifyByLibrarianService<User> {
             usersDao.add(user);
             if (Arrays.asList(LIBRARIANS).contains(user.getRole())) {
                 loggerService.addLog(findByLogin(user.getLogin()).getId(),
-                        0, LoggerService.ADDED_NEW_LIBRARIAN, System.currentTimeMillis());
+                        0, LoggerService.ADDED_NEW_LIBRARIAN, System.currentTimeMillis(), User.TYPE);
             } else {
                 loggerService.addLog(findByLogin(user.getLogin()).getId(),
-                        0, LoggerService.ADDED_NEW_USER, System.currentTimeMillis());
+                        0, LoggerService.ADDED_NEW_USER, System.currentTimeMillis(), User.TYPE);
             }
         } catch (Exception e) {
             throw new Exception(ADD_EXCEPTION);
@@ -82,10 +82,10 @@ public class UserService implements ModifyByLibrarianService<User> {
             usersDao.update(user);
             if (Arrays.asList(LIBRARIANS).contains(user.getRole())) {
                 loggerService.addLog(findByLogin(user.getLogin()).getId(),
-                        0, LoggerService.MODIFIED_LIBRARAN, System.currentTimeMillis());
+                        0, LoggerService.MODIFIED_LIBRARAN, System.currentTimeMillis(), User.TYPE);
             } else {
                 loggerService.addLog(findByLogin(user.getLogin()).getId(),
-                        0, LoggerService.MODIFIED_USER, System.currentTimeMillis());
+                        0, LoggerService.MODIFIED_USER, System.currentTimeMillis(), User.TYPE);
             }
         } catch (Exception e) {
             throw new Exception(UPDATE_EXCEPTION);
@@ -104,10 +104,10 @@ public class UserService implements ModifyByLibrarianService<User> {
             usersDao.remove(userId);
             if (isLibrarian) {
                 loggerService.addLog(userId,
-                        0, LoggerService.DELETED_LIBRARIAN, System.currentTimeMillis());
+                        0, LoggerService.DELETED_LIBRARIAN, System.currentTimeMillis(), User.TYPE);
             } else {
                 loggerService.addLog(userId,
-                        0, LoggerService.DELETED_USER, System.currentTimeMillis());
+                        0, LoggerService.DELETED_USER, System.currentTimeMillis(), User.TYPE);
             }
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);

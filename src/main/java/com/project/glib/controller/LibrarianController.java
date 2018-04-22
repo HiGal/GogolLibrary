@@ -1,14 +1,8 @@
 package com.project.glib.controller;
 
 
-import com.project.glib.model.AudioVideo;
-import com.project.glib.model.Book;
-import com.project.glib.model.Journal;
-import com.project.glib.model.User;
-import com.project.glib.service.AudioVideoService;
-import com.project.glib.service.BookService;
-import com.project.glib.service.JournalService;
-import com.project.glib.service.UserService;
+import com.project.glib.model.*;
+import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,14 +20,20 @@ public class LibrarianController {
     private final UserService userService;
     private final BookService bookService;
     private final JournalService journalService;
+    private final AudioVideoService audioVideoService;
     private final AudioVideoService avService;
+    private final LoggerService loggerService;
+    private final DocumentPhysicalService documentPhysicalService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService avService) {
+    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
+        this.audioVideoService = audioVideoService;
         this.avService = avService;
+        this.loggerService = loggerService;
+        this.documentPhysicalService = documentPhysicalService;
     }
 
 
@@ -97,20 +97,24 @@ public class LibrarianController {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             bookService.add(book, shelf);
+            long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_BOOK, System.currentTimeMillis(), Document.BOOK);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
             return modelAndView;
         }
-
         modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 
     @RequestMapping(value = "/edit/book")
-    public String editBook(@RequestBody Book book) {
+    public String editBook(@RequestBody Book book, HttpServletRequest request) {
         try {
+            User user = (User) request.getSession().getAttribute("user");
             bookService.update(book);
+            long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_BOOK, System.currentTimeMillis(), Document.BOOK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -118,10 +122,13 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/delete/all/book")
-    public ModelAndView delete_book_all(@RequestBody Book book){
+    public ModelAndView delete_book_all(@RequestBody Book book, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
+            User user = (User) request.getSession().getAttribute("user");
             bookService.remove(book.getId());
+            long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_BOOK, System.currentTimeMillis(), Document.BOOK);
             modelAndView.addObject("success", "Book has successfully deleted");
         } catch (Exception e) {
             modelAndView.addObject("error", e.getMessage());
@@ -162,6 +169,8 @@ public class LibrarianController {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             journalService.add(journal, shelf);
+            long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
@@ -173,9 +182,12 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/edit/journal")
-    public String editJournal(@RequestBody Journal journal) {
+    public String editJournal(@RequestBody Journal journal, HttpServletRequest request) {
         try {
+            User user = (User) request.getSession().getAttribute("user");
             journalService.update(journal);
+            long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,9 +195,12 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/delete/all/journals")
-    public String delete_all_journals(@RequestBody Journal journal){
+    public String delete_all_journals(@RequestBody Journal journal, HttpServletRequest request) {
         try {
+            User user = (User) request.getSession().getAttribute("user");
             journalService.remove(journal.getId());
+            long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -193,16 +208,19 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/copies/journal", method = RequestMethod.GET)
-    public ModelAndView getListOfJournalCopies(@RequestBody long journalId, HttpServletRequest request) {
+    public ModelAndView getListOfJournalCopies(@RequestBody long journalId) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
 
         return modelAndView.addObject(journalService.getListOfShelvesAndCounts(journalId));
     }
 
     @RequestMapping(value = "/edit/AV")
-    public String editAV(@RequestBody AudioVideo audioVideo) {
+    public String editAV(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
         try {
+            User user = (User) request.getSession().getAttribute("user");
             avService.update(audioVideo);
+            long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_AV, System.currentTimeMillis(), Document.AV);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -223,6 +241,8 @@ public class LibrarianController {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
             avService.add(audioVideo, shelf);
+            long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_AV, System.currentTimeMillis(), Document.AV);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
@@ -234,9 +254,12 @@ public class LibrarianController {
     }
 
     @RequestMapping(value="/delete/all/av")
-    public String delete_all_av(@RequestBody AudioVideo audioVideo){
+    public String delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
         try {
+            User user = (User) request.getSession().getAttribute("user");
             avService.remove(audioVideo.getId());
+            long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_AV, System.currentTimeMillis(), Document.AV);
         } catch (Exception e) {
             e.printStackTrace();
         }
