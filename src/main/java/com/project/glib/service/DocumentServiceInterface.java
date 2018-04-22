@@ -40,7 +40,5 @@ public interface DocumentServiceInterface<T extends Document> extends ModifyByLi
 
     T isAlreadyExist(T t);
 
-    List<Pair<String, Integer>> getListOfShelvesAndCounts();
-
     List<Pair<String, Integer>> getListOfShelvesAndCounts(long bookId);
 }
