@@ -160,11 +160,12 @@
                                     dataType: 'json',
                                     success: function(data) {
                                         var shelf_table = data["copies"];
-                                        var html = "";
+                                        var plButton = $('<button class ="btn btn-primary">'+'+'+'</button>');
+                                        var mButton = $('<button class ="btn btn-primary">'+'-'+'</button>');
                                         shelf_table.forEach(function (value) {
-                                            html =+ "<tr><td>" + value.Key + "</td><td>" + value.Value + "</td></tr>";
+                                           var html = $('<tr><td>' + value.key + '</td><td>'+value.value+'</td><td><button class ="btn btn-primary">'+'+'+'</button></td><td><button class ="btn btn-primary">'+'-'+'</button></td></tr>');
+                                            $('tbody').append(html);
                                         });
-                                        $('tbody').append(html);
                                     }
 
                                 });
@@ -261,7 +262,6 @@
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                             "picture": getBase64Image(imgElem)
                         };
-                        alert(JSON.stringify(myJson));
                         $.ajax({
                             url: "/edit/book",
                             type: 'POST',
@@ -373,15 +373,17 @@
                                         <tr>
                                             <th>Shelf</th>
                                             <th>Copies</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <!--{{#copies}}-->
-                                        <!--<tr>-->
-                                            <!--<td>{{Key}}</td>-->
-                                            <!--<td>{{Value}}</td>-->
-                                        <!--</tr>-->
-                                        <!--{{/copies}}-->
+                                       <tbody>
+                                       <!-- {{#copies}}
+                                        <tr>
+                                            <td>{{Key}}</td>
+                                            <td>{{Value}}</td>
+                                        </tr>
+                                        {{/copies}}-->
                                         </tbody>
                                     </table>
 
@@ -414,7 +416,7 @@
                             <a onclick="renew()" class="btn btn-primary">Renew</a>
                             <a id="okbtn" class="btn btn-primary" onclick="bCall()">OK</a>
                             <a id="editbtn" onclick="edit()" class="btn btn-primary">Edit</a>
-                            <button class="btn btn-primary" onclick="dCall()">Delete</button>
+                            <button class="btn btn-primary" onclick="dCall()">Delete all copies</button>
                             <button class="btn" data-dsismiss="modal" aria-hidden="true">Close</button>
                         </div>
                     </div>
