@@ -183,7 +183,7 @@
                                         dataType: 'json',
                                         success: function (data) {
                                             var val = parseInt($(this).parent().find($('.shelf-value')).text(), 10);
-                                            var btnval = parseInt($(this).attr("value"),10);
+                                            var btnval = parseInt($(this).attr("value"), 10);
                                             $(this).parent().find($('.shelf-value')).text(val+btnval);
                                         }
 
