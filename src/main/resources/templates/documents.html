@@ -84,6 +84,7 @@
                             <input type="hidden" class="id_card" value="{{id}}">
                             <input type="hidden" class="price_card" value="{{price}}">
                             <input type="hidden" class="count_card" value="{{count}}">
+                            <input type="hidden" class="note_card" value="{{note}}">
                             <img class="image-book" src="data:image/png;base64, {{picture}}">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
@@ -135,6 +136,7 @@
                                 $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                 $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
+                                $('.note').html('<b>Note: </b>' + $(this).parent().find($('.note_card')).attr('value'));
                                 $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
                                 $('#expansion').html($(this).parent().find($('.card.title')).text());
                                 document.getElementById("etitle").style.display = "none";
@@ -397,6 +399,7 @@
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
                                     <input id="etags" placeholder="tags">
+                                    <h4 class="note" id="note">Note: </h4>
                                     <select id="sel">
                                         <option class="opt">NA</option>
                                         <option class="opt">Reference</option>

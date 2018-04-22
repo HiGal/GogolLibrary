@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -55,9 +56,18 @@ public class LoggerService implements LoggerActions {
     public List<String> showLoggerForaWeekString() throws Exception {
         List<Logger> loggerList = showLoggerForaWeek();
         ArrayList<String> stringList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+
+
+
         for (Logger aLoggerList : loggerList) {
             String s = "";
-            s += aLoggerList.getDate();
+            calendar.setTimeInMillis(aLoggerList.getDate());
+            int mYear = calendar.get(Calendar.YEAR);
+            int mMonth = calendar.get(Calendar.MONTH);
+            int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+            s += mDay + " " + mMonth + " " + mYear;
 
             // TODO how to check for null this part ->
             if (aLoggerList.getUserId() > 0) {

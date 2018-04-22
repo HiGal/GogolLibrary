@@ -263,12 +263,13 @@
                                 data: JSON.stringify(myJson),
                                 dataType: 'json',
                                 success: function (data) {
-                                    alert(data);
+
                                     if (data["message"] === "succ") {
                                         toastr["success"]("Book has successfully added");
                                     } else {
                                         toastr["warning"](data["message"]);
                                     }
+                                    setTimeout(location.reload(), 1500);
                                 }
                             });
 

@@ -1,40 +1,40 @@
 package com.project.glib.service;
 
 public interface LoggerActions {
-    String CHECKEDOUT_BOOK = "";
-    String RETURNED_BOOK = "";
-    String BOOKED_BOOK = "";
+    String CHECKEDOUT_BOOK = "CHECKEDOUT_BOOK ";
+    String RETURNED_BOOK = "RETURNED_BOOK";
+    String BOOKED_BOOK = "BOOKED_BOOK";
 
-    String CHECKEDOUT_JOURNAL = "";
-    String RETURNED_JOURNAL = "";
-    String BOOKED_JOURNAL = "";
+    String CHECKEDOUT_JOURNAL = "CHECKEDOUT_JOURNAL";
+    String RETURNED_JOURNAL = "RETURNED_JOURNAL";
+    String BOOKED_JOURNAL = "BOOKED_JOURNAL";
 
-    String CHECKEDOUT_AV = "";
-    String RETURNED_AV = "";
-    String BOOKED_AV = "";
+    String CHECKEDOUT_AV = "CHECKEDOUT_AV";
+    String RETURNED_AV = "RETURNED_AV";
+    String BOOKED_AV = "BOOKED_AV";
 
-    String ADDED_BOOK = "";
-    String MODIFIED_BOOK = "";
-    String DELETED_BOOK = "";
+    String ADDED_BOOK = "ADDED_BOOK";
+    String MODIFIED_BOOK = "MODIFIED_BOOK";
+    String DELETED_BOOK = "DELETED_BOOK";
 
-    String ADDED_JOURNAL = "";
-    String MODIFIED_JOURNAL = "";
-    String DELETED_JOURNAL = "";
+    String ADDED_JOURNAL = "ADDED_JOURNAL";
+    String MODIFIED_JOURNAL = "MODIFIED_JOURNAL";
+    String DELETED_JOURNAL = "DELETED_JOURNAL";
 
-    String ADDED_AV = "";
-    String MODIFIED_AV = "";
-    String DELETED_AV = "";
+    String ADDED_AV = "ADDED_AV ";
+    String MODIFIED_AV = "MODIFIED_AV";
+    String DELETED_AV = "DELETED_AV";
 
-    String ADDED_NEW_USER = "";
-    String MODIFIED_USER = "";
-    String DELETED_USER = "";
+    String ADDED_NEW_USER = "ADDED_NEW_USER";
+    String MODIFIED_USER = "MODIFIED_USER";
+    String DELETED_USER = "DELETED_USER";
 
-    String ADDED_NEW_LIBRARIAN = "";
-    String MODIFIED_LIBRARAN = "";
-    String DELETED_LIBRARIAN = "";
+    String ADDED_NEW_LIBRARIAN = "ADDED_NEW_LIBRARIAN";
+    String MODIFIED_LIBRARAN = "MODIFIED_LIBRARAN";
+    String DELETED_LIBRARIAN = "DELETED_LIBRARIAN";
 
-    String READ_ALL_MESSAGES = "";
-    String LOGGED_IN_LIBRARY = "";
-    String OUTSTANDING_REQUEST = "";
+    String READ_ALL_MESSAGES = "READ_ALL_MESSAGES";
+    String LOGGED_IN_LIBRARY = "LOGGED_IN_LIBRARY";
+    String OUTSTANDING_REQUEST = "OUTSTANDING_REQUEST ";
 
 }
