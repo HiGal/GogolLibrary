@@ -82,7 +82,7 @@
                             <input type="hidden" class="edition_card" value="{{edition}}">
                             <input type="hidden" class="publisher_card" value="{{publisher}}">
                             <input type="hidden" class="id_card" value="{{id}}">
-                            <input type="hidden" class="price_card" value="{{price}}">
+                            <input type="hidden" class="price_card" id="price_card" value="{{price}}">
                             <input type="hidden" class="count_card" value="{{count}}">
                             <input type="hidden" class="note_card" value="{{note}}">
                             <img class="image-book" src="data:image/png;base64, {{picture}}">
@@ -172,23 +172,28 @@
                             //buttons to increase and dectease copies count
                             $('tbody').on('click', '.shlfbtn', function (e) {
                                 e.preventDefault();
-                                alert("working");
+                                var count = $(this).attr("value");
+                                var price=document.getElementById("price_card").value;
+                                alert(price);
                                 var myJson = {
                                     "id": $('#id').attr("value"),
-                                    "count": $(this).attr("value")
+                                    "count": count,
+                                    "price":price
                                 };
                                 //alert(JSON.stringify(myJson));
-                                var shelf = $(this).parent().find($('.shelf-name')).text();
+                                var shelf = $(this).closest('tr').find($('.shelf-name')).text();
+                                alert(JSON.stringify(myJson));
                                 $.ajax({
                                     url: "/update/phys/book?shelf="+shelf,
                                     type: 'POST',
                                     contentType: 'application/json',
                                     data: JSON.stringify(myJson),
                                     dataType: 'json',
-                                    success: function (data) {
-                                        var val = parseInt($(this).parent().find($('.shelf-value')).text(), 10);
-                                        var btnval = parseInt($(this).attr("value"), 10);
-                                        $(this).parent().find($('.shelf-value')).text(val + btnval);
+                                    success: function () {
+                                        var val = parseInt($('.shelf-value').text(), 10);
+                                        var btnval = parseInt(count, 10);
+                                        $(this).closest('tr').find($('.shelf-value')).innerHTML(val + btnval);
+                                        toastr["success"]("Success");
                                     }
 
                                     });

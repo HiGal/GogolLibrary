@@ -138,26 +138,32 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
-    public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
-                                         @RequestParam(value = "shelf") String shelf) {
+
+    @RequestMapping(value = "/update/phys/book",method = {RequestMethod.POST},produces = "application/json")
+    public @ResponseBody String update_phys_book(@RequestBody Book data,
+                                                       @RequestParam(value = "shelf") String shelf) {
         Book book = bookService.getById(data.getId());
         int count = data.getCount();
+        data.setPrice(book.getPrice());
+        data.setAuthor(book.getAuthor());
+        data.setEdition(book.getEdition());
+        data.setTitle(book.getTitle());
+        data.setPublisher(book.getPublisher());
+        data.setPicture(book.getPicture());
+        data.setNote(book.getNote());
+        data.setYear(book.getYear());
         try {
             if (count == -1) {
                 documentPhysicalService.removeAllByDocVirIdAndDocType(book.getId(), Document.BOOK);
-                book.setCount(book.getCount() - count);
-                bookService.add(book, shelf);
+                bookService.add(data, shelf);
             } else {
-                book.setCount(book.getCount() + count);
-                bookService.add(book, shelf);
+                bookService.add(data, shelf);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("succ");
-        return modelAndView;
+
+        return "succ";
     }
 
     @RequestMapping(value = "/copies/book")
