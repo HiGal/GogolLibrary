@@ -132,9 +132,10 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/copies/book")
-    public ModelAndView getListOfBookCopies(@RequestBody Book book) {
+    public @ResponseBody  ModelAndView getListOfBookCopies(@RequestBody Book book) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         modelAndView.addObject("copies", bookService.getListOfShelvesAndCounts(book.getId()));
+        System.out.println(modelAndView);
      //   modelAndView.setViewName("documents");
         return modelAndView;
     }
