@@ -153,7 +153,9 @@
                                 $.ajax({
                                     url: "/copies/book",
                                     type: 'POST',
+                                    contentType: 'application/json',
                                     data: JSON.stringify(myJson),
+                                    dataType: 'json',
                                     success: function(data) {
                                         var shelf_table = data["copies"];
                                         var html = "";
