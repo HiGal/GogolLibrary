@@ -2,6 +2,7 @@ package com.project.glib.service;
 
 import com.project.glib.dao.implementations.CheckoutDaoImplementation;
 import com.project.glib.model.*;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -434,5 +435,11 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         update(checkout);
     }
 
+    public List<Pair<User, Checkout>> getAllUsersAndTheisCheckouts() {
+        List<Pair<User, Checkout>> userCheckout = new ArrayList<>();
 
+        getList().forEach(checkout -> userCheckout.add(new Pair<>(userService.getById(checkout.getUserId()), checkout)));
+
+        return userCheckout;
+    }
 }
