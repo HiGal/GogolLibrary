@@ -161,7 +161,7 @@
                                     success: function (data) {
                                         var shelf_table = data["copies"];
                                         shelf_table.forEach(function (value) {
-                                            var html = $('<tr><td class="shelf-name">' + value.key + '</td><td class="shelf-value">' + value.value + '</td><td><button class ="btn btn-primary shlfbtn" value="1">' + '+' + '</button></td><td><button class ="btn btn-primary shlfbtn" value="-1">' + '-' + '</button></td></tr>');
+                                            var html = $('<tr><td class="shelf-name">' + value.key + '</td><td class="shelf-value">' + value.value + '</td><td><button class="btn btn-primary shlfbtn" value="1">+</button></td><td><button class="btn btn-primary shlfbtn" value="-1">-</button></td></tr>');
                                             $('tbody').append(html);
                                         });
                                     }
@@ -170,13 +170,14 @@
                             });
 
                             //buttons to increase and dectease copies count
-                            $('.shlfbtn').click(function (e) {
+                            $('tbody').on('click', '.shlfbtn', function (e) {
                                 e.preventDefault();
+                                alert("working");
                                 var myJson = {
-                                    "id": $(this).parent().find($('#id')).text(),
+                                    "id": $('#id').attr("value"),
                                     "count": $(this).attr("value")
                                 };
-                                alert(JSON.stringify(myJson));
+                                //alert(JSON.stringify(myJson));
                                 var shelf = $(this).parent().find($('.shelf-name')).text();
                                 $.ajax({
                                     url: "/update/phys/book?shelf="+shelf,
