@@ -64,7 +64,9 @@ public class LoginController {
                     model.addObject("data", "/librarian");
                 } else if (Arrays.asList(User.PATRONS).contains(role)) {
                     model.addObject("data", "/patron");
-                    System.out.println(model);
+                } else if (role.equals(User.ADMIN)){
+                    model.addObject("data","/admin");
+
                 } else {
                     model.addObject("data", "Something goes wrong");
                     throw new Exception("WRONG ROLE");
@@ -78,8 +80,6 @@ public class LoginController {
             model.addObject("data", "You aren't registered in the system");
             e.printStackTrace();
         }
-
-        System.out.println(model);
 
         return model;
     }

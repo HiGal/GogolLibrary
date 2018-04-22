@@ -42,33 +42,30 @@
                 <div class="form-group">
                     <label for="sel1">Select role</label>
                     <select class="form-control" id="sel1">
-                        <option name="opt">Instructor</option>
-                        <option name="opt">Teacher_assistant</option>
-                        <option name="opt">Professor</option>
-                        <option name="opt">Student</option>
-                        <option name="opt">Visiting_Professor</option>
-                        <option name="opt">Librarian</option>
+                        <option name="opt">Can modify</option>
+                        <option name="opt">Can add and modify</option>
+                        <option name="opt">Can delete, add, modify</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="name" class="cols-sm-2 control-label">Your Name</label>
+                    <label for="name" class="cols-sm-2 control-label">Name</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="name" id="name"
-                                   placeholder="Enter your Name" required autofocus/>
+                                   placeholder="Enter Name" required autofocus/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="surname" class="cols-sm-2 control-label">Your Surname</label>
+                    <label for="surname" class="cols-sm-2 control-label">Surname</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="surname" id="surname"
-                                   placeholder="Enter your Surname" required/>
+                                   placeholder="Enter Surname" required/>
                         </div>
                     </div>
                 </div>
@@ -80,7 +77,7 @@
                             <span class="input-group-addon"><i class="fa fa-location-arrow"
                                                                aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="address" id="address"
-                                   placeholder="Enter your Address" required/>
+                                   placeholder="Enter Address" required/>
                         </div>
                     </div>
                 </div>
@@ -91,7 +88,7 @@
                         <div0 class="input-group">
                             <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="phone" id="phone"
-                                   placeholder="Enter your number" required/>
+                                   placeholder="Enter number" required/>
                             <script>
                                 $(function () {
                                     $("#phone").mask("+7(999)999-9999");
@@ -108,7 +105,7 @@
                             <span class="input-group-addon"><i class="fa fa-first-order"
                                                                aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="username" id="username"
-                                   placeholder="Enter your Username" required/>
+                                   placeholder="Enter Username" required/>
                         </div>
                     </div>
                 </div>
@@ -119,7 +116,7 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="password" id="password"
-                                   placeholder="Enter your Password" required/>
+                                   placeholder="Enter Password" required/>
                         </div>
                     </div>
                 </div>
@@ -131,7 +128,7 @@
                     <span class="clearfix"></span>
                 </div>
                 <div class="login-register">
-                    <a href="/login">Already have an account? Please Login</a>
+                    <a href="/dashboard">Cancel</a>
                 </div>
 
             </form>
@@ -155,35 +152,36 @@
                         "password": document.getElementById("password").value
                     };
                     $.ajax({
-                        url: "/registration",
+                        url: "/add/librarian",
                         type: 'POST',
                         contentType: "application/json",
                         data: JSON.stringify(user),
-                        dataType: 'json',
-                        success:
-                            function () {
-                                toastr.options = {
-                                    "closeButton": true,
-                                    "debug": false,
-                                    "newestOnTop": false,
-                                    "progressBar": true,
-                                    "positionClass": "toast-top-full-width",
-                                    "preventDuplicates": false,
-                                    "onclick": null,
-                                    "showDuration": "300",
-                                    "hideDuration": "1000",
-                                    "timeOut": "5000",
-                                    "extendedTimeOut": "1000",
-                                    "showEasing": "swing",
-                                    "hideEasing": "linear",
-                                    "showMethod": "fadeIn",
-                                    "hideMethod": "fadeOut"
-                                };
-                                toastr["success"]("You have been successfully registered in the system. Wait for confirmation!");
-                            }
+                        dataType: 'json'
                     });
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-full-width",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["success"]("You have successfully registered librarian in the system.");
+                    setTimeout(function () {
+                        window.location.assign("/dashboard")
+                    }, 1500);
 
                 }
+
             </script>
 
         </div>
