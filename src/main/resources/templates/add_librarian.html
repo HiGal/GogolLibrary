@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <script src="../js/jquery.maskedinput.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+    <!-- Website CSS style -->
+    <link rel="stylesheet" type="text/css" href="../css/regstyle.css">
+
+    <!-- Website Font style -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+    <title>Title</title>
+
+
+</head>
+<body>
+<div class="container">
+    <div class="row main">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1 class="title">Gogol Libraries <i class="fa fa-book"></i></h1>
+                <hr/>
+            </div>
+        </div>
+        <div class="card card-container"></div>
+        <div class="main-login main-center">
+            <form class="form-horizontal" method="post" action="javascript:void(null);" id="registration-form"
+                  onsubmit="regcall()">
+                <div class="form-group">
+                    <label for="sel1">Select role</label>
+                    <select class="form-control" id="sel1">
+                        <option name="opt">Can modify</option>
+                        <option name="opt">Can add and modify</option>
+                        <option name="opt">Can delete, add, modify</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">Name</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="name" id="name"
+                                   placeholder="Enter Name" required autofocus/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="surname" class="cols-sm-2 control-label">Surname</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="surname" id="surname"
+                                   placeholder="Enter Surname" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address" class="cols-sm-2 control-label">Address</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-location-arrow"
+                                                               aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="address" id="address"
+                                   placeholder="Enter Address" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="cols-sm-2 control-label">Phone Number</label>
+                    <div class="cols-sm-10">
+                        <div0 class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="phone" id="phone"
+                                   placeholder="Enter number" required/>
+                            <script>
+                                $(function () {
+                                    $("#phone").mask("+7(999)999-9999");
+                                });
+                            </script>
+                        </div0>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="cols-sm-2 control-label">Username</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-first-order"
+                                                               aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="username" id="username"
+                                   placeholder="Enter Username" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input type="password" class="form-control" name="password" id="password"
+                                   placeholder="Enter Password" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block login-button">
+                        Register
+                    </button>
+                    <span class="clearfix"></span>
+                </div>
+                <div class="login-register">
+                    <a href="/dashboard">Cancel</a>
+                </div>
+
+            </form>
+
+
+            <script>
+                function regcall() {
+                    var str = document.getElementById("phone").value;
+                    str = str.replace("(", "");
+                    str = str.replace(")", "");
+                    str = str.replace("+", "");
+                    str = str.replace("-", "");
+                    var selector = document.getElementById("sel1");
+                    var user = {
+                        "role": selector.options[selector.selectedIndex].text.toUpperCase(),
+                        "name": document.getElementById("name").value,
+                        "surname": document.getElementById("surname").value,
+                        "address": document.getElementById("address").value,
+                        "phone": str,
+                        "login": document.getElementById("username").value,
+                        "password": document.getElementById("password").value
+                    };
+                    $.ajax({
+                        url: "/add/librarian",
+                        type: 'POST',
+                        contentType: "application/json",
+                        data: JSON.stringify(user),
+                        dataType: 'json'
+                    });
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-full-width",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["success"]("You have successfully registered librarian in the system.");
+                    setTimeout(function () {
+                        window.location.assign("/dashboard")
+                    }, 1500);
+
+                }
+
+            </script>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
