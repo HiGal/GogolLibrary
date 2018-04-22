@@ -222,7 +222,7 @@
                                 var result_table = data["search"];
                                 result_table.forEach(function (value) {
                                     var html = $('<div class="col-sm-4 deck"> <div class="card text-center"> <div class="card-body"> <h3 class="card-title">' + value.title + '</h3> <h5 class="card-subtitle text-muted">' + value.author + '</h5> <input type="hidden" class="edition_card" value="' + value.edition + '"> <input type="hidden" class="publisher_card" value="' + value.publisher + '"> <input type="hidden" class="id_card" value="' + value.id + '"> <input type="hidden" class="price_card" value="' + value.price + '"> <input type="hidden" class="count_card" value="' + value.count + '"> <input type="hidden" class="note_card" value="' + value.note + '"> <img class="image-book" src="data:image/png;base64, ' + value.picture + '"> <p></p> <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a> </div> </div> </div>');
-                                    $('tbody').append(html);
+                                    $('.card-group').append(html);
                                 });
                             }
                         });
