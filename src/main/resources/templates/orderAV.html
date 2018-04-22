@@ -66,7 +66,8 @@
                                     <h3 class="card-title">{{title}}</h3>
                                     <h5 class="card-subtitle text-muted">{{author}}</h5>
                                     <input type="hidden" class="id_card" value="{{id}}">
-                                    <img class="image-av" src="../img/no_image.jpg">
+                                    <img class="image-av" src="data:image/png;base64, {{picture}}">
+                                    <input type="hidden" class="count_card" value="{{count}}">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                                 </div>
@@ -100,6 +101,7 @@
                                         $('#id').val($(this).parent().find($('.id_card')).attr('value'));
                                         $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
+                                        $('.count').html('<b>Number of copies: </b>' + $(this).parent().find($('.count_card')).attr('value'));
                                         $("#img").attr("src", $(this).parent().find($('.image-av')).attr('src'));
                                         $('#expansion').html($(this).parent().find($('.card.title')).text());
                                         if ($(this).parent().find($('.note_card')).attr('value') === "reference") {
@@ -166,6 +168,7 @@
                                             <input type="hidden" id="id">
                                             <h4 class="title" id="title"><b>Title: </b></h4>
                                             <h4 class="author" id="author"><b>Author: </b></h4>
+                                            <h4 class="count" id="count"><b>Number of copies: </b></h4>
                                         </div>
                                     </div>
                                 </div>

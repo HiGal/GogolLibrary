@@ -73,8 +73,9 @@
                                     <input type="hidden" class="issue_card" value="{{issue}}">
                                     <input type="hidden" class="editor_card" value="{{editor}}">
                                     <input type="hidden" class="id_card" value="{{id}}">
+                                    <input type="hidden" class="count_card" value="{{count}}">
                                     <input type="hidden" class="note_card" value="{{note}}">
-                                    <img class="image-journal" src="../img/no_image.jpg">
+                                    <img class="image-journal" src="data:image/png;base64, {{picture}}">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
                                 </div>
@@ -111,6 +112,7 @@
                                         $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                         $('.editor').html('<b>Editor of issue: </b>' + $(this).parent().find($('.editor_card')).attr('value'));
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
+                                        $('.count').html('<b>Number of copies: </b>' + $(this).parent().find($('.count_card')).attr('value'));
                                         $("#img").attr("src", $(this).parent().find($('.image-journal')).attr('src'));
                                         $('#expansion').html($(this).parent().find($('.card.title')).text());
                                         if ($(this).parent().find($('.note_card')).attr('value') === "reference") {
@@ -187,6 +189,7 @@
                                             <h4 class="author" id="author"><b>Author: </b></h4>
                                             <h4 class="editor" id="editor"><b>Editor of issue: </b></h4>
                                             <h4 class="issue" id="issue"><b>Issue: </b></h4>
+                                            <h4 class="count" id="count"><b>Number of copies: </b></h4>
                                         </div>
                                     </div>
                                 </div>
