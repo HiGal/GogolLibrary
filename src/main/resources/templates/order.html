@@ -76,7 +76,8 @@
                                     <input type="hidden" class="publisher_card" value="{{publisher}}">
                                     <input type="hidden" class="id_card" value="{{id}}">
                                     <input type="hidden" class="note_card" value="{{note}}">
-                                    <img class="image-book" src="../img/no_image.jpg">
+                                    <input type="hidden" class="count_card" value="{{count}}">
+                                    <img class="image-book" src="data:image/png;base64, {{picture}}">
                                     <p></p>
                                     <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show
                                         details</a>
@@ -115,6 +116,7 @@
                                         $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
                                         $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                         $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
+                                        $('.count').html('<b>Number of copies: </b>' + $(this).parent().find($('.count_card')).attr('value'));
                                         $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
                                         $('#expansion').html($(this).parent().find($('.card.title')).text());
                                         if ($(this).parent().find($('.note_card')).attr('value') === "reference") {
@@ -191,6 +193,7 @@
                                             <h4 class="edition" id="edition"><b>Edition: </b></h4>
                                             <h4 class="author" id="author"><b>Author: </b></h4>
                                             <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
+                                            <h4 class="count" id="count"><b>Number of copies: </b></h4>
                                         </div>
                                     </div>
                                 </div>

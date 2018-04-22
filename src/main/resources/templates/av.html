@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Audio/Video</title>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../css/patrons.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="../css/patrons.css">
     <link rel="stylesheet" href="../css/dialog.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed top">
@@ -148,13 +155,14 @@
                                 "tags": document.getElementById("etags").value,
                                 "picture":JSON.stringify(getBase64Image(imgElem))
                             };
+                            alert(JSON.stringify(myJson));
                             $.ajax({
-                                url: "/edit/av",
+                                url: "/edit/AV",
                                 type: 'POST',
                                 contentType: 'application/json',
                                 data: JSON.stringify(myJson)
                             });
-
+                            toastr["success"]("AV has successfully edited");
                             setTimeout(reload, 1500);
                         }
 
@@ -164,12 +172,12 @@
                                 "id": document.getElementById("id").value
                             };
                             $.ajax({
-                                url: "/delete/av",
+                                url: "/delete/all/av",
                                 type: 'POST',
-                                data: JSON.stringify(myJson),
-                                success: alert('succ'),
-                                error: alert('fork')
+                                contentType: 'application/json',
+                                data: JSON.stringify(myJson)
                             });
+                            toastr["success"]("AV has successfully deleted");
                             setTimeout(reload, 1500);
                         }
 

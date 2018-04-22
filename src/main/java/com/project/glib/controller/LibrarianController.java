@@ -232,6 +232,16 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    @RequestMapping(value="/delete/all/av")
+    public String delete_all_av(@RequestBody AudioVideo audioVideo){
+        try {
+            avService.remove(audioVideo.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "succ";
+    }
+
     @RequestMapping(value = "/copies/av", method = RequestMethod.GET)
     public ModelAndView getListOfAVCopies(@RequestBody long avId, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
