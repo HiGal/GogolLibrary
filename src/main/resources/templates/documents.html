@@ -174,7 +174,6 @@
                                 e.preventDefault();
                                 var count = $(this).attr("value");
                                 var price=document.getElementById("price_card").value;
-                                alert(price);
                                 var myJson = {
                                     "id": $('#id').attr("value"),
                                     "count": count,
@@ -182,17 +181,17 @@
                                 };
                                 //alert(JSON.stringify(myJson));
                                 var shelf = $(this).closest('tr').find($('.shelf-name')).text();
-                                alert(JSON.stringify(myJson));
                                 $.ajax({
                                     url: "/update/phys/book?shelf="+shelf,
                                     type: 'POST',
                                     contentType: 'application/json',
                                     data: JSON.stringify(myJson),
                                     dataType: 'json',
-                                    success: function () {
+                                    success: function (data) {
+                                        alert(data);
                                         var val = parseInt($('.shelf-value').text(), 10);
                                         var btnval = parseInt(count, 10);
-                                        $(this).closest('tr').find($('.shelf-value')).innerHTML(val + btnval);
+                                        $(this).closest('tr').find($('.shelf-value')).text(val + btnval);
                                         toastr["success"]("Success");
                                     }
 

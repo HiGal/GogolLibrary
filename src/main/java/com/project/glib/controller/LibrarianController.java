@@ -4,10 +4,12 @@ package com.project.glib.controller;
 import com.project.glib.model.*;
 import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
@@ -139,9 +141,9 @@ public class LibrarianController {
     }
 
 
-    @RequestMapping(value = "/update/phys/book",method = {RequestMethod.POST},produces = "application/json")
-    public @ResponseBody String update_phys_book(@RequestBody Book data,
-                                                       @RequestParam(value = "shelf") String shelf) {
+    @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
+    public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
+                                                 @RequestParam(value = "shelf") String shelf) {
         Book book = bookService.getById(data.getId());
         int count = data.getCount();
         data.setPrice(book.getPrice());
@@ -152,6 +154,7 @@ public class LibrarianController {
         data.setPicture(book.getPicture());
         data.setNote(book.getNote());
         data.setYear(book.getYear());
+        data.setKeywords(book.getKeywords());
         try {
             if (count == -1) {
                 documentPhysicalService.removeAllByDocVirIdAndDocType(book.getId(), Document.BOOK);
@@ -162,8 +165,9 @@ public class LibrarianController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return "succ";
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        modelAndView.addObject("data","success");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/copies/book")
@@ -171,8 +175,6 @@ public class LibrarianController {
     ModelAndView getListOfBookCopies(@RequestBody Book book) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         modelAndView.addObject("copies", bookService.getListOfShelvesAndCounts(book.getId()));
-        System.out.println(modelAndView);
-        //   modelAndView.setViewName("documents");
         return modelAndView;
     }
 
@@ -216,6 +218,35 @@ public class LibrarianController {
         return "succ";
     }
 
+    @RequestMapping(value = "/update/phys/journal", method = RequestMethod.POST)
+    public @ResponseBody ModelAndView update_phys_journal(@RequestBody Journal data,
+                                      @RequestParam(value = "shelf") String shelf){
+        Journal journal = journalService.getById(data.getId());
+        int count = data.getCount();
+        data.setPrice(journal.getPrice());
+        data.setAuthor(journal.getAuthor());
+        data.setEditor(journal.getEditor());
+        data.setIssue(journal.getIssue());
+        data.setName(journal.getName());
+        data.setNote(journal.getNote());
+        data.setTitle(journal.getTitle());
+        data.setPicture(journal.getPicture());
+        data.setKeywords(journal.getKeywords());
+        try {
+            if (count == -1) {
+                documentPhysicalService.removeAllByDocVirIdAndDocType(journal.getId(), Document.JOURNAL);
+                journalService.add(data, shelf);
+            } else {
+                journalService.add(data, shelf);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        modelAndView.addObject("data","succ");
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/delete/all/journals")
     public String delete_all_journals(@RequestBody Journal journal, HttpServletRequest request) {
         try {
@@ -229,11 +260,11 @@ public class LibrarianController {
         return "succ";
     }
 
-    @RequestMapping(value = "/copies/journal", method = RequestMethod.GET)
-    public ModelAndView getListOfJournalCopies(@RequestBody long journalId) {
+    @RequestMapping(value = "/copies/journal")
+    public @ResponseBody ModelAndView getListOfJournalCopies(@RequestBody Journal journal) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-
-        return modelAndView.addObject(journalService.getListOfShelvesAndCounts(journalId));
+        modelAndView.addObject(journalService.getListOfShelvesAndCounts(journal.getId()));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/edit/AV")
@@ -275,6 +306,33 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/update/phys/av")
+    public @ResponseBody ModelAndView update_phys_av(@RequestBody AudioVideo data,
+                                 @RequestParam(value = "shelf") String shelf){
+        AudioVideo av = audioVideoService.getById(data.getId());
+        int count = data.getCount();
+        data.setPrice(av.getPrice());
+        data.setAuthor(av.getAuthor());
+        data.setTitle(av.getTitle());
+        data.setId(av.getId());
+        data.setKeywords(av.getKeywords());
+        data.setPicture(av.getPicture());
+        try {
+            if (count == -1) {
+                documentPhysicalService.removeAllByDocVirIdAndDocType(av.getId(), Document.AV);
+                audioVideoService.add(data, shelf);
+            } else {
+                audioVideoService.add(data, shelf);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        modelAndView.addObject("data","succ");
+        return modelAndView;
+    }
+
+
     @RequestMapping(value = "/delete/all/av")
     public String delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
         try {
@@ -288,11 +346,13 @@ public class LibrarianController {
         return "succ";
     }
 
-    @RequestMapping(value = "/copies/av", method = RequestMethod.GET)
-    public ModelAndView getListOfAVCopies(@RequestBody long avId, HttpServletRequest request) {
+    @RequestMapping(value = "/copies/av")
+    public @ResponseBody ModelAndView getListOfAVCopies(@RequestBody AudioVideo av) {
+        System.out.println(avService.getListOfShelvesAndCounts(av.getId()));
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-
-        return modelAndView.addObject(avService.getListOfShelvesAndCounts(avId));
+        modelAndView.addObject(avService.getListOfShelvesAndCounts(av.getId()));
+        System.out.println(modelAndView);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/librarian/taken_doc", method = RequestMethod.GET)
