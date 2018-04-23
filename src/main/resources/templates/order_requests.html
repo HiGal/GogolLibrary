@@ -75,8 +75,9 @@
                             $(document).ready(function () {
                                 $('.submit').click(function (e) {
                                     e.preventDefault();
+                                    var id = $(this).closest('tr').find($('.id')).attr("value");
                                     var myJson = {
-                                        "phys_id": $(this).closest('tr').find($('.id')).attr("value")
+                                        "phys_id": id
                                     };
                                     $.ajax({
                                         url: "",

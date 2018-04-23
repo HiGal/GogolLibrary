@@ -181,6 +181,7 @@
                                 };
                                 //alert(JSON.stringify(myJson));
                                 var shelf = $(this).closest('tr').find($('.shelf-name')).text();
+                                var num = $(this).closest('tr').find($('.shelf-value'));
                                 $.ajax({
                                     url: "/update/phys/book?shelf="+shelf,
                                     type: 'POST',
@@ -189,11 +190,9 @@
                                     dataType: 'json',
                                     success: function (data) {
                                         alert(data);
-                                        var val = parseInt($('.shelf-value').text(), 10);
+                                        var val = parseInt(num.text(), 10);
                                         var btnval = parseInt(count, 10);
-                                        alert(val);
-                                        alert(btnval);
-                                        $(this).closest('tr').find($('.shelf-value')).text(val + btnval);
+                                        num.text(val+btnval);
                                         toastr["success"]("Success");
                                     }
 
