@@ -189,9 +189,8 @@
                                     data: JSON.stringify(myJson),
                                     dataType: 'json',
                                     success: function (data) {
-                                        alert(data);
                                         var val = parseInt(num.text(), 10);
-                                        var btnval = parseInt(count, 10);
+                                        var btnval = parseInt(data["data"], 10);
                                         num.text(val+btnval);
                                         toastr["success"]("Success");
                                     }
