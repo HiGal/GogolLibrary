@@ -153,7 +153,8 @@ public class LibrarianController {
 
     @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
-                                                 @RequestParam(value = "shelf") String shelf) {
+                                                 @RequestParam(value = "shelf") String shelf,
+                                                       HttpServletRequest request) {
         Book book = bookService.getById(data.getId());
         int count = data.getCount();
         data.setPrice(book.getPrice());
@@ -166,10 +167,15 @@ public class LibrarianController {
         data.setYear(book.getYear());
         data.setKeywords(book.getKeywords());
         try {
-            if (count == -1) {
+            User user = (User) request.getSession().getAttribute("user");
+            boolean hasDeletePermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) >= 0;
+            boolean hasAddPermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) >= 0;
+            if (count == -1 && hasDeletePermission) {
                 bookService.removeCopyByShelf(book.getId(),shelf);
-            } else {
+            } else if (count == 1 && hasAddPermission){
                 bookService.add(data, shelf);
+            } else {
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             }
         } catch (Exception e) {
             e.printStackTrace();

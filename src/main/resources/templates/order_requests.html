@@ -84,7 +84,7 @@
                                         "docPhysId": id,
                                         "userId": parseInt(tr.find($('.user_id')).attr("value"),10),
                                         "id": tr.find($('.id')).attr("value"),
-                                        "shelf":tr.find($('.shelf')).attr("value"),
+                                        "shelf":$(this).closest('tr').find($('.shelf')).attr("value"),
                                         "docType":tr.find($('#type')).text()
                                     };
                                     alert(JSON.stringify(myJson));
@@ -97,7 +97,7 @@
                                         success: function (data){
                                             if(data["data"] === "succ") {
                                                 tr.remove();
-                                            }else {
+                                            } else {
                                                 alert("error");
                                             }
                                         }
