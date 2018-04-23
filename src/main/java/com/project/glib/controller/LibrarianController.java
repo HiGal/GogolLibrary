@@ -157,8 +157,7 @@ public class LibrarianController {
         data.setKeywords(book.getKeywords());
         try {
             if (count == -1) {
-                documentPhysicalService.removeAllByDocVirIdAndDocType(book.getId(), Document.BOOK);
-                bookService.add(data, shelf);
+                bookService.removeCopyByShelf(book.getId(),shelf);
             } else {
                 bookService.add(data, shelf);
             }
@@ -234,8 +233,7 @@ public class LibrarianController {
         data.setKeywords(journal.getKeywords());
         try {
             if (count == -1) {
-                documentPhysicalService.removeAllByDocVirIdAndDocType(journal.getId(), Document.JOURNAL);
-                journalService.add(data, shelf);
+                journalService.removeCopyByShelf(journal.getId(),shelf);
             } else {
                 journalService.add(data, shelf);
             }
@@ -319,8 +317,7 @@ public class LibrarianController {
         data.setPicture(av.getPicture());
         try {
             if (count == -1) {
-                documentPhysicalService.removeAllByDocVirIdAndDocType(av.getId(), Document.AV);
-                audioVideoService.add(data, shelf);
+                audioVideoService.removeCopyByShelf(av.getId(),shelf);
             } else {
                 audioVideoService.add(data, shelf);
             }
