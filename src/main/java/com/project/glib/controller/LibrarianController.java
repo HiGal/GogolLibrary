@@ -173,7 +173,7 @@ public class LibrarianController {
             e.printStackTrace();
         }
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        modelAndView.addObject("data","success");
+        modelAndView.addObject("data","succ");
         return modelAndView;
     }
 

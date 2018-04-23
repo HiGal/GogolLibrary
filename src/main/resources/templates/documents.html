@@ -189,10 +189,15 @@
                                     contentType: 'application/json',
                                     data: JSON.stringify(myJson),
                                     dataType: 'json',
-                                    success: function () {
+                                    success: function (data) {
+                                        if (data["data"] === "succ") {
                                         var val = parseInt(num.text(), 10);
                                         var btnval = parseInt(count, 10);
                                         num.text(val+btnval);
+                                        }
+                                        if (num.text() === "0") {
+                                            num.closest('tr').remove()
+                                        }
                                       //  toastr["success"]("Success");
                                     }
 
