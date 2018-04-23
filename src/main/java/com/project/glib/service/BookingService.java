@@ -206,10 +206,9 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 default:
                     throw new Exception(TYPE_EXCEPTION);
             }
-        } catch (Exception e) {
-            if (e.getMessage().equals(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION))
-                throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
+        } catch (NullPointerException | NoSuchElementException ignore) {
         }
+
         recalculatePriority(docVirId, docType);
         add(new Booking(userId, docVirId, docType, docPhysId, System.currentTimeMillis(), isActive, priority, shelf));
     }

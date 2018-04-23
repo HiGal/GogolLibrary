@@ -6,7 +6,10 @@ import com.project.glib.model.*;
 import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -107,7 +110,7 @@ public class UserController {
                 HashMap<String, String> nList = new HashMap<>();
 
                 calendar.setTimeInMillis(data.getReturnTime());
-                String s = calendar.get(Calendar.DAY_OF_MONTH) + "." + calendar.get(Calendar.MONTH) +
+                String s = calendar.get(Calendar.DAY_OF_MONTH) + "." + (calendar.get(Calendar.MONTH) % 12 + 1) +
                         "." + calendar.get(Calendar.YEAR);
                 nList.put("return", s);
 
