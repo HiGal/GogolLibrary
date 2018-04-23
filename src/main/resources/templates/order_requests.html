@@ -76,6 +76,7 @@
                                 $('.submit').click(function (e) {
                                     e.preventDefault();
                                     var id = $(this).closest('tr').find($('.id')).attr("value");
+                                    var tr = $(this).closest('tr');
                                     var myJson = {
                                         "phys_id": id
                                     };
@@ -84,7 +85,8 @@
                                         type: 'POST',
                                         contentType: "application/json",
                                         dataType: 'json',
-                                        data: JSON.stringify(myJson)
+                                        data: JSON.stringify(myJson),
+                                        success: tr.remove()
                                     });
                                 });
                             });
