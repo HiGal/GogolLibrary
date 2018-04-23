@@ -122,7 +122,7 @@
                     (function ($) {
                         $(document).ready(function () {
                             //scrtipt to open book info
-                            $('.btn-lg').click(function (e) {
+                            $('.card-group').on('click', '.btn-lg', function (e) {
                                 e.preventDefault();
                                 //I make description fields and buttons visible and edit fields and buttons unvisible
                                 document.getElementById("title").style.display = "block";
@@ -191,6 +191,8 @@
                                         alert(data);
                                         var val = parseInt($('.shelf-value').text(), 10);
                                         var btnval = parseInt(count, 10);
+                                        alert(val);
+                                        alert(btnval);
                                         $(this).closest('tr').find($('.shelf-value')).text(val + btnval);
                                         toastr["success"]("Success");
                                     }
