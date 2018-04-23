@@ -61,6 +61,25 @@
             <input placeholder="edition" id="sedition">
             <input placeholder="publisher" id="spublisher">
             <input placeholder="year" id="syear">
+
+            <script>
+//                 //search string
+//                var str = "Cormen DSA blah blah some parameters";
+//                //massive of all books divs
+//                var deck = $(".deck");
+//                var str_arr = str.split(" ");
+//                for (var j = 0; j < str_arr.length; j++) {
+//                    for (var i = 0; i < deck.length; i++) {
+//                        //get all html content of book div
+//                        var doc = deck[i].html();
+//                        //if no matches found delete it
+//                        if (doc.search(str_arr[j]) === -1) {
+//                            doc.remove()
+//                        }
+//                    }
+//                }
+            </script>
+
         </div>
         <div class="buttons">
             <input type="checkbox" class="chk" name="detective" value="detective">
@@ -114,11 +133,9 @@
                 </script>
 
                 <script>
-                    //TODO: selector value
                     //                    var image = $('#image-book');
                     //                    image.src = 'data:image/png;base64,iVBORw0K...';
                     //                    document.body.appendChild(image);
-
                     (function ($) {
                         $(document).ready(function () {
                             //scrtipt to open book info
@@ -174,35 +191,35 @@
                             $('tbody').on('click', '.shlfbtn', function (e) {
                                 e.preventDefault();
                                 var count = $(this).attr("value");
-                                var price=document.getElementById("price_card").value;
+                                var price = document.getElementById("price_card").value;
                                 var myJson = {
                                     "id": $('#id').attr("value"),
                                     "count": count,
-                                    "price":price
+                                    "price": price
                                 };
                                 //alert(JSON.stringify(myJson));
                                 var shelf = $(this).closest('tr').find($('.shelf-name')).text();
                                 var num = $(this).closest('tr').find($('.shelf-value'));
                                 $.ajax({
-                                    url: "/update/phys/book?shelf="+shelf,
+                                    url: "/update/phys/book?shelf=" + shelf,
                                     type: 'POST',
                                     contentType: 'application/json',
                                     data: JSON.stringify(myJson),
                                     dataType: 'json',
                                     success: function (data) {
                                         if (data["data"] === "succ") {
-                                        var val = parseInt(num.text(), 10);
-                                        var btnval = parseInt(count, 10);
-                                        num.text(val+btnval);
+                                            var val = parseInt(num.text(), 10);
+                                            var btnval = parseInt(count, 10);
+                                            num.text(val + btnval);
                                         }
                                         if (num.text() === "0") {
                                             num.closest('tr').remove()
                                         }
-                                      //  toastr["success"]("Success");
+                                        //  toastr["success"]("Success");
                                     }
 
-                                    });
                                 });
+                            });
                         });
                         return false;
                     }(jQuery));
