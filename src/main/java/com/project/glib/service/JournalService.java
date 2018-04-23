@@ -86,6 +86,13 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     }
 
     @Override
+    public void removeCopyByShelf(long journalId, String shelf) throws Exception {
+        long copyId = docPhysService.getByDocVirIdAndDocType(journalId, Document.JOURNAL).stream()
+                .filter(doc -> doc.getShelf().equals(shelf))
+                .findFirst().get().getId();
+        removeCopy(journalId, copyId);
+    }
+    @Override
     public void removeAllCopiesByShelf(long journalId, String shelf) throws Exception {
         List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(journalId, Document.JOURNAL)
                 .stream().filter(doc -> doc.getShelf().equals(shelf))

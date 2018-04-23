@@ -120,6 +120,14 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         decrementCountById(avId);
     }
 
+    @Override
+    public void removeCopyByShelf(long avId, String shelf) throws Exception {
+        long copyId = docPhysService.getByDocVirIdAndDocType(avId, Document.AV).stream()
+                .filter(doc -> doc.getShelf().equals(shelf))
+                .findFirst().get().getId();
+        removeCopy(avId, copyId);
+    }
+
     /**
      * Removes all AudioVideo copies on the same shelf
      *

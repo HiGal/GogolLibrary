@@ -24,6 +24,8 @@ public interface DocumentServiceInterface<T extends Document> extends ModifyByLi
 
     void removeCopy(long docId, long copyId) throws Exception;
 
+    void removeCopyByShelf(long docId, String shelf) throws Exception;
+
     void removeAllCopiesByShelf(long docId, String shelf) throws Exception;
 
     void add(T t, String shelf) throws Exception;

@@ -88,6 +88,14 @@ public class BookService implements DocumentServiceInterface<Book> {
     }
 
     @Override
+    public void removeCopyByShelf(long bookId, String shelf) throws Exception {
+        long copyId = docPhysService.getByDocVirIdAndDocType(bookId, Document.BOOK).stream()
+                .filter(doc -> doc.getShelf().equals(shelf))
+                .findFirst().get().getId();
+        removeCopy(bookId, copyId);
+    }
+
+    @Override
     public void removeAllCopiesByShelf(long bookId, String shelf) throws Exception {
         List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(bookId, Document.BOOK)
                 .stream()
