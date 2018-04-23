@@ -10,6 +10,8 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../css/patrons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/dialog.css">
     <link rel="stylesheet" href="../css/line/blue.css">
     <script src="../js/icheck.js"></script>
@@ -147,9 +149,14 @@
                                     //   "imgData":JSON.stringify(getBase64Image(imgElem))
                                 };
                                 $.ajax({
-                                    url: "idk",
+                                    url: "/order/av",
                                     type: 'POST',
-                                    data: JSON.stringify(myJson)
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(myJson),
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        toastr["info"](data["data"])
+                                    }
                                 });
                             }
                         </script>
