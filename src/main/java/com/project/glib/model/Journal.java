@@ -54,7 +54,21 @@ public class Journal extends Document {
         this.keywords = keywords;
     }
 
-    public Journal(){}
+    protected Journal() {
+    }
+
+    public Journal(Journal journal) {
+        this.title = journal.title;
+        this.author = journal.author;
+        this.name = journal.name;
+        this.issue = journal.issue;
+        this.editor = journal.editor;
+        this.note = journal.note;
+        this.price = journal.price;
+        this.count = journal.count;
+        this.picture = journal.picture;
+        this.keywords = journal.keywords;
+    }
 
     @Override
     public boolean equals(Object o) {

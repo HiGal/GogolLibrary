@@ -9,13 +9,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
-import static com.project.glib.model.User.ACCESS;
-import static com.project.glib.model.User.LIBSECOND;
+import static com.project.glib.model.User.*;
 
 @RestController
 public class LibrarianController {
+    public static final String RIGHT_PERMISSION_EXCEPTION = "You have not rights to do this action";
 
     private final UserService userService;
     private final BookService bookService;
@@ -97,7 +100,8 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             bookService.add(book, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_BOOK, System.currentTimeMillis(), Document.BOOK);
@@ -114,6 +118,8 @@ public class LibrarianController {
     public String editBook(@RequestBody Book book, HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             bookService.update(book);
             long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_BOOK, System.currentTimeMillis(), Document.BOOK);
@@ -128,6 +134,8 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             bookService.remove(book.getId());
             long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_BOOK, System.currentTimeMillis(), Document.BOOK);
@@ -190,7 +198,8 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             journalService.add(journal, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
@@ -208,6 +217,8 @@ public class LibrarianController {
     public String editJournal(@RequestBody Journal journal, HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             journalService.update(journal);
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
@@ -219,29 +230,36 @@ public class LibrarianController {
 
     @RequestMapping(value = "/update/phys/journal", method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_journal(@RequestBody Journal data,
-                                      @RequestParam(value = "shelf") String shelf){
+                                                          @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
         Journal journal = journalService.getById(data.getId());
         int count = data.getCount();
-        data.setPrice(journal.getPrice());
-        data.setAuthor(journal.getAuthor());
-        data.setEditor(journal.getEditor());
-        data.setIssue(journal.getIssue());
-        data.setName(journal.getName());
-        data.setNote(journal.getNote());
-        data.setTitle(journal.getTitle());
-        data.setPicture(journal.getPicture());
-        data.setKeywords(journal.getKeywords());
+        data = new Journal(journal);
+//        data.setPrice(journal.getPrice());
+//        data.setAuthor(journal.getAuthor());
+//        data.setEditor(journal.getEditor());
+//        data.setIssue(journal.getIssue());
+//        data.setName(journal.getName());
+//        data.setNote(journal.getNote());
+//        data.setTitle(journal.getTitle());
+//        data.setPicture(journal.getPicture());
+//        data.setKeywords(journal.getKeywords());
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
-            if (count == -1) {
+            User user = (User) request.getSession().getAttribute("user");
+            boolean hasDeletePermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) >= 0;
+            boolean hasAddPermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) >= 0;
+            if (count == -1 && hasDeletePermission) {
                 journalService.removeCopyByShelf(journal.getId(),shelf);
-            } else {
+            } else if (count == 1 && hasAddPermission) {
                 journalService.add(data, shelf);
+            } else {
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             }
+            modelAndView.addObject("data", "succ");
         } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
         }
-        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        modelAndView.addObject("data","succ");
         return modelAndView;
     }
 
@@ -249,6 +267,8 @@ public class LibrarianController {
     public String delete_all_journals(@RequestBody Journal journal, HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             journalService.remove(journal.getId());
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
@@ -269,6 +289,8 @@ public class LibrarianController {
     public String editAV(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
         try {
             User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             avService.update(audioVideo);
             long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_AV, System.currentTimeMillis(), Document.AV);
@@ -290,7 +312,8 @@ public class LibrarianController {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             avService.add(audioVideo, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_AV, System.currentTimeMillis(), Document.AV);
@@ -306,7 +329,7 @@ public class LibrarianController {
 
     @RequestMapping(value = "/update/phys/av")
     public @ResponseBody ModelAndView update_phys_av(@RequestBody AudioVideo data,
-                                 @RequestParam(value = "shelf") String shelf){
+                                                     @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
         AudioVideo av = audioVideoService.getById(data.getId());
         int count = data.getCount();
         data.setPrice(av.getPrice());
@@ -315,29 +338,39 @@ public class LibrarianController {
         data.setId(av.getId());
         data.setKeywords(av.getKeywords());
         data.setPicture(av.getPicture());
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
-            if (count == -1) {
+            User user = (User) request.getSession().getAttribute("user");
+            boolean hasDeletePermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) >= 0;
+            boolean hasAddPermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) >= 0;
+            if (count == -1 && hasDeletePermission) {
                 audioVideoService.removeCopyByShelf(av.getId(),shelf);
-            } else {
+            } else if (count == 1 && hasAddPermission) {
                 audioVideoService.add(data, shelf);
+            } else {
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             }
+            modelAndView.addObject("data", "succ");
         } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
         }
-        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        modelAndView.addObject("data","succ");
         return modelAndView;
     }
 
 
     @RequestMapping(value = "/delete/all/av")
     public String delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             avService.remove(audioVideo.getId());
             long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_AV, System.currentTimeMillis(), Document.AV);
         } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
         }
         return "succ";
@@ -360,26 +393,37 @@ public class LibrarianController {
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     public @ResponseBody
-    String UserDelete(@RequestBody User user1) {
+    ModelAndView UserDelete(@RequestBody User user1, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
+            User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             userService.remove(user1.getId());
-
+            modelAndView.addObject("User deleted");
         } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
         }
-        return "User deleted";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
     public @ResponseBody
-    String UserEdit(@RequestBody User user) {
+    ModelAndView UserEdit(@RequestBody User user1, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
-            userService.update(user);
+            User user = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
+            userService.update(user1);
+            modelAndView.addObject("success");
         } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
         }
 
-        return "success";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/user/confirm", method = RequestMethod.POST)
@@ -390,17 +434,17 @@ public class LibrarianController {
 
         try {
             User userInSession = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(LIBSECOND) < 0) throw new IllegalAccessException();
+            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(LIBSECOND) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             User userInDao = userService.getById(user.getId());
             userInDao.setAuth(user.getAuth());
             userService.update(userInDao);
+            modelAndView.addObject("message", "succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
-            return modelAndView;
         }
 
-        modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 

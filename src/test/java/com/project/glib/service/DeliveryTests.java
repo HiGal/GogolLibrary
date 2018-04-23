@@ -71,7 +71,7 @@ public class DeliveryTests {
                 true, "img");
         lib = new User("h.aslam", "123",
                 "Hamna", "Aslam",
-                "Kazan", "12345678900", User.LIDTHIRD,
+                "Kazan", "12345678900", User.LIBTHIRD,
                 true, "img");
 
 

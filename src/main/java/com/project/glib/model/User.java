@@ -10,7 +10,7 @@ public class User {
     public static final String TYPE = "USER";
     public static final String LIBFIRST = "CAN MODIFY";
     public static final String LIBSECOND = "CAN ADD AND MODIFY";
-    public static final String LIDTHIRD = "CAN DELETE, ADD, MODIFY";
+    public static final String LIBTHIRD = "CAN DELETE, ADD, MODIFY";
     public static final String STUDENT = "STUDENT";
     public static final String INSTRUCTOR = "INSTRUCTOR";
     public static final String TA = "TEACHER_ASSISTANT";
@@ -19,13 +19,13 @@ public class User {
     public static final String ADMIN = "ADMIN";
     public static final String[] FACULTY = {INSTRUCTOR, TA, PROFESSOR};
     public static final String[] PATRONS = {STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
-    public static final String[] LIBRARIANS = {LIBFIRST, LIBSECOND, LIDTHIRD};
-    public static final String[] ROLES = {LIBFIRST, LIBSECOND, LIDTHIRD, STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
+    public static final String[] LIBRARIANS = {LIBFIRST, LIBSECOND, LIBTHIRD};
+    public static final String[] ROLES = {LIBFIRST, LIBSECOND, LIBTHIRD, STUDENT, INSTRUCTOR, TA, PROFESSOR, PROFESSOR_VISITING};
     public static final HashMap<String, Integer> ACCESS = new HashMap<>();
 
     static {
         ACCESS.put(ADMIN, 100);
-        ACCESS.put(LIDTHIRD, 30);
+        ACCESS.put(LIBTHIRD, 30);
         ACCESS.put(LIBSECOND, 20);
         ACCESS.put(LIBFIRST, 10);
         for (String patron : PATRONS) {
