@@ -81,6 +81,7 @@
                             <input type="hidden" class="id_card" value="{{id}}">
                             <input type="hidden" class="price_card" id="price_card" value="{{price}}">
                             <input type="hidden" class="count_card" value="{{count}}">
+                            <input type="hidden" class="note_card" value="{{note}}">
                             <img class="image-journal" src="data:image/png;base64, {{picture}}">
                             <p></p>
                             <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a>
@@ -128,6 +129,7 @@
                                 $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                 $('.editor').html('<b>Editor: </b>' + $(this).parent().find($('.editor_card')).attr('value'));
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.author_card')).attr('value'));
+                                $('.note').html('<b>Note: </b>' + $(this).parent().find($('.note_card')).attr('value'));
                                 $("#img").attr("src", $(this).parent().find($('.image-journal')).attr('src'));
                                 $('#expansion').html($(this).parent().find($('.card-title')).text());
                                 document.getElementById("etitle").style.display = "none";
@@ -142,6 +144,7 @@
                                 document.getElementById("renewbtn").style.display = "none";
                                 document.getElementById("etags").style.display = "none";
                                 document.getElementById("sel").style.display = "none";
+                                document.getElementById("note").style.display = "block";
                                 $('tbody').empty();
                                 var myJson = {"id": document.getElementById("id").value};
                                 $.ajax({
@@ -242,7 +245,11 @@
                         document.getElementById("okbtn").style.display = "inline";
                         document.getElementById("imgbtn").style.display = "inline";
                         document.getElementById("etags").style.display = "inline";
-                        document.getElementById("sel").style.display = "inline"
+                        document.getElementById("sel").style.display = "inline";
+                        document.getElementById("note").style.display = "none";
+
+                        var note = $('.note').text().split(': ')[1];
+                        $('#sel').val(note);
                     }
 
                     function renew() {
@@ -411,10 +418,11 @@
                                     <input id="eissue">
                                     <h4 class="editor" id="editor"><b>Editor of issue: </b></h4>
                                     <input id="eeditor">
+                                    <h4 class="note" id="note">Note: </h4>
                                     <input id="etags" placeholder="tags">
                                     <select id="sel">
                                         <option class="opt">NA</option>
-                                        <option class="opt">Reference</option>
+                                        <option class="opt">REFERENCE</option>
                                     </select>
                                     <input id="elogin">
                                     <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
