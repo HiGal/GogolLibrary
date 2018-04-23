@@ -220,7 +220,7 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         HashSet<String> shelves = new HashSet<>();
         for (DocumentPhysical docPhys : docPhysService.getByDocVirIdAndDocType(journalId, Document.JOURNAL)) {
             String shelf = docPhys.getShelf();
-            int count = shelves.add(shelf) ? 0 : shelfCount.get(shelf) + 1;
+            int count = shelves.add(shelf) ? 1 : shelfCount.get(shelf) + 1;
             shelfCount.put(shelf, count);
         }
 

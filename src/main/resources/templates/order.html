@@ -159,17 +159,23 @@
                             function oCall() {
                                 // var imgElem = document.getElementById('img');
                                 var myJson = {
-                                    "id": document.getElementById("id").value,
+                                    "id": document.getElementById("id").value
 //                                    "title": document.getElementById("title").value,
 //                                    "edition": document.getElementById("edition").value,
 //                                    "author": document.getElementById("author").value,
 //                                    "publisher": document.getElementById("publisher").value
                                     //   "imgData":JSON.stringify(getBase64Image(imgElem))
                                 };
+                                JSON.stringify(myJson);
                                 $.ajax({
-                                    url: "idk",
+                                    url: "/order/book",
                                     type: 'POST',
-                                    data: JSON.stringify(myJson)
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(myJson),
+                                    dataType: 'json',
+                                    success: function (data) {
+                                       toastr["info"](data["data"])
+                                    }
                                 });
                             }
 
@@ -188,7 +194,7 @@
                                     <div class="row">
                                         <img src="../img/no_image.jpg" id="img" class="col-lg-4 image">
                                         <div class="col-lg-6 fields">
-                                            <input type="hidden" id="id">
+                                            <input type="text" id="id">
                                             <h4 class="title" id="title"><b>Title: </b></h4>
                                             <h4 class="edition" id="edition"><b>Edition: </b></h4>
                                             <h4 class="author" id="author"><b>Author: </b></h4>

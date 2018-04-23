@@ -79,7 +79,7 @@
                             <input type="hidden" class="issue_card" value="{{issue}}">
                             <input type="hidden" class="editor_card" value="{{editor}}">
                             <input type="hidden" class="id_card" value="{{id}}">
-                            <input type="hidden" class="price_card" value="{{price}}">
+                            <input type="hidden" class="price_card" id="price_card" value="{{price}}">
                             <input type="hidden" class="count_card" value="{{count}}">
                             <img class="image-journal" src="data:image/png;base64, {{picture}}">
                             <p></p>
@@ -142,14 +142,48 @@
                                 document.getElementById("renewbtn").style.display = "none";
                                 document.getElementById("etags").style.display = "none";
                                 document.getElementById("sel").style.display = "none";
-
+                                $('tbody').empty();
+                                var myJson = {"id": document.getElementById("id").value};
                                 $.ajax({
-                                    url: "idk",
+                                    url: "/copies/journal",
                                     type: 'POST',
-                                    data: JSON.stringify({"id": document.getElementById("id").value}),
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(myJson),
+                                    dataType: 'json',
                                     success: function (data) {
-
+                                        var shelf_table = data["pairList"];
+                                        shelf_table.forEach(function (value) {
+                                            var html = $('<tr><td class="shelf-name">' + value.key + '</td><td class="shelf-value">' + value.value + '</td><td><button class="btn btn-primary shlfbtn" value="1">+</button></td><td><button class="btn btn-primary shlfbtn" value="-1">-</button></td></tr>');
+                                            $('tbody').append(html);
+                                        });
                                     }
+
+                                });
+                            });
+                            $('tbody').on('click', '.shlfbtn', function (e) {
+                                e.preventDefault();
+                                var count = $(this).attr("value");
+                                var price=document.getElementById("price_card").value;
+                                var myJson = {
+                                    "id": $('#id').attr("value"),
+                                    "count": count,
+                                    "price":price
+                                };
+                                //alert(JSON.stringify(myJson));
+                                var shelf = $(this).closest('tr').find($('.shelf-name')).text();
+                                $.ajax({
+                                    url: "/update/phys/journal?shelf="+shelf,
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(myJson),
+                                    dataType: 'json',
+                                    success: function () {
+                                        var val = parseInt($('.shelf-value').text(), 10);
+                                        var btnval = parseInt(count, 10);
+                                        $(this).closest('tr').find($('.shelf-value')).text(val + btnval);
+                                        toastr["success"]("Success");
+                                    }
+
                                 });
                             });
                         });
@@ -349,6 +383,18 @@
                                 <div class = "col-lg-4 fields">
                                     <img src="../img/no_image.jpg" id="img"><br>
                                     <input type="file" onchange="previewFile()" id="imgbtn">
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Shelf</th>
+                                            <th>Copies</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div class="col-lg-6 fields">
                                     <input type="hidden" id="id">
