@@ -64,7 +64,7 @@ public class LoggerService implements LoggerActions {
             String s = "";
             calendar.setTimeInMillis(aLoggerList.getDate());
             int mYear = calendar.get(Calendar.YEAR);
-            int mMonth = calendar.get(Calendar.MONTH);
+            int mMonth = calendar.get(Calendar.MONTH)%12 + 1;
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
             s += mDay + "." + mMonth + "." + mYear + " ";

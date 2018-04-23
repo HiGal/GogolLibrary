@@ -28,9 +28,10 @@ public class LibrarianController {
     private final LoggerService loggerService;
     private final DocumentPhysicalService documentPhysicalService;
     private final BookingService bookingService;
+    private final CheckoutService checkoutService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService, BookingService bookingService) {
+    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService, BookingService bookingService, CheckoutService checkoutService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
@@ -39,6 +40,7 @@ public class LibrarianController {
         this.loggerService = loggerService;
         this.documentPhysicalService = documentPhysicalService;
         this.bookingService = bookingService;
+        this.checkoutService = checkoutService;
     }
 
 
@@ -151,7 +153,8 @@ public class LibrarianController {
 
     @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
-                                                 @RequestParam(value = "shelf") String shelf) {
+                                                 @RequestParam(value = "shelf") String shelf,
+                                                       HttpServletRequest request) {
         Book book = bookService.getById(data.getId());
         int count = data.getCount();
         data.setPrice(book.getPrice());
@@ -164,10 +167,15 @@ public class LibrarianController {
         data.setYear(book.getYear());
         data.setKeywords(book.getKeywords());
         try {
-            if (count == -1) {
+            User user = (User) request.getSession().getAttribute("user");
+            boolean hasDeletePermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) >= 0;
+            boolean hasAddPermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) >= 0;
+            if (count == -1 && hasDeletePermission) {
                 bookService.removeCopyByShelf(book.getId(),shelf);
-            } else {
+            } else if (count == 1 && hasAddPermission){
                 bookService.add(data, shelf);
+            } else {
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -457,6 +465,9 @@ public class LibrarianController {
             User user = userService.getById(person.getUserId());
             HashMap<String,String> rList = new HashMap<>();
             rList.put("phys_id", String.valueOf(person.getDocPhysId()));
+            rList.put("user_id", String.valueOf(person.getUserId()));
+            rList.put("id", String.valueOf(person.getId()));
+            rList.put("shelf", person.getShelf());
             rList.put("name",user.getName());
             rList.put("surname",user.getSurname());
             rList.put("type",person.getDocType());
@@ -480,4 +491,24 @@ public class LibrarianController {
         System.out.println(modelAndView);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/confirm/request")
+    public ModelAndView confirm_request(@RequestBody Booking booking,
+                                        HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+
+        User user = (User) request.getSession().getAttribute("user");
+        if(Arrays.asList(User.LIBRARIANS).contains(user.getRole())){
+            try {
+                System.out.println(booking);
+                checkoutService.toCheckoutDocument(booking);
+                modelAndView.addObject("data","succ");
+            } catch (Exception e) {
+                modelAndView.addObject("data",e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return modelAndView;
+    }
+
 }
