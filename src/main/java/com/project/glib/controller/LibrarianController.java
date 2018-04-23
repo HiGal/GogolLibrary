@@ -4,14 +4,12 @@ package com.project.glib.controller;
 import com.project.glib.model.*;
 import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.util.*;
 
 import static com.project.glib.model.User.ACCESS;
 import static com.project.glib.model.User.LIBSECOND;
@@ -26,9 +24,10 @@ public class LibrarianController {
     private final AudioVideoService avService;
     private final LoggerService loggerService;
     private final DocumentPhysicalService documentPhysicalService;
+    private final BookingService bookingService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService) {
+    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService, BookingService bookingService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
@@ -36,6 +35,7 @@ public class LibrarianController {
         this.avService = avService;
         this.loggerService = loggerService;
         this.documentPhysicalService = documentPhysicalService;
+        this.bookingService = bookingService;
     }
 
 
@@ -404,6 +404,39 @@ public class LibrarianController {
         }
 
         modelAndView.addObject("message", "succ");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "user/requests")
+    public ModelAndView requests(){
+        ModelAndView modelAndView = new ModelAndView();
+        List<Booking> list = bookingService.getList();
+        List<HashMap<String,String>> nList = new LinkedList<>();
+        for(Booking person: list){
+            User user = userService.getById(person.getUserId());
+            HashMap<String,String> rList = new HashMap<>();
+            rList.put("phys_id", String.valueOf(person.getDocPhysId()));
+            rList.put("name",user.getName());
+            rList.put("surname",user.getSurname());
+            rList.put("type",person.getDocType());
+            if(person.getDocType().equals(Document.BOOK)){
+                Book book = bookService.getById(person.getDocVirId());
+                rList.put("title",book.getTitle());
+                rList.put("author",book.getAuthor());
+            } else if(person.getDocType().equals(Document.JOURNAL)){
+                Journal journal = journalService.getById(person.getDocVirId());
+                rList.put("title",journal.getTitle());
+                rList.put("author",journal.getAuthor());
+            } else {
+                AudioVideo audioVideo = audioVideoService.getById(person.getDocVirId());
+                rList.put("title",audioVideo.getTitle());
+                rList.put("author",audioVideo.getAuthor());
+            }
+            nList.add(rList);
+        }
+        modelAndView.addObject("requests",nList);
+        modelAndView.setViewName("order_requests");
+        System.out.println(modelAndView);
         return modelAndView;
     }
 }
