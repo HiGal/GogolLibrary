@@ -28,9 +28,10 @@ public class LibrarianController {
     private final LoggerService loggerService;
     private final DocumentPhysicalService documentPhysicalService;
     private final BookingService bookingService;
+    private final CheckoutService checkoutService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService, BookingService bookingService) {
+    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService, BookingService bookingService, CheckoutService checkoutService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
@@ -39,6 +40,7 @@ public class LibrarianController {
         this.loggerService = loggerService;
         this.documentPhysicalService = documentPhysicalService;
         this.bookingService = bookingService;
+        this.checkoutService = checkoutService;
     }
 
 
@@ -457,6 +459,9 @@ public class LibrarianController {
             User user = userService.getById(person.getUserId());
             HashMap<String,String> rList = new HashMap<>();
             rList.put("phys_id", String.valueOf(person.getDocPhysId()));
+            rList.put("user_id", String.valueOf(person.getUserId()));
+            rList.put("id", String.valueOf(person.getId()));
+            rList.put("shelf", person.getShelf());
             rList.put("name",user.getName());
             rList.put("surname",user.getSurname());
             rList.put("type",person.getDocType());
@@ -480,4 +485,24 @@ public class LibrarianController {
         System.out.println(modelAndView);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/confirm/request")
+    public ModelAndView confirm_request(@RequestBody Booking booking,
+                                        HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+
+        User user = (User) request.getSession().getAttribute("user");
+        if(Arrays.asList(User.LIBRARIANS).contains(user.getRole())){
+            try {
+                System.out.println(booking);
+                checkoutService.toCheckoutDocument(booking);
+                modelAndView.addObject("data","succ");
+            } catch (Exception e) {
+                modelAndView.addObject("data",e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return modelAndView;
+    }
+
 }

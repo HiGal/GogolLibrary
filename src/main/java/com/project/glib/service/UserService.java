@@ -254,7 +254,9 @@ public class UserService implements ModifyByLibrarianService<User> {
 
     public String getTypeById(long userId) throws Exception {
         try {
-            return getById(userId).getRole();
+            System.out.println(userId);
+            String role = getById(userId).getRole();
+            return role ;
         } catch (NullPointerException e) {
             throw new Exception(EXIST_EXCEPTION);
         }
