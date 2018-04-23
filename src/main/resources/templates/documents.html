@@ -150,6 +150,7 @@
                                 document.getElementById("renewbtn").style.display = "none";
                                 document.getElementById("etags").style.display = "none";
                                 document.getElementById("sel").style.display = "none";
+                                document.getElementById("note").style.display = "block";
                                 $('tbody').empty();
                                 var myJson = {"id": document.getElementById("id").value};
                                 $.ajax({
@@ -188,10 +189,15 @@
                                     contentType: 'application/json',
                                     data: JSON.stringify(myJson),
                                     dataType: 'json',
-                                    success: function () {
+                                    success: function (data) {
+                                        if (data["data"] === "succ") {
                                         var val = parseInt(num.text(), 10);
                                         var btnval = parseInt(count, 10);
                                         num.text(val+btnval);
+                                        }
+                                        if (num.text() === "0") {
+                                            num.closest('tr').remove()
+                                        }
                                       //  toastr["success"]("Success");
                                     }
 
@@ -258,8 +264,11 @@
                         document.getElementById("okbtn").style.display = "inline";
                         document.getElementById("imgbtn").style.display = "inline";
                         document.getElementById("etags").style.display = "inline";
-                        document.getElementById("sel").style.display = "inline"
+                        document.getElementById("sel").style.display = "inline";
+                        document.getElementById("note").style.display = "none";
 
+                        var note = $('.note').text().split(': ')[1];
+                        $('#sel').val(note);
                     }
 
                     function renew() {
@@ -431,12 +440,12 @@
                                     <input id="eauthor">
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
-                                    <input id="etags" placeholder="tags">
                                     <h4 class="note" id="note">Note: </h4>
+                                    <input id="etags" placeholder="tags">
                                     <select id="sel">
                                         <option class="opt">NA</option>
-                                        <option class="opt">Reference</option>
-                                        <option class="opt">Bestseller</option>
+                                        <option class="opt">REFERENCE</option>
+                                        <option class="opt">BESTSELLER</option>
                                     </select>
                                     <input id="elogin">
                                     <a id="renewbtn" onclick="renewConf()" class="btn btn-primary">OK</a>
