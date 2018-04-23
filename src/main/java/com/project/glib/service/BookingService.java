@@ -207,18 +207,8 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                     throw new Exception(TYPE_EXCEPTION);
             }
         } catch (Exception e) {
-//            DocumentPhysical docPhys = getValidDocPhys(docVirId, docType);
-//            if (docPhys != null) {
-//                docPhysId = docPhys.getId();
-//
-//                if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
-//                    throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
-//                }
-//
-//                shelf = docPhys.getShelf();
-//                priority = PRIORITY.get(EXPECTED);
-//                isActive = true;
-//            }
+            if (e.getMessage().equals(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION))
+                throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
         }
         recalculatePriority(docVirId, docType);
         add(new Booking(userId, docVirId, docType, docPhysId, System.currentTimeMillis(), isActive, priority, shelf));
