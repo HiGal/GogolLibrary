@@ -1,22 +1,16 @@
 package com.project.glib.dao.implementations;
 
-import com.project.glib.dao.interfaces.LoggerRepository;
-import org.slf4j.Logger;
+import com.project.glib.dao.interfaces.KeywordRepository;
+import com.project.glib.model.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class LoggerDaoImplementation {
-    private static final Logger log = (Logger) LoggerFactory.getLogger(LoggerDaoImplementation.class);
-    private final LoggerRepository loggerRepository;
-
-    @Autowired
-    public LoggerDaoImplementation(LoggerRepository loggerRepository) {
-        this.loggerRepository = loggerRepository;
-    }
+public class KeywordDaoImplementation {
+    private static final org.slf4j.Logger log = (org.slf4j.Logger) LoggerFactory.getLogger(KeywordDaoImplementation.class);
+    private final KeywordRepository keywordRepository;
 
     public void add(com.project.glib.model.Logger logger) throws Exception {
         try {
@@ -59,7 +53,7 @@ public class LoggerDaoImplementation {
     }
 
 
-    public List<com.project.glib.model.Logger> getList() {
+    public List<Logger> getList() {
         return loggerRepository.findAll();
     }
 }
