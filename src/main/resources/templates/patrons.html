@@ -177,7 +177,9 @@
                                     document.getElementById('fsname').value = sname;
                                     document.getElementById('faddr').value = addr;
                                     document.getElementById('fphone').value = ph;
-                                    document.getElementById('frole').value = role;
+                                    //document.getElementById('frole').value = role;
+
+                                    $('#frole').val(role);
                                 });
                             });
                         }(jQuery));
@@ -245,7 +247,19 @@
                                         <input type="text" class="form-control fsname" id="fsname">
                                         <input type="text" class="form-control faddr" id="faddr">
                                         <input type="text" class="form-control fphone" id="fphone">
-                                        <input type="text" class="form-control frole" id="frole">
+                                        <!--<input type="text" class="form-control frole" id="frole">-->
+
+                                        <select class="form-control frole" id="frole">
+                                            <option name="opt">CAN MODIFY</option>
+                                            <option name="opt">CAN ADD AND MODIFY</option>
+                                            <option name="opt">CAN DELETE, ADD, MODIFY</option>
+                                            <option name="opt">INSTRUCTOR</option>
+                                            <option name="opt">TEACHER_ASSISTANT</option>
+                                            <option name="opt">PROFESSOR</option>
+                                            <option name="opt">STUDENT</option>
+                                            <option name="opt">VISITING_PROFESSOR</option>
+                                        </select>
+
                                     </div>
                                 </div>
                             </div>
