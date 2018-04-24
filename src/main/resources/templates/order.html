@@ -49,17 +49,7 @@
             <div class="card card-container">
                 <p id="patrons"><a id="linker" href="/dashboard">Dashboard</a> / <u>Books</u></p>
                 <div>
-                    <input placeholder="title" id="stitle">
-                    <input placeholder="author" id="sauthor">
-                    <input placeholder="edition" id="sedition">
-                    <input placeholder="publisher" id="spublisher">
-                    <input placeholder="year" id="syear">
-                </div>
-                <div class = "buttons">
-                    <input type="checkbox" class="chk" name="detective" value="detective">
-                    <label>Detective</label>
-                    <input type="checkbox" class="chk" name="romance" value="romance">
-                    <label>Romance</label>
+                    <input placeholder="searchbar" id="stitle">
                 </div>
                 <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
                 <p class="header">Books that available to check out</p>
@@ -133,27 +123,26 @@
                             }(jQuery));
 
                             function sCall() {
-                                var str = "";
-                                var boxes = $("input:checkbox");
-                                for (var i = 0; i < boxes.length; i++) {
-                                    var box = boxes[i];
-                                    if ($(box).prop('checked')) {
-                                        str += $(box).attr('value')+ ",";
+
+                                    var str = document.getElementById("stitle").value;
+                                    str = str.toLowerCase();
+                                    var deck = $(".deck");
+                                    for (var i = 0; i < deck.length; i++) {
+                                        deck[i].style.display = "inline";
                                     }
-                                }
-                                var myJson = {
-                                    "title": document.getElementById("stitle").value,
-                                    "edition": document.getElementById("sedition").value,
-                                    "author": document.getElementById("sauthor").value,
-                                    "publisher": document.getElementById("spublisher").value,
-                                    "year": Math.min(parseInt(document.getElementById("syear").value), 0),
-                                    "tags": str
-                                };
-                                $.ajax({
-                                    url: "idk",
-                                    type: 'POST',
-                                    data: JSON.stringify(myJson)
-                                });
+                                    var str_arr = str.split(" ");
+                                    for (var j = 0; j < str_arr.length; j++) {
+                                        for (var i = 0; i < deck.length; i++) {
+                                            //alert(deck[i]);
+                                            var doc = deck[i].innerHTML;
+                                            doc = doc.toLowerCase();
+                                            if (doc.search(str_arr[j]) === -1)
+                                            // doc.remove();
+                                                deck[i].style.display = "none"
+
+
+                                        }
+                                    }
                             }
 
                             function oCall() {
