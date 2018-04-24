@@ -43,7 +43,7 @@ public class LoggerService implements LoggerActions {
             long id = documentPhysicalService.getDocVirIdById(doc_phys_id);
             switch (type) {
                 case Document.BOOK:
-                    Book book = bookService.getById(documentPhysicalService.getDocVirIdById(id);
+                    Book book = bookService.getById(id);
                     act += " \" " + book.getTitle() + "\"  by " + book.getAuthor();
                     break;
                 case Document.JOURNAL:

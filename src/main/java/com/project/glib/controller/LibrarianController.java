@@ -31,7 +31,11 @@ public class LibrarianController {
     private final CheckoutService checkoutService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService, BookingService bookingService, CheckoutService checkoutService) {
+    public LibrarianController(UserService userService, BookService bookService,
+                               JournalService journalService, AudioVideoService audioVideoService,
+                               AudioVideoService avService, LoggerService loggerService,
+                               DocumentPhysicalService documentPhysicalService, BookingService bookingService,
+                               CheckoutService checkoutService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
@@ -154,9 +158,10 @@ public class LibrarianController {
     }
 
 
+    //todo write logger !!
     @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
-                                                 @RequestParam(value = "shelf") String shelf,
+                                                       @RequestParam(value = "shelf") String shelf,
                                                        HttpServletRequest request) {
         Book book = bookService.getById(data.getId());
         int count = data.getCount();
@@ -213,7 +218,7 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             journalService.add(journal, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL, true);
             modelAndView.addObject("message", "succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
@@ -238,6 +243,7 @@ public class LibrarianController {
         return "succ";
     }
 
+    //todo write Logger !!
     @RequestMapping(value = "/update/phys/journal", method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_journal(@RequestBody Journal data,
                                                           @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
@@ -333,6 +339,7 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    // todo write Logger !!
     @RequestMapping(value = "/update/phys/av")
     public @ResponseBody ModelAndView update_phys_av(@RequestBody AudioVideo data,
                                                      @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
@@ -374,7 +381,9 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             avService.remove(audioVideo.getId());
             long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_AV, System.currentTimeMillis(), Document.AV);
+            loggerService.addLog(user.getId(), docPhysId,
+                    LoggerService.DELETED_AV + " \" " + audioVideo.getTitle() + "\" by " + audioVideo.getAuthor(),
+                    System.currentTimeMillis(), Document.AV, false);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
