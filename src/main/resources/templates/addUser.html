@@ -83,7 +83,8 @@
                                     $(document).ready(function () {
                                         $('.user-confirm').click(function (e) {
                                             e.preventDefault();
-                                            var id = ($(this).parent().find($('.cid')).val());
+                                            var id = $(this).parent().find($('.cid')).attr("value");
+                                            var tr = $(this).closest('tr');
                                             var myJson = {
                                                 "id": id,
                                                 "auth": true
@@ -93,27 +94,36 @@
                                                 type: 'POST',
                                                 contentType: 'application/json',
                                                 data: JSON.stringify(myJson),
-                                                dataType: 'json'
+                                                dataType: 'json',
+                                                success: function (data) {
+                                                    if (data["message"] == "succ") {
+                                                        tr.remove();
+                                                        toastr.options = {
+                                                            "closeButton": true,
+                                                            "debug": false,
+                                                            "newestOnTop": false,
+                                                            "progressBar": false,
+                                                            "positionClass": "toast-bottom-right",
+                                                            "preventDuplicates": false,
+                                                            "onclick": null,
+                                                            "showDuration": "300",
+                                                            "hideDuration": "1000",
+                                                            "timeOut": "2000",
+                                                            "extendedTimeOut": "1000",
+                                                            "showEasing": "swing",
+                                                            "hideEasing": "linear",
+                                                            "showMethod": "fadeIn",
+                                                            "hideMethod": "fadeOut"
+                                                        };
+                                                        toastr["success"]("User has successfully confirmed");
+                                                    } else {
+                                                        toastr["error"](data["message"]);
+                                                    }
+
+                                                }
                                             });
-                                            $(this).closest('tr').remove();
-                                            toastr.options = {
-                                                "closeButton": true,
-                                                "debug": false,
-                                                "newestOnTop": false,
-                                                "progressBar": false,
-                                                "positionClass": "toast-bottom-right",
-                                                "preventDuplicates": false,
-                                                "onclick": null,
-                                                "showDuration": "300",
-                                                "hideDuration": "1000",
-                                                "timeOut": "2000",
-                                                "extendedTimeOut": "1000",
-                                                "showEasing": "swing",
-                                                "hideEasing": "linear",
-                                                "showMethod": "fadeIn",
-                                                "hideMethod": "fadeOut"
-                                            };
-                                            toastr["success"]("User has successfully confirmed");
+
+
                                         });
                                     });
                                 }(jQuery));
