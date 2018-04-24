@@ -186,6 +186,7 @@
 
 
                         function bCall() {
+                            var selector = document.getElementById('frole');
                             var myJson = {
                                 "id": document.getElementById("id").textContent,
                                 "login": document.getElementById("flog").value,
@@ -194,7 +195,7 @@
                                 "surname": document.getElementById("fsname").value,
                                 "address": document.getElementById("faddr").value,
                                 "phone": document.getElementById("fphone").value,
-                                "role": document.getElementById('frole').value.toUpperCase(),
+                                "role": selector.options[selector.selectedIndex].text.toUpperCase(),
                                 "auth": true
 
                             };
