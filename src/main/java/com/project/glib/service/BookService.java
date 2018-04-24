@@ -76,6 +76,7 @@ public class BookService implements DocumentServiceInterface<Book> {
         try {
             docPhysService.removeAllByDocVirIdAndDocType(bookId, Document.BOOK);
             bookDao.remove(bookId);
+
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
         }

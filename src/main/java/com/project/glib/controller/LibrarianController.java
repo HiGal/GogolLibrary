@@ -3,6 +3,7 @@ package com.project.glib.controller;
 
 import com.project.glib.model.*;
 import com.project.glib.service.*;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -107,12 +108,11 @@ public class LibrarianController {
             bookService.add(book, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_BOOK, System.currentTimeMillis(), Document.BOOK);
+            modelAndView.addObject("message", "succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
-            return modelAndView;
         }
-        modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 
@@ -134,13 +134,15 @@ public class LibrarianController {
     @RequestMapping(value = "/delete/all/book")
     public ModelAndView delete_book_all(@RequestBody Book book, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        Book temp = bookService.getById(book.getId());
         try {
+
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) < 0)
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
+            long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(temp), Document.BOOK);
             bookService.remove(book.getId());
-            long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_BOOK, System.currentTimeMillis(), Document.BOOK);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_ALL_BOOKS, System.currentTimeMillis(), Document.BOOK);
             modelAndView.addObject("success", "Book has successfully deleted");
         } catch (Exception e) {
             modelAndView.addObject("error", e.getMessage());
@@ -211,13 +213,12 @@ public class LibrarianController {
             journalService.add(journal, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
+            modelAndView.addObject("message", "succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
-            return modelAndView;
         }
 
-        modelAndView.addObject("message", "succ");
         return modelAndView;
     }
 
@@ -272,7 +273,8 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/delete/all/journals")
-    public String delete_all_journals(@RequestBody Journal journal, HttpServletRequest request) {
+    public @ResponseBody ModelAndView delete_all_journals(@RequestBody Journal journal, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) < 0)
@@ -280,10 +282,12 @@ public class LibrarianController {
             journalService.remove(journal.getId());
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
+            modelAndView.addObject("You have successfully deleted all copies");
         } catch (Exception e) {
+            modelAndView.addObject(e.getMessage());
             e.printStackTrace();
         }
-        return "succ";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/copies/journal")

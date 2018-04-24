@@ -212,13 +212,13 @@
                                 success: function (data) {
                                     if (data["message"] === "succ") {
                                         toastr["success"]("AV has successfully added");
+                                        setTimeout(function(){location.reload()}, 1500);
                                     } else {
                                         toastr["warning"](data["message"]);
                                     }
                                 }
                             });
 
-                            setTimeout(location.reload(), 1500);
                         }
                     </script>
 
