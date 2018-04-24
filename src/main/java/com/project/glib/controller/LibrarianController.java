@@ -3,7 +3,6 @@ package com.project.glib.controller;
 
 import com.project.glib.model.*;
 import com.project.glib.service.*;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,7 +31,11 @@ public class LibrarianController {
     private final CheckoutService checkoutService;
 
     @Autowired
-    public LibrarianController(UserService userService, BookService bookService, JournalService journalService, AudioVideoService audioVideoService, AudioVideoService avService, LoggerService loggerService, DocumentPhysicalService documentPhysicalService, BookingService bookingService, CheckoutService checkoutService) {
+    public LibrarianController(UserService userService, BookService bookService,
+                               JournalService journalService, AudioVideoService audioVideoService,
+                               AudioVideoService avService, LoggerService loggerService,
+                               DocumentPhysicalService documentPhysicalService, BookingService bookingService,
+                               CheckoutService checkoutService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
@@ -107,7 +110,7 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             bookService.add(book, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_BOOK, System.currentTimeMillis(), Document.BOOK);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_BOOK, System.currentTimeMillis(), Document.BOOK, true);
             modelAndView.addObject("message", "succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
@@ -124,7 +127,7 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             bookService.update(book);
             long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_BOOK, System.currentTimeMillis(), Document.BOOK);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_BOOK, System.currentTimeMillis(), Document.BOOK, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,7 +145,9 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(temp), Document.BOOK);
             bookService.remove(book.getId());
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_ALL_BOOKS, System.currentTimeMillis(), Document.BOOK);
+            loggerService.addLog(user.getId(), docPhysId,
+                    LoggerService.DELETED_ALL_BOOKS + " \" " + book.getTitle() + "\"  by " + book.getAuthor(),
+                    System.currentTimeMillis(), Document.BOOK, false);
             modelAndView.addObject("success", "Book has successfully deleted");
         } catch (Exception e) {
             modelAndView.addObject("error", e.getMessage());
@@ -153,9 +158,10 @@ public class LibrarianController {
     }
 
 
+    //todo write logger !!
     @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
-                                                 @RequestParam(value = "shelf") String shelf,
+                                                       @RequestParam(value = "shelf") String shelf,
                                                        HttpServletRequest request) {
         Book book = bookService.getById(data.getId());
         int count = data.getCount();
@@ -212,7 +218,7 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             journalService.add(journal, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL, true);
             modelAndView.addObject("message", "succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
@@ -230,28 +236,20 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             journalService.update(journal);
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "succ";
     }
 
+    //todo write Logger !!
     @RequestMapping(value = "/update/phys/journal", method = RequestMethod.POST)
     public @ResponseBody ModelAndView update_phys_journal(@RequestBody Journal data,
                                                           @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
         Journal journal = journalService.getById(data.getId());
         int count = data.getCount();
         data = new Journal(journal);
-//        data.setPrice(journal.getPrice());
-//        data.setAuthor(journal.getAuthor());
-//        data.setEditor(journal.getEditor());
-//        data.setIssue(journal.getIssue());
-//        data.setName(journal.getName());
-//        data.setNote(journal.getNote());
-//        data.setTitle(journal.getTitle());
-//        data.setPicture(journal.getPicture());
-//        data.setKeywords(journal.getKeywords());
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
@@ -279,9 +277,11 @@ public class LibrarianController {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) < 0)
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
-            journalService.remove(journal.getId());
             long docPhysId = documentPhysicalService.getValidPhysId(journalService.getId(journal), Document.JOURNAL);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
+            journalService.remove(journal.getId());
+            loggerService.addLog(user.getId(), docPhysId,
+                    LoggerService.DELETED_JOURNAL + " \" " + journal.getTitle() + "\" by " + journal.getAuthor(),
+                    System.currentTimeMillis(), Document.JOURNAL, false);
             modelAndView.addObject("You have successfully deleted all copies");
         } catch (Exception e) {
             modelAndView.addObject(e.getMessage());
@@ -305,7 +305,7 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             avService.update(audioVideo);
             long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_AV, System.currentTimeMillis(), Document.AV);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_AV, System.currentTimeMillis(), Document.AV, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -328,7 +328,7 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             avService.add(audioVideo, shelf);
             long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_AV, System.currentTimeMillis(), Document.AV);
+            loggerService.addLog(user.getId(), docPhysId, LoggerService.ADDED_AV, System.currentTimeMillis(), Document.AV, true);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
@@ -339,6 +339,7 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    // todo write Logger !!
     @RequestMapping(value = "/update/phys/av")
     public @ResponseBody ModelAndView update_phys_av(@RequestBody AudioVideo data,
                                                      @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
@@ -380,7 +381,9 @@ public class LibrarianController {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             avService.remove(audioVideo.getId());
             long docPhysId = documentPhysicalService.getValidPhysId(audioVideoService.getId(audioVideo), Document.AV);
-            loggerService.addLog(user.getId(), docPhysId, LoggerService.DELETED_AV, System.currentTimeMillis(), Document.AV);
+            loggerService.addLog(user.getId(), docPhysId,
+                    LoggerService.DELETED_AV + " \" " + audioVideo.getTitle() + "\" by " + audioVideo.getAuthor(),
+                    System.currentTimeMillis(), Document.AV, false);
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
