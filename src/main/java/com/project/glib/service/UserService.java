@@ -101,7 +101,6 @@ public class UserService implements ModifyByLibrarianService<User> {
         try {
             boolean isLibrarian = Arrays.asList(LIBRARIANS).contains(getById(userId).getRole());
             removeAllBookingsByUserId(userId);
-            usersDao.remove(userId);
             if (isLibrarian) {
                 loggerService.addLog(userId,
                         0, LoggerService.DELETED_LIBRARIAN, System.currentTimeMillis(), User.TYPE, false);
@@ -109,6 +108,7 @@ public class UserService implements ModifyByLibrarianService<User> {
                 loggerService.addLog(userId,
                         0, LoggerService.DELETED_USER, System.currentTimeMillis(), User.TYPE, false);
             }
+            usersDao.remove(userId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
         }

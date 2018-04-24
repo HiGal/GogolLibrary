@@ -1,15 +1,13 @@
 package com.project.glib.service;
 
-import com.project.glib.model.Booking;
-import com.project.glib.model.Checkout;
-import com.project.glib.model.Document;
-import com.project.glib.model.User;
+import com.project.glib.model.*;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReturnService {
@@ -174,8 +172,50 @@ public class ReturnService {
         for (Checkout currentCheckout : checkoutService.getCheckoutsByUser(userId)) {
             totalOverdue += getOverdue(currentCheckout);
         }
-
         return totalOverdue;
+    }
+
+    public List<OverDueList> getListofOverdueUsers() throws Exception {
+        List<Checkout> overdueCheckouts = checkoutService.getList()
+                .stream().filter(checkout -> checkout.getReturnTime() - System.currentTimeMillis() < 0)
+                .collect(Collectors.toList());
+
+        ArrayList<OverDueList> overDueArrayList = new ArrayList<>();
+
+        for (Checkout checkout : overdueCheckouts) {
+            User user = userService.getById(checkout.getUserId());
+
+            String type = docPhysService.getTypeById(checkout.getDocPhysId());
+            long id = docPhysService.getDocVirIdById(checkout.getDocPhysId());
+
+            String title = "";
+            String author = "";
+
+            switch (type) {
+                case Document.BOOK:
+                    Book book = bookService.getById(id);
+                    title = book.getTitle();
+                    author = book.getAuthor();
+                    break;
+                case Document.JOURNAL:
+                    Journal journal = journalService.getById(id);
+                    title = journal.getTitle();
+                    author = journal.getAuthor();
+                    break;
+                case Document.AV:
+                    AudioVideo audioVideo = avService.getById(id);
+                    title = audioVideo.getTitle();
+                    author = audioVideo.getAuthor();
+                    break;
+            }
+
+            OverDueList overDueList = new OverDueList(
+                    user.getName(), user.getSurname(), user.getPhone(),
+                    title, author, getOverdueDays(checkout));
+
+            overDueArrayList.add(overDueList);
+        }
+        return overDueArrayList;
     }
 
     /**
