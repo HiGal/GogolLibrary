@@ -466,7 +466,7 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "user/reject", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/reject", method = RequestMethod.POST)
     public @ResponseBody
     ModelAndView userReject(@RequestBody User user, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
