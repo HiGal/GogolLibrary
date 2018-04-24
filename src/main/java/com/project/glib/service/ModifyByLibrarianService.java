@@ -10,6 +10,7 @@ public interface ModifyByLibrarianService<T> {
     String SHELF_EXCEPTION = " shelf must exist ";
     String TYPE_EXCEPTION = " invalid type ";
     String ID_EXCEPTION = " invalid id ";
+    String KEYWORD_EXCEPTION = "Empty keyword forbidden";
     String INFORMATION_NOT_AVAILABLE = " information not available. ";
     String DOES_NOT_EXIST = " don't exist ";
 
