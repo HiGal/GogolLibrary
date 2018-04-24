@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class LoggerDaoImplementation {
-    private static final Logger log = (Logger) LoggerFactory.getLogger(MessageDaoImplementation.class);
+    private static final Logger log = (Logger) LoggerFactory.getLogger(LoggerDaoImplementation.class);
     private final LoggerRepository loggerRepository;
 
     @Autowired
