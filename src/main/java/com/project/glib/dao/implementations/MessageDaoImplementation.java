@@ -22,36 +22,36 @@ public class MessageDaoImplementation implements ModifyByLibrarian<Messages> {
     }
 
     @Override
-    public void add(Messages message) throws Exception {
+    public void add(Messages message) {
         try {
             messagesRepository.save(message);
             logger.info("Message successfully saved. Message details : " + message);
         } catch (Exception e) {
             logger.info("Try to add message with wrong parameters. New message information : " + message);
-            throw new Exception("Can't add this message, some parameters are wrong");
+//            throw new Exception("Can't add this message, some parameters are wrong");
         }
     }
 
     @Override
-    public void update(Messages message) throws Exception {
+    public void update(Messages message) {
         try {
             messagesRepository.saveAndFlush(message);
             logger.info("Message successfully update. Message details : " + message);
         } catch (Exception e) {
             logger.info("Try to update this message, message don't exist or some new message parameters are wrong. " +
                     "Update message information : " + message);
-            throw new Exception("Can't update this message, message don't exist or some new message parameters are wrong");
+//            throw new Exception("Can't update this message, message don't exist or some new message parameters are wrong");
         }
     }
 
     @Override
-    public void remove(long messageID) throws Exception {
+    public void remove(long messageID) {
         try {
             logger.info("Try to delete message with message id = " + messageID);
             messagesRepository.delete(messageID);
         } catch (Exception e) {
             logger.info("Try to delete message with wrong message id = " + messageID);
-            throw new Exception("Delete this message not available, message don't exist");
+//            throw new Exception("Delete this message not available, message don't exist");
         }
     }
 
