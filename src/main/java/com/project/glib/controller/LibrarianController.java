@@ -466,6 +466,25 @@ public class LibrarianController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/user/reject", method = RequestMethod.POST)
+    public @ResponseBody
+    ModelAndView userReject(@RequestBody User user, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+
+        try {
+            User userInSession = (User) request.getSession().getAttribute("user");
+            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(LIBSECOND) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
+            userService.remove(user.getId());
+            modelAndView.addObject("message", "succ");
+        } catch (Exception e) {
+            modelAndView.addObject("message", e.getMessage());
+            e.printStackTrace();
+        }
+
+        return modelAndView;
+    }
+
     @RequestMapping(value = "user/requests")
     public ModelAndView requests(){
         ModelAndView modelAndView = new ModelAndView();

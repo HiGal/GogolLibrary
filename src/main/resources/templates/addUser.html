@@ -74,6 +74,12 @@
                                         Confirm
                                     </button>
                                 </td>
+                                <td>
+                                    <input type="hidden" class="cid" value="{{id}}">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-block user-reject">
+                                        Reject
+                                    </button>
+                                </td>
                             </tr>
 
 
@@ -84,37 +90,92 @@
                                         $('.user-confirm').click(function (e) {
                                             e.preventDefault();
                                             var id = $(this).parent().find($('.cid')).attr("value");
+                                            var tr = $(this).closest('tr');
                                             var myJson = {
-                                                "id": id
+                                                "id": id,
+                                                "auth": true
                                             };
-                                            alert(JSON.stringify(myJson));
                                             $.ajax({
                                                 url: "/user/confirm",
                                                 type: 'POST',
                                                 contentType: 'application/json',
                                                 data: JSON.stringify(myJson),
-                                                dataType: 'json'
+                                                dataType: 'json',
+                                                success: function (data) {
+                                                    if (data["message"] == "succ") {
+                                                        tr.remove();
+                                                        toastr.options = {
+                                                            "closeButton": true,
+                                                            "debug": false,
+                                                            "newestOnTop": false,
+                                                            "progressBar": false,
+                                                            "positionClass": "toast-bottom-right",
+                                                            "preventDuplicates": false,
+                                                            "onclick": null,
+                                                            "showDuration": "300",
+                                                            "hideDuration": "1000",
+                                                            "timeOut": "2000",
+                                                            "extendedTimeOut": "1000",
+                                                            "showEasing": "swing",
+                                                            "hideEasing": "linear",
+                                                            "showMethod": "fadeIn",
+                                                            "hideMethod": "fadeOut"
+                                                        };
+                                                        toastr["success"]("User has successfully confirmed");
+                                                    } else {
+                                                        toastr["error"](data["message"]);
+                                                    }
+
+                                                }
                                             });
-                                            toastr.options = {
-                                                "closeButton": true,
-                                                "debug": false,
-                                                "newestOnTop": false,
-                                                "progressBar": false,
-                                                "positionClass": "toast-bottom-right",
-                                                "preventDuplicates": false,
-                                                "onclick": null,
-                                                "showDuration": "300",
-                                                "hideDuration": "1000",
-                                                "timeOut": "2000",
-                                                "extendedTimeOut": "1000",
-                                                "showEasing": "swing",
-                                                "hideEasing": "linear",
-                                                "showMethod": "fadeIn",
-                                                "hideMethod": "fadeOut"
-                                            };
-                                            toastr["success"]("User has successfully confirmed");
-                                            $(this).closest('tr').remove();
+
+
                                         });
+
+                                        $('.user-reject').click(function (e) {
+                                            e.preventDefault();
+                                            var id = $(this).parent().find($('.cid')).attr("value");
+                                            var tr = $(this).closest('tr');
+                                            var myJson = {
+                                                "id": id
+                                            };
+                                            $.ajax({
+                                                url: "/user/reject",
+                                                type: 'POST',
+                                                contentType: 'application/json',
+                                                data: JSON.stringify(myJson),
+                                                dataType: 'json',
+                                                success: function (data) {
+                                                    if (data["message"] == "succ") {
+                                                        tr.remove();
+                                                        toastr.options = {
+                                                            "closeButton": true,
+                                                            "debug": false,
+                                                            "newestOnTop": false,
+                                                            "progressBar": false,
+                                                            "positionClass": "toast-bottom-right",
+                                                            "preventDuplicates": false,
+                                                            "onclick": null,
+                                                            "showDuration": "300",
+                                                            "hideDuration": "1000",
+                                                            "timeOut": "2000",
+                                                            "extendedTimeOut": "1000",
+                                                            "showEasing": "swing",
+                                                            "hideEasing": "linear",
+                                                            "showMethod": "fadeIn",
+                                                            "hideMethod": "fadeOut"
+                                                        };
+                                                        toastr["success"]("User has successfully rejected");
+                                                    } else {
+                                                        toastr["error"](data["message"]);
+                                                    }
+
+                                                }
+                                            });
+
+
+                                        });
+
                                     });
                                 }(jQuery));
                             </script>
