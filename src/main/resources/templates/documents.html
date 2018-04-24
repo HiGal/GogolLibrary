@@ -383,10 +383,17 @@
                             type: 'POST',
                             contentType: 'application/json',
                             data: JSON.stringify(myJson),
-                            dataType: 'json'
+                            dataType: 'json',
+                            success:function (data) {
+                                if(data["success"] === "Book has successfully deleted") {
+                                    toastr["success"](data["success"]);
+                                }else {
+                                    toastr["error"](data["error"]);
+                                }
+                                setTimeout(reload, 1500);
+                            }
                         });
-                        toastr["success"]("Book and all of its copies have successfully deleted");
-                        setTimeout(reload, 1500);
+
                     }
 
                     function reload() {

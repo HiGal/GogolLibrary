@@ -71,18 +71,18 @@ public class ReturnService {
             switch (docType) {
                 case Document.BOOK:
                     bookService.incrementCountById(docVirId);
-                    loggerService.addLog(checkout.getUserId(), docPhysService.getDocVirIdById(checkout.getDocPhysId()),
-                            LoggerService.RETURNED_BOOK, System.currentTimeMillis(), Document.BOOK);
+                    loggerService.addLog(checkout.getUserId(), checkout.getDocPhysId(),
+                            LoggerService.RETURNED_BOOK, System.currentTimeMillis(), Document.BOOK, true);
                     break;
                 case Document.JOURNAL:
                     journalService.incrementCountById(docVirId);
-                    loggerService.addLog(checkout.getUserId(), docPhysService.getDocVirIdById(checkout.getDocPhysId()),
-                            LoggerService.RETURNED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL);
+                    loggerService.addLog(checkout.getUserId(), checkout.getDocPhysId(),
+                            LoggerService.RETURNED_JOURNAL, System.currentTimeMillis(), Document.JOURNAL, true);
                     break;
                 case Document.AV:
                     avService.incrementCountById(docVirId);
-                    loggerService.addLog(checkout.getUserId(), docPhysService.getDocVirIdById(checkout.getDocPhysId()),
-                            LoggerService.RETURNED_AV, System.currentTimeMillis(), Document.AV);
+                    loggerService.addLog(checkout.getUserId(), checkout.getDocPhysId(),
+                            LoggerService.RETURNED_AV, System.currentTimeMillis(), Document.AV, true);
                     break;
                 default:
                     throw new Exception(DOC_TYPE_EXCEPTION);

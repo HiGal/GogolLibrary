@@ -112,9 +112,10 @@ public class LoginController {
 
             if (Arrays.asList(User.LIBRARIANS).contains(user.getRole())) {
                 modelAndView.setViewName("librarian");
-            } else {
+            } else if(user.getRole().equals(User.ADMIN)){
+                modelAndView.setViewName("admin");
+            }else {
                 modelAndView.setViewName("patron");
-                System.out.println(modelAndView);
             }
         } catch (Exception e) {
             e.printStackTrace();

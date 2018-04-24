@@ -11,15 +11,6 @@ public class Logger {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "user_id")
-    private long userId;
-
-    @Column(name = "doc_virt_id")
-    private long docVirtid;
-
-    @Column(name = "type")
-    private String type;
-
     @Column(name = "action")
     private String action;
 
@@ -31,21 +22,17 @@ public class Logger {
 
     }
 
-    public Logger(long userId, long docVirtid, String action, long date, String type) {
-        this.userId = userId;
-        this.docVirtid = docVirtid;
+    public Logger(String action, long date) {
+
         this.action = action;
         this.date = date;
-        this.type = type;
+
     }
 
     @Override
     public String toString() {
         return "Messages{" +
                 "id =" + id +
-                ", userId =" + userId +
-                ", docVirtid =" + docVirtid +
-                ", type = " + type +
                 ", action =" + action +
                 ", date =" + date +
                 '}';
@@ -57,22 +44,6 @@ public class Logger {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public long getDocVirtid() {
-        return docVirtid;
-    }
-
-    public void setDocVirtid(long docVirtid) {
-        this.docVirtid = docVirtid;
     }
 
     public String getAction() {
@@ -89,13 +60,5 @@ public class Logger {
 
     public void setDate(long date) {
         this.date = date;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }
