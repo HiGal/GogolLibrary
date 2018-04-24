@@ -83,10 +83,9 @@
                                     $(document).ready(function () {
                                         $('.user-confirm').click(function (e) {
                                             e.preventDefault();
-                                            var id = ($(this).parent().find($('.cid')).val());
+                                            var id = $(this).parent().find($('.cid')).attr("value");
                                             var myJson = {
-                                                "id": id,
-                                                "auth": true
+                                                "id": id
                                             };
                                             alert(JSON.stringify(myJson));
                                             $.ajax({
