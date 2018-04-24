@@ -227,7 +227,8 @@ public class UserService implements ModifyByLibrarianService<User> {
     public List<User> getListAuthUsersLib() throws Exception {
         try {
             return getList().stream()
-                    .filter(user -> user.getAuth() && !Arrays.asList(LIBRARIANS).contains(user.getRole()))
+                    .filter(user -> user.getAuth() && !Arrays.asList(LIBRARIANS).contains(user.getRole())
+                            && !user.getRole().equals(User.ADMIN))
                     .collect(Collectors.toList());
         } catch (NullPointerException | NoSuchElementException e) {
             throw new Exception(EXIST_EXCEPTION);
