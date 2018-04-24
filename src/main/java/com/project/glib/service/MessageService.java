@@ -3,6 +3,8 @@ package com.project.glib.service;
 import com.project.glib.dao.implementations.MessageDaoImplementation;
 import com.project.glib.dao.interfaces.MessagesRepository;
 import com.project.glib.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +20,7 @@ public class MessageService {
     public static final String CHECKOUT_DOCUMENT = "Please, visit a library and checkout a document:  ";
     public static final String DELETED_QUEUE = "Sorry, but you were deleted from the queue for the next document: ";
     public static final String LATE_DELETED = "Sorry, but you are late to checkout document: ";
+    private static final org.slf4j.Logger logger = (Logger) LoggerFactory.getLogger(MessageService.class);
     private final MessageDaoImplementation messageDao;
     private final MessagesRepository messagesRepository;
     private final DocumentPhysicalService documentPhysicalService;
@@ -50,7 +53,13 @@ public class MessageService {
             if (!(mes.getMessage().equals(RETURN_DOCUMENT) ||
                     mes.getMessage().equals(CHECKOUT_DOCUMENT))) {
                 if (mes.getIsRead()) {
-                    messageDao.remove(mes.getId());
+                    try {
+                        messageDao.remove(mes.getId());
+                        logger.info("Message successfully saved. Message details : " + mes);
+                    } catch (Exception e) {
+                        logger.info("Try to add message with wrong parameters. New message information : " + mes);
+                        throw new Exception("Can't add this message, some parameters are wrong");
+                    }
                 }
             }
         }
@@ -69,7 +78,13 @@ public class MessageService {
         Messages messages = new Messages(id_user, message, id_doc, type, false);
         try {
             if (!alreadyHasThisMessage(id_user, id_doc, message)) {
-                messageDao.add(messages);
+                try {
+                    messageDao.add(messages);
+                    logger.info("Message successfully saved. Message details : " + message);
+                } catch (Exception e) {
+                    logger.info("Try to add message with wrong parameters. New message information : " + message);
+                    throw new Exception("Can't add this message, some parameters are wrong");
+                }
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -101,7 +116,13 @@ public class MessageService {
                     .filter(messages -> messages.getUserId() == userId)
                     .collect(Collectors.toList());
             for (Messages aList : list) {
-                messageDao.remove(aList.getId());
+                try {
+                    messageDao.remove(aList.getId());
+                    logger.info("Message successfully saved. Message details : " + aList);
+                } catch (Exception e) {
+                    logger.info("Try to add message with wrong parameters. New message information : " + aList);
+                    throw new Exception("Can't add this message, some parameters are wrong");
+                }
             }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -152,7 +173,13 @@ public class MessageService {
             if (list.get(0) != null) {
                 try {
                     for (Messages aList : list) {
-                        messageDao.remove(aList.getId());
+                        try {
+                            messageDao.remove(aList.getId());
+                            logger.info("Message successfully saved. Message details : " + aList);
+                        } catch (Exception e) {
+                            logger.info("Try to add message with wrong parameters. New message information : " + aList);
+                            throw new Exception("Can't add this message, some parameters are wrong");
+                        }
                     }
 
                 } catch (Exception e) {
