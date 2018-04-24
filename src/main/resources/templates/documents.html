@@ -74,7 +74,9 @@
 //                        var doc = deck[i].html();
 //                        //if no matches found delete it
 //                        if (doc.search(str_arr[j]) === -1) {
-//                            doc.remove()
+//                           // doc.remove();
+// doc.style.display = "none"; else doc.style.display = "inline";
+//better hide it to make second search avaliable
 //                        }
 //                    }
 //                }
@@ -225,38 +227,55 @@
                     }(jQuery));
                     //ajax with search values
                     function sCall() {
-                        $('.card-group').empty();
-                        //string wih tags
-                        var str = "";
-                        var boxes = $("input:checkbox");
-                        for (var i = 0; i < boxes.length; i++) {
-                            var box = boxes[i];
-                            if ($(box).prop('checked')) {
-                                str += $(box).attr('value') + ",";
+
+                        var str = "Cormen DSA blah blah some parameters";
+                        str = document.getElementById("stitle").value;
+                        var deck = $(".deck");
+                        var str_arr = str.split(" ");
+                        for (var j = 0; j < str_arr.length; j++) {
+                            for (var i = 0; i < deck.length; i++) {
+                                //alert(deck[i]);
+                                var doc = deck[i].innerHTML;
+                                if (doc.search(str_arr[j]) === -1)
+                                // doc.remove();
+                                    deck[i].style.display = "none"; else deck[i].style.display = "inline";
+
                             }
                         }
-                        var myJson = {
-                            "title": document.getElementById("stitle").value,
-                            "edition": document.getElementById("sedition").value,
-                            "author": document.getElementById("sauthor").value,
-                            "publisher": document.getElementById("spublisher").value,
-                            "year": Math.min(parseInt(document.getElementById("syear").value), 0),
-                            "tags": str
-                        };
-                        $.ajax({
-                            url: "idk",
-                            type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify(myJson),
-                            dataType: 'json',
-                            success: function (data) {
-                                var result_table = data["search"];
-                                result_table.forEach(function (value) {
-                                    var html = $('<div class="col-sm-4 deck"> <div class="card text-center"> <div class="card-body"> <h3 class="card-title">' + value.title + '</h3> <h5 class="card-subtitle text-muted">' + value.author + '</h5> <input type="hidden" class="edition_card" value="' + value.edition + '"> <input type="hidden" class="publisher_card" value="' + value.publisher + '"> <input type="hidden" class="id_card" value="' + value.id + '"> <input type="hidden" class="price_card" value="' + value.price + '"> <input type="hidden" class="count_card" value="' + value.count + '"> <input type="hidden" class="note_card" value="' + value.note + '"> <img class="image-book" src="data:image/png;base64, ' + value.picture + '"> <p></p> <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a> </div> </div> </div>');
-                                    $('.card-group').append(html);
-                                });
-                            }
-                        });
+
+
+//                        $('.card-group').empty();
+//                        //string wih tags
+//                        var str = "";
+//                        var boxes = $("input:checkbox");
+//                        for (var i = 0; i < boxes.length; i++) {
+//                            var box = boxes[i];
+//                            if ($(box).prop('checked')) {
+//                                str += $(box).attr('value') + ",";
+//                            }
+//                        }
+//                        var myJson = {
+//                            "title": document.getElementById("stitle").value,
+//                            "edition": document.getElementById("sedition").value,
+//                            "author": document.getElementById("sauthor").value,
+//                            "publisher": document.getElementById("spublisher").value,
+//                            "year": Math.min(parseInt(document.getElementById("syear").value), 0),
+//                            "tags": str
+//                        };
+//                        $.ajax({
+//                            url: "idk",
+//                            type: 'POST',
+//                            contentType: 'application/json',
+//                            data: JSON.stringify(myJson),
+//                            dataType: 'json',
+//                            success: function (data) {
+//                                var result_table = data["search"];
+//                                result_table.forEach(function (value) {
+//                                    var html = $('<div class="col-sm-4 deck"> <div class="card text-center"> <div class="card-body"> <h3 class="card-title">' + value.title + '</h3> <h5 class="card-subtitle text-muted">' + value.author + '</h5> <input type="hidden" class="edition_card" value="' + value.edition + '"> <input type="hidden" class="publisher_card" value="' + value.publisher + '"> <input type="hidden" class="id_card" value="' + value.id + '"> <input type="hidden" class="price_card" value="' + value.price + '"> <input type="hidden" class="count_card" value="' + value.count + '"> <input type="hidden" class="note_card" value="' + value.note + '"> <img class="image-book" src="data:image/png;base64, ' + value.picture + '"> <p></p> <a href="#details" class="btn btn-primary btn-lg" data-toggle="modal">Show details</a> </div> </div> </div>');
+//                                    $('.card-group').append(html);
+//                                });
+//                            }
+//                        });
                     }
 
                     function edit() {
