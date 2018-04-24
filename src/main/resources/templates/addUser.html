@@ -85,7 +85,8 @@
                                             e.preventDefault();
                                             var id = $(this).parent().find($('.cid')).attr("value");
                                             var myJson = {
-                                                "id": id
+                                                "id": id,
+                                                "auth": true
                                             };
                                             $.ajax({
                                                 url: "/user/confirm",
