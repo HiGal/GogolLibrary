@@ -56,11 +56,11 @@
 
         <p id="patrons"><a id="linker" href="/librarian/taken_doc">Documents</a> / <u>Books</u></p>
         <div>
-            <input placeholder="title" id="stitle">
-            <input placeholder="author" id="sauthor">
-            <input placeholder="edition" id="sedition">
-            <input placeholder="publisher" id="spublisher">
-            <input placeholder="year" id="syear">
+            <input placeholder="searchbar" id="stitle">
+            <!--<input placeholder="author" id="sauthor">-->
+            <!--<input placeholder="edition" id="sedition">-->
+            <!--<input placeholder="publisher" id="spublisher">-->
+            <!--<input placeholder="year" id="syear">-->
 
             <script>
 //                 //search string
@@ -106,7 +106,7 @@
                             <input type="hidden" class="price_card" id="price_card" value="{{price}}">
                             <input type="hidden" class="count_card" value="{{count}}">
                             <input type="hidden" class="note_card" value="{{note}}">
-                            <input type="text" class="tags_card" value="">
+                            <input type="hidden" class="tags_card" value="{{keywords}}">
                             <img class="image-book" src="data:image/png;base64, {{picture}}">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
@@ -151,6 +151,7 @@
                                 document.getElementById("author").style.display = "block";
                                 $('#id').val($(this).parent().find($('.id_card')).attr('value'));
                                 $('#price').val($(this).parent().find($('.price_card')).attr('value'));
+                                $('#etags').val($(this).parent().find($('.tags_card')).attr('value'));
                                 $('#count').val($(this).parent().find($('.count_card')).attr('value'));
                                 $('.title').html('<b>Title: </b>' + $(this).parent().find($('.card-title')).text());
                                 $('.edition').html('<b>Edition: </b>' + $(this).parent().find($('.edition_card')).attr('value'));
@@ -232,7 +233,7 @@
                         var str = document.getElementById("stitle").value;
                         var deck = $(".deck");
                         for (var i = 0; i < deck.length; i++) {
-                            deck[i].style.display = "none";
+                            deck[i].style.display = "inline";
                         }
                         var str_arr = str.split(" ");
                         for (var j = 0; j < str_arr.length; j++) {
@@ -344,10 +345,11 @@
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
                             "publisher": document.getElementById("epublisher").value,
-                            "tags": document.getElementById("etags").value,
+                            "keywords": document.getElementById("etags").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                             "picture": getBase64Image(imgElem)
                         };
+                        alert(JSON.stringify(myJson));
                         $.ajax({
                             url: "/edit/book",
                             type: 'POST',
@@ -488,7 +490,7 @@
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
                                     <h4 class="note" id="note">Note: </h4>
-                                    <input id="etags" placeholder="tags">
+                                    <input id="etags">
                                     <select id="sel">
                                         <option class="opt">NA</option>
                                         <option class="opt">REFERENCE</option>

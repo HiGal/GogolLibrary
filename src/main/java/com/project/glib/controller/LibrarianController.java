@@ -125,8 +125,11 @@ public class LibrarianController {
             User user = (User) request.getSession().getAttribute("user");
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
+            System.out.println();
+            System.out.println(book);
+            System.out.println();
             bookService.update(book);
-            long docPhysId = documentPhysicalService.getValidPhysId(bookService.getId(book), Document.BOOK);
+            long docPhysId = documentPhysicalService.getValidPhysId(book.getId(), Document.BOOK);
             loggerService.addLog(user.getId(), docPhysId, LoggerService.MODIFIED_BOOK, System.currentTimeMillis(), Document.BOOK, true);
         } catch (Exception e) {
             e.printStackTrace();
