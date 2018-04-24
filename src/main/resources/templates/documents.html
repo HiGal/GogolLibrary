@@ -228,9 +228,11 @@
                     //ajax with search values
                     function sCall() {
 
-                        var str = "Cormen DSA blah blah some parameters";
-                        str = document.getElementById("stitle").value;
+                        var str = document.getElementById("stitle").value;
                         var deck = $(".deck");
+                        for (var i = 0; i < deck.length; i++) {
+                            deck[i].style.display = "none";
+                        }
                         var str_arr = str.split(" ");
                         for (var j = 0; j < str_arr.length; j++) {
                             for (var i = 0; i < deck.length; i++) {
@@ -238,7 +240,8 @@
                                 var doc = deck[i].innerHTML;
                                 if (doc.search(str_arr[j]) === -1)
                                 // doc.remove();
-                                    deck[i].style.display = "none"; else deck[i].style.display = "inline";
+                                    deck[i].style.display = "none"
+
 
                             }
                         }
