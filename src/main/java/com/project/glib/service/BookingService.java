@@ -140,7 +140,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                         MessageService.RETURN_DOCUMENT
                 );
             }
-            c.setReturnTime(new Date(118, 3, 2).getTime());
+            c.setReturnTime(System.currentTimeMillis());
             checkoutService.update(c);
         }
 
@@ -211,6 +211,23 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
         recalculatePriority(docVirId, docType);
         add(new Booking(userId, docVirId, docType, docPhysId, System.currentTimeMillis(), isActive, priority, shelf));
+        if (docPhysId == EMPTY_ID){
+            for (Checkout c : checkoutService.getByDocVirIdAndDocType(docVirId, docType)) {
+                long virId = docPhysService.getDocVirIdById(c.getDocPhysId());
+                String type = docPhysService.getTypeById(c.getDocPhysId());
+
+                if (c.getUserId() != userId) {
+                    messageService.addMes(c.getUserId(),
+                            virId,
+                            type,
+                            MessageService.RETURN_DOCUMENT
+                    );
+                }
+                c.setReturnTime(System.currentTimeMillis());
+                checkoutService.update(c);
+            }
+            throw new Exception("Hey, you are in queue, wait dude ;)");
+        }
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.project.glib.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -26,9 +25,10 @@ public class AudioVideo extends Document {
     @Column(name = "picture")
     private String picture;
 
-    private HashSet<Keyword> keywords;
+    @Column(name = "keywords")
+    private String keywords;
 
-    public AudioVideo(String title, String author, int price, int count, String picture, HashSet<Keyword> keywords) {
+    public AudioVideo(String title, String author, int price, int count, String picture, String keywords) {
         this.title = title;
         this.author = author;
         this.price = price;
@@ -120,15 +120,11 @@ public class AudioVideo extends Document {
         this.picture = picture;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "documents_keywords",
-            joinColumns = @JoinColumn(name = "doc_vir_id"),
-            inverseJoinColumns = @JoinColumn(name = "keyword_id"))
-    public HashSet<Keyword> getKeywords() {
+    public String getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(HashSet<Keyword> keywords) {
+    public void setKeywords(String keywords) {
         this.keywords = keywords;
     }
 }

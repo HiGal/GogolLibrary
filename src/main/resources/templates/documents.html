@@ -56,11 +56,11 @@
 
         <p id="patrons"><a id="linker" href="/librarian/taken_doc">Documents</a> / <u>Books</u></p>
         <div>
-            <input placeholder="searchbar" id="stitle">
-            <!--<input placeholder="author" id="sauthor">-->
-            <!--<input placeholder="edition" id="sedition">-->
-            <!--<input placeholder="publisher" id="spublisher">-->
-            <!--<input placeholder="year" id="syear">-->
+            <input placeholder="title" id="stitle">
+            <input placeholder="author" id="sauthor">
+            <input placeholder="edition" id="sedition">
+            <input placeholder="publisher" id="spublisher">
+            <input placeholder="year" id="syear">
 
             <script>
 //                 //search string
@@ -82,12 +82,12 @@
 //                }
             </script>
 
-        <!--</div>-->
-        <!--<div class="buttons">-->
-            <!--<input type="checkbox" class="chk" name="detective" value="detective">-->
-            <!--<label>Detective</label>-->
-            <!--<input type="checkbox" class="chk" name="romance" value="romance">-->
-            <!--<label>Romance</label>-->
+        </div>
+        <div class="buttons">
+            <input type="checkbox" class="chk" name="detective" value="detective">
+            <label>Detective</label>
+            <input type="checkbox" class="chk" name="romance" value="romance">
+            <label>Romance</label>
         </div>
         <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
         <p class="header">Books</p>
@@ -106,7 +106,7 @@
                             <input type="hidden" class="price_card" id="price_card" value="{{price}}">
                             <input type="hidden" class="count_card" value="{{count}}">
                             <input type="hidden" class="note_card" value="{{note}}">
-                            <input type="hidden" class="tags_card" value="{{keywords}}">
+                            <input type="text" class="tags_card" value="">
                             <img class="image-book" src="data:image/png;base64, {{picture}}">
                             <!--place in scr data:image/png;base64, picture (base64 from db)-->
                             <p></p>
@@ -157,7 +157,6 @@
                                 $('.author').html('<b>Author: </b>' + $(this).parent().find($('.card-subtitle')).text());
                                 $('.publisher').html('<b>Published by: </b>' + $(this).parent().find($('.publisher_card')).attr('value'));
                                 $('.note').html('<b>Note: </b>' + $(this).parent().find($('.note_card')).attr('value'));
-                                $('#etags').val($(this).parent().find($('.tags_card')).attr('value'));
                                 $("#img").attr("src", $(this).parent().find($('.image-book')).attr('src'));
                                 $('#expansion').html($(this).parent().find($('.card.title')).text());
                                 document.getElementById("etitle").style.display = "none";
@@ -345,7 +344,7 @@
                             "edition": document.getElementById("eedition").value,
                             "author": document.getElementById("eauthor").value,
                             "publisher": document.getElementById("epublisher").value,
-                            "keywords": document.getElementById("etags").value,
+                            "tags": document.getElementById("etags").value,
                             "note": selector.options[selector.selectedIndex].text.toUpperCase(),
                             "picture": getBase64Image(imgElem)
                         };
@@ -489,7 +488,7 @@
                                     <h4 class="publisher" id="publisher"><b>Published by: </b></h4>
                                     <input id="epublisher">
                                     <h4 class="note" id="note">Note: </h4>
-                                    <input id="etags">
+                                    <input id="etags" placeholder="tags">
                                     <select id="sel">
                                         <option class="opt">NA</option>
                                         <option class="opt">REFERENCE</option>
