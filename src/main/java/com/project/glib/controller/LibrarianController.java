@@ -473,7 +473,7 @@ public class LibrarianController {
 
         try {
             User userInSession = (User) request.getSession().getAttribute("user");
-            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(LIBFIRST) < 0)
+            if (ACCESS.get(userInSession.getRole()) - ACCESS.get(LIBSECOND) < 0)
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
             userService.remove(user.getId());
             modelAndView.addObject("message", "succ");
