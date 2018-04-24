@@ -88,6 +88,7 @@
                                                 "id": id,
                                                 "auth": true
                                             };
+                                            alert(JSON.stringify(myJson));
                                             $.ajax({
                                                 url: "/user/confirm",
                                                 type: 'POST',
@@ -95,7 +96,6 @@
                                                 data: JSON.stringify(myJson),
                                                 dataType: 'json'
                                             });
-                                            $(this).closest('tr').remove();
                                             toastr.options = {
                                                 "closeButton": true,
                                                 "debug": false,
@@ -114,6 +114,7 @@
                                                 "hideMethod": "fadeOut"
                                             };
                                             toastr["success"]("User has successfully confirmed");
+                                            $(this).closest('tr').remove();
                                         });
                                     });
                                 }(jQuery));
