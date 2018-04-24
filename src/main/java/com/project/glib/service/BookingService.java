@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static org.thymeleaf.util.ListUtils.sort;
@@ -178,7 +181,10 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         int priority = PRIORITY.get(userService.getTypeById(userId));
         boolean isActive = false;
         try {
-            docPhysId = docPhysService.getValidPhysId(docVirId, docType);
+            try {
+                docPhysId = docPhysService.getValidPhysId(docVirId, docType);
+            } catch (Exception ignored) {
+            }
 
             if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
                 throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
