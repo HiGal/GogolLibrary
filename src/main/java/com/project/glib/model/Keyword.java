@@ -6,6 +6,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "keywords")
 public class Keyword {
+    public static final String TYPE = "KEYWORD";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
