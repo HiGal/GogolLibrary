@@ -78,13 +78,6 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         checkValidParameters(audioVideo);
         // TODO solve case then librarian change count of AVs
         try {
-            AudioVideo existedAV = isAlreadyExist(audioVideo);
-            if (existedAV != null && !existedAV.equals(audioVideo)) {
-                remove(audioVideo.getId());
-                existedAV.setCount(existedAV.getCount() + audioVideo.getCount());
-                existedAV.setPrice(audioVideo.getPrice());
-                audioVideo = existedAV;
-            }
             avDao.update(audioVideo);
         } catch (Exception e) {
             throw new Exception(UPDATE_EXCEPTION);

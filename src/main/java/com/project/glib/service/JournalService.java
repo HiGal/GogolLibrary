@@ -56,13 +56,6 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         checkValidParameters(journal);
         // TODO solve case then librarian change count of journals
         try {
-            Journal existedJournal = isAlreadyExist(journal);
-            if (existedJournal != null && !existedJournal.equals(journal)) {
-                remove(journal.getId());
-                existedJournal.setCount(existedJournal.getCount() + journal.getCount());
-                existedJournal.setPrice(journal.getPrice());
-                journal = existedJournal;
-            }
             journalDao.update(journal);
         } catch (Exception e) {
             throw new Exception(UPDATE_EXCEPTION);
