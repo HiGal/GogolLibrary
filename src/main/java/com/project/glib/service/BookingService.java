@@ -226,7 +226,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 c.setReturnTime(System.currentTimeMillis());
                 checkoutService.update(c);
             }
-            throw new Exception("Hey, you are in queue, wait dude ;)");
+            throw new Exception("You are in the queue now. Wait a notification when you can take a book");
         }
     }
 

@@ -118,8 +118,9 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
                     .filter(doc -> doc.getDocType().equals(docType))
                     .filter(DocumentPhysical::isCanBooked).findFirst().get().getId();
         } catch (NullPointerException | NoSuchElementException e) {
-            throw new Exception(EXIST_EXCEPTION);
+          //  throw new Exception(EXIST_EXCEPTION);
         }
+        return 0L;
     }
 
     public void inverseCanBooked(long docPhysId) {
