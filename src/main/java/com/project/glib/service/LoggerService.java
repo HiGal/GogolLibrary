@@ -35,8 +35,29 @@ public class LoggerService implements LoggerActions {
         loggerDao.add(logger);
     }
 
-    public void addLog(long id_user, long doc_virt_id, String action, long date, String type) throws Exception {
-        Logger logger = new Logger(id_user, doc_virt_id, action, date, type);
+    public void addLog(long id_user, long doc_phys_id, String action, long date, String type, boolean is_action) throws Exception {
+        User user = userService.getById(id_user);
+        String act = user.getSurname() + " " + user.getName() + " ( " + user.getRole() + " ) " + " " + action + " ";
+
+        if (is_action) {
+            long id = documentPhysicalService.getDocVirIdById(doc_phys_id);
+            switch (type) {
+                case Document.BOOK:
+                    Book book = bookService.getById(documentPhysicalService.getDocVirIdById(id);
+                    act += " \" " + book.getTitle() + "\"  by " + book.getAuthor();
+                    break;
+                case Document.JOURNAL:
+                    Journal journal = journalService.getById(id);
+                    act += " \" " + journal.getTitle() + "\" by " + journal.getAuthor();
+                    break;
+                case Document.AV:
+                    AudioVideo audioVideo = audioVideoService.getById(id);
+                    act += " \" " + audioVideo.getTitle() + "\" by " + audioVideo.getAuthor();
+                    break;
+            }
+        }
+
+        Logger logger = new Logger(act, date);
         loggerDao.add(logger);
     }
 
@@ -58,45 +79,13 @@ public class LoggerService implements LoggerActions {
         ArrayList<String> stringList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
 
-
-
         for (Logger aLoggerList : loggerList) {
-            String s = "";
             calendar.setTimeInMillis(aLoggerList.getDate());
             int mYear = calendar.get(Calendar.YEAR);
-            int mMonth = calendar.get(Calendar.MONTH)%12 + 1;
+            int mMonth = calendar.get(Calendar.MONTH) % 12 + 1;
             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-            s += mDay + "." + mMonth + "." + mYear + " ";
-
-            // TODO how to check for null this part ->
-            if (aLoggerList.getUserId() > 0) {
-                User user = userService.getById(aLoggerList.getUserId());
-                s += " " + user.getSurname() + " " + user.getName() + " ( " + user.getRole() + " ) ";
-            }
-
-            s += " " + aLoggerList.getAction() + " ";
-
-            // TODO how to check for null this part ->
-            if (aLoggerList.getDocVirtid() > 0) {
-                long id = aLoggerList.getDocVirtid();
-                switch (aLoggerList.getType()) {
-                    case Document.BOOK:
-                        Book book = bookService.getById(id);
-                        s += " \" " + book.getTitle() + "\"  by " + book.getAuthor();
-                        break;
-                    case Document.JOURNAL:
-                        Journal journal = journalService.getById(id);
-                        s += " \" " + journal.getTitle() + "\" by " + journal.getAuthor();
-                        break;
-                    case Document.AV:
-                        AudioVideo audioVideo = audioVideoService.getById(id);
-                        s += " \" " + audioVideo.getTitle() + "\" by " + audioVideo.getAuthor();
-                        break;
-                }
-            }
-
-            stringList.add(s);
+            stringList.add(mDay + "." + mMonth + "." + mYear + " " + aLoggerList.getAction());
         }
         return stringList;
     }
