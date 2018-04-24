@@ -82,12 +82,12 @@
 //                }
             </script>
 
-        </div>
-        <div class="buttons">
-            <input type="checkbox" class="chk" name="detective" value="detective">
-            <label>Detective</label>
-            <input type="checkbox" class="chk" name="romance" value="romance">
-            <label>Romance</label>
+        <!--</div>-->
+        <!--<div class="buttons">-->
+            <!--<input type="checkbox" class="chk" name="detective" value="detective">-->
+            <!--<label>Detective</label>-->
+            <!--<input type="checkbox" class="chk" name="romance" value="romance">-->
+            <!--<label>Romance</label>-->
         </div>
         <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
         <p class="header">Books</p>
@@ -231,6 +231,7 @@
                     function sCall() {
 
                         var str = document.getElementById("stitle").value;
+                        str = str.toLowerCase();
                         var deck = $(".deck");
                         for (var i = 0; i < deck.length; i++) {
                             deck[i].style.display = "inline";
@@ -240,6 +241,7 @@
                             for (var i = 0; i < deck.length; i++) {
                                 //alert(deck[i]);
                                 var doc = deck[i].innerHTML;
+                                doc = doc.toLowerCase();
                                 if (doc.search(str_arr[j]) === -1)
                                 // doc.remove();
                                     deck[i].style.display = "none"
