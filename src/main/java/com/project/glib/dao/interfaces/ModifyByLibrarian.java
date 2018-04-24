@@ -11,11 +11,11 @@ public interface ModifyByLibrarian<T> {
     String LIST = " list : ";
     String TYPE_EXCEPTION = " invalid type ";
 
-    void add(T t) throws Exception;
+    void add(T t);
 
-    void update(T t) throws Exception;
+    void update(T t);
 
-    void remove(long id) throws Exception;
+    void remove(long id);
 
     T getById(long id);
 

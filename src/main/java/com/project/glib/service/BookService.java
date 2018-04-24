@@ -4,6 +4,7 @@ import com.project.glib.dao.implementations.BookDaoImplementation;
 import com.project.glib.model.Book;
 import com.project.glib.model.Document;
 import com.project.glib.model.DocumentPhysical;
+import com.project.glib.model.Keyword;
 import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,9 @@ public class BookService implements DocumentServiceInterface<Book> {
         for (int i = 0; i < book.getCount(); i++) {
             // TODO add keywords options
             docPhysService.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK));
+        }
+        for (Keyword keyword : book.getKeywords()) {
+
         }
     }
 

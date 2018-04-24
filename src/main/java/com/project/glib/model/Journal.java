@@ -191,10 +191,6 @@ public class Journal extends Document {
         this.picture = picture;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "documents_keywords",
-            joinColumns = @JoinColumn(name = "doc_vir_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "keyword_id"))
     public HashSet<Keyword> getKeywords() {
         return keywords;
     }
