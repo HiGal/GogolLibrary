@@ -7,6 +7,8 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../css/patrons.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <title>Order Requests</title>
 </head>
 <body>
@@ -89,7 +91,6 @@
                                         "docType":tr.find($('.type')).text(),
                                         "docVirId":tr.find($('.virId')).attr("value")
                                     };
-                                    alert(JSON.stringify(myJson));
                                     $.ajax({
                                         url: "/confirm/request",
                                         type: 'POST',
@@ -99,8 +100,9 @@
                                         success: function (data){
                                             if(data["data"] === "succ") {
                                                 tr.remove();
+                                                toastr["success"]("Success");
                                             } else {
-                                                alert("error");
+                                                toastr["error"]("Error");
                                             }
                                         }
                                     });

@@ -200,7 +200,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                     author = audioVideo.getAuthor();
                     break;
             }
-          //  SimpleDateFormat sdf = new SimpleDateFormat()
+
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(checkout.getCheckoutTime());
             int cYear = calendar.get(Calendar.YEAR);
