@@ -605,7 +605,8 @@ public class LibrarianController {
         try {
             if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
                 throw new IllegalAccessException();
-
+            modelAndView.addObject("taken",checkoutService.getListofCheckouts());
+            modelAndView.setViewName("taken_documents");
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -46,25 +46,27 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Book Title</th>
-                            <th>Author</th>
-                            <th>Owner</th>
+                            <th>Name</th>
+                            <th>Surname</th>
                             <th>Phone number</th>
-                            <th>Status</th>
+                            <th>Titler</th>
+                            <th>Author</th>
+                            <th>Checkout date</th>
+                            <th>Return date</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {{#allTakenBooks}}
+                        {{#taken}}
                             <tr>
-                                <td>{{id}}</td>
-                                <td>{{book_title}}</td>
-                                <td>{{author}}</td>
-                                <td>{{owner}}</td>
+                                <td>{{name}}</td>
+                                <td>{{surname}}</td>
                                 <td>{{phone}}</td>
-                                <td>{{role}}</td>
+                                <td>{{title}}</td>
+                                <td>{{author}}</td>
+                                <td>{{checkoutDate}}</td>
+                                <td>{{returnDate}}</td>
                             </tr>
-                        {{/allTakenBooks}}
+                        {{/taken}}
                         </tbody>
                     </table>
                 </div>
