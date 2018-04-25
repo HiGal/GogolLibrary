@@ -1,7 +1,9 @@
 package com.project.glib.controller;
 
 import com.project.glib.model.Checkout;
-import com.project.glib.service.*;
+import com.project.glib.service.CheckoutService;
+import com.project.glib.service.ReturnService;
+import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,26 +14,14 @@ import java.util.List;
 
 @Controller
 public class ReturnController {
-    private final BookingService bookingService;
-    private final BookService bookService;
-    private final JournalService journalService;
-    private final AudioVideoService avService;
     private final UserService userService;
     private final CheckoutService checkoutService;
     private final ReturnService returnService;
 
     @Autowired
-    public ReturnController(BookingService bookingService,
-                            BookService bookService,
-                            JournalService journalService,
-                            AudioVideoService avService,
-                            UserService userService,
+    public ReturnController(UserService userService,
                             CheckoutService checkoutService,
                             ReturnService returnService) {
-        this.bookingService = bookingService;
-        this.bookService = bookService;
-        this.journalService = journalService;
-        this.avService = avService;
         this.userService = userService;
         this.checkoutService = checkoutService;
         this.returnService = returnService;
@@ -59,8 +49,6 @@ public class ReturnController {
             model.addAttribute("error", e.getMessage());
             return e.getMessage();
         }
-        //      return "order";
-
     }
 
     @RequestMapping(value = "/return/all", method = RequestMethod.POST)
@@ -75,9 +63,5 @@ public class ReturnController {
             model.addAttribute("error", e.getMessage());
             return e.getMessage();
         }
-        //      return "order";
-
     }
-
-
 }

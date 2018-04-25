@@ -51,16 +51,10 @@ public class UserService implements ModifyByLibrarianService<User> {
 
     public void add(User user) throws Exception {
 
-        //TODO check this code ->
-
-        //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        //userRepository.save(user);
-        //user.setRole(roleRepository.findOne(user.getId()));
         checkValidParameters(user);
         if (usersDao.findByLogin(user.getLogin()) != null) throw new Exception(LOGIN_ALREADY_EXIST_EXCEPTION);
         try {
-            //todo change to false
-            user.setAuth(true);
+            user.setAuth(false);
             usersDao.add(user);
             if (Arrays.asList(LIBRARIANS).contains(user.getRole())) {
                 loggerService.addLog(findByLogin(user.getLogin()).getId(),
@@ -76,7 +70,6 @@ public class UserService implements ModifyByLibrarianService<User> {
     }
 
     public void update(User user) throws Exception {
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         checkValidParameters(user);
         try {
             usersDao.update(user);
@@ -255,7 +248,6 @@ public class UserService implements ModifyByLibrarianService<User> {
 
     public String getTypeById(long userId) throws Exception {
         try {
-            System.out.println(userId);
             String role = getById(userId).getRole();
             return role ;
         } catch (NullPointerException e) {

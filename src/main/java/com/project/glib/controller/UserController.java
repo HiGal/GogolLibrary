@@ -1,7 +1,5 @@
 package com.project.glib.controller;
 
-//import com.project.glib.dao.implementations.SecurityDaoImplementation;
-
 import com.project.glib.model.*;
 import com.project.glib.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +96,7 @@ public class UserController {
 
     @RequestMapping(value = "/mydocs")
     public @ResponseBody
-    ModelAndView mydocs(HttpServletRequest request) {
+    ModelAndView myDocuments(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         List<Checkout> checkouts = checkoutService.getCheckoutsByUser(user.getId());
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());

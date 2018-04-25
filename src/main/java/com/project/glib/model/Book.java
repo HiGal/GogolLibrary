@@ -40,6 +40,22 @@ public class Book extends Document {
     @Column(name = "keywords")
     private String keywords;
 
+    protected Book() {
+    }
+
+    public Book(Book book) {
+        this.title = book.title;
+        this.author = book.author;
+        this.publisher = book.publisher;
+        this.edition = book.edition;
+        this.year = book.year;
+        this.note = book.note;
+        this.price = book.price;
+        this.count = book.count;
+        this.picture = book.picture;
+        this.keywords = book.keywords;
+    }
+
     public Book(String title, String author, String publisher, String edition, int year, String note, int price, int count, String picture, String keywords) {
         this.title = title;
         this.author = author;
@@ -51,9 +67,6 @@ public class Book extends Document {
         this.count = count;
         this.picture = picture;
         this.keywords = keywords;
-    }
-
-    public Book() {
     }
 
     @Override

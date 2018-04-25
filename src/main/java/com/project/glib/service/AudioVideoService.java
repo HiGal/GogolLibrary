@@ -39,7 +39,6 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
         }
         add(audioVideo);
         for (int i = 0; i < audioVideo.getCount(); i++) {
-            // TODO add keywords options
             docPhysService.add(new DocumentPhysical(shelf,
                     true, audioVideo.getId(), Document.AV));
         }
@@ -76,7 +75,6 @@ public class AudioVideoService implements DocumentServiceInterface<AudioVideo> {
     @Override
     public void update(AudioVideo audioVideo) throws Exception {
         checkValidParameters(audioVideo);
-        // TODO solve case then librarian change count of AVs
         try {
             avDao.update(audioVideo);
         } catch (Exception e) {

@@ -32,7 +32,6 @@ public class BookService implements DocumentServiceInterface<Book> {
         if (shelf.equals("")) throw new Exception(SHELF_EXCEPTION);
         add(book);
         for (int i = 0; i < book.getCount(); i++) {
-            // TODO add keywords options
             docPhysService.add(new DocumentPhysical(shelf, true, book.getId(), Document.BOOK));
         }
     }
@@ -56,7 +55,6 @@ public class BookService implements DocumentServiceInterface<Book> {
     @Override
     public void update(Book book) throws Exception {
         checkValidParameters(book);
-        // TODO solve case then librarian change count of books
         try {
             bookDao.update(book);
         } catch (Exception e) {
