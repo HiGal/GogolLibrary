@@ -133,33 +133,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
      */
     public void remove(long checkoutId) throws Exception {
         Checkout checkout = getById(checkoutId);
-//        String docType = docPhysService.getTypeById(checkout.getDocPhysId());
-//        long docVirId = docPhysService.getDocVirIdById(checkout.getDocPhysId());
         try {
-//            if (bookingService.hasNotActiveBooking(checkout.getDocPhysId())) {
-//                Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
-//                bookingService.setBookingActiveToTrue(bookingWithMaxPriority, checkout.getDocPhysId(), checkout.getShelf());
-//                messageService.addMes(
-//                        bookingWithMaxPriority.getId(),
-//                        docVirId,
-//                        docType,
-//                        MessageService.CHECKOUT_DOCUMENT
-//                );
-//            } else {
-//                switch (docType) {
-//                    case Document.BOOK:
-//                        bookService.incrementCountById(docVirId);
-//                        break;
-//                    case Document.JOURNAL:
-//                        journalService.incrementCountById(docVirId);
-//                        break;
-//                    case Document.AV:
-//                        avService.incrementCountById(docVirId);
-//                        break;
-//                    default:
-//                        throw new Exception(DOC_TYPE_EXCEPTION);
-//                }
-//            }
             checkoutDao.remove(checkoutId);
         } catch (Exception e) {
             throw new Exception(REMOVE_EXCEPTION);
@@ -193,6 +167,56 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         if (checkout.getShelf().equals("")) {
             throw new Exception(SHELF_EXCEPTION);
         }
+    }
+
+    public List<CheckoutList> getListofCheckouts() throws Exception {
+        ArrayList<CheckoutList> checkoutList = new ArrayList<>();
+        List<Checkout> checkouts = getList();
+
+        for (Checkout checkout : checkouts) {
+            User user = userService.getById(checkout.getUserId());
+
+            String type = docPhysService.getTypeById(checkout.getDocPhysId());
+            long id = docPhysService.getDocVirIdById(checkout.getDocPhysId());
+
+            String title = "";
+            String author = "";
+
+            switch (type) {
+                case Document.BOOK:
+                    Book book = bookService.getById(id);
+                    title = book.getTitle();
+                    author = book.getAuthor();
+                    break;
+                case Document.JOURNAL:
+                    Journal journal = journalService.getById(id);
+                    title = journal.getTitle();
+                    author = journal.getAuthor();
+                    break;
+                case Document.AV:
+                    AudioVideo audioVideo = avService.getById(id);
+                    title = audioVideo.getTitle();
+                    author = audioVideo.getAuthor();
+                    break;
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(checkout.getCheckoutTime());
+            int cYear = calendar.get(Calendar.YEAR);
+            int cMonth = calendar.get(Calendar.MONTH) % 12 + 1;
+            int cDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+            calendar.setTimeInMillis(checkout.getReturnTime());
+            int rYear = calendar.get(Calendar.YEAR);
+            int rMonth = calendar.get(Calendar.MONTH) % 12 + 1;
+            int rDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+            checkoutList.add(new CheckoutList(user.getName(), user.getSurname(),
+                    user.getPhone(), title, author,
+                    cDay + "." + cMonth + "." + cYear, rDay + "." + rMonth + "." + rYear));
+        }
+        return checkoutList;
     }
 
     /**

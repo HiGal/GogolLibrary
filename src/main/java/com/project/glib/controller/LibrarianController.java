@@ -572,6 +572,10 @@ public class LibrarianController {
                     break;
             }
 
+            loggerService.addLog(user.getId(), 0,
+                    LoggerService.OUTSTANDING_REQUEST,
+                    System.currentTimeMillis(), Document.AV, false);
+
         } catch (Exception e) {
             modelAndView.addObject("data", e.getMessage());
             e.printStackTrace();
@@ -588,7 +592,7 @@ public class LibrarianController {
                 throw new IllegalAccessException();
             modelAndView.addObject("overdue", returnService.getListofOverdueUsers());
             modelAndView.setViewName("overdue");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return modelAndView;

@@ -209,11 +209,9 @@ public class ReturnService {
                     break;
             }
 
-            OverDueList overDueList = new OverDueList(
+            overDueArrayList.add(new OverDueList(
                     user.getName(), user.getSurname(), user.getPhone(),
-                    title, author, getOverdueDays(checkout));
-
-            overDueArrayList.add(overDueList);
+                    title, author, getOverdueDays(checkout)));
         }
         return overDueArrayList;
     }
