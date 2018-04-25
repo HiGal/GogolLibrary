@@ -52,7 +52,6 @@ new materials, manage users of the library, among other functionalities.
 <a name="user">
    
 ## Users
-### User hierarhy
 
 </a>
 
@@ -69,7 +68,7 @@ new materials, manage users of the library, among other functionalities.
 2. **Librarians**- can *check overdue documents, manage patrons, and
 add/delete/modify documents*     
     + **Priv1**: Access to/Modification of documents and patrons’ information.
-    + **Priv2**: In addition to Priv1, addition of documents and patrons to the library.
+    + **Priv2**: In addition to Priv1, addition of documents and patrons to the library,place an outstanding request.
     + **Priv3**: In addition to Priv2, deletion of documents and patrons of the library.
 
 3. **Admin** - can add, delete or modify the information about librarians and also assigns privileges to librarians.
@@ -102,7 +101,7 @@ Documents also have the price value (in Rubles)
 ## Booking System (Document Copy)
 </a>
 
-+ Every time user check out document - mount of copies in the library decrease.
+![Users](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/bookingFlow%20(1).png "Hierarchy table")
 
 <a name="installation">
   
