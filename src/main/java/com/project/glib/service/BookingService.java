@@ -20,7 +20,6 @@ import static org.thymeleaf.util.ListUtils.sort;
 
 @Service
 public class BookingService implements ModifyByLibrarianService<Booking> {
-    //TODO change priorities
     public static final String TYPE = Booking.TYPE;
     public static final String ADD_EXCEPTION = ModifyByLibrarianService.ADD_EXCEPTION + TYPE + SMTH_WRONG;
     public static final String REMOVE_EXCEPTION = ModifyByLibrarianService.REMOVE_EXCEPTION + TYPE + SMTH_WRONG;
@@ -58,7 +57,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     private final UserService userService;
     private final DocumentPhysicalService docPhysService;
     private final CheckoutService checkoutService;
-    // TODO modify to Service
     private final MessageService messageService;
     private final BookingDaoImplementation bookingDao;
     private final LoggerService loggerService;
@@ -97,9 +95,9 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         Checkout checkout = checkoutService.getList().get(0);
         long docPhysId = checkout.getDocPhysId();
         String shelf = checkout.getShelf();
+
         booking.setDocPhysId(docPhysId);
         booking.setShelf(shelf);
-        //
 
         String docType = booking.getDocType();
 
@@ -107,10 +105,9 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             throw new Exception(AUTH_EXCEPTION);
         }
 
-        // TODO check it
-//        if (alreadyHasThisBooking(docVirId, docType, userId)) {
-//            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
-//        }
+        if (alreadyHasThisBooking(docVirId, docType, userId)) {
+            throw new Exception(ALREADY_HAS_THIS_BOOKING_EXCEPTION);
+        }
 
         if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
             throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
@@ -118,9 +115,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
         checkValidParameters(booking);
 
-        List<Booking> bookings = getListBookingsByDocVirIdAndDocType(docVirId, docType);
-
-        for (Booking b : bookings) {
+        for (Booking b : getListBookingsByDocVirIdAndDocType(docVirId, docType)) {
             if (b.getUserId() != booking.getUserId()) {
                 messageService.addMes(b.getUserId(),
                         b.getDocVirId(),
@@ -130,9 +125,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             }
         }
 
-        List<Checkout> checkouts = checkoutService.getByDocVirIdAndDocType(docVirId, docType);
-
-        for (Checkout c : checkouts) {
+        for (Checkout c : checkoutService.getByDocVirIdAndDocType(docVirId, docType)) {
             long virId = docPhysService.getDocVirIdById(c.getDocPhysId());
             String type = docPhysService.getTypeById(c.getDocPhysId());
 
@@ -147,7 +140,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             checkoutService.update(c);
         }
 
-        // TODO check we really want delete of all priority queue?
         deletePriority(docVirId, docType);
 
         // add outstanding booking
@@ -522,7 +514,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
      */
     public boolean hasNotActiveBooking(long docPhysId) {
         try {
-            System.out.println("555555555555555555555555555");
             long id = docPhysService.getDocVirIdById(docPhysId);
             String type = docPhysService.getTypeById(docPhysId);
             List<Booking> bookings = getList().stream()
@@ -548,18 +539,6 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
             return null;
         }
     }
-
-//    // TODO rename method
-//    private DocumentPhysical getValidDocPhys(long docVirId, String docType) {
-//        List<DocumentPhysical> docPhysList = docPhysService.getByDocVirIdAndDocType(docVirId, docType);
-//        for (DocumentPhysical docPhys : docPhysList) {
-//            long docPhysId = docPhys.getId();
-//            if (!hasActiveBooking(docPhysId)) {
-//                return docPhys;
-//            }
-//        }
-//        return null;
-//    }
 
     /**
      * Deletes all bookings from the DB

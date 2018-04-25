@@ -4,7 +4,10 @@ import com.project.glib.model.User;
 import com.project.glib.service.LoggerService;
 import com.project.glib.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +55,6 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             modelAndView.addObject("actions",loggerService.showLoggerForaWeekString());
-            System.out.println(loggerService.showLoggerForaWeekString());
             modelAndView.setViewName("log");
         } catch (Exception e) {
             e.printStackTrace();

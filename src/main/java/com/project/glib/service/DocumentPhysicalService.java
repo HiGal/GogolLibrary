@@ -33,7 +33,6 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
     }
 
     public void update(DocumentPhysical docPhys) throws Exception {
-        // TODO if librarian change count?
         checkValidParameters(docPhys);
         try {
             docPhysDao.update(docPhys);
@@ -111,16 +110,15 @@ public class DocumentPhysicalService implements ModifyByLibrarianService<Documen
         }
     }
 
-    public long getValidPhysId(long docVirId, String docType) throws Exception {
+    public long getValidPhysId(long docVirId, String docType) {
         try {
             return getList().stream()
                     .filter(doc -> doc.getDocVirId() == docVirId)
                     .filter(doc -> doc.getDocType().equals(docType))
                     .filter(DocumentPhysical::isCanBooked).findFirst().get().getId();
         } catch (NullPointerException | NoSuchElementException e) {
-          //  throw new Exception(EXIST_EXCEPTION);
+            return 0L;
         }
-        return 0L;
     }
 
     public void inverseCanBooked(long docPhysId) {

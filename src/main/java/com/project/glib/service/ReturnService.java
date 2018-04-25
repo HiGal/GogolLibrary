@@ -21,7 +21,6 @@ public class ReturnService {
     private final CheckoutService checkoutService;
     private final UserService userService;
     private final BookingService bookingService;
-    // TODO modify to service
     private final MessageService messageService;
     private final LoggerService loggerService;
 
@@ -53,17 +52,14 @@ public class ReturnService {
             messageService.removeOneByUserID(checkout.getUserId(),
                     checkout.getDocPhysId(),
                     MessageService.RETURN_DOCUMENT);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (Exception ignore) {
         }
 
         long docVirId = docPhysService.getDocVirIdById(checkout.getDocPhysId());
         String docType = docPhysService.getTypeById(checkout.getDocPhysId());
 
-//        Booking bookingOnThisDocument = bookingService.getBookingOnThisDocument(checkout.getDocPhysId());
         boolean hasNotActiveBooking = bookingService.hasNotActiveBooking(checkout.getDocPhysId());
 
-//        if (bookingOnThisDocument == null && !hasNotActiveBooking) {
         if (hasNotActiveBooking) {
             docPhysService.inverseCanBooked(checkout.getDocPhysId());
             switch (docType) {
@@ -85,15 +81,6 @@ public class ReturnService {
                 default:
                     throw new Exception(DOC_TYPE_EXCEPTION);
             }
-//        } else if (bookingOnThisDocument != null) {
-//
-//            // TODO Maybe change method parameters to (Booking booking, String message)
-//            messageService.addMes(
-//                    bookingOnThisDocument.getId(),
-//                    docVirId,
-//                    docType,
-//                    MessageService.CHECKOUT_DOCUMENT
-//            );
         } else {
             Booking bookingWithMaxPriority = bookingService.getBookingWithMaxPriority(docVirId, docType);
             bookingService.setBookingActiveToTrue(bookingWithMaxPriority, checkout.getDocPhysId(), checkout.getShelf());

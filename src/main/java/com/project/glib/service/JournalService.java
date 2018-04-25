@@ -30,7 +30,6 @@ public class JournalService implements DocumentServiceInterface<Journal> {
         if (shelf.equals("")) throw new Exception(SHELF_EXCEPTION);
         add(journal);
         for (int i = 0; i < journal.getCount(); i++) {
-            // TODO add keywords options
             docPhysService.add(new DocumentPhysical(shelf, true, journal.getId(), Document.JOURNAL));
         }
     }
@@ -54,7 +53,6 @@ public class JournalService implements DocumentServiceInterface<Journal> {
     @Override
     public void update(Journal journal) throws Exception {
         checkValidParameters(journal);
-        // TODO solve case then librarian change count of journals
         try {
             journalDao.update(journal);
         } catch (Exception e) {

@@ -32,11 +32,6 @@ public class LoginController {
         this.messageService = messageService;
     }
 
-//    @ModelAttribute("user")
-//    public User setUpUser(){
-//        return new User();
-//    }
-
     @RequestMapping(value = "/")
     public String redirect() {
         return "redirect:/login";
@@ -135,31 +130,4 @@ public class LoginController {
         }
 
     }
-//
-//    /*
-//        CHECKOUT CONTROLLER
-//     */
-//    @RequestMapping(value = "/checkout", method = RequestMethod.GET)
-//    public ModelAndView checkout(@RequestParam String login){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
-//
-//    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
-//    public ModelAndView checkout(@ModelAttribute Booking booking, Model model){
-//        ModelAndView modelAndView = new ModelAndView();
-//        return modelAndView;
-//    }
-//
-//    @RequestMapping(value = "/checkout/all", method = RequestMethod.POST)
-//    public String checkoutAllDocument(@RequestParam String login, Model model) {
-//        try {
-//
-//            return "success";
-//        }catch (Exception e){
-//
-//        }
-//
-//        return "unsuccess";
-//    }
 }

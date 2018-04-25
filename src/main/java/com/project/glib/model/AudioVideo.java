@@ -28,6 +28,18 @@ public class AudioVideo extends Document {
     @Column(name = "keywords")
     private String keywords;
 
+    protected AudioVideo() {
+    }
+
+    public AudioVideo(AudioVideo av) {
+        this.title = av.title;
+        this.author = av.author;
+        this.price = av.price;
+        this.count = av.count;
+        this.picture = av.picture;
+        this.keywords = av.keywords;
+    }
+
     public AudioVideo(String title, String author, int price, int count, String picture, String keywords) {
         this.title = title;
         this.author = author;
@@ -36,8 +48,6 @@ public class AudioVideo extends Document {
         this.picture = picture;
         this.keywords = keywords;
     }
-
-    public AudioVideo(){}
 
     @Override
     public boolean equals(Object o) {
