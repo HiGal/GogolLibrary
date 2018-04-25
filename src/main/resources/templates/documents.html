@@ -63,33 +63,33 @@
             <!--<input placeholder="year" id="syear">-->
 
             <script>
-//                 //search string
-//                var str = "Cormen DSA blah blah some parameters";
-//                //massive of all books divs
-//                var deck = $(".deck");
-//                var str_arr = str.split(" ");
-//                for (var j = 0; j < str_arr.length; j++) {
-//                    for (var i = 0; i < deck.length; i++) {
-//                        //get all html content of book div
-//                        var doc = deck[i].html();
-//                        //if no matches found delete it
-//                        if (doc.search(str_arr[j]) === -1) {
-//                           // doc.remove();
-// doc.style.display = "none"; else doc.style.display = "inline";
-//better hide it to make second search avaliable
-//                        }
-//                    }
-//                }
+                //                 //search string
+                //                var str = "Cormen DSA blah blah some parameters";
+                //                //massive of all books divs
+                //                var deck = $(".deck");
+                //                var str_arr = str.split(" ");
+                //                for (var j = 0; j < str_arr.length; j++) {
+                //                    for (var i = 0; i < deck.length; i++) {
+                //                        //get all html content of book div
+                //                        var doc = deck[i].html();
+                //                        //if no matches found delete it
+                //                        if (doc.search(str_arr[j]) === -1) {
+                //                           // doc.remove();
+                // doc.style.display = "none"; else doc.style.display = "inline";
+                //better hide it to make second search avaliable
+                //                        }
+                //                    }
+                //                }
             </script>
 
-        <!--</div>-->
-        <!--<div class="buttons">-->
+            <!--</div>-->
+            <!--<div class="buttons">-->
             <!--<input type="checkbox" class="chk" name="detective" value="detective">-->
             <!--<label>Detective</label>-->
             <!--<input type="checkbox" class="chk" name="romance" value="romance">-->
             <!--<label>Romance</label>-->
         </div>
-        <a href="#" class="btn btn-primary" onclick="sCall()">Search</a>
+        <a href="#" class="btn btn-primary" onclick="aCall()">Search</a>
         <p class="header">Books</p>
         <div class="container-fluid">
             <div class="card-group">
@@ -228,6 +228,77 @@
                         return false;
                     }(jQuery));
                     //ajax with search values
+
+                    function aCall() {
+                        var stri = document.getElementById("stitle").value;
+                        stri = stri.toLowerCase();
+                        var and_arr = stri.split('&');
+                        var aarr = [];
+                        for (var n = 0; n < and_arr.length; n++) {
+                            or_arr = and_arr[n].split('|');
+                            var arr = [];
+                            for (var m = 0; m < or_arr.length; m++) {
+                                var str = or_arr[m];
+                                var deck = $(".deck");
+                                var rr = [];
+                                for (var i = 0; i < deck.length; i++) {
+                                    deck[i].style.display = "inline";
+                                    rr.push("inline");
+                                }
+                                var str_arr = str.split(" ");
+                                for (var j = 0; j < str_arr.length; j++) {
+                                    for (var i = 0; i < deck.length; i++) {
+                                        //alert(deck[i]);
+                                        var dooc = deck[i].innerHTML;
+                                        dooc = dooc.toLowerCase();
+                                        var doc = dooc.match(/>(.*?)<|value="(.*?)"/g);
+                                        var flag = -1;
+
+                                        for (var h = 0; h < doc.length; h++) {
+                                            if (doc[h].search(str_arr[j]) !== -1)
+                                                flag = 0;
+                                        }
+
+                                        if (flag === -1)
+                                        // doc.remove();
+                                        rr[i] = "none"; //else rr[i]= "inline";
+                                        //deck[i].style.display = "none"
+
+                                        /*var searchs = '/>'+str_arr[j]+'<|value="'+str_arr[j]+'"/g';
+                                         if ((doc.search(eval(searchs)) === -1))
+                                         // doc.remove();
+                                         rr[i] = "none";
+                                         //deck[i].style.display = "none"*/
+                                    }
+                                }
+                                arr.push(rr);
+                            }
+                            for (var j = 0; j < arr.length - 1; j++) {
+                                el = arr[j];
+                                el2 = arr[j + 1];
+                                for (var i = 0; i < el.length; i++) {
+                                    if (el[i] === "inline") {
+                                        el2[i] = "inline"
+                                    }
+                                }
+                            }
+                            aarr.push(arr[arr.length - 1]);
+                        }
+                        for (var j = 0; j < aarr.length - 1; j++) {
+                            el = aarr[j];
+                            el2 = aarr[j + 1];
+                            for (var i = 0; i < el.length; i++) {
+                                if (el[i] === "none") {
+                                    el2[i] = "none"
+                                }
+                            }
+                        }
+                        var d = aarr[aarr.length - 1];
+                        for (var i = 0; i < d.length; i++) {
+                            deck[i].style.display = d[i];
+                        }
+                    }
+
                     function sCall() {
 
                         var str = document.getElementById("stitle").value;
@@ -389,10 +460,10 @@
                             contentType: 'application/json',
                             data: JSON.stringify(myJson),
                             dataType: 'json',
-                            success:function (data) {
-                                if(data["success"] === "Book has successfully deleted") {
+                            success: function (data) {
+                                if (data["success"] === "Book has successfully deleted") {
                                     toastr["success"](data["success"]);
-                                }else {
+                                } else {
                                     toastr["error"](data["error"]);
                                 }
                                 setTimeout(reload, 1500);
