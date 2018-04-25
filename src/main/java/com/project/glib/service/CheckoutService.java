@@ -206,11 +206,11 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
             int cMonth = calendar.get(Calendar.MONTH) % 12 + 1;
             int cDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-            Calendar calendar1 = Calendar.getInstance();
-            calendar1.setTimeInMillis(checkout.getReturnTime());
-            int rYear = calendar1.get(Calendar.YEAR);
-            int rMonth = calendar1.get(Calendar.MONTH) % 12 + 1;
-            int rDay = calendar1.get(Calendar.DAY_OF_MONTH);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(checkout.getReturnTime());
+            int rYear = calendar.get(Calendar.YEAR);
+            int rMonth = calendar.get(Calendar.MONTH) % 12 + 1;
+            int rDay = calendar.get(Calendar.DAY_OF_MONTH);
 
 
             checkoutList.add(new CheckoutList(user.getName(), user.getSurname(),
