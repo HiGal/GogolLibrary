@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -199,7 +200,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
                     author = audioVideo.getAuthor();
                     break;
             }
-
+          //  SimpleDateFormat sdf = new SimpleDateFormat()
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(checkout.getCheckoutTime());
             int cYear = calendar.get(Calendar.YEAR);
