@@ -10,7 +10,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static org.thymeleaf.util.ListUtils.sort;
@@ -178,7 +181,10 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         int priority = PRIORITY.get(userService.getTypeById(userId));
         boolean isActive = false;
         try {
-            docPhysId = docPhysService.getValidPhysId(docVirId, docType);
+            try {
+                docPhysId = docPhysService.getValidPhysId(docVirId, docType);
+            } catch (Exception ignored) {
+            }
 
             if (checkoutService.alreadyHasThisCheckout(docPhysId, userId)) {
                 throw new Exception(ALREADY_HAS_THIS_CHECKOUT_EXCEPTION);
@@ -226,7 +232,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
                 c.setReturnTime(System.currentTimeMillis());
                 checkoutService.update(c);
             }
-            throw new Exception("Hey, you are in queue, wait dude ;)");
+            throw new Exception("You are in the queue now. Wait a notification when you can take a book");
         }
     }
 
@@ -449,11 +455,14 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     @SuppressWarnings("unchecked")
     public List<Booking> getList() {
         try {
-            return bookingDao.getList();
+            return bookingDao.getList().stream()
+                    .filter(booking -> !booking.getShelf().equals( EMPTY_SHELF))
+                    .collect(Collectors.toList());
         } catch (NullPointerException e) {
             return new ArrayList<>();
         }
     }
+
 
     public long getNumberOfBookingsDocumentsByUser(long userId) {
         return getBookingsByUser(userId).size();
@@ -461,7 +470,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
     public List<Booking> getBookingsByUser(long userId) {
         try {
-            return getList().stream()
+            return   getList().stream()
                     .filter(booking -> booking.getUserId() == userId)
                     .collect(Collectors.toList());
         } catch (NoSuchElementException e) {
@@ -478,7 +487,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
     public List<Booking> getListBookingsByDocVirIdAndDocType(long docVirId, String docType) {
         try {
-            return getList().stream()
+            return bookingDao.getList().stream()
                     .filter(booking -> booking.getDocVirId() == docVirId)
                     .filter(booking -> booking.getDocType().equals(docType))
                     .collect(Collectors.toList());

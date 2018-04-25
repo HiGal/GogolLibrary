@@ -29,13 +29,14 @@ public class LibrarianController {
     private final DocumentPhysicalService documentPhysicalService;
     private final BookingService bookingService;
     private final CheckoutService checkoutService;
+    private final ReturnService returnService;
 
     @Autowired
     public LibrarianController(UserService userService, BookService bookService,
                                JournalService journalService, AudioVideoService audioVideoService,
                                AudioVideoService avService, LoggerService loggerService,
                                DocumentPhysicalService documentPhysicalService, BookingService bookingService,
-                               CheckoutService checkoutService) {
+                               CheckoutService checkoutService, ReturnService returnService) {
         this.userService = userService;
         this.bookService = bookService;
         this.journalService = journalService;
@@ -45,6 +46,7 @@ public class LibrarianController {
         this.documentPhysicalService = documentPhysicalService;
         this.bookingService = bookingService;
         this.checkoutService = checkoutService;
+        this.returnService = returnService;
     }
 
 
@@ -162,10 +164,11 @@ public class LibrarianController {
 
 
     //todo write logger !!
-    @RequestMapping(value = "/update/phys/book",method = RequestMethod.POST)
-    public @ResponseBody ModelAndView update_phys_book(@RequestBody Book data,
-                                                       @RequestParam(value = "shelf") String shelf,
-                                                       HttpServletRequest request) {
+    @RequestMapping(value = "/update/phys/book", method = RequestMethod.POST)
+    public @ResponseBody
+    ModelAndView update_phys_book(@RequestBody Book data,
+                                  @RequestParam(value = "shelf") String shelf,
+                                  HttpServletRequest request) {
         Book book = bookService.getById(data.getId());
         int count = data.getCount();
         data.setPrice(book.getPrice());
@@ -182,8 +185,8 @@ public class LibrarianController {
             boolean hasDeletePermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) >= 0;
             boolean hasAddPermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) >= 0;
             if (count == -1 && hasDeletePermission) {
-                bookService.removeCopyByShelf(book.getId(),shelf);
-            } else if (count == 1 && hasAddPermission){
+                bookService.removeCopyByShelf(book.getId(), shelf);
+            } else if (count == 1 && hasAddPermission) {
                 bookService.add(data, shelf);
             } else {
                 throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
@@ -192,7 +195,7 @@ public class LibrarianController {
             e.printStackTrace();
         }
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-        modelAndView.addObject("data","succ");
+        modelAndView.addObject("data", "succ");
         return modelAndView;
     }
 
@@ -248,8 +251,9 @@ public class LibrarianController {
 
     //todo write Logger !!
     @RequestMapping(value = "/update/phys/journal", method = RequestMethod.POST)
-    public @ResponseBody ModelAndView update_phys_journal(@RequestBody Journal data,
-                                                          @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
+    public @ResponseBody
+    ModelAndView update_phys_journal(@RequestBody Journal data,
+                                     @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
         Journal journal = journalService.getById(data.getId());
         int count = data.getCount();
         data = new Journal(journal);
@@ -259,7 +263,7 @@ public class LibrarianController {
             boolean hasDeletePermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) >= 0;
             boolean hasAddPermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) >= 0;
             if (count == -1 && hasDeletePermission) {
-                journalService.removeCopyByShelf(journal.getId(),shelf);
+                journalService.removeCopyByShelf(journal.getId(), shelf);
             } else if (count == 1 && hasAddPermission) {
                 journalService.add(data, shelf);
             } else {
@@ -274,7 +278,8 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/delete/all/journals")
-    public @ResponseBody ModelAndView delete_all_journals(@RequestBody Journal journal, HttpServletRequest request) {
+    public @ResponseBody
+    ModelAndView delete_all_journals(@RequestBody Journal journal, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
@@ -294,7 +299,8 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "/copies/journal")
-    public @ResponseBody ModelAndView getListOfJournalCopies(@RequestBody Journal journal) {
+    public @ResponseBody
+    ModelAndView getListOfJournalCopies(@RequestBody Journal journal) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         modelAndView.addObject(journalService.getListOfShelvesAndCounts(journal.getId()));
         return modelAndView;
@@ -344,8 +350,9 @@ public class LibrarianController {
 
     // todo write Logger !!
     @RequestMapping(value = "/update/phys/av")
-    public @ResponseBody ModelAndView update_phys_av(@RequestBody AudioVideo data,
-                                                     @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
+    public @ResponseBody
+    ModelAndView update_phys_av(@RequestBody AudioVideo data,
+                                @RequestParam(value = "shelf") String shelf, HttpServletRequest request) {
         AudioVideo av = audioVideoService.getById(data.getId());
         int count = data.getCount();
         data.setPrice(av.getPrice());
@@ -360,7 +367,7 @@ public class LibrarianController {
             boolean hasDeletePermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBTHIRD) >= 0;
             boolean hasAddPermission = ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) >= 0;
             if (count == -1 && hasDeletePermission) {
-                audioVideoService.removeCopyByShelf(av.getId(),shelf);
+                audioVideoService.removeCopyByShelf(av.getId(), shelf);
             } else if (count == 1 && hasAddPermission) {
                 audioVideoService.add(data, shelf);
             } else {
@@ -376,7 +383,7 @@ public class LibrarianController {
 
 
     @RequestMapping(value = "/delete/all/av")
-    public String delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
+    public ModelAndView delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
@@ -387,15 +394,17 @@ public class LibrarianController {
             loggerService.addLog(user.getId(), docPhysId,
                     LoggerService.DELETED_AV + " \" " + audioVideo.getTitle() + "\" by " + audioVideo.getAuthor(),
                     System.currentTimeMillis(), Document.AV, false);
+            modelAndView.addObject("message","succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
         }
-        return "succ";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/copies/av")
-    public @ResponseBody ModelAndView getListOfAVCopies(@RequestBody AudioVideo av) {
+    public @ResponseBody
+    ModelAndView getListOfAVCopies(@RequestBody AudioVideo av) {
         System.out.println(avService.getListOfShelvesAndCounts(av.getId()));
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         modelAndView.addObject(avService.getListOfShelvesAndCounts(av.getId()));
@@ -403,11 +412,6 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/librarian/taken_doc", method = RequestMethod.GET)
-    public ModelAndView takenDoc() {
-        ModelAndView modelAndView = new ModelAndView("taken_documents");
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     public @ResponseBody
@@ -486,36 +490,37 @@ public class LibrarianController {
     }
 
     @RequestMapping(value = "user/requests")
-    public ModelAndView requests(){
+    public ModelAndView requests() {
         ModelAndView modelAndView = new ModelAndView();
         List<Booking> list = bookingService.getList();
-        List<HashMap<String,String>> nList = new LinkedList<>();
-        for(Booking person: list){
+        List<HashMap<String, String>> nList = new LinkedList<>();
+        for (Booking person : list) {
             User user = userService.getById(person.getUserId());
-            HashMap<String,String> rList = new HashMap<>();
+            HashMap<String, String> rList = new HashMap<>();
             rList.put("phys_id", String.valueOf(person.getDocPhysId()));
             rList.put("user_id", String.valueOf(person.getUserId()));
+            rList.put("virId", String.valueOf(person.getDocVirId()));
             rList.put("id", String.valueOf(person.getId()));
             rList.put("shelf", person.getShelf());
-            rList.put("name",user.getName());
-            rList.put("surname",user.getSurname());
-            rList.put("type",person.getDocType());
-            if(person.getDocType().equals(Document.BOOK)){
+            rList.put("name", user.getName());
+            rList.put("surname", user.getSurname());
+            rList.put("type", person.getDocType());
+            if (person.getDocType().equals(Document.BOOK)) {
                 Book book = bookService.getById(person.getDocVirId());
-                rList.put("title",book.getTitle());
-                rList.put("author",book.getAuthor());
-            } else if(person.getDocType().equals(Document.JOURNAL)){
+                rList.put("title", book.getTitle());
+                rList.put("author", book.getAuthor());
+            } else if (person.getDocType().equals(Document.JOURNAL)) {
                 Journal journal = journalService.getById(person.getDocVirId());
-                rList.put("title",journal.getTitle());
-                rList.put("author",journal.getAuthor());
+                rList.put("title", journal.getTitle());
+                rList.put("author", journal.getAuthor());
             } else {
                 AudioVideo audioVideo = audioVideoService.getById(person.getDocVirId());
-                rList.put("title",audioVideo.getTitle());
-                rList.put("author",audioVideo.getAuthor());
+                rList.put("title", audioVideo.getTitle());
+                rList.put("author", audioVideo.getAuthor());
             }
             nList.add(rList);
         }
-        modelAndView.addObject("requests",nList);
+        modelAndView.addObject("requests", nList);
         modelAndView.setViewName("order_requests");
         System.out.println(modelAndView);
         return modelAndView;
@@ -523,19 +528,87 @@ public class LibrarianController {
 
     @RequestMapping(value = "/confirm/request")
     public ModelAndView confirm_request(@RequestBody Booking booking,
-                                        HttpServletRequest request){
+                                        HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
 
         User user = (User) request.getSession().getAttribute("user");
-        if(Arrays.asList(User.LIBRARIANS).contains(user.getRole())){
+        if (Arrays.asList(User.LIBRARIANS).contains(user.getRole())) {
             try {
                 System.out.println(booking);
                 checkoutService.toCheckoutDocument(booking);
-                modelAndView.addObject("data","succ");
+                modelAndView.addObject("data", "succ");
             } catch (Exception e) {
-                modelAndView.addObject("data",e.getMessage());
+                modelAndView.addObject("data", e.getMessage());
                 e.printStackTrace();
             }
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/outstanding")
+    public ModelAndView oustanding(@RequestBody Booking booking,
+                                   @RequestParam String doc,
+                                   HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        User user = (User) request.getSession().getAttribute("user");
+        try {
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBSECOND) < 0)
+                throw new IllegalAccessException(RIGHT_PERMISSION_EXCEPTION);
+            switch (doc) {
+                case "book":
+                    booking.setDocType(Document.BOOK);
+                    bookingService.outstandingRequest(booking);
+                    modelAndView.addObject("data", "succ");
+                    break;
+                case "journal":
+                    booking.setDocType(Document.JOURNAL);
+                    bookingService.outstandingRequest(booking);
+                    modelAndView.addObject("data", "succ");
+                    break;
+                case "av":
+                    booking.setDocType(Document.AV);
+                    bookingService.outstandingRequest(booking);
+                    modelAndView.addObject("data", "succ");
+                    break;
+            }
+
+            loggerService.addLog(user.getId(), 0,
+                    LoggerService.OUTSTANDING_REQUEST,
+                    System.currentTimeMillis(), Document.AV, false);
+
+        } catch (Exception e) {
+            modelAndView.addObject("data", e.getMessage());
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/overdue")
+    public ModelAndView overdue(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
+                throw new IllegalAccessException();
+            modelAndView.addObject("overdue", returnService.getListofOverdueUsers());
+            modelAndView.setViewName("overdue");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/taken_doc")
+    public ModelAndView taken_doc(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
+                throw new IllegalAccessException();
+            modelAndView.addObject("taken",checkoutService.getListofCheckouts());
+            modelAndView.setViewName("taken_documents");
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return modelAndView;
     }

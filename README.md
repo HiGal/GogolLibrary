@@ -7,7 +7,6 @@
   + <a href="#main">Main</a>
     + <a href="#arcp">Architecture of the server</a>
     + <a href="#arcd">Architecture of the database</a>
-    + <a href="#arcw">Architecture of the website</a>
   + <a href="#imp">Implementation</a>
     + <a href="#doc">Documents</a>
     + <a href="#user">Users</a>
@@ -16,7 +15,6 @@
     + <a href="#inst">Installation of software</a>
     + <a href="#launch">Launching the project</a>
     + <a href="#entry">Entering</a>
-    + <a href="#browse">Browsing web pages</a>
   + <a href="#soft">Soft in use</a>
   + <a href="#issue">Issues?</a>
 <a name="main">
@@ -45,12 +43,6 @@ new materials, manage users of the library, among other functionalities.
 ![Database](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/database.png "DB")
 
 <a name="arcd">
-  
-## Architecture of the website
-</a> 
-
-## Working on it
- ![Websites](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/1.jpg "W")
  
 <a name="imp">
    
@@ -60,9 +52,12 @@ new materials, manage users of the library, among other functionalities.
 <a name="user">
    
 ## Users
+
 </a>
 
-+ There are two types of users:
+![Users](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/chemeUsers.png "Hierarchy table")
+
++ There are three types of users:
 1. **Patron** - can *search for, check out and return documents* 
     + **Faculty** (professors, instructors, TAs): 
       *Have permission to сheck out document for ***4*** weeks (regardless the book is best seller) or ***2*** (if AV or journal article)*
@@ -71,7 +66,13 @@ new materials, manage users of the library, among other functionalities.
     + **Visiting Professors**:
       *Have permission to сheck out documents for ***1*** week only*
 2. **Librarians**- can *check overdue documents, manage patrons, and
-add/delete/modify documents*       
+add/delete/modify documents*     
+    + **Priv1**: Access to/Modification of documents and patrons’ information.
+    + **Priv2**: In addition to Priv1, addition of documents and patrons to the library,place an outstanding request.
+    + **Priv3**: In addition to Priv2, deletion of documents and patrons of the library.
+
+3. **Admin** - can add, delete or modify the information about librarians and also assigns privileges to librarians.
+T he Library Management System can contain only one Admin
 
 <a name="doc">
   
@@ -100,7 +101,7 @@ Documents also have the price value (in Rubles)
 ## Booking System (Document Copy)
 </a>
 
-+ Every time user check out document - mount of copies in the library decrease.
+![Users](https://github.com/HiGal/GogolLibrary/blob/master/src/main/resources/rmres/bookingFlow%20(1).png "Hierarchy table")
 
 <a name="installation">
   
@@ -142,18 +143,15 @@ There are some pre-signed up users:
 |     User           |     Login          | Password |
 | ------------------ |:------------------:| :-------:|
 | Student            | a.zhuchkov         |    123   |
-| Student            | r.zaunullin        |    123   |
-| Student            | f.galeev           |    123   |
-| Instructor         | i.mazan            |    123   |
+| LibPriv3           | r.zaunullin        |    123   |
+| LibPriv1           | f.galeev           |    123   |
+| LibPriv2           | i.mazan            |    123   |
 | Professor          | v.rivera           |    123   |
+| Instrcutor         | l.gumerov          |    123   |
 | Teacher Assistant  | h.aslam            |    123   |
 | Visiting Professor | b.meyer            |    123   |
-| Librarian          | a.admin            |    666   |
+| Admin              | a.admin            |    123   |
      
-<a name="browse">
-
-##Browsing Web pages
-### There are some scenarios
 
 <a name="soft">
 

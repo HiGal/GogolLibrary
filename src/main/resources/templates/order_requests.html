@@ -7,6 +7,8 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../css/patrons.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <title>Order Requests</title>
 </head>
 <body>
@@ -57,6 +59,7 @@
                             <input type="hidden" class="user_id" value="{{user_id}}">
                             <input type="hidden" class="id" value="{{id}}">
                             <input type="hidden" class="shelf" value="{{shelf}}">
+                            <input type="hidden" class="virId" value="{{virId}}">
                             <td class="name" id="name">{{name}}</td>
                             <td class="surname" id="surname">{{surname}}</td>
                             <td class="type" id="type">{{type}}</td>
@@ -85,9 +88,9 @@
                                         "userId": parseInt(tr.find($('.user_id')).attr("value"),10),
                                         "id": tr.find($('.id')).attr("value"),
                                         "shelf":tr.find($('.shelf')).attr("value"),
-                                        "docType":tr.find($('.type')).text()
+                                        "docType":tr.find($('.type')).text(),
+                                        "docVirId":tr.find($('.virId')).attr("value")
                                     };
-                                    alert(JSON.stringify(myJson));
                                     $.ajax({
                                         url: "/confirm/request",
                                         type: 'POST',
@@ -97,8 +100,9 @@
                                         success: function (data){
                                             if(data["data"] === "succ") {
                                                 tr.remove();
+                                                toastr["success"]("Success");
                                             } else {
-                                                alert("error");
+                                                toastr["error"]("Error");
                                             }
                                         }
                                     });

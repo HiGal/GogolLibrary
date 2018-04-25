@@ -46,7 +46,7 @@
     <div class="container users">
         <div class="output"></div>
         <div class="card card-container">
-            <p id="patrons"><a id="linker" href="/librarian/taken_doc">Documents</a> / <u>A/V</u></p>
+            <p id="patrons"><a id="linker" href="/taken_doc">Documents</a> / <u>A/V</u></p>
             <div>
                 <input placeholder="title" id="stitle">
             </div>
@@ -177,16 +177,24 @@
                         function renewConf() {
                             document.getElementById("elogin").style.display = "none";
                             var myJson = {
-                                "id": document.getElementById("id").value,
-                                "login": document.getElementById("elogin").value
-                                //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                                "docVirId": document.getElementById("id").value,
+                                "userId": document.getElementById("elogin").value
                             };
                             $.ajax({
-                                url: "idk",
+                                url: "/outstanding?doc=av",
                                 type: 'POST',
-                                data: JSON.stringify(myJson)
+                                contentType: 'application/json',
+                                data: JSON.stringify(myJson),
+                                dataType: 'json',
+                                success: function (data) {
+                                    if(data["data"] === "succ"){
+                                        toastr["success"]("Oustanding request was successful");
+                                    }else{
+                                        toastr["error"](data["data"]);
+                                    }
+                                }
                             });
-                            window.location.reload(false);
+                            setTimeout(reload, 1500);
                         }
 
                         function aCall() {
@@ -312,9 +320,16 @@
                                 url: "/delete/all/av",
                                 type: 'POST',
                                 contentType: 'application/json',
-                                data: JSON.stringify(myJson)
+                                data: JSON.stringify(myJson),
+                                dataType:'json',
+                                success: function(data){
+                                    if(data["message"] === "succ"){
+                                        toastr["success"]("AV has successfully deleted");
+                                    }else {
+                                        toastr["error"](data["message"]);
+                                    }
+                                }
                             });
-                            toastr["success"]("AV has successfully deleted");
                             setTimeout(reload, 1500);
                         }
 
