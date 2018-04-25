@@ -463,13 +463,14 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
         }
     }
 
+
     public long getNumberOfBookingsDocumentsByUser(long userId) {
         return getBookingsByUser(userId).size();
     }
 
     public List<Booking> getBookingsByUser(long userId) {
         try {
-            return getList().stream()
+            return   getList().stream()
                     .filter(booking -> booking.getUserId() == userId)
                     .collect(Collectors.toList());
         } catch (NoSuchElementException e) {
@@ -486,7 +487,7 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
 
     public List<Booking> getListBookingsByDocVirIdAndDocType(long docVirId, String docType) {
         try {
-            return getList().stream()
+            return bookingDao.getList().stream()
                     .filter(booking -> booking.getDocVirId() == docVirId)
                     .filter(booking -> booking.getDocType().equals(docType))
                     .collect(Collectors.toList());
