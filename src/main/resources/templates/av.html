@@ -177,16 +177,24 @@
                         function renewConf() {
                             document.getElementById("elogin").style.display = "none";
                             var myJson = {
-                                "id": document.getElementById("id").value,
-                                "login": document.getElementById("elogin").value
-                                //   "imgData":JSON.stringify(getBase64Image(imgElem))
+                                "docVirId": document.getElementById("id").value,
+                                "userId": document.getElementById("elogin").value
                             };
                             $.ajax({
-                                url: "idk",
+                                url: "/outstanding?doc=av",
                                 type: 'POST',
-                                data: JSON.stringify(myJson)
+                                contentType: 'application/json',
+                                data: JSON.stringify(myJson),
+                                dataType: 'json',
+                                success: function (data) {
+                                    if(data["data"] === "succ"){
+                                        toastr["success"]("Oustanding request was successful");
+                                    }else{
+                                        toastr["error"](data["data"]);
+                                    }
+                                }
                             });
-                            window.location.reload(false);
+                            setTimeout(reload, 1500);
                         }
 
                         function sCall() {

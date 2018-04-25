@@ -328,7 +328,7 @@
                             "userId": document.getElementById("elogin").value
                         };
                         $.ajax({
-                            url: "/outstanding",
+                            url: "/outstanding?doc=book",
                             type: 'POST',
                             contentType: 'application/json',
                             data: JSON.stringify(myJson),
