@@ -383,7 +383,7 @@ public class LibrarianController {
 
 
     @RequestMapping(value = "/delete/all/av")
-    public String delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
+    public ModelAndView delete_all_av(@RequestBody AudioVideo audioVideo, HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         try {
             User user = (User) request.getSession().getAttribute("user");
@@ -394,11 +394,12 @@ public class LibrarianController {
             loggerService.addLog(user.getId(), docPhysId,
                     LoggerService.DELETED_AV + " \" " + audioVideo.getTitle() + "\" by " + audioVideo.getAuthor(),
                     System.currentTimeMillis(), Document.AV, false);
+            modelAndView.addObject("message","succ");
         } catch (Exception e) {
             modelAndView.addObject("message", e.getMessage());
             e.printStackTrace();
         }
-        return "succ";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/copies/av")
@@ -411,11 +412,6 @@ public class LibrarianController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/librarian/taken_doc", method = RequestMethod.GET)
-    public ModelAndView takenDoc() {
-        ModelAndView modelAndView = new ModelAndView("taken_documents");
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/user/delete", method = RequestMethod.POST)
     public @ResponseBody
@@ -593,6 +589,20 @@ public class LibrarianController {
             modelAndView.addObject("overdue", returnService.getListofOverdueUsers());
             modelAndView.setViewName("overdue");
         }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/taken_doc")
+    public ModelAndView taken_doc(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            if (ACCESS.get(user.getRole()) - ACCESS.get(LIBFIRST) < 0)
+                throw new IllegalAccessException();
+
+        }catch (Exception e){
             e.printStackTrace();
         }
         return modelAndView;

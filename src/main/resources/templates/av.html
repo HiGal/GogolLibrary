@@ -250,9 +250,16 @@
                                 url: "/delete/all/av",
                                 type: 'POST',
                                 contentType: 'application/json',
-                                data: JSON.stringify(myJson)
+                                data: JSON.stringify(myJson),
+                                dataType:'json',
+                                success: function(data){
+                                    if(data["message"] === "succ"){
+                                        toastr["success"]("AV has successfully deleted");
+                                    }else {
+                                        toastr["error"](data["message"]);
+                                    }
+                                }
                             });
-                            toastr["success"]("AV has successfully deleted");
                             setTimeout(reload, 1500);
                         }
 
