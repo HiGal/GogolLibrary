@@ -64,6 +64,7 @@ public class CheckoutService implements ModifyByLibrarianService<Checkout> {
         switch (booking.getDocType()) {
             case Document.BOOK:
                 if (userType.equals(User.STUDENT)) {
+                    System.out.println(booking);
                     long bookId = booking.getDocVirId();
                     boolean isBestseller = bookService.getNote(bookId).equals(Book.BESTSELLER);
                     additionalTime = isBestseller ? 2 * WEEK_IN_MILLISECONDS : 3 * WEEK_IN_MILLISECONDS;

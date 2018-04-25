@@ -324,13 +324,22 @@
                         //instant request ajax
                         document.getElementById("elogin").style.display = "none";
                         var myJson = {
-                            "id": document.getElementById("id").value,
-                            "login": document.getElementById("elogin").value
+                            "docVirId": document.getElementById("id").value,
+                            "userId": document.getElementById("elogin").value
                         };
                         $.ajax({
-                            url: "idk",
+                            url: "/outstanding",
                             type: 'POST',
-                            data: JSON.stringify(myJson)
+                            contentType: 'application/json',
+                            data: JSON.stringify(myJson),
+                            dataType: 'json',
+                            success: function (data) {
+                                if(data["data"] === "succ"){
+                                    toastr["success"]("Oustanding request was successful");
+                                }else{
+                                    toastr["error"](data["data"]);
+                                }
+                            }
                         });
                         setTimeout(reload, 1500);
                     }
@@ -504,7 +513,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a onclick="renew()" class="btn btn-primary">Renew</a>
+                            <a onclick="renew()" class="btn btn-primary">Outstanding</a>
                             <a id="okbtn" class="btn btn-primary" onclick="bCall()">OK</a>
                             <a id="editbtn" onclick="edit()" class="btn btn-primary">Edit</a>
                             <button class="btn btn-primary" onclick="dCall()">Delete all copies</button>

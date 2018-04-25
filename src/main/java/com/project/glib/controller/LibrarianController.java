@@ -495,6 +495,7 @@ public class LibrarianController {
             HashMap<String,String> rList = new HashMap<>();
             rList.put("phys_id", String.valueOf(person.getDocPhysId()));
             rList.put("user_id", String.valueOf(person.getUserId()));
+            rList.put("virId",String.valueOf(person.getDocVirId()));
             rList.put("id", String.valueOf(person.getId()));
             rList.put("shelf", person.getShelf());
             rList.put("name",user.getName());
@@ -536,6 +537,20 @@ public class LibrarianController {
                 modelAndView.addObject("data",e.getMessage());
                 e.printStackTrace();
             }
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/outstanding")
+    public ModelAndView oustanding(@RequestBody Booking booking){
+        ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+        try {
+            booking.setDocType(Document.BOOK); //hardcode
+            bookingService.outstandingRequest(booking);
+            modelAndView.addObject("data", "succ");
+        } catch (Exception e) {
+            modelAndView.addObject("data",e.getMessage());
+            e.printStackTrace();
         }
         return modelAndView;
     }

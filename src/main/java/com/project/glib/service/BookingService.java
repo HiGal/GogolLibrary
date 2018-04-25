@@ -455,7 +455,9 @@ public class BookingService implements ModifyByLibrarianService<Booking> {
     @SuppressWarnings("unchecked")
     public List<Booking> getList() {
         try {
-            return bookingDao.getList();
+            return bookingDao.getList().stream()
+                    .filter(booking -> !booking.getShelf().equals( EMPTY_SHELF))
+                    .collect(Collectors.toList());
         } catch (NullPointerException e) {
             return new ArrayList<>();
         }
